@@ -1,0 +1,111 @@
+        <div class="page" id="page-advanced">
+            <div class="advanced-layout">
+                <div class="advanced-sidebar" id="advSidebar">
+                    <button class="sidebar-item active" data-sub="calibration">校准</button>
+                    <button class="sidebar-item" data-sub="adv-function">功能测试</button>
+                    <button class="sidebar-item" data-sub="adv-limit">限位测试</button>
+                    <button class="sidebar-item" data-sub="adv-speed">速度测试</button>
+                    <button class="sidebar-item" data-sub="adv-stream">推流/存储</button>
+                </div>
+                <div class="advanced-content" id="advContent">
+                    <!-- 校准 -->
+                    <div class="page" id="page-calibration">
+                        <h2 style="font-size:18px;margin-bottom:16px">校准工作台</h2>
+                        <div class="grid">
+                            <div class="card"><div class="card-title">自动对焦</div><p style="color:#8b949e;margin:8px 0;font-size:13px">自动对焦校准</p><button class="btn btn-primary" onclick="calibrate('focus')">开始校准</button></div>
+                            <div class="card"><div class="card-title">色彩平衡</div><p style="color:#8b949e;margin:8px 0;font-size:13px">色彩平衡校准</p><button class="btn btn-primary" onclick="calibrate('color')">开始校准</button></div>
+                            <div class="card"><div class="card-title">速度映射</div><p style="color:#8b949e;margin:8px 0;font-size:13px">速度映射校准</p><button class="btn btn-primary" onclick="calibrate('speed')">开始校准</button></div>
+                            <div class="card"><div class="card-title">位置校准</div><p style="color:#8b949e;margin:8px 0;font-size:13px">位置精度校准</p><button class="btn btn-primary" onclick="calibrate('position')">开始校准</button></div>
+                        </div>
+                    </div>
+                    <!-- 功能测试 -->
+                    <div class="page" id="page-adv-function">
+                        <h2 style="font-size:20px;margin-bottom:16px">🔍 功能测试</h2>
+                        <p style="color:#8b949e;margin-bottom:20px;font-size:14px">探测设备支持的 18 项功能（IrLED、白光、加热、预置位等），并恢复默认值。</p>
+                        <div class="btn-group" style="margin-bottom:20px">
+                            <button class="btn btn-primary" id="btnFuncRun" onclick="funcDetectRun()">▶ 开始探测</button>
+                            <button class="btn btn-secondary" id="btnFuncRestore" onclick="funcDetectRestore()">⟳ 恢复默认值</button>
+                        </div>
+                        <div class="progress-section" id="funcProgress" style="display:none">
+                            <div class="progress-text" id="funcProgressText">探测中... 0/18</div>
+                            <div class="progress-bar"><div class="progress-fill blue" id="funcProgressBar" style="width:0%"></div></div>
+                        </div>
+                        <div id="funcResultArea"></div>
+                    </div>
+                    <!-- 限位测试 -->
+                    <div class="page" id="page-adv-limit">
+                        <h2 style="font-size:20px;margin-bottom:16px">📐 限位测试</h2>
+                        <p style="color:#8b949e;margin-bottom:20px;font-size:14px">测试 PTZ 轴的物理限位，获取精确的移动范围。</p>
+                        <div class="btn-group" style="margin-bottom:20px">
+                            <button class="btn btn-primary" id="btnLimitRun" onclick="limitTestRun()">▶ 开始测试</button>
+                        </div>
+                        <div class="progress-section" id="limitProgress" style="display:none">
+                            <div class="progress-text" id="limitProgressText">测试中...</div>
+                            <div class="progress-bar"><div class="progress-fill blue" id="limitProgressBar" style="width:0%"></div></div>
+                        </div>
+                        <div class="current-direction" id="limitDirection" style="display:none">当前方向: --</div>
+                        <div id="limitResultArea"></div>
+                    </div>
+                    <!-- 速度测试 -->
+                    <div class="page" id="page-adv-speed">
+                        <h2 style="font-size:20px;margin-bottom:16px">⚡ 速度测试</h2>
+                        <p style="color:#8b949e;margin-bottom:20px;font-size:14px">测试设备在不同速度档位下的实际移动速率，生成速度映射。</p>
+                        <div class="btn-group" style="margin-bottom:20px">
+                            <button class="btn btn-primary" id="btnSpeedRun" onclick="speedTestRun()">▶ 开始测试</button>
+                        </div>
+                        <div class="progress-section" id="speedProgress" style="display:none">
+                            <div class="progress-text" id="speedProgressText">测试中...</div>
+                            <div class="progress-bar"><div class="progress-fill blue" id="speedProgressBar" style="width:0%"></div></div>
+                        </div>
+                        <div id="speedResultArea"></div>
+                    </div>
+                    <!-- 推流/存储 -->
+                    <div class="page" id="page-adv-stream">
+                        <h2 style="font-size:20px;margin-bottom:8px">📡 推流/存储设置</h2>
+                        <p style="color:#8b949e;margin-bottom:24px;font-size:14px">管理设备视频推流、录像存储与快照截图。</p>
+                        <div id="streamControlArea">
+                            <div class="grid" style="grid-template-columns:repeat(auto-fit, minmax(280px, 1fr))">
+                                <!-- 推流控制 -->
+                                <div class="card" style="border-top:3px solid #58a6ff">
+                                    <div class="card-title" style="color:#58a6ff">推流控制</div>
+                                    <p style="color:#8b949e;margin:8px 0;font-size:13px;line-height:1.5">启动/停止设备视频流（HLS），提供实时预览URL。</p>
+                                    <div class="btn-group" style="margin-top:12px">
+                                        <button class="btn btn-primary" id="btnStreamStart" onclick="streamStart()">▶ 启动推流</button>
+                                        <button class="btn btn-danger" id="btnStreamStop" onclick="streamStop()" disabled>⏹ 停止推流</button>
+                                    </div>
+                                    <div id="streamStatusInfo" style="margin-top:12px;font-size:12px;color:#8b949e">状态: 未启动</div>
+                                    <div id="streamPreview" style="margin-top:8px;display:none">
+                                        <video id="streamVideo" style="width:100%;border-radius:8px;background:#0d1117" autoplay muted playsinline></video>
+                                    </div>
+                                </div>
+                                <!-- 录像控制 -->
+                                <div class="card" style="border-top:3px solid #f0883e">
+                                    <div class="card-title" style="color:#f0883e">录像控制</div>
+                                    <p style="color:#8b949e;margin:8px 0;font-size:13px;line-height:1.5">录制视频流到本地文件，保存到 download/ 目录。</p>
+                                    <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+                                        <input type="text" id="recordTargetName" placeholder="录像文件名 (可选)" style="flex:1;padding:6px 8px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px">
+                                    </div>
+                                    <div class="btn-group" style="margin-top:12px">
+                                        <button class="btn btn-warning" id="btnRecordStart" onclick="recordStart()">🔴 开始录像</button>
+                                        <button class="btn btn-secondary" id="btnRecordStop" onclick="recordStop()" disabled>⏹ 停止录像</button>
+                                    </div>
+                                    <div id="recordStatusInfo" style="margin-top:8px;font-size:12px;color:#8b949e">状态: 未录制</div>
+                                </div>
+                                <!-- 快照 -->
+                                <div class="card" style="border-top:3px solid #3fb950">
+                                    <div class="card-title" style="color:#3fb950">快照截图</div>
+                                    <p style="color:#8b949e;margin:8px 0;font-size:13px;line-height:1.5">从视频流中抓取当前帧 JPEG 快照，保存到 download/ 目录。</p>
+                                    <div class="btn-group" style="margin-top:12px">
+                                        <button class="btn btn-primary" id="btnSnapshot" onclick="snapshotCapture()">📸 抓取快照</button>
+                                    </div>
+                                    <div id="snapshotPreview" style="margin-top:12px;max-height:200px;overflow:hidden;border-radius:8px;background:#0d1117;display:none">
+                                        <img id="snapshotImg" style="width:100%;display:block;border-radius:8px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ==================== 回放 ==================== -->

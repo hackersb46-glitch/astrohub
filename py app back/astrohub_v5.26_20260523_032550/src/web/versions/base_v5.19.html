@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHub</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: -apple-system, 'Segoe UI', sans-serif; background:#0a0e17; color:#e0e6f0; min-height:100vh; }
+        .header { background:linear-gradient(135deg, #1a1e2e, #0d1117); padding:12px 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #21262d; }
+        .logo { font-size:24px; font-weight:700; color:#58a6ff; }
+        .logo span { color:#f0883e; }
+        .version { font-size:12px; color:#8b949e; background:#21262d; padding:2px 8px; border-radius:12px; }
+        .status-bar { display:flex; gap:16px; align-items:center; }
+        .status-item { display:flex; align-items:center; gap:6px; font-size:13px; }
+        .status-dot { width:8px; height:8px; border-radius:50%; }
+        .status-dot.green { background:#3fb950; box-shadow:0 0 6px #3fb950; }
+        .status-dot.yellow { background:#d29922; box-shadow:0 0 6px #d29922; }
+        .status-dot.red { background:#f85149; box-shadow:0 0 6px #f85149; }
+        .nav { background:#161b22; padding:8px 24px; display:flex; gap:4px; align-items:center; border-bottom:1px solid #21262d; flex-wrap:wrap; }
+        .nav-btn { background:none; border:none; color:#8b949e; padding:8px 16px; cursor:pointer; border-radius:6px; font-size:14px; transition:all 0.2s; }
+        .nav-btn:hover { background:#21262d; color:#e0e6f0; }
+        .nav-btn.active { background:#238636; color:#fff; }
+        /* --- Advanced Page: Left Sidebar Layout --- */
+        .advanced-layout { display:flex; gap:0; min-height:600px; }
+        .advanced-sidebar { width:200px; background:#161b22; border-right:1px solid #21262d; padding:8px 0; flex-shrink:0; }
+        .advanced-sidebar .sidebar-item { background:none; border:none; color:#8b949e; padding:10px 16px; cursor:pointer; font-size:13px; transition:all 0.2s; width:100%; text-align:left; display:block; }
+        .advanced-sidebar .sidebar-item:hover { background:#21262d; color:#e0e6f0; }
+        .advanced-sidebar .sidebar-item.active { background:#238636; color:#fff; border-left:3px solid #3fb950; }
+        .advanced-content { flex:1; min-width:0; padding:20px; }
+        .advanced-content .page { display:none; }
+        .advanced-content .page.active { display:block; }
+        /* --- Observation Page Layout --- */
+        .observation-layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        .obs-card { background:#161b22; border:1px solid #21262d; border-radius:10px; padding:16px; }
+        .obs-card h3 { font-size:15px; color:#58a6ff; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid #21262d; }
+        .obs-placeholder { color:#6e7681; font-size:13px; padding:20px 0; text-align:center; }
+        .obs-actions { margin-top:16px; display:flex; gap:8px; justify-content:flex-end; }
+        .main { padding:20px 24px; }
+        .page { display:none; }
+        .page.active { display:block; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:20px; }
+        .card { background:#161b22; border:1px solid #21262d; border-radius:10px; padding:16px; transition:border-color 0.2s; }
+        .card:hover { border-color:#30363d; }
+        .card-title { font-size:12px; color:#8b949e; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+        .card-value { font-size:32px; font-weight:700; color:#e0e6f0; }
+        .card-value.green { color:#3fb950; }
+        .card-sub { font-size:12px; color:#6e7681; margin-top:4px; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:left; padding:10px 16px; border-bottom:1px solid #21262d; font-size:14px; }
+        th { color:#8b949e; font-weight:500; background:#0d1117; }
+        tr:hover { background:#161b22; }
+        .badge { padding:2px 8px; border-radius:12px; font-size:12px; font-weight:500; }
+        .badge.online { background:rgba(63,185,80,0.15); color:#3fb950; }
+        .badge.offline { background:rgba(248,81,73,0.15); color:#f85149; }
+        .badge.sadp { background:rgba(88,166,255,0.15); color:#58a6ff; }
+        .badge.manual { background:rgba(240,136,62,0.15); color:#f0883e; }
+        .badge.yes { background:rgba(63,185,80,0.15); color:#3fb950; }
+        .badge.no { background:rgba(248,81,73,0.15); color:#f85149; }
+        .ptz-controls { display:grid; grid-template-columns:repeat(3, 80px); gap:8px; justify-content:center; margin:20px 0; }
+        .ptz-btn { width:80px; height:80px; border:1px solid #30363d; border-radius:10px; background:#161b22; color:#e0e6f0; font-size:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+        .ptz-btn:hover { background:#238636; border-color:#238636; }
+        .ptz-btn.center { background:#21262d; cursor:default; }
+        .ptz-btn.center:hover { background:#21262d; transform:none; }
+        .ptz-btn:active:not(.center) { transform:scale(0.95); }
+        .ptz-speed { display:flex; align-items:center; gap:12px; justify-content:center; margin:16px 0; }
+        .ptz-speed input[type=range] { width:200px; accent-color:#58a6ff; }
+        .form-group { margin-bottom:16px; }
+        .form-group label { display:block; font-size:14px; color:#8b949e; margin-bottom:6px; }
+        .form-group input, .form-group select { width:100%; padding:10px 12px; background:#0d1117; border:1px solid #30363d; border-radius:6px; color:#e0e6f0; font-size:14px; }
+        .form-group input:focus, .form-group select:focus { outline:none; border-color:#58a6ff; }
+        .btn { padding:10px 20px; border:none; border-radius:6px; font-size:14px; cursor:pointer; transition:all 0.2s; }
+        .btn-primary { background:#238636; color:#fff; }
+        .btn-primary:hover { background:#2ea043; }
+        .btn-secondary { background:#30363d; color:#e0e6f0; }
+        .btn-secondary:hover { background:#484f58; }
+        .btn-danger { background:#da3633; color:#fff; }
+        .btn-danger:hover { background:#f85149; }
+        .btn-warning { background:#d29922; color:#0d1117; }
+        .btn-warning:hover { background:#e3b341; }
+        .btn-sm { padding:6px 12px; font-size:12px; }
+        .btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .btn-group { display:flex; gap:8px; flex-wrap:wrap; }
+        .progress-bar { height:8px; background:#21262d; border-radius:4px; overflow:hidden; }
+        .progress-fill { height:100%; border-radius:4px; transition:width 0.3s; }
+        .progress-fill.green { background:#3fb950; }
+        .progress-fill.yellow { background:#d29922; }
+        .progress-fill.red { background:#f85149; }
+        .progress-fill.blue { background:#58a6ff; }
+        /* Advanced page status panel */
+        .advanced-status-panel { background:#0d1117; border:1px solid #21262d; border-radius:10px; padding:16px; margin:16px 0; }
+        .advanced-status-panel h4 { font-size:15px; color:#e0e6f0; margin-bottom:12px; border-bottom:1px solid #21262d; padding-bottom:8px; }
+        .status-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #21262d; font-size:14px; }
+        .status-row:last-child { border-bottom:none; }
+        .status-label { color:#8b949e; }
+        .status-value { color:#e0e6f0; font-family:monospace; }
+        .adv-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+        .adv-header select { max-width:300px; }
+        .result-table { margin:16px 0; }
+        .progress-section { margin:16px 0; }
+        .progress-text { font-size:13px; color:#8b949e; margin-bottom:4px; }
+        .current-direction { font-size:18px; color:#58a6ff; font-family:monospace; text-align:center; padding:8px; background:#0d1117; border-radius:8px; margin:12px 0; }
+        .log-entry { padding:6px 12px; border-left:3px solid #30363d; margin-bottom:4px; font-size:13px; font-family:monospace; }
+        .log-entry.info { border-color:#58a6ff; }
+        .log-entry.warn { border-color:#d29922; }
+        .log-entry.error { border-color:#f85149; }
+        .log-entry.success { border-color:#3fb950; }
+        /* Toast notification */
+        .toast-container { position:fixed; top:60px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; }
+        .toast { padding:12px 20px; border-radius:8px; font-size:14px; animation:slideIn 0.3s ease; min-width:250px; max-width:400px; }
+        .toast.success { background:#1a4731; border:1px solid #3fb950; color:#3fb950; }
+        .toast.error { background:#4d1c1a; border:1px solid #f85149; color:#f85149; }
+        .toast.info { background:#1a3a52; border:1px solid #58a6ff; color:#58a6ff; }
+        .toast.warning { background:#4a3a1a; border:1px solid #d29922; color:#d29922; }
+        @keyframes slideIn { from { transform:translateX(100%); opacity:0; } to { transform:translateX(0); opacity:1; } }
+        /* Modal */
+        .modal-backdrop { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9000; display:flex; align-items:center; justify-content:center; }
+        .modal { background:#161b22; border:1px solid #30363d; border-radius:12px; padding:24px; width:400px; max-width:90vw; }
+        .modal h3 { margin-bottom:16px; font-size:18px; }
+        .modal .btn-group { justify-content:flex-end; margin-top:20px; }
+        /* Loading spinner */
+        .spinner { display:inline-block; width:16px; height:16px; border:2px solid #30363d; border-top-color:#58a6ff; border-radius:50%; animation:spin 0.8s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .loading { pointer-events:none; opacity:0.7; }
+        /* Device actions */
+        .actions { display:flex; gap:4px; flex-wrap:wrap; }
+        /* PTZ status panel */
+        .ptz-position { text-align:center; padding:12px; background:#0d1117; border-radius:8px; margin:12px 0; font-family:monospace; font-size:14px; }
+        .toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+        .toolbar-actions { display:flex; gap:8px; }
+        .device-info-panel { background:#0d1117; border-radius:8px; padding:16px; margin-top:12px; font-size:13px; }
+        .device-info-panel .info-row { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #21262d; }
+        .device-info-panel .info-row:last-child { border-bottom:none; }
+        .device-info-panel .info-label { color:#8b949e; }
+        .device-info-panel .info-value { color:#e0e6f0; font-family:monospace; }
+        @media (max-width:768px) { .grid { grid-template-columns:1fr 1fr; } .header { flex-direction:column; gap:8px; } .nav { overflow-x:auto; } .console-layout { flex-direction:column !important; } .console-left, .console-right { width:100% !important; } }
+        /* Console page: left-center-right layout (SPEC: left=PTZ 25%, center=video 50%, right=log 25%) */
+        .console-layout { display:flex; gap:16px; align-items:flex-start; }
+        .console-left { flex:0 0 25%; display:flex; flex-direction:column; min-width:280px; }
+        .console-center { flex:1 1 50%; display:flex; flex-direction:column; min-width:400px; }
+        .console-right { flex:0 0 25%; display:flex; flex-direction:column; min-width:200px; max-width:300px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Astro<span>Hub</span></div>
+        <div class="status-bar">
+            <div class="status-item"><span class="status-dot green" id="wsDot"></span><span id="wsStatus">WebSocket</span></div>
+            <div class="status-item" id="clock"></div>
+            <span class="version">v5.19</span>
+        </div>
+    </div>
+    <div class="nav">
+        <button class="nav-btn active" data-page="dashboard">仪表盘</button>
+        <button class="nav-btn" data-page="devices">设备管理</button>
+        <button class="nav-btn" data-page="console">主控台</button>
+        <button class="nav-btn" data-page="observation">观测计划</button>
+        <!-- Advanced Features: 校准 功能测试 限位测试 速度测试 推流/存储 -->
+        <button class="nav-btn" data-page="advanced">高级功能</button>
+        <button class="nav-btn" data-page="replay">回放</button>
+    </div>
+    <div class="main">
+        <!-- ==================== 仪表盘 ==================== -->
+
+        <!-- ==================== Page Modules ==================== -->
+        {% include "includes/dashboard.html" %}
+        {% include "includes/devices.html" %}
+        {% include "includes/console.html" %}
+        {% include "includes/observation.html" %}
+        {% include "includes/advanced.html" %}
+        {% include "includes/replay.html" %}
+    </div>
+    <!-- Toast 容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+    <!-- Modal 容器 -->
+    <div id="modalContainer"></div>
+    <script>
+        console.log("[MAIN SCRIPT] Starting script execution");
+        // WASM SDK global variables (before IIFE)
+        var g_szDeviceIdentify = '';
+        var g_bLoggedIn = false;
+        var g_bPlaying = false;
+        var g_iRtspPort = 554;
+var g_szDeviceIdentify2 = "";
+var g_bLoggedIn2 = false;
+var g_bPlaying2 = false;
+var g_iRtspPort2 = 554;
+var g_iWndIndex2 = 0;
+var g_iWebSocketPort = 7681;
+        var g_iWndIndex = 0;
+var g_iChannelList = [];
+var g_iChannelID = 1;
+        var g_iChannelID = 1;
+// Global functions
+    (function() {
+        'use strict';
+        // ================================================================
+        //  Configuration
+        // ================================================================
+        var API_BASE = window.location.origin;
+        var WS_URL = (window.location.protocol === 'https:' ? 'wss' : 'ws') + '://' + window.location.host + '/ws';
+        // Cached device data
+        var allDevices = [];
+        var currentModal = null;
+        // --- v3: Global connected device state ---
+        // Advanced menu state (now sidebar)
+        var advMenuActive = false;
+        var advCurrentSub = 'calibration';
+        // Onboarding wizard state
+        var wizardState = {
+            step: 0,
+            totalSteps: 5,
+            mac: '',
+            deviceIP: '',
+            runningTest: false,
+            testResults: { function: null, limit: null, speed: null }
+        };
+        // ================================================================
+        //  Initialization
+        // ================================================================
+        function init() {
+            console.log('[INIT] init() called');
+            updateClock();
+            setInterval(updateClock, 1000);
+            initNav();
+            initPtzSpeed();
+            initMouseUp();
+            refreshDevices();
+            addLog('info', 'AstroHub 已启动');
+            connectWS();
+        }
+        // ================================================================
+        //  Navigation
+        // ================================================================
+        function initNav() {
+            document.querySelectorAll('.nav-btn[data-page]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+                    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+                    btn.classList.add('active');
+                    document.getElementById('page-' + btn.getAttribute('data-page')).classList.add('active');
+                    if (btn.getAttribute('data-page') === 'devices') refreshDevices();
+                    if (btn.getAttribute('data-page') === 'console') {
+                        refreshPtzDeviceList();
+                        loadWasmDevices();
+                        // Resize WASM player when console becomes visible
+                        setTimeout(function() {
+                            var container = document.getElementById('divPlugin');
+                            if (container && window.WebVideoCtrl) {
+                                try { WebVideoCtrl.I_Resize(container.offsetWidth, container.offsetHeight); console.log('[WASM] Resized to', container.offsetWidth, container.offsetHeight); } catch(e) { console.warn('Resize error:', e); }
+                            }
+                        }, 100);
+                        // Check if device is online and trigger WASM login
+                        if (!window.connectedDevice && allDevices && allDevices.length > 0) {
+                            var onlineDev = allDevices.find(function(d) { return d.online; });
+                            if (onlineDev) {
+                                // Fetch credentials and set window.connectedDevice
+                                apiGet('/api/v1/ptz/devices/' + onlineDev.ip + '/credentials').then(function(creds) {
+                                    if (creds && creds.success) {
+                                        window.connectedDevice = {
+                                            ip: onlineDev.ip,
+                                            model: onlineDev.model || '',
+                                            name: onlineDev.name || onlineDev.device_name || '',
+                                            mac: onlineDev.mac || '',
+                                            username: creds.username || 'admin',
+                                            password: creds.password || '',
+                                            port: creds.port || 80,
+                                            online: true
+                                        };
+                                        if (window.clickLogin2) { window.clickLogin2(); }
+                                    }
+                                }).catch(function(e) { console.warn('Failed to fetch credentials:', e); });
+                            }
+                        } else if (window.connectedDevice && window.clickLogin2) {
+                            window.clickLogin2();
+                        }
+                    }
+                    if (btn.getAttribute('data-page') === 'advanced') initAdvSidebar();
+                    if (btn.getAttribute('data-page')) refreshAdvancedDeviceSelectors();
+                });
+            });
+        }
+        // Sidebar click handlers for advanced page sub-items
+        function initAdvSidebar() {
+            document.querySelectorAll('#advSidebar .sidebar-item').forEach(function(item) {
+                item.onclick = function() {
+                    var subPage = item.getAttribute('data-sub');
+                    // Update sidebar active state
+                    document.querySelectorAll('#advSidebar .sidebar-item').forEach(function(b) { b.classList.remove('active'); });
+                    item.classList.add('active');
+                    // Show sub-page
+                    document.querySelectorAll('#advContent .page').forEach(function(p) { p.classList.remove('active'); });
+                    var target = document.getElementById('page-' + subPage);
+                    if (target) target.classList.add('active');
+                    advCurrentSub = subPage;
+                };
+            });
+        }
+        // ================================================================
+        //  Device Selectors for Advanced Pages
+        // ================================================================
+        function refreshAdvancedDeviceSelectors() {
+            var online = (allDevices || []).filter(function(d) { return d.online; });
+            var selectors = ['advFuncDevice', 'advLimitDevice', 'advSpeedDevice', 'calDevice', 'advStreamDevice'];
+            selectors.forEach(function(id) {
+                var sel = document.getElementById(id);
+                if (!sel) return;
+                var current = sel.value;
+                // Rebuild options
+                sel.innerHTML = '';
+                if (id === 'calDevice' || id === 'advConnectDevice') {
+                    var defaultOpt = document.createElement('option');
+                    defaultOpt.textContent = '未选择设备';
+                    defaultOpt.value = '';
+                    sel.appendChild(defaultOpt);
+                }
+                online.forEach(function(d) {
+                    var option = document.createElement('option');
+                    option.value = d.ip;
+                    option.textContent = ((d.model ? d.model + ' ' : '') + (d.name || d.device_name || d.ip)).trim() + ' (' + d.ip + ')';
+                    sel.appendChild(option);
+                });
+                if (current) sel.value = current;
+            });
+        }
+        // ================================================================
+        //  API helpers
+        // ================================================================
+        async function apiGet(path) {
+            var r = await fetch(API_BASE + path);
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        }
+        async function apiPost(path, body) {
+            var opts = { method: 'POST', headers: {'Content-Type': 'application/json'} };
+            if (body) opts.body = JSON.stringify(body);
+            var r = await fetch(API_BASE + path, opts);
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        }
+        async function apiDelete(path) {
+            var r = await fetch(API_BASE + path, { method: 'DELETE' });
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        }
+        // ================================================================
+        //  Function Detection (P4.1-P4.21)
+        // ================================================================
+        function funcDetectRun() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceIp = window.connectedDevice.ip;
+            var device = window.connectedDevice;
+            var btn = document.getElementById('btnFuncRun');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 探测中...';
+            document.getElementById('funcProgress').style.display = 'block';
+            document.getElementById('funcResultArea').innerHTML = '';
+            addLog('info', '功能探测开始: ' + deviceIp);
+            apiPost('/api/v1/advanced/function/run', {
+                device_ip: deviceIp,
+                username: (device && device.username) || 'admin',
+                password: (device && device.password) || '',
+                port: (device && device.port) || 80
+            }).then(function(resp) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始探测';
+                document.getElementById('funcProgress').style.display = 'none';
+                if (resp && resp.success) {
+                    showToast('success', '功能探测完成');
+                    addLog('success', '功能探测完成: ' + (resp.message || ''));
+                    renderFuncResults(resp.results || {});
+                } else {
+                    showToast('error', resp ? resp.message : '探测失败');
+                    addLog('error', '功能探测失败: ' + (resp ? resp.message : '未知'));
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始探测';
+                document.getElementById('funcProgress').style.display = 'none';
+                showToast('error', '探测异常: ' + e.message);
+            });
+            // Simulate progress (REMOVED - hardcoded fake progress)
+            // Progress bar now: 0% on start → "执行中..." → 100% on real API response
+        }
+        function funcDetectRestore() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceIp = window.connectedDevice.ip;
+            var btn = document.getElementById('btnFuncRestore');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 恢复中...';
+            apiPost('/api/v1/advanced/function/restore?device_ip=' + deviceIp + '&username=admin&password=&port=80', null).then(function(resp) {
+                btn.disabled = false;
+                btn.innerHTML = '⟳ 恢复默认值';
+                if (resp && resp.success) {
+                    showToast('success', '参数已恢复默认值');
+                } else {
+                    showToast('error', resp ? resp.message : '恢复失败');
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.innerHTML = '⟳ 恢复默认值';
+                showToast('error', '恢复异常: ' + e.message);
+            });
+        }
+        function renderFuncResults(results) {
+            var area = document.getElementById('funcResultArea');
+            var html = '<table class="result-table"><thead><tr><th>功能</th><th>支持</th><th>最小值</th><th>最大值</th><th>当前值</th><th>状态</th></tr></thead><tbody>';
+            var keys = Object.keys(results);
+            if (keys.length === 0) {
+                html += '<tr><td colspan="6" style="text-align:center;color:#6e7681">暂无结果</td></tr>';
+            } else {
+                keys.forEach(function(key) {
+                    var item = results[key];
+                    var supported = item.supported ? '<span class="badge yes">✅</span>' : '<span class="badge no">❌</span>';
+                    var status = item.status || '完成';
+                    html += '<tr>';
+                    html += '<td>' + key + '</td>';
+                    html += '<td>' + supported + '</td>';
+                    html += '<td>' + (item.min_value != null ? item.min_value : '--') + '</td>';
+                    html += '<td>' + (item.max_value != null ? item.max_value : '--') + '</td>';
+                    html += '<td>' + (item.current_value != null ? item.current_value : '--') + '</td>';
+                    html += '<td><span class="badge yes">' + status + '</span></td>';
+                    html += '</tr>';
+                });
+            }
+            html += '</tbody></table>';
+            area.innerHTML = html;
+        }
+        // ================================================================
+        //  Limit Test (P6.0-P6.4)
+        // ================================================================
+        function limitTestRun() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceIp = window.connectedDevice.ip;
+            var device = window.connectedDevice;
+            var btn = document.getElementById('btnLimitRun');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 测试中...';
+            document.getElementById('limitProgress').style.display = 'block';
+            document.getElementById('limitDirection').style.display = 'block';
+            document.getElementById('limitResultArea').innerHTML = '';
+            addLog('info', '限位测试开始: ' + deviceIp);
+            apiPost('/api/v1/advanced/limit/run', {
+                device_ip: deviceIp,
+                username: (device && device.username) || 'admin',
+                password: (device && device.password) || '',
+                port: (device && device.port) || 80
+            }).then(function(resp) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始测试';
+                document.getElementById('limitProgress').style.display = 'none';
+                document.getElementById('limitDirection').style.display = 'none';
+                if (resp && resp.success) {
+                    showToast('success', '限位测试完成');
+                    addLog('success', '限位测试完成: ' + (resp.message || ''));
+                    renderLimitResults(resp.results || {});
+                } else {
+                    showToast('error', resp ? resp.message : '测试失败');
+                    addLog('error', '限位测试失败: ' + (resp ? resp.message : '未知'));
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始测试';
+                document.getElementById('limitProgress').style.display = 'none';
+                document.getElementById('limitDirection').style.display = 'none';
+                showToast('error', '测试异常: ' + e.message);
+            });
+            // Progress bar: real status (no hardcoded simulation)
+            var limitProgText = document.getElementById('limitProgressText');
+            var limitProgBar = document.getElementById('limitProgressBar');
+            var limitDirEl = document.getElementById('limitDirection');
+            if (limitProgText) limitProgText.textContent = '测试中... 等待设备响应';
+            if (limitProgBar) limitProgBar.style.width = '30%';
+            if (limitDirEl) { limitDirEl.textContent = '当前方向: 初始化...'; limitDirEl.style.display = 'block'; }
+            // simulateProgress/simulateDirections REMOVED - hardcoded fake progress
+        }
+        function renderLimitResults(results) {
+            var area = document.getElementById('limitResultArea');
+            if (!results || Object.keys(results).length === 0) {
+                area.innerHTML = '<div class="advanced-status-panel"><p style="color:#6e7681">暂无结果</p></div>';
+                return;
+            }
+            var html = '<div class="advanced-status-panel"><h4>限位测试结果</h4>';
+            // P axis
+            var pLimit = results.pan_range || results.p_limit || [0, 3600];
+            var tLimit = results.tilt_range || results.t_limit || [-200, 900];
+            html += '<div class="status-row"><span class="status-label">P轴限位</span><span class="status-value">' + pLimit[0] + ' ~ ' + pLimit[1] + '</span></div>';
+            html += '<div class="status-row"><span class="status-label">T轴限位</span><span class="status-value">' + tLimit[0] + ' ~ ' + tLimit[1] + '</span></div>';
+            html += '<div class="status-row"><span class="status-label">翻转</span><span class="status-value">' + (results.flip ? '有' : '无') + '</span></div>';
+            html += '<div class="status-row"><span class="status-label">稳定性</span><span class="status-value">' + (results.stable ? '<span class="badge yes">✅ 稳定</span>' : '<span class="badge no">❌ 不稳定</span>') + '</span></div>';
+            if (results.csv_path) {
+                html += '<div class="status-row"><span class="status-label">CSV 路径</span><span class="status-value">' + results.csv_path + '</span></div>';
+            }
+            html += '</div>';
+            area.innerHTML = html;
+        }
+        // ================================================================
+        //  Speed Test (P5.4 + M4 P3)
+        // ================================================================
+        function speedTestRun() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceIp = window.connectedDevice.ip;
+            var device = window.connectedDevice;
+            var btn = document.getElementById('btnSpeedRun');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 测试中...';
+            document.getElementById('speedProgress').style.display = 'block';
+            document.getElementById('speedResultArea').innerHTML = '';
+            addLog('info', '速度测试开始: ' + deviceIp);
+            apiPost('/api/v1/advanced/speed/run', {
+                device_ip: deviceIp,
+                username: (device && device.username) || 'admin',
+                password: (device && device.password) || '',
+                port: (device && device.port) || 80
+            }).then(function(resp) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始测试';
+                document.getElementById('speedProgress').style.display = 'none';
+                if (resp && resp.success) {
+                    showToast('success', '速度测试完成');
+                    addLog('success', '速度测试完成: ' + (resp.message || ''));
+                    renderSpeedResults(resp.results || {});
+                } else {
+                    showToast('error', resp ? resp.message : '测试失败');
+                    addLog('error', '速度测试失败: ' + (resp ? resp.message : '未知'));
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始测试';
+                document.getElementById('speedProgress').style.display = 'none';
+                showToast('error', '测试异常: ' + e.message);
+            });
+            // Progress bar: real status (no hardcoded speed labels)
+            var speedProgText = document.getElementById('speedProgressText');
+            var speedProgBar = document.getElementById('speedProgressBar');
+            if (speedProgText) speedProgText.textContent = '测试中... 等待设备响应';
+            if (speedProgBar) speedProgBar.style.width = '30%';
+            // REMOVED simulateProgress (was hardcoded: '速度档位 1', '50', '100')
+            // Speed results now display actual values returned from backend
+        }
+        function renderSpeedResults(results) {
+            var area = document.getElementById('speedResultArea');
+            if (!results || Object.keys(results).length === 0) {
+                area.innerHTML = '<div class="advanced-status-panel"><p style="color:#6e7681">暂无结果</p></div>';
+                return;
+            }
+            var html = '<div class="advanced-status-panel"><h4>速度测试结果</h4>';
+            // Speed mapping table
+            var speedMap = results.speed_map || results.speed_mapping || {};
+            var mapKeys = Object.keys(speedMap);
+            if (mapKeys.length > 0) {
+                html += '<table class="result-table" style="margin:12px 0"><thead><tr><th>速度档位</th><th>实际速率 (°/s)</th></tr></thead><tbody>';
+                mapKeys.forEach(function(k) {
+                    html += '<tr><td>' + k + '</td><td>' + speedMap[k] + '</td></tr>';
+                });
+                html += '</tbody></table>';
+            }
+            html += '<div class="status-row"><span class="status-label">拟合曲线 R²</span><span class="status-value">' + (results.r_squared || results.r2 || '--') + '</span></div>';
+            html += '<div class="status-row"><span class="status-label">精度</span><span class="status-value">' + (results.accuracy || '--') + '</span></div>';
+            html += '<div class="status-row"><span class="status-label">通过</span><span class="status-value">' + (results.passed ? '<span class="badge yes">✅</span>' : '<span class="badge no">❌</span>') + '</span></div>';
+            html += '</div>';
+            area.innerHTML = html;
+        }
+        // ================================================================
+        //  Progress Simulation
+        // ================================================================
+        function simulateProgress(textId, barId, totalSteps, labels) {
+            var current = 0;
+            var interval = setInterval(function() {
+                current++;
+                if (current > totalSteps) { clearInterval(interval); return; }
+                var pct = Math.round((current / totalSteps) * 100);
+                var textEl = document.getElementById(textId);
+                var barEl = document.getElementById(barId);
+                if (textEl) textEl.textContent = labels ? labels[current-1] : '处理中... ' + current + '/' + totalSteps;
+                if (barEl) barEl.style.width = pct + '%';
+            }, 2000);
+        }
+        function simulateDirections() {
+            var dirs = ['P+ 移动中...', 'P- 移动中...', 'T+ 移动中...', 'T- 移动中...'];
+            var i = 0;
+            var interval = setInterval(function() {
+                var el = document.getElementById('limitDirection');
+                if (!el) { clearInterval(interval); return; }
+                if (i >= dirs.length) { clearInterval(interval); el.textContent = '测试完成 ✓'; el.style.color = '#3fb950'; return; }
+                el.textContent = '当前方向: ' + dirs[i];
+                i++;
+            }, 3000);
+        }
+        // ================================================================
+        //  Connect Device Page (高级功能 -> 连接设备)
+        // ================================================================
+        function onConnectDeviceChange() {
+            var ip = document.getElementById('advConnectDevice').value;
+            var noDevice = document.getElementById('connectNoDevice');
+            var controlArea = document.getElementById('connectControlArea');
+            var statusSpan = document.getElementById('connectDeviceStatus');
+            if (ip) {
+                var device = allDevices.find(function(d) { return d.ip === ip; });
+                noDevice.style.display = 'none';
+                controlArea.style.display = 'block';
+                statusSpan.textContent = device ? ('已连接: ' + ip) : ip;
+            } else {
+                noDevice.style.display = 'block';
+                controlArea.style.display = 'none';
+                statusSpan.textContent = '';
+            }
+        }
+        // 功能检测（连接设备页面版）
+        function connectFuncDetectRun() {
+            var deviceIp = document.getElementById('advConnectDevice').value;
+            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
+            var device = allDevices.find(function(d) { return d.ip === deviceIp; });
+            var btn = document.getElementById('btnConnectFuncRun');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 探测中...';
+            document.getElementById('connectFuncProgress').style.display = 'block';
+            document.getElementById('connectFuncResultMini').innerHTML = '';
+            addLog('info', '功能检测开始: ' + deviceIp);
+            apiPost('/api/v1/advanced/function/run', {
+                device_ip: deviceIp,
+                username: (device && device.username) || 'admin',
+                password: (device && device.password) || '',
+                port: (device && device.port) || 80
+            }).then(function(resp) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始检测';
+                document.getElementById('connectFuncProgress').style.display = 'none';
+                if (resp && resp.success) {
+                    showToast('success', '功能检测完成');
+                    addLog('success', '功能检测完成: ' + (resp.message || ''));
+                    renderConnectFuncResultMini(resp.results || {});
+                    renderConnectFullResults(resp.results || {}, 'function');
+                } else {
+                    showToast('error', resp ? resp.message : '探测失败');
+                    addLog('error', '功能检测失败: ' + (resp ? resp.message : '未知'));
+                    document.getElementById('connectFuncResultMini').innerHTML = '<span style="color:#f85149;font-size:12px">❌ ' + (resp ? resp.message : '探测失败') + '</span>';
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始检测';
+                document.getElementById('connectFuncProgress').style.display = 'none';
+                showToast('error', '探测异常: ' + e.message);
+            });
+            // REMOVED simulateProgress for connectFuncDetectRun
+        }
+        function renderConnectFuncResultMini(results) {
+            var area = document.getElementById('connectFuncResultMini');
+            var keys = Object.keys(results);
+            var supported = 0, total = keys.length;
+            keys.forEach(function(k) { if (results[k] && results[k].supported) supported++; });
+            area.innerHTML = '<span style="font-size:12px;color:#3fb950">✅ 支持 ' + supported + '/' + total + ' 项功能</span>';
+        }
+        // 限位检测（连接设备页面版）
+        function connectLimitTestRun() {
+            var deviceIp = document.getElementById('advConnectDevice').value;
+            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
+            var device = allDevices.find(function(d) { return d.ip === deviceIp; });
+            var btn = document.getElementById('btnConnectLimitRun');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 测试中...';
+            document.getElementById('connectLimitProgress').style.display = 'block';
+            document.getElementById('connectLimitResultMini').innerHTML = '';
+            addLog('info', '限位检测开始: ' + deviceIp);
+            apiPost('/api/v1/advanced/limit/run', {
+                device_ip: deviceIp,
+                username: (device && device.username) || 'admin',
+                password: (device && device.password) || '',
+                port: (device && device.port) || 80
+            }).then(function(resp) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始检测';
+                document.getElementById('connectLimitProgress').style.display = 'none';
+                if (resp && resp.success) {
+                    showToast('success', '限位检测完成');
+                    addLog('success', '限位检测完成: ' + (resp.message || ''));
+                    renderConnectLimitResultMini(resp.results || {});
+                    renderConnectFullResults(resp.results || {}, 'limit');
+                } else {
+                    showToast('error', resp ? resp.message : '测试失败');
+                    addLog('error', '限位检测失败: ' + (resp ? resp.message : '未知'));
+                    document.getElementById('connectLimitResultMini').innerHTML = '<span style="color:#f85149;font-size:12px">❌ ' + (resp ? resp.message : '测试失败') + '</span>';
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始检测';
+                document.getElementById('connectLimitProgress').style.display = 'none';
+                showToast('error', '测试异常: ' + e.message);
+            });
+            // REMOVED simulateProgress for connectLimitTestRun
+        }
+        function renderConnectLimitResultMini(results) {
+            var area = document.getElementById('connectLimitResultMini');
+            var pLimit = results.pan_range || results.p_limit || [0, 3600];
+            var tLimit = results.tilt_range || results.t_limit || [-200, 900];
+            area.innerHTML = '<span style="font-size:12px;color:#d29922">P: ' + pLimit[0] + '~' + pLimit[1] + ' | T: ' + tLimit[0] + '~' + tLimit[1] + '</span>';
+        }
+        // 速度检测（连接设备页面版）
+        function connectSpeedTestRun() {
+            var deviceIp = document.getElementById('advConnectDevice').value;
+            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
+            var device = allDevices.find(function(d) { return d.ip === deviceIp; });
+            var btn = document.getElementById('btnConnectSpeedRun');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 测试中...';
+            document.getElementById('connectSpeedProgress').style.display = 'block';
+            document.getElementById('connectSpeedResultMini').innerHTML = '';
+            addLog('info', '速度检测开始: ' + deviceIp);
+            apiPost('/api/v1/advanced/speed/run', {
+                device_ip: deviceIp,
+                username: (device && device.username) || 'admin',
+                password: (device && device.password) || '',
+                port: (device && device.port) || 80
+            }).then(function(resp) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始检测';
+                document.getElementById('connectSpeedProgress').style.display = 'none';
+                if (resp && resp.success) {
+                    showToast('success', '速度检测完成');
+                    addLog('success', '速度检测完成: ' + (resp.message || ''));
+                    renderConnectSpeedResultMini(resp.results || {});
+                    renderConnectFullResults(resp.results || {}, 'speed');
+                } else {
+                    showToast('error', resp ? resp.message : '测试失败');
+                    addLog('error', '速度检测失败: ' + (resp ? resp.message : '未知'));
+                    document.getElementById('connectSpeedResultMini').innerHTML = '<span style="color:#f85149;font-size:12px">❌ ' + (resp ? resp.message : '测试失败') + '</span>';
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.innerHTML = '▶ 开始检测';
+                document.getElementById('connectSpeedProgress').style.display = 'none';
+                showToast('error', '测试异常: ' + e.message);
+            });
+            // REMOVED simulateProgress for connectSpeedTestRun (was hardcoded: 速度档位 1, 50, 100)
+        }
+        function renderConnectSpeedResultMini(results) {
+            var area = document.getElementById('connectSpeedResultMini');
+            var speedMap = results.speed_map || results.speed_mapping || {};
+            var count = Object.keys(speedMap).length;
+            area.innerHTML = '<span style="font-size:12px;color:#f0883e">✅ 已测试 ' + count + ' 个速度档位</span>';
+        }
+        // 一键检测（全部）
+        var detectionState = { running: false, step: 0, totalSteps: 3, results: {} };
+        function startDetection() {
+            var deviceIp = document.getElementById('advConnectDevice').value;
+            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
+            var device = allDevices.find(function(d) { return d.ip === deviceIp; });
+            var btn = document.getElementById('btnStartDetection');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 检测中...';
+            document.getElementById('detectionProgress').style.display = 'block';
+            document.getElementById('detectionLog').innerHTML = '';
+            detectionState = { running: true, step: 0, totalSteps: 3, results: {}, deviceIp: deviceIp, device: device };
+            addDetectionLog('info', '开始一键检测: ' + deviceIp);
+            runDetectionStep();
+        }
+        function runDetectionStep() {
+            var state = detectionState;
+            if (!state.running) return;
+            var steps = [
+                { name: '功能检测', url: '/api/v1/advanced/function/run', key: 'function' },
+                { name: '限位检测', url: '/api/v1/advanced/limit/run', key: 'limit' },
+                { name: '速度检测', url: '/api/v1/advanced/speed/run', key: 'speed' }
+            ];
+            if (state.step >= steps.length) {
+                finishDetection();
+                return;
+            }
+            var stepInfo = steps[state.step];
+            var pct = Math.round(((state.step) / state.totalSteps) * 100);
+            document.getElementById('detectionProgressText').textContent = '步骤 ' + (state.step + 1) + '/' + state.totalSteps + ': ' + stepInfo.name;
+            document.getElementById('detectionProgressBar').style.width = pct + '%';
+            addDetectionLog('info', '▶ 运行 ' + stepInfo.name + '...');
+            apiPost(stepInfo.url, {
+                device_ip: state.deviceIp,
+                username: (state.device && state.device.username) || 'admin',
+                password: (state.device && state.device.password) || '',
+                port: (state.device && state.device.port) || 80
+            }).then(function(resp) {
+                if (resp && resp.success) {
+                    state.results[stepInfo.key] = resp.results || {};
+                    addDetectionLog('success', '✅ ' + stepInfo.name + ' 完成');
+                } else {
+                    addDetectionLog('error', '❌ ' + stepInfo.name + ' 失败: ' + (resp ? resp.message : '未知'));
+                }
+                state.step++;
+                var newPct = Math.round((state.step / state.totalSteps) * 100);
+                document.getElementById('detectionProgressBar').style.width = newPct + '%';
+                runDetectionStep();
+            }).catch(function(e) {
+                addDetectionLog('error', '❌ ' + stepInfo.name + ' 异常: ' + e.message);
+                state.step++;
+                runDetectionStep();
+            });
+        }
+        function finishDetection() {
+            var btn = document.getElementById('btnStartDetection');
+            btn.disabled = false;
+            btn.innerHTML = '▶ 开始检测（全部）';
+            document.getElementById('detectionProgressText').textContent = '检测完成！';
+            document.getElementById('detectionProgressBar').style.width = '100%';
+            document.getElementById('detectionProgressBar').className = 'progress-fill green';
+            var state = detectionState;
+            var completed = Object.keys(state.results).length;
+            addDetectionLog('info', '=== 检测完成: ' + completed + '/' + state.totalSteps + ' 项通过 ===');
+            // 显示完整结果
+            if (completed > 0) {
+                var allResults = {};
+                Object.keys(state.results).forEach(function(k) {
+                    Object.keys(state.results[k]).forEach(function(rk) { allResults[rk] = state.results[k][rk]; });
+                });
+                if (state.results.function) renderConnectFullResults(state.results.function, 'function');
+                if (state.results.limit) renderConnectFullResults(state.results.limit, 'limit');
+                if (state.results.speed) renderConnectFullResults(state.results.speed, 'speed');
+            }
+            detectionState.running = false;
+        }
+        function addDetectionLog(level, msg) {
+            var log = document.getElementById('detectionLog');
+            if (!log) return;
+            var entry = document.createElement('div');
+            entry.className = 'log-entry ' + level;
+            entry.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+            log.insertBefore(entry, log.firstChild);
+        }
+        // 预置点管理
+        function presetGoto() {
+            var deviceIp = document.getElementById('advConnectDevice').value;
+            var presetId = parseInt(document.getElementById('presetIdInput').value) || 10;
+            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
+            var resultDiv = document.getElementById('presetResult');
+            resultDiv.textContent = '调用预置点 ' + presetId + '...';
+            apiPost('/api/v1/ptz/' + deviceIp + '/preset/' + presetId, null).then(function(resp) {
+                if (resp && resp.success !== false) {
+                    resultDiv.innerHTML = '<span style="color:#3fb950">✅ 已调用预置点 ' + presetId + '</span>';
+                } else {
+                    resultDiv.innerHTML = '<span style="color:#f85149">❌ 调用失败: ' + (resp ? resp.message : '未知') + '</span>';
+                }
+            }).catch(function(e) {
+                resultDiv.innerHTML = '<span style="color:#f85149">❌ 异常: ' + e.message + '</span>';
+            });
+        }
+        function presetSet() {
+            var deviceIp = document.getElementById('advConnectDevice').value;
+            var presetId = parseInt(document.getElementById('presetIdInput').value) || 10;
+            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
+            var resultDiv = document.getElementById('presetResult');
+            resultDiv.textContent = '设置预置点 ' + presetId + '...';
+            apiPost('/api/v1/ptz/' + deviceIp + '/preset/' + presetId + '/set', null).then(function(resp) {
+                if (resp && resp.success) {
+                    resultDiv.innerHTML = '<span style="color:#3fb950">✅ 已设置预置点 ' + presetId + '</span>';
+                } else {
+                    resultDiv.innerHTML = '<span style="color:#f85149">❌ 设置失败: ' + (resp ? resp.message : '未知') + '</span>';
+                }
+            }).catch(function(e) {
+                resultDiv.innerHTML = '<span style="color:#f85149">❌ 异常: ' + e.message + '</span>';
+            });
+        }
+        // 渲染完整检测结果到连接设备页面
+        function renderConnectFullResults(results, type) {
+            var area = document.getElementById('connectFullResultArea');
+            var noResult = document.getElementById('connectNoResult');
+            if (!area) return;
+            area.style.display = 'block';
+            noResult.style.display = 'none';
+            var html = '<div style="margin-top:16px">';
+            html += '<h4 style="font-size:15px;color:#e0e6f0;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #21262d">';
+            if (type === 'function') html += '🔍 功能检测完整结果';
+            else if (type === 'limit') html += '📐 限位检测完整结果';
+            else if (type === 'speed') html += '⚡ 速度检测完整结果';
+            else html += '检测结果';
+            html += '</h4>';
+            if (type === 'function') {
+                html += '<table class="result-table"><thead><tr><th>功能</th><th>支持</th><th>最小值</th><th>最大值</th><th>当前值</th><th>状态</th></tr></thead><tbody>';
+                var keys = Object.keys(results);
+                if (keys.length === 0) {
+                    html += '<tr><td colspan="6" style="text-align:center;color:#6e7681">暂无结果</td></tr>';
+                } else {
+                    keys.forEach(function(key) {
+                        var item = results[key];
+                        var supported = item.supported ? '<span class="badge yes">✅</span>' : '<span class="badge no">❌</span>';
+                        var status = item.status || '完成';
+                        html += '<tr>';
+                        html += '<td>' + key + '</td>';
+                        html += '<td>' + supported + '</td>';
+                        html += '<td>' + (item.min_value != null ? item.min_value : '--') + '</td>';
+                        html += '<td>' + (item.max_value != null ? item.max_value : '--') + '</td>';
+                        html += '<td>' + (item.current_value != null ? item.current_value : '--') + '</td>';
+                        html += '<td><span class="badge yes">' + status + '</span></td>';
+                        html += '</tr>';
+                    });
+                }
+                html += '</tbody></table>';
+            } else if (type === 'limit') {
+                var pLimit = results.pan_range || results.p_limit || [0, 3600];
+                var tLimit = results.tilt_range || results.t_limit || [-200, 900];
+                html += '<div class="advanced-status-panel">';
+                html += '<div class="status-row"><span class="status-label">P轴限位</span><span class="status-value">' + pLimit[0] + ' ~ ' + pLimit[1] + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">T轴限位</span><span class="status-value">' + tLimit[0] + ' ~ ' + tLimit[1] + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">翻转</span><span class="status-value">' + (results.flip ? '有' : '无') + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">稳定性</span><span class="status-value">' + (results.stable ? '<span class="badge yes">✅ 稳定</span>' : '<span class="badge no">❌ 不稳定</span>') + '</span></div>';
+                if (results.csv_path) html += '<div class="status-row"><span class="status-label">CSV 路径</span><span class="status-value">' + results.csv_path + '</span></div>';
+                html += '</div>';
+            } else if (type === 'speed') {
+                var speedMap = results.speed_map || results.speed_mapping || {};
+                var mapKeys = Object.keys(speedMap);
+                if (mapKeys.length > 0) {
+                    html += '<table class="result-table" style="margin:12px 0"><thead><tr><th>速度档位</th><th>实际速率 (°/s)</th></tr></thead><tbody>';
+                    mapKeys.forEach(function(k) {
+                        html += '<tr><td>' + k + '</td><td>' + speedMap[k] + '</td></tr>';
+                    });
+                    html += '</tbody></table>';
+                }
+                html += '<div class="advanced-status-panel">';
+                html += '<div class="status-row"><span class="status-label">拟合曲线 R²</span><span class="status-value">' + (results.r_squared || results.r2 || '--') + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">通过</span><span class="status-value">' + (results.passed ? '<span class="badge yes">✅</span>' : '<span class="badge no">❌</span>') + '</span></div>';
+                html += '</div>';
+            }
+            html += '</div>';
+            // Append rather than replace to show all test results
+            area.innerHTML += html;
+        }
+        // ================================================================
+        // ================================================================
+        //  预置点列表管理 (主控台版)
+        // ================================================================
+        function loadPresetList() {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            var btn = document.getElementById('btnPresetLoad');
+            btn.disabled = true;
+            btn.textContent = '加载中...';
+            var resultDiv = document.getElementById('ptzPresetResult');
+            resultDiv.textContent = '正在获取预置点列表...';
+            apiGet('/api/v1/ptz/' + dev + '/presets').then(function(resp) {
+                btn.disabled = false;
+                btn.textContent = '📋 加载列表';
+                var sel = document.getElementById('ptzPresetSelect');
+                sel.innerHTML = '<option value="">选择预置点</option>';
+                if (resp && resp.success && resp.presets && resp.presets.length > 0) {
+                    resp.presets.forEach(function(p) {
+                        var opt = document.createElement('option');
+                        opt.value = p.id;
+                        opt.textContent = p.name ? ('P' + p.id + ' - ' + p.name) : '预置点 ' + p.id;
+                        sel.appendChild(opt);
+                    });
+                    resultDiv.innerHTML = '<span style="color:#3fb950">已加载 ' + resp.presets.length + ' 个预置点</span>';
+                } else {
+                    resultDiv.innerHTML = '<span style="color:#d29922">未获取到预置点 (设备可能不支持)</span>';
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.textContent = '📋 加载列表';
+                resultDiv.innerHTML = '<span style="color:#f85149">获取失败: ' + e.message + '</span>';
+            });
+        }
+        function ptzGotoSelectedPreset() {
+            var dev = window.connectedDevice.ip;
+            var sel = document.getElementById('ptzPresetSelect');
+            var presetId = parseInt(sel.value);
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            if (!presetId) { showToast('warning', '请先选择预置点'); return; }
+            var resultDiv = document.getElementById('ptzPresetResult');
+            resultDiv.textContent = '跳转到预置点 ' + presetId + '...';
+            apiPost('/api/v1/ptz/' + dev + '/preset/' + presetId, null).then(function(resp) {
+                if (resp && resp.success !== false) {
+                    resultDiv.innerHTML = '<span style="color:#3fb950">✅ 已前往预置点 ' + presetId + '</span>';
+                } else {
+                    resultDiv.innerHTML = '<span style="color:#f85149">❌ 跳转失败: ' + (resp ? resp.message : '未知') + '</span>';
+                }
+            }).catch(function(e) {
+                resultDiv.innerHTML = '<span style="color:#f85149">❌ 异常: ' + e.message + '</span>';
+            });
+        }
+        function ptzSetSelectedPreset() {
+            var dev = window.connectedDevice.ip;
+            var sel = document.getElementById('ptzPresetSelect');
+            var presetId = parseInt(sel.value);
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            if (!presetId) { showToast('warning', '请先选择预置点编号'); return; }
+            var resultDiv = document.getElementById('ptzPresetResult');
+            resultDiv.textContent = '保存当前位置为预置点 ' + presetId + '...';
+            apiPost('/api/v1/ptz/' + dev + '/preset/' + presetId + '/set', null).then(function(resp) {
+                if (resp && resp.success) {
+                    resultDiv.innerHTML = '<span style="color:#3fb950">✅ 已保存预置点 ' + presetId + '</span>';
+                    loadPresetList(); // refresh
+                } else {
+                    resultDiv.innerHTML = '<span style="color:#f85149">❌ 保存失败: ' + (resp ? resp.message : '未知') + '</span>';
+                }
+            }).catch(function(e) {
+                resultDiv.innerHTML = '<span style="color:#f85149">❌ 异常: ' + e.message + '</span>';
+            });
+        }
+        function findMacByIP(ip) {
+            var dev = allDevices.find(function(d) { return d.ip === ip; });
+            return dev ? dev.mac : '';
+        }
+        // PTZ Speed Slider
+        function initPtzSpeed() {
+            var slider = document.getElementById('ptzSpeed');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    document.getElementById('ptzSpeedVal').textContent = e.target.value;
+                });
+            }
+        }
+        // Mouse/Touch Up - stop PTZ
+        function initMouseUp() {
+            document.addEventListener('mouseup', function() { ptzStop(); });
+            document.addEventListener('touchend', function() { ptzStop(); });
+        }
+        // Clock
+        function updateClock() {
+            var clock = document.getElementById('clock');
+            if (clock) clock.textContent = new Date().toLocaleTimeString('zh-CN');
+        }
+        // Toast Notifications
+        function showToast(type, message) {
+            var container = document.getElementById('toastContainer');
+            var toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(function() {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 4000);
+        }
+        // Logging
+        function addLog(level, msg) {
+            var c = document.getElementById('logContainer');
+            if (!c) return;
+            var d = document.createElement('div');
+            d.className = 'log-entry ' + level;
+            d.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+            c.insertBefore(d, c.firstChild);
+            if (c.children.length > 50) c.removeChild(c.lastChild);
+        }
+        // WebSocket
+        function connectWS() {
+            try {
+                var ws = new WebSocket(WS_URL);
+                ws.onopen = function() {
+                      if (!window.wsConnectedOnce) {
+                          window.wsConnectedOnce = true;
+                          addLog('info', 'WebSocket 已连接');
+                    document.getElementById('wsDot').className = 'status-dot green';
+                    document.getElementById('wsStatus').textContent = '已连接';
+                    addLog('info', 'WebSocket 已连接');
+                };
+                ws.onclose = function() {
+                    document.getElementById('wsDot').className = 'status-dot red';
+                    document.getElementById('wsStatus').textContent = '已断开';
+                    setTimeout(connectWS, 3000);
+                };
+                ws.onmessage = function(e) {
+                    try {
+                        var data = JSON.parse(e.data);
+                        if (data.type === 'health') updateHealth(data);
+                    } catch(err) {}
+                };
+            } catch(e) {
+                addLog('warn', 'WebSocket 连接失败');
+            }
+        }
+        function updateHealth(data) {
+            var s = data.system || {};
+            if (s.cpu !== undefined) {
+                var bar = document.getElementById('cpuBar');
+                bar.style.width = s.cpu + '%';
+                bar.className = 'progress-fill ' + (s.cpu < 60 ? 'green' : s.cpu < 85 ? 'yellow' : 'red');
+                document.getElementById('cpuVal').textContent = s.cpu + '%';
+            }
+            if (s.memory !== undefined) {
+                var bar = document.getElementById('memBar');
+                bar.style.width = s.memory + '%';
+                bar.className = 'progress-fill ' + (s.memory < 60 ? 'green' : s.memory < 85 ? 'yellow' : 'red');
+                document.getElementById('memVal').textContent = s.memory + '%';
+            }
+            if (s.disk !== undefined) {
+                var bar = document.getElementById('diskBar');
+                bar.style.width = s.disk + '%';
+                bar.className = 'progress-fill ' + (s.disk < 70 ? 'green' : s.disk < 90 ? 'yellow' : 'red');
+                document.getElementById('diskVal').textContent = s.disk + '%';
+            }
+        }
+        // SADP Discovery
+        function discoverDevices() {
+            var btn = document.getElementById('btnDiscover');
+            var spinner = document.getElementById('discoverSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            addLog('info', 'SADP 设备发现开始...');
+            showToast('info', '正在扫描局域网设备 (10s)...');
+            apiGet('/api/v1/discovery/sadp').then(function(data) {
+                if (data.success) {
+                    addLog('success', 'SADP 发现 ' + data.count + ' 台设备: ' + data.message);
+                    showToast('success', data.message);
+                    refreshDevices();
+                } else {
+                    addLog('error', '发现失败: ' + (data.message || '未知错误'));
+                    showToast('error', data.message || '发现失败');
+                }
+            }).catch(function(e) {
+                addLog('error', 'SADP 发现异常: ' + e.message);
+                showToast('error', 'SADP 发现异常: ' + e.message);
+            }).finally(function() {
+                spinner.style.display = 'none';
+                btn.disabled = false;
+            });
+        }
+        // Device List
+        function refreshDevices() {
+            console.log('[REFRESH] refreshDevices called');
+            return apiGet('/api/v1/devices').then(function(result) {
+                console.log('[REFRESH] API response:', result);
+                if (!result.success) {
+                    allDevices = [];
+                    renderDevices([]);
+                    return;
+                }
+                allDevices = result.data || [];
+                renderDevices(allDevices);
+                // Update dashboard counters
+                var online = allDevices.filter(function(d) { return d.online; }).length;
+                var countEl = document.getElementById('devCount');
+                if (countEl) countEl.textContent = allDevices.length;
+                var onlineEl = document.getElementById('devOnline');
+                if (onlineEl) onlineEl.textContent = online;
+                var totalEl = document.getElementById('devTotal');
+                if (totalEl) totalEl.textContent = allDevices.length;
+                // Update PTZ & advanced device dropdowns
+                refreshPtzDeviceList();
+                refreshAdvancedDeviceSelectors();
+            }).catch(function(e) {
+                console.warn('Failed to refresh devices:', e);
+            });
+        }
+        function renderDevices(devices) {
+            var tb = document.getElementById('deviceTable');
+            if (!tb) return;
+            if (!devices.length) {
+                tb.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#6e7681">暂无设备</td></tr>';
+                return;
+            }
+            var html = devices.map(function(d) {
+                var sourceBadge = d.source === 'sadp'
+                    ? '<span class="badge sadp">SADP</span>'
+                    : '<span class="badge manual">手动</span>';
+                var onlineBadge = d.online
+                    ? '<span class="badge online">在线</span>'
+                    : '<span class="badge offline">离线</span>';
+                var actions = buildDeviceActions(d);
+                return '<tr>'
+                    + '<td>' + sourceBadge + '</td>'
+                    + '<td>' + (d.mac || '--') + '</td>'
+                    + '<td>' + (d.ip || '--') + '</td>'
+                    + '<td>' + (d.gateway || '--') + '</td>'
+                    + '<td>' + (d.name || d.device_name || '--') + '</td>'
+                    + '<td>' + (d.model || '--') + '</td>'
+                    + '<td>' + onlineBadge + '</td>'
+                    + '<td>' + actions + '</td>'
+                    + '</tr>';
+            }).join('');
+            tb.innerHTML = html;
+        }
+        function buildDeviceActions(d) {
+            var btns = [];
+            if (d.online) {
+                btns.push('<button class="btn btn-secondary btn-sm" onclick="disconnectDevice(\'' + d.ip + '\')">断开</button>');
+                btns.push('<button class="btn btn-secondary btn-sm" onclick="showDeviceInfoInline(\'' + d.ip + '\')">信息</button>');
+                // Add "引导" button for new devices
+            } else {
+                btns.push('<button class="btn btn-primary btn-sm" onclick="connectDevice(\'' + d.ip + '\')">连接</button>');
+            }
+            // Add modify IP button for all devices
+            btns.push('<button class="btn btn-warning btn-sm" onclick="modifyIpPrompt(\'' + (d.mac || '') + '\',\'' + (d.ip || '') + '\')">修改IP</button>');
+            btns.push('<button class="btn btn-danger btn-sm" onclick="deleteDevice(\'' + (d.mac || d.ip) + '\')">删除</button>');
+            return '<div class="actions">' + btns.join('') + '</div>';
+        }
+        // Device Actions
+        function connectDevice(ip) {
+            addLog('info', '正在连接设备: ' + ip);
+            // 先获取 credentials
+            apiGet('/api/v1/ptz/devices/' + ip + '/credentials').then(function(creds) {
+                var username = (creds && creds.success) ? creds.username : 'admin';
+                var password = (creds && creds.success) ? creds.password : '';
+                var port = (creds && creds.success) ? (creds.port || 80) : 80;
+
+                // 再调用 connect API
+                apiPost('/api/v1/devices/' + ip + '/connect', { username: username, password: password, port: port }).then(function(result) {
+                    if (result && result.success) {
+                        showToast('success', '设备已连接: ' + ip);
+                        addLog('success', result.message || '连接成功');
+                        refreshDevices();
+                        refreshPtzDeviceList();
+                        refreshAdvancedDeviceSelectors();
+                        // Update global window.connectedDevice
+                        var dev = allDevices.find(function(d) { return d.ip === ip; });
+                        if (dev) {
+                            window.connectedDevice = {
+                                ip: dev.ip, model: dev.model || '', name: dev.name || dev.device_name || '',
+                                mac: dev.mac || '', username: username, password: password, port: port, online: true
+                            };
+                            addLog('info', '已记住连接设备: ' + window.connectedDevice.ip);
+                            // WASM SDK login
+                            if (window.clickLogin2) { window.clickLogin2(); }
+                        }
+                    } else if (result && result.message && result.message.indexOf('凭证') >= 0) {
+                        // credentials 错误，提示用户输入
+                        var username2 = prompt("请输入用户名:", "admin");
+                        if (!username2) return;
+                        var password2 = prompt("请输入密码:");
+                        if (!password2) return;
+                        connectDeviceWithCreds(ip, username2, password2, 80);
+                    } else {
+                        showToast('error', result ? result.message : '连接失败');
+                        addLog('error', result ? result.message : '连接失败');
+                    }
+                }).catch(function(e) {
+                    showToast('error', '连接异常: ' + e.message);
+                    addLog('error', '连接异常: ' + e.message);
+                });
+            }).catch(function(e) {
+                // credentials API 失败，尝试无密码连接
+                apiPost('/api/v1/devices/' + ip + '/connect', null).then(function(result) {
+                    if (result && result.success) {
+                        showToast('success', '设备已连接: ' + ip);
+                        refreshDevices();
+                        refreshPtzDeviceList();
+                        refreshAdvancedDeviceSelectors();
+                        var dev = allDevices.find(function(d) { return d.ip === ip; });
+                        if (dev) {
+                            window.connectedDevice = {
+                                ip: dev.ip, model: dev.model || '', name: dev.name || dev.device_name || '',
+                                mac: dev.mac || '', username: 'admin', password: '', port: 80, online: true
+                            };
+                            if (window.clickLogin2) { window.clickLogin2(); }
+                        }
+                    } else {
+                        showToast('error', result ? result.message : '连接失败');
+                    }
+                });
+            });
+        }
+
+        function connectDeviceWithCreds(ip, username, password, port) {
+            apiPost('/api/v1/devices/' + ip + '/connect', {
+                username: username, password: password, port: port
+            }).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', '设备已连接: ' + ip);
+                    addLog('success', result.message || '连接成功');
+                    refreshDevices();
+                    refreshPtzDeviceList();
+                    refreshAdvancedDeviceSelectors();
+                    // --- v3: Update global window.connectedDevice ---
+                    var dev = allDevices.find(function(d) { return d.ip === ip; });
+                    if (dev) {
+                        window.connectedDevice = window.connectedDevice = {
+                            ip: dev.ip, model: dev.model || '', name: dev.name || dev.device_name || '',
+                            mac: dev.mac || '', username: username, password: password, port: port, online: true
+                        };
+                        addLog('info', '已记住连接设备: ' + window.connectedDevice.ip);
+                        // WASM SDK login - user clicked Connect
+                        if (window.clickLogin2) { window.clickLogin2(); }
+                    }
+                } else {
+                    showToast('error', result ? result.message : '连接失败');
+                }
+            }).catch(function(e) {
+                showToast('error', '连接异常: ' + e.message);
+            });
+        }
+        function disconnectDevice(ip) {
+              // Stop video stream first
+              if (window.stopConsoleStream2) stopConsoleStream2();
+              if (window.WebVideoCtrl && g_bPlaying2) { try { WebVideoCtrl.I_Stop(); } catch(e) {} g_bPlaying2 = false; }
+              g_bLoggedIn2 = false;
+              
+              apiPost('/api/v1/devices/' + ip + '/disconnect', null).then(function() {
+                showToast('info', '设备已断开: ' + ip);
+                addLog('info', '设备已断开: ' + ip);
+                refreshDevices();
+                refreshPtzDeviceList();
+                refreshAdvancedDeviceSelectors();
+                // --- v3: Clear global window.connectedDevice if it matches ---
+                if (window.connectedDevice && window.connectedDevice.ip === ip) {
+                    window.connectedDevice = null;
+
+// PTZ operation log display
+function ptzLog(msg, type='info') {
+    const box = document.getElementById('ptzLogBox');
+    if (!box) return;
+    const time = new Date().toLocaleTimeString();
+    const colors = {
+        'info': '#8b949e',
+        'success': '#3fb950',
+        'error': '#f85149',
+        'warning': '#d29922',
+        'debug': '#58a6ff'
+    };
+    const icons = {
+        'info': 'ℹ️',
+        'success': '✅',
+        'error': '❌',
+        'warning': '⚠️',
+        'debug': '🔧'
+    };
+    const entry = '<div style="color:' + (colors[type] || '#8b949e') + ';margin:2px 0">' + (icons[type] || '') + ' [' + time + '] ' + msg + '</div>';
+    box.innerHTML = entry + box.innerHTML;
+    // Keep max 50 entries
+    const entries = box.children;
+    if (entries.length > 50) {
+        box.removeChild(entries[entries.length - 1]);
+    }
+}
+                    addLog('info', '已清除连接设备状态');
+                }
+                var panel = document.getElementById('deviceInfoPanel');
+                if (panel) panel.style.display = 'none';
+            }).catch(function(e) {
+                showToast('error', '断开异常: ' + e.message);
+            });
+        }
+        function deleteDevice(identifier) {
+            if (!confirm('确定删除设备 ' + identifier + '？')) return;
+            apiDelete('/api/v1/devices/' + identifier).then(function() {
+                showToast('success', '设备已删除');
+                addLog('info', '设备已删除: ' + identifier);
+                refreshDevices();
+                refreshPtzDeviceList();
+                refreshAdvancedDeviceSelectors();
+            }).catch(function(e) {
+                showToast('error', '删除异常: ' + e.message);
+            });
+        }
+        // Show modify IP modal for SADP device
+        // Submit modify IP
+        // Add Device Modal
+        // Connect Device Modal (credentials input)
+        // PTZ Device List Update
+        function refreshPtzDeviceList() {
+            var online = (allDevices || []).filter(function(d) { return d.online; });
+            var select = document.getElementById('ptzDevice');
+            if (!select) return;
+            select.innerHTML = '<option value="">未选择设备</option>';
+            online.forEach(function(d) {
+                var option = document.createElement('option');
+                option.value = d.ip;
+                option.textContent = ((d.model ? d.model + ' ' : '') + (d.name || d.device_name || d.ip)).trim() + ' (' + d.ip + ')';
+                select.appendChild(option);
+            });
+            // Auto-select the globally connected device
+            if (window.connectedDevice && select.querySelector('option[value="' + window.connectedDevice.ip + '"]')) {
+                select.value = window.connectedDevice.ip;
+                onPtzDeviceChange();
+            }
+        }
+        function onPtzDeviceChange() {
+            var ip = window.connectedDevice.ip;
+            var controlArea = document.getElementById('ptzControlArea');
+            var noDevice = document.getElementById('ptzNoDevice');
+            var connInfo = document.getElementById('ptzConnectedInfo');
+            if (ip) {
+                controlArea.style.display = 'block';
+                noDevice.style.display = 'none';
+                connInfo.style.display = 'block';
+                document.getElementById('ptzSelectedInfo').textContent = ip;
+                getPtzPosition();
+            } else {
+                controlArea.style.display = 'none';
+                noDevice.style.display = 'block';
+                connInfo.style.display = 'none';
+                document.getElementById('ptzPosition').innerHTML = 'Pan: -- | Tilt: -- | Zoom: --';
+            }
+        }
+        // PTZ Controls
+        function ptzMove(dir) {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            var speed = parseInt(document.getElementById('ptzSpeed').value);
+            apiPost('/api/v1/ptz/' + dev + '/move', {
+                direction: dir, speed: speed
+            }).then(function(result) {
+                if (result && !result.success) {
+                    showToast('error', result.message || '移动失败');
+                    addLog('error', 'PTZ 移动失败: ' + (result.message || ''));
+                }
+            }).catch(function(e) {
+                addLog('info', 'PTZ 移动: ' + dir);
+            });
+        }
+        function ptzHome() {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            apiPost('/api/v1/ptz/' + dev + '/home', null).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', result.message || '归位成功');
+                } else if (result) {
+                    showToast('error', result.message || '归位失败');
+                }
+            }).catch(function(e) {
+                showToast('error', '归位异常: ' + e.message);
+            });
+        }
+        function ptzStop() {
+            var dev = window.connectedDevice.ip;
+            if (!dev) return;
+            apiPost('/api/v1/ptz/' + dev + '/stop', null).catch(function(e) {});
+        }
+        function getPtzPosition() {
+            var dev = window.connectedDevice.ip;
+            if (!dev) return;
+            apiGet('/api/v1/ptz/' + dev + '/position').then(function(result) {
+                var posEl = document.getElementById('ptzPosition');
+                if (result && result.success && result.position) {
+                    var p = result.position;
+                    posEl.innerHTML = 'Pan: ' + (p.pan || 0) + ' | Tilt: ' + (p.tilt || 0) + ' | Zoom: ' + (p.zoom || 0);
+                } else {
+                    posEl.innerHTML = 'Pan: -- | Tilt: -- | Zoom: --';
+                }
+            }).catch(function(e) {});
+        }
+        // Calibration (placeholder)
+        function calibrate(type) {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先连接设备'); return; }
+            var dev = window.connectedDevice.ip;
+            apiPost('/api/v1/calibration/' + dev + '/' + type, null).then(function(r) {
+                if (r.ok !== false) addLog('info', '开始 ' + type + ' 校准...');
+            }).catch(function(e) { addLog('error', '校准失败'); });
+        }
+        // ASCOM (placeholder)
+        function connectAscom(type) {
+            apiPost('/api/v1/ascom/' + type + '/connect', null).then(function(r) {
+                if (r && r.success !== false) {
+                    showToast('success', type + ' 连接成功');
+                    addLog('info', type + ' 连接成功');
+                }
+            }).catch(function(e) { addLog('error', type + ' 连接失败'); });
+        }
+        // Settings (placeholder)
+        function saveSettings() {
+            apiPost('/api/v1/settings', {
+                    port: parseInt(window.location.port) || 10280
+                log_level: document.getElementById('settingLogLevel').value,
+                db_path: document.getElementById('settingDbPath').value
+            }).then(function() {
+                addLog('info', '设置已保存');
+                showToast('success', '设置已保存');
+            }).catch(function(e) { showToast('error', '保存失败'); });
+        }
+        // Stream / Storage Controls
+        function refreshStreamDeviceList() {
+            var online = (allDevices || []).filter(function(d) { return d.online; });
+            var sel = document.getElementById('advStreamDevice');
+            if (!sel) return;
+            var current = sel.value;
+            sel.innerHTML = '<option value="">未连接设备</option>';
+            online.forEach(function(d) {
+                var option = document.createElement('option');
+                option.value = d.ip;
+                option.textContent = ((d.model ? d.model + ' ' : '') + (d.name || d.device_name || d.ip)).trim() + ' (' + d.ip + ')';
+                sel.appendChild(option);
+            });
+            if (current) sel.value = current;
+        }
+        function onStreamDeviceChange() {
+            var ip = document.getElementById('advStreamDevice').value;
+            var noDevice = document.getElementById('streamNoDevice');
+            var controlArea = document.getElementById('streamControlArea');
+            var statusSpan = document.getElementById('streamDeviceStatus');
+            if (ip) {
+                var device = allDevices.find(function(d) { return d.ip === ip; });
+                noDevice.style.display = 'none';
+                controlArea.style.display = 'block';
+                statusSpan.textContent = device ? ('已连接: ' + ip) : ip;
+                resetStreamButtons();
+            } else {
+                noDevice.style.display = 'block';
+                controlArea.style.display = 'none';
+                statusSpan.textContent = '';
+            }
+        }
+        function resetStreamButtons() {
+            document.getElementById('btnStreamStart').disabled = false;
+            document.getElementById('btnStreamStop').disabled = true;
+            document.getElementById('btnRecordStart').disabled = false;
+            document.getElementById('btnRecordStop').disabled = true;
+            document.getElementById('streamStatusInfo').textContent = '状态: 未启动';
+            document.getElementById('recordStatusInfo').textContent = '状态: 未录制';
+        }
+        function streamStart() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceId = window.connectedDevice.ip;
+            var device = allDevices.find(function(d) { return d.ip === deviceId; });
+            document.getElementById('btnStreamStart').disabled = true;
+            document.getElementById('streamStatusInfo').textContent = '状态: 正在启动...';
+            var url = '/api/v1/streams/' + deviceId + '/start';
+            // Add query params for rtsp_url and stream_name
+            // The API accepts query parameters
+            apiPost(url + '?stream_name=' + encodeURIComponent((device && device.device_name) || device.ip), null).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', '推流已启动: ' + deviceId);
+                    addLog('success', result.message || '推流启动成功');
+                    document.getElementById('btnStreamStop').disabled = false;
+                    document.getElementById('streamStatusInfo').textContent = '状态: 推流中 (Stream: ' + (result.stream_id || deviceId) + ')';
+                    // Set HLS preview URL if available
+                    if (result.stream_id) {
+                        var video = document.getElementById('streamVideo');
+                        var preview = document.getElementById('streamPreview');
+                        if (video && preview) {
+                            // Try HLS source
+                            var hlsSrc = '/hls/' + result.stream_id + '/playlist.m3u8';
+                            video.src = hlsSrc;
+                            preview.style.display = 'block';
+                        }
+                    }
+                    resetAdvancedSelectors();
+                } else {
+                    showToast('error', result ? result.message : '推流启动失败');
+                    document.getElementById('btnStreamStart').disabled = false;
+                    document.getElementById('streamStatusInfo').textContent = '状态: 启动失败';
+                }
+            }).catch(function(e) {
+                showToast('error', '推流异常: ' + e.message);
+                document.getElementById('btnStreamStart').disabled = false;
+                document.getElementById('streamStatusInfo').textContent = '状态: 异常';
+            });
+        }
+        function streamStop() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceId = window.connectedDevice.ip;
+            apiPost('/api/v1/streams/' + deviceId + '/stop', null).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', '推流已停止: ' + deviceId);
+                    addLog('info', '推流已停止');
+                    document.getElementById('btnStreamStart').disabled = false;
+                    document.getElementById('btnStreamStop').disabled = true;
+                    document.getElementById('streamStatusInfo').textContent = '状态: 未启动';
+                    document.getElementById('streamPreview').style.display = 'none';
+                } else {
+                    showToast('error', result ? result.message : '推流停止失败');
+                }
+            }).catch(function(e) {
+                showToast('error', '推流异常: ' + e.message);
+            });
+        }
+        function recordStart() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceId = window.connectedDevice.ip;
+            var targetName = document.getElementById('recordTargetName').value.trim();
+            var body = targetName ? { target_name: targetName } : null;
+            document.getElementById('btnRecordStart').disabled = true;
+            document.getElementById('recordStatusInfo').textContent = '状态: 正在录制...';
+            apiPost('/api/v1/ptz/' + deviceId + '/record/start', body).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', '录像已启动: ' + deviceId);
+                    addLog('success', result.message || '录像启动成功');
+                    document.getElementById('btnRecordStop').disabled = false;
+                    document.getElementById('recordStatusInfo').textContent = '状态: 录制中';
+                } else {
+                    showToast('error', result ? result.message : '录像启动失败');
+                    document.getElementById('btnRecordStart').disabled = false;
+                }
+            }).catch(function(e) {
+                showToast('error', '录像异常: ' + e.message);
+                document.getElementById('btnRecordStart').disabled = false;
+            });
+        }
+        function recordStop() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceId = window.connectedDevice.ip;
+            apiPost('/api/v1/ptz/' + deviceId + '/record/stop', null).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', '录像已停止');
+                    addLog('info', '录像已停止: ' + (result.message || ''));
+                    document.getElementById('btnRecordStart').disabled = false;
+                    document.getElementById('btnRecordStop').disabled = true;
+                    document.getElementById('recordStatusInfo').textContent = '状态: 未录制';
+                } else {
+                    showToast('error', result ? result.message : '录像停止失败');
+                }
+            }).catch(function(e) {
+                showToast('error', '录像异常: ' + e.message);
+            });
+        }
+        function snapshotCapture() {
+            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
+            var deviceId = window.connectedDevice.ip;
+            var btn = document.getElementById('btnSnapshot');
+            btn.disabled = true;
+            btn.textContent = '抓取中...';
+            apiGet('/api/v1/streams/' + deviceId + '/snapshot').then(function(result) {
+                btn.disabled = false;
+                btn.textContent = '📸 抓取快照';
+                if (result && result.success) {
+                    showToast('success', '快照抓取成功');
+                    addLog('success', result.message || '快照抓取成功');
+                    // Try to show snapshot using the data URL or preview URL
+                    if (result.data && result.data.preview_url) {
+                        // Open in new tab or show in preview
+                        var preview = document.getElementById('snapshotPreview');
+                        var img = document.getElementById('snapshotImg');
+                        if (preview && img) {
+                            img.src = result.data.preview_url;
+                            preview.style.display = 'block';
+                        }
+                    }
+                } else {
+                    showToast('error', result ? result.message : '快照抓取失败');
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.textContent = '📸 抓取快照';
+                showToast('error', '快照异常: ' + e.message);
+            });
+        }
+        // Auto refresh
+        setInterval(refreshDevices, 15000);
+        // ================================================================
+        //  主控台新增功能函数 (修复6)
+        // ================================================================
+        // 跟踪控制
+        function setTracking(mode) {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先在上方选择已连接设备'); return; }
+            // 重置按钮状态
+            ['btnTrackSidereal','btnTrackLunar','btnTrackSolar','btnTrackOff'].forEach(function(id) {
+                var b = document.getElementById(id);
+                if(b) { b.className = 'btn btn-secondary'; b.style.opacity = '1'; }
+            });
+            apiPost('/api/v1/ascom/telescope/tracking?mode=' + mode, null).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', result.message || '跟踪模式已设置');
+                    // 高亮当前按钮
+                    var btnMap = {trackSidereal:'btnTrackSidereal',trackLunar:'btnTrackLunar',trackSolar:'btnTrackSolar',trackOff:'btnTrackOff'};
+                    var activeBtn = document.getElementById(btnMap[mode]);
+                    if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
+                } else {
+                    // 对于非ASCOM望远镜，给UI反馈
+                    showToast('info', '跟踪模式: ' + mode + ' (设备响应: ' + (result ? result.message : '无') + ')');
+                    var btnMap = {trackSidereal:'btnTrackSidereal',trackLunar:'btnTrackLunar',trackSolar:'btnTrackSolar',trackOff:'btnTrackOff'};
+                    var activeBtn = document.getElementById(btnMap[mode]);
+                    if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
+                }
+            }).catch(function(e) {
+                showToast('info', '跟踪模式: ' + mode + ' (API未响应)');
+                var btnMap = {trackSidereal:'btnTrackSidereal',trackLunar:'btnTrackLunar',trackSolar:'btnTrackSolar',trackOff:'btnTrackOff'};
+                var activeBtn = document.getElementById(btnMap[mode]);
+                if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
+            });
+        }
+        // 截图 (主控台版)
+        function consoleSnapshot() {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            var btn = document.getElementById('btnConsoleSnapshot');
+            btn.disabled = true;
+            btn.textContent = '抓取中...';
+            apiPost('/api/v1/ptz/' + dev + '/capture', null).then(function(result) {
+                btn.disabled = false;
+                btn.textContent = '📸 截图';
+                if (result && result.success) {
+                    showToast('success', '截图成功: ' + (result.data ? result.data.filename : ''));
+                    if (result.data && result.data.image_path) {
+                        var preview = document.getElementById('consoleSnapshotPreview');
+                        var img = document.getElementById('consoleSnapshotImg');
+                        if (preview && img) {
+                            img.alt = '截图: ' + result.data.filename;
+                            preview.style.display = 'block';
+                        }
+                    }
+                } else {
+                    showToast('error', result ? result.message : '截图失败');
+                }
+            }).catch(function(e) {
+                btn.disabled = false;
+                btn.textContent = '📸 截图';
+                showToast('error', '截图异常: ' + e.message);
+            });
+        }
+        // 录像 (主控台版)
+        function consoleRecordStart() {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            apiPost('/api/v1/ptz/' + dev + '/record/start', null).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', '录像已启动');
+                    document.getElementById('btnConsoleRecordStart').disabled = true;
+                    document.getElementById('btnConsoleRecordStop').disabled = false;
+                    document.getElementById('consoleRecordStatus').textContent = '录制中';
+                    document.getElementById('consoleRecordStatus').style.color = '#f85149';
+                } else {
+                    showToast('error', result ? result.message : '录像启动失败');
+                }
+            }).catch(function(e) { showToast('error', '录像异常: ' + e.message); });
+        }
+        function consoleRecordStop() {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            apiPost('/api/v1/ptz/' + dev + '/record/stop', null).then(function(result) {
+                showToast('info', '录像已停止');
+                document.getElementById('btnConsoleRecordStart').disabled = false;
+                document.getElementById('btnConsoleRecordStop').disabled = true;
+                document.getElementById('consoleRecordStatus').textContent = '未录制';
+                document.getElementById('consoleRecordStatus').style.color = '#8b949e';
+            }).catch(function(e) { showToast('error', '录像停止异常: ' + e.message); });
+        }
+        // 画面调节
+        function adjustImage(param, value) {
+            var dev = window.connectedDevice.ip;
+            if (!dev) return;
+            // 调节滑块仅作UI反馈；实际控制需ISAPI命令 (开发中)
+            var labels = {brightness:'亮度',contrast:'对比度',saturation:'饱和度'};
+            var label = labels[param] || param;
+            // 占位：显示当前值
+            console.log('[画面调节] ' + label + ': ' + value);
+        }
+        // OSD 坐标显示开关
+        function toggleOsd(enabled) {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            apiPost('/api/v1/ptz/' + dev + '/osd/toggle?enabled=' + enabled, null).then(function(result) {
+                if (result && result.success) {
+                    showToast('success', result.message);
+                    document.getElementById('btnOsdOn').className = enabled ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-secondary';
+                    document.getElementById('btnOsdOff').className = enabled ? 'btn btn-sm btn-secondary' : 'btn btn-sm btn-primary';
+                } else {
+                    showToast('error', result ? result.message : 'OSD 切换失败');
+                }
+            }).catch(function(e) { showToast('error', 'OSD 切换异常: ' + e.message); });
+        }
+        // 变焦控制
+        function ptzZoom(direction) {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            var speed = parseInt(document.getElementById('ptzSpeed').value);
+            apiPost('/api/v1/ptz/' + dev + '/move', {
+                direction: direction === 'in' ? 'zoom-in' : 'zoom-out',
+                speed: speed
+            }).catch(function(e) { addLog('info', 'PTZ 变焦: ' + direction); });
+        }
+        // 对焦控制
+        function ptzFocus(mode) {
+            var dev = window.connectedDevice.ip;
+            if (!dev) { showToast('warning', '请先选择设备'); return; }
+            var dir = mode === 'auto' ? 'focus-auto' : mode === 'near' ? 'focus-near' : 'focus-far';
+            apiPost('/api/v1/ptz/' + dev + '/move', {
+                direction: dir,
+                speed: parseInt(document.getElementById('ptzSpeed').value)
+            }).catch(function(e) { addLog('info', 'PTZ 对焦: ' + mode); });
+        }
+        // ================================================================
+        //  BUG-017 修复: 暴露函数到全局 window，使 HTML onclick 可调用
+        //  设备管理页面按钮（发现/添加/刷新）以及其他页面交互的
+        //  onclick 处理程序定义在 IIFE 内部，必须显式暴露到全局。
+        // ================================================================
+        var _expose = [
+            discoverDevices, refreshDevices,
+            connectDevice, disconnectDevice, deleteDevice,
+            ptzMove, ptzHome, ptzStop, getPtzPosition, onPtzDeviceChange,
+            calibrate, saveSettings,
+            funcDetectRun, funcDetectRestore,
+            limitTestRun, speedTestRun,
+            streamStart, streamStop, recordStart, recordStop, snapshotCapture,
+            onStreamDeviceChange, resetStreamButtons,
+            presetGoto, presetSet, startDetection,
+            connectFuncDetectRun, connectLimitTestRun, connectSpeedTestRun,
+            // 主控台新增 (修复6)
+            setTracking, consoleSnapshot, consoleRecordStart, consoleRecordStop,
+             adjustImage, toggleOsd,
+            ptzZoom, ptzFocus,
+            // 预置点列表管理
+            loadPresetList, ptzGotoSelectedPreset, ptzSetSelectedPreset,
+            addDeviceInline, modifyIpPrompt, showDeviceInfoInline,
+        ];
+        _expose.forEach(function(fn) { window[fn.name] = fn; });
+        // Go! - init() executes immediately for instant page interaction
+        init();
+        function loadWasmDevices() {
+            var sel = document.getElementById('device-select');
+            if (!sel) return;
+            var currentVal = sel.value;
+            apiGet('/api/v1/devices').then(function(resp) {
+                var devices = resp && resp.success ? (resp.data || resp.devices || []) : [];
+                allDevices = devices;
+                var ptzDevices = devices.filter(function(d) { return d.online && (d.type === 'ptz' || d.ptz === true); });
+                sel.innerHTML = '<option value="">-- 选择 PTZ 设备 --</option>';
+                ptzDevices.forEach(function(d) {
+                    var opt = document.createElement('option');
+                    opt.value = d.ip;
+                    opt.textContent = ((d.model ? d.model + ' ' : '') + (d.name || d.device_name || d.ip)).trim() + ' (' + d.ip + ')';
+                    sel.appendChild(opt);
+                });
+                if (currentVal && sel.querySelector('option[value="' + currentVal + '"]')) {
+                    sel.value = currentVal;
+                }
+            }).catch(function(e) {
+                console.warn('[WASM] Failed to load devices:', e);
+                sel.innerHTML = '<option value="">-- 加载失败 --</option>';
+            });
+        }
+        function wasmLogout() {
+            if (!g_bLoggedIn) return;
+            try {
+                stopConsoleStream();
+                WebVideoCtrl.I_Logout(g_szDeviceIdentify);
+            } catch(e) {}
+            g_bLoggedIn = false;
+            g_szDeviceIdentify = '';
+            g_bPlaying = false;
+            setLoginStatus('已登出', '#8b949e');
+            document.getElementById('login-btn').textContent = '登录';
+        }
+        // Inline helpers (no modal)
+        function addDeviceInline() {
+            var ip = prompt("\u8bbe\u5907 IP:");
+            if (!ip) return;
+            apiPost("/api/v1/devices", { ip: ip }).then(function(r) {
+                if (r && r.success) { showToast("success", "\u5df2\u6dfb\u52a0"); refreshDevices(); }
+                else showToast("error", r ? r.message : "\u5931\u8d25");
+            }).catch(function(e) { showToast("error", e.message); });
+        }
+        function modifyIpPrompt(mac, oldIp) {
+            var newIp = prompt("IP (MAC: " + mac + ")", oldIp);
+            if (!newIp || newIp === oldIp) return;
+            apiPost("/api/v1/devices/" + oldIp, { ip: newIp, mac: mac }).then(function(r) {
+                if (r && r.success) { showToast("success", "IP \u5df2\u4fee\u6539"); refreshDevices(); }
+                else showToast("error", r ? r.message : "\u5931\u8d25");
+            }).catch(function(e) { showToast("error", e.message); });
+        }
+        function showDeviceInfoInline(ip) {
+            var el = document.getElementById("deviceInfoPanel");
+            if (!el) return;
+            el.style.display = "block";
+            el.innerHTML = "\u83b7\u53d6\u4e2d...";
+            apiGet("/api/v1/devices/" + ip + "/info").then(function(info) {
+                if (info && info.success) {
+                    var d = info.data || {};
+                    el.innerHTML = Object.keys(d).map(function(k) { return "<div><b>" + k + ":</b> " + d[k] + "</div>"; }).join("");
+                } else el.innerHTML = "\u65e0\u6cd5\u83b7\u53d6";
+            }).catch(function() { el.innerHTML = "\u5931\u8d25"; });
+        }
+    })();
+</script>
+    <!-- WASM SDK Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script>
+// MD5 shim for WASM SDK (after CryptoJS loaded)
+window.MD5 = function(str) { return CryptoJS.MD5(str).toString(); };
+console.log('[WASM] MD5 shim installed');
+</script>
+    <script src="static/websdk/wasm/jquery.min.js"></script>
+    <script src="static/websdk/wasm/webVideoCtrl.js"></script>
+    <script src="static/websdk/wasm/jsPlugin-3.0.0.min.js"></script>
+    <script>
+    // WASM SDK Initialization (GLOBAL scope)
+    (function() {
+        function initWasm() {
+            var iRet = window.WebVideoCtrl.I_SupportNoPlugin();
+            console.log('[WASM] I_SupportNoPlugin:', iRet);
+            if (!iRet) {
+                console.error('[WASM] Browser does not support noPlugin mode');
+                return;
+            }
+            WebVideoCtrl.I_InitPlugin("100%", "100%", {
+                bWndFull: true,
+                iPackageType: 2,
+                iWndowType: 1,
+                bNoPlugin: true,
+                bProxy: true,
+                proxyAddress: {
+                    ip: window.location.hostname || '127.0.0.1',
+                    port: parseInt(window.location.port) || 10280
+                },
+                cbEvent: function(iEventType, iParam1, iParam2) {
+                    console.log("[WASM] Event:", iEventType, iParam1, iParam2);
+                },
+                cbDoubleClickWnd: function(iWndIndex, bFullScreen) {
+                    WebVideoCtrl.I_Stop();
+                },
+                cbSelWnd: function(xmlDoc) {
+                    g_iWndIndex = parseInt($(xmlDoc).find("SelectWnd").eq(0).text(), 10);
+                },
+                cbInitPluginComplete: function() {
+                    console.log('[WASM] cbInitPluginComplete - inserting plugin');
+                    WebVideoCtrl.I_InsertOBJECTPlugin("divPlugin");
+                    // WASM SDK ready - trigger login if device already connected
+                    if (window.connectedDevice && window.connectedDevice.ip && window.clickLogin2) {
+                        console.log('[WASM] Device already connected, triggering login');
+                        window.clickLogin2();
+                    }
+                },
+                cbPluginErrorHandler: function(iWndIndex, iErrorCode, oError) {
+                    console.error('[WASM] Plugin error:', iWndIndex, iErrorCode);
+                },
+                cbPerformanceLack: function() {
+                    console.error('[WASM] Performance issue');
+                }
+            });
+            console.log('[WASM] I_InitPlugin called');
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initWasm);
+        } else {
+            initWasm();
+        }
+    })();
+</script>
+    <script>
+// WASM SDK global variables
+var g_szDeviceIdentify = '';
+var g_bLoggedIn = false;
+var g_bPlaying = false;
+var g_iRtspPort = 554;
+var g_szDeviceIdentify2 = "";
+var g_bLoggedIn2 = false;
+var g_bPlaying2 = false;
+var g_iRtspPort2 = 554;
+var g_iWndIndex2 = 0;
+var g_iWebSocketPort = 7681;
+var g_iWndIndex = 0;
+var g_iChannelList = [];
+var g_iChannelID = 1;
+var g_iChannelID = 1;
+var connectedDevice = null;
+// WASM SDK global functions (simple version)
+function setLoginStatus(msg, color) {
+    var el = document.getElementById('login-status');
+    if (el) {
+        el.textContent = msg;
+        if (color) el.style.color = color;
+    }
+    console.log('[WASM] Status: ' + msg);
+}
+function clickLogin2() {
+    console.log('[CLICKLOGIN2] Called');
+    if (typeof ptzLog === 'function') ptzLog('WASM SDK 登录开始...', 'debug');
+    if (!window.connectedDevice || !window.connectedDevice.ip) {
+        console.log('[WASM SDK] No device connected');
+        if (typeof ptzLog === 'function') ptzLog('未连接设备，无法登录', 'warning');
+        return;
+    }
+    console.log('[CLICKLOGIN2] Device IP: ' + window.connectedDevice.ip);
+    if (typeof ptzLog === 'function') ptzLog('连接设备: ' + window.connectedDevice.ip, 'info');
+    var szIP = window.connectedDevice.ip;
+    var szPort = window.connectedDevice.port || 80;
+    var szUsername = window.connectedDevice.username || 'admin';
+    var szPassword = window.connectedDevice.password || '';
+    g_szDeviceIdentify2 = szIP + '_' + szPort;
+    console.log('[WASM SDK] Login: ' + szIP + ':' + szPort);
+    WebVideoCtrl.I_Login(szIP, 1, szPort, szUsername, szPassword, {
+        timeout: 5000,
+        success: function(xmlDoc) {
+            g_bLoggedIn2 = true;
+            console.log('[WASM SDK] Login success: ' + g_szDeviceIdentify2);
+            if (typeof ptzLog === 'function') ptzLog('✅ 登录成功', 'success');
+            // Step 2.1: I_GetDevicePort - get WebSocket port
+            var oPort = WebVideoCtrl.I_GetDevicePort(g_szDeviceIdentify2);
+            console.log('[WASM SDK] GetDevicePort result:', oPort);
+            if (oPort) {
+                g_iRtspPort2 = oPort.iRtspPort || 554;
+                g_iWebSocketPort = oPort.iWebSocketPort || 7681; // WebSocket port for video
+                if (typeof ptzLog === 'function') ptzLog('WebSocket端口: ' + g_iWebSocketPort + ', RTSP端口: ' + g_iRtspPort2, 'info');
+                console.log('[WASM SDK] WebSocket port:', g_iWebSocketPort, 'RTSP port:', g_iRtspPort2);
+                // Set WebSocket proxy cookies (required by SDK for video streaming)
+                document.cookie = 'webVideoCtrlProxyWs=' + szIP + ':' + g_iWebSocketPort + '; path=/';
+                document.cookie = 'webVideoCtrlProxyWsChannel=101; path=/';
+                console.log('[WASM SDK] Set cookies: webVideoCtrlProxyWs=' + szIP + ':' + g_iWebSocketPort);
+            }
+            // Step 2.2: I_GetAnalogChannelInfo - get channel list
+            WebVideoCtrl.I_GetAnalogChannelInfo(g_szDeviceIdentify2, {
+                success: function(xmlDocChannels) {
+                    var channels = [];
+                    var nodeList = xmlDocChannels.getElementsByTagName('VideoInputChannel');
+                    for (var i = 0; i < nodeList.length; i++) {
+                        var id = nodeList[i].getElementsByTagName('id')[0]?.textContent || (i + 1);
+                        var name = nodeList[i].getElementsByTagName('name')[0]?.textContent || ('通道' + id);
+                        channels.push({ id: parseInt(id), name: name });
+                    }
+                    g_iChannelList = channels;
+                    g_iChannelID = channels.length > 0 ? channels[0].id : 1;
+                    console.log('[WASM SDK] Channels:', channels, 'Using channelID:', g_iChannelID);
+                    if (typeof ptzLog === 'function') ptzLog('获取通道: ' + channels.length + '个, 使用ID: ' + g_iChannelID, 'info');
+                    // Update WebSocket channel cookie
+                    document.cookie = 'webVideoCtrlProxyWsChannel=' + g_iChannelID + '01; path=/';
+                    // Step 2.3: Start stream after channel info loaded
+                    console.log('[WASM SDK] Calling startConsoleStream2 in 500ms...');
+                    setTimeout(function() {
+                        console.log('[WASM SDK] setTimeout fired, startConsoleStream2 exists:', typeof window.startConsoleStream2);
+                        if (window.startConsoleStream2) {
+                            window.startConsoleStream2('sub');
+                        } else {
+                            console.error('[WASM SDK] startConsoleStream2 not found!');
+                            if (typeof ptzLog === 'function') ptzLog('startConsoleStream2 未定义', 'error');
+                        }
+                    }, 500);
+                },
+                error: function(status, xmlDocErr) {
+                    console.warn('[WASM SDK] GetAnalogChannelInfo failed:', status);
+                    if (typeof ptzLog === 'function') ptzLog('获取通道失败，使用默认ID: 1', 'warning');
+                    g_iChannelID = 1;
+                    // Still try to start stream
+                    setTimeout(function() {
+                        if (window.startConsoleStream2) window.startConsoleStream2('sub');
+                    }, 500);
+                }
+            });
+        },
+        error: function(status, xmlDoc) {
+            console.error('[WASM SDK] Login failed:', status);
+            g_bLoggedIn2 = false;
+            if (typeof ptzLog === 'function') ptzLog('❌ 登录失败: ' + status, 'error');
+        }
+    });
+}
+window.clickLogin2 = clickLogin2; // Manually expose to window
+function startConsoleStream2(mode) {
+    console.log("[STARTSTREAM2] Called, g_bLoggedIn2=", g_bLoggedIn2);
+    if (typeof ptzLog === 'function') ptzLog('正在启动视频流...', 'info');
+    if (!window.connectedDevice || !window.connectedDevice.ip) { console.log("[STARTSTREAM2] No device"); if (typeof ptzLog === 'function') ptzLog('未连接设备', 'warning'); return; }
+    if (!g_bLoggedIn2) { if (window.clickLogin2) window.clickLogin2(); return; }
+    var iStreamType = (mode === 'main') ? 1 : 2;
+    var iChannelID = g_iChannelID || 1; // Use channel ID from I_GetAnalogChannelInfo
+    console.log('[WASM SDK] Stream type:', iStreamType, 'Channel ID:', iChannelID);
+    if (typeof ptzLog === 'function') ptzLog('码流类型: ' + (iStreamType === 1 ? '主码流' : '子码流') + ', 通道ID: ' + iChannelID, 'info');
+    var oWndInfo = WebVideoCtrl.I_GetWindowStatus(g_iWndIndex2);
+    var doStart = function() {
+        console.log('[WASM SDK] Starting real play, stream=' + iStreamType + ', channel=' + iChannelID);
+        WebVideoCtrl.I_StartRealPlay(g_szDeviceIdentify2, {
+              // iRtspPort not needed for WebSocket proxy mode
+            iStreamType: iStreamType,
+            iChannelID: iChannelID,
+            bZeroChannel: false,
+            success: function() {
+                g_bPlaying2 = true;
+                console.log('[WASM SDK] Real play started');
+                if (typeof ptzLog === 'function') ptzLog('✅ 视频播放中', 'success');
+            },
+            error: function(status, xmlDoc) {
+                console.error('[WASM SDK] StartRealPlay error:', status);
+                  if (typeof ptzLog === 'function') ptzLog('视频播放错误: ' + status, 'error');
+            }
+        });
+    };
+    if (oWndInfo != null) {
+        WebVideoCtrl.I_Stop({ success: function() { doStart(); }, error: function() { doStart(); } });
+    } else {
+        doStart();
+    }
+}
+window.startConsoleStream2 = startConsoleStream2; // Manually expose
+        function stopConsoleStream2() {
+    // Always clear video area
+      // if (!g_bPlaying2) return;  // Commented out to always clear
+    var oWndInfo = WebVideoCtrl.I_GetWindowStatus(g_iWndIndex2);
+    if (oWndInfo != null) {
+        WebVideoCtrl.I_Stop();
+            g_bPlaying2 = false;
+            var videoDiv = document.getElementById('divPlugin');
+            if (videoDiv) videoDiv.innerHTML = '';
+            console.log('[WASM SDK] Stopped and cleared');
+    }
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

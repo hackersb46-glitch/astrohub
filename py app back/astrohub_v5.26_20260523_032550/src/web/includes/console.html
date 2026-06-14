@@ -1,0 +1,140 @@
+        <div class="page" id="page-console">
+            <h2 style="font-size:18px;margin-bottom:8px">主控台</h2>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                <div class="status-item">
+                    <span class="status-dot red" id="deviceDot"></span>
+                    <span id="deviceStatus">未连接</span>
+                </div>
+            </div>
+            <div id="ptzControlArea">
+                <!-- 左右布局: 左控制, 中间画面+媒体, 右日志 -->
+                <div class="console-layout">
+                    <!-- 左: 摇杆控制 -->
+                    <div class="console-left">
+                        <!-- 指向控制 -->
+                        <h3 style="font-size:15px;color:#58a6ff;margin:0 0 8px">🎯 指向控制</h3>
+                        <div class="ptz-controls">
+                            <button class="ptz-btn" onmousedown="ptzMove('up-left')" ontouchstart="ptzMove('up-left')">↖</button>
+                            <button class="ptz-btn" onmousedown="ptzMove('up')" ontouchstart="ptzMove('up')">↑</button>
+                            <button class="ptz-btn" onmousedown="ptzMove('up-right')" ontouchstart="ptzMove('up-right')">↗</button>
+                            <button class="ptz-btn" onmousedown="ptzMove('left')" ontouchstart="ptzMove('left')">←</button>
+                            <button class="ptz-btn center">●</button>
+                            <button class="ptz-btn" onmousedown="ptzMove('right')" ontouchstart="ptzMove('right')">→</button>
+                            <button class="ptz-btn" onmousedown="ptzMove('down-left')" ontouchstart="ptzMove('down-left')">↙</button>
+                            <button class="ptz-btn" onmousedown="ptzMove('down')" ontouchstart="ptzMove('down')">↓</button>
+                            <button class="ptz-btn" onmousedown="ptzMove('down-right')" ontouchstart="ptzMove('down-right')">↘</button>
+                        </div>
+                        <div class="ptz-speed">
+                            <label>速度:</label>
+                            <input type="range" id="ptzSpeed" min="1" max="100" value="50">
+                            <span id="ptzSpeedVal">50</span>
+                        </div>
+                        <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+                            <button class="btn btn-primary" onclick="ptzHome()">归位</button>
+                            <button class="btn btn-warning" onclick="ptzStop()">停止</button>
+                            <button class="btn btn-secondary" onclick="getPtzPosition()">获取位置</button>
+                        </div>
+                        <div class="ptz-position" id="ptzPosition" style="margin-top:12px">
+                            Pan: -- | Tilt: -- | Zoom: --
+                        </div>
+                        <!-- 预置点 -->
+                        <h3 style="font-size:15px;color:#d29922;margin:20px 0 8px">⭐ 预置点</h3>
+                        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:8px">
+                            <button class="btn btn-secondary btn-sm" id="btnPresetLoad" onclick="loadPresetList()">📋 加载列表</button>
+                            <select id="ptzPresetSelect" style="padding:6px 8px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px;min-width:120px">
+                                <option value="">选择预置点</option>
+                            </select>
+                            <button class="btn btn-primary btn-sm" onclick="ptzGotoSelectedPreset()">前往</button>
+                            <button class="btn btn-warning btn-sm" onclick="ptzSetSelectedPreset()">保存当前位置</button>
+                        </div>
+                        <div id="ptzPresetResult" style="font-size:12px;color:#8b949e;text-align:center"></div>
+                        <!-- 跟踪控制 -->
+                        <h3 style="font-size:15px;color:#f0883e;margin:20px 0 8px">🛤 跟踪控制</h3>
+                        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+                            <button class="btn btn-secondary" id="btnTrackSidereal" onclick="setTracking('trackSidereal')">恒星跟踪</button>
+                            <button class="btn btn-secondary" id="btnTrackLunar" onclick="setTracking('trackLunar')">月球跟踪</button>
+                            <button class="btn btn-secondary" id="btnTrackSolar" onclick="setTracking('trackSolar')">太阳跟踪</button>
+                            <button class="btn btn-danger" id="btnTrackOff" onclick="setTracking('trackOff')">关闭跟踪</button>
+                        </div>
+                        <!-- 变焦/对焦 -->
+                        <h3 style="font-size:15px;color:#58a6ff;margin:20px 0 8px">🔍 变焦/对焦</h3>
+                        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+                            <span style="color:#8b949e;font-size:13px">变焦:</span>
+                            <button class="btn btn-secondary btn-sm" onmousedown="ptzZoom('in')" ontouchstart="ptzZoom('in')">🔍+ 放大</button>
+                            <button class="btn btn-secondary btn-sm" onmousedown="ptzZoom('out')" ontouchstart="ptzZoom('out')">🔍- 拉远</button>
+                        </div>
+                        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+                            <span style="color:#8b949e;font-size:13px">对焦:</span>
+                            <button class="btn btn-secondary btn-sm" onmousedown="ptzFocus('near')" ontouchstart="ptzFocus('near')">🔧- 近焦</button>
+                            <button class="btn btn-secondary btn-sm" onmousedown="ptzFocus('far')" ontouchstart="ptzFocus('far')">🔧+ 远焦</button>
+                            <button class="btn btn-sm btn-primary" onclick="ptzFocus('auto')">自动对焦</button>
+                        </div>
+                    </div>
+                    <!-- 中: 实时画面 + 媒体 -->
+                    <div class="console-center">
+                        <!-- 实时画面 -->
+                        <h3 style="font-size:15px;color:#3fb950;margin:0 0 8px">📺 实时画面</h3>
+                        <div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;margin-bottom:12px;overflow:hidden;position:relative">
+                            <div id="divPlugin" style="width:100%;aspect-ratio:16/9"></div>
+                        </div>
+                        <!-- 媒体操作 -->
+                        <h3 style="font-size:15px;color:#3fb950;margin:0 0 8px">📷 媒体操作</h3>
+                        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+                            <!-- 截图 -->
+                            <div class="card" style="text-align:center">
+                                <div class="card-title">截图</div>
+                                <p style="color:#8b949e;font-size:12px;margin:4px 0">抓取当前帧</p>
+                                <button class="btn btn-primary btn-sm" id="btnConsoleSnapshot" onclick="consoleSnapshot()">📷 截图</button>
+                                <div id="consoleSnapshotPreview" style="margin-top:8px;display:none">
+                                    <img id="consoleSnapshotImg" style="width:100%;border-radius:6px">
+                                </div>
+                            </div>
+                            <!-- 录像 -->
+                            <div class="card" style="text-align:center">
+                                <div class="card-title">录像</div>
+                                <p style="color:#8b949e;font-size:12px;margin:4px 0">开始/停止录像</p>
+                                <div class="btn-group" style="justify-content:center">
+                                    <button class="btn btn-warning btn-sm" id="btnConsoleRecordStart" onclick="consoleRecordStart()">⏺ 录像</button>
+                                    <button class="btn btn-secondary btn-sm" id="btnConsoleRecordStop" onclick="consoleRecordStop()" disabled>⏹ 停止</button>
+                                </div>
+                                <div id="consoleRecordStatus" style="font-size:11px;color:#8b949e;margin-top:6px">未录像</div>
+                            </div>
+                        </div>
+                        <!-- 画面调整 -->
+                        <h3 style="font-size:15px;color:#d29922;margin:20px 0 8px">🎨 画面调整</h3>
+                        <div class="card">
+                            <div class="form-group" style="margin-bottom:8px">
+                                <label style="font-size:12px">亮度</label>
+                                <input type="range" id="consoleBrightness" min="0" max="100" value="50" oninput="adjustImage('brightness', this.value)">
+                            </div>
+                            <div class="form-group" style="margin-bottom:8px">
+                                <label style="font-size:12px">对比度</label>
+                                <input type="range" id="consoleContrast" min="0" max="100" value="50" oninput="adjustImage('contrast', this.value)">
+                            </div>
+                            <div class="form-group" style="margin-bottom:8px">
+                                <label style="font-size:12px">饱和度</label>
+                                <input type="range" id="consoleSaturation" min="0" max="100" value="50" oninput="adjustImage('saturation', this.value)">
+                            </div>
+                            <div class="form-group" style="margin-bottom:0">
+                                <label style="font-size:12px">PTZ OSD 开关显示</label>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-primary" id="btnOsdOn" onclick="toggleOsd(true)">开启</button>
+                                    <button class="btn btn-sm btn-secondary" id="btnOsdOff" onclick="toggleOsd(false)">关闭</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 右: 操作日志 -->
+                    <div class="console-right">
+                        <h3 style="font-size:15px;color:#58a6ff;margin:0 0 8px">📋 操作日志</h3>
+                        <div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:8px;flex:1;overflow-y:auto">
+                            <div id="ptzLogBox" style="font-size:12px;font-family:monospace;color:#8b949e">
+                                <div style="color:#6e7681">等待连接...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+

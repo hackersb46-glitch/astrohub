@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHub</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: -apple-system, 'Segoe UI', sans-serif; background:#0a0e17; color:#e0e6f0; min-height:100vh; }
+        .header { background:linear-gradient(135deg, #1a1e2e, #0d1117); padding:12px 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #21262d; }
+        .logo { font-size:24px; font-weight:700; color:#58a6ff; }
+        .logo span { color:#f0883e; }
+        .version { font-size:12px; color:#8b949e; background:#21262d; padding:2px 8px; border-radius:12px; }
+        .status-bar { display:flex; gap:16px; align-items:center; }
+        .status-item { display:flex; align-items:center; gap:6px; font-size:13px; }
+        .status-dot { width:8px; height:8px; border-radius:50%; }
+        .status-dot.green { background:#3fb950; box-shadow:0 0 6px #3fb950; }
+        .status-dot.yellow { background:#d29922; box-shadow:0 0 6px #d29922; }
+        .status-dot.red { background:#f85149; box-shadow:0 0 6px #f85149; }
+        .nav { background:#161b22; padding:8px 24px; display:flex; gap:4px; align-items:center; border-bottom:1px solid #21262d; flex-wrap:wrap; }
+        .nav-btn { background:none; border:none; color:#8b949e; padding:8px 16px; cursor:pointer; border-radius:6px; font-size:14px; transition:all 0.2s; }
+        .nav-btn:hover { background:#21262d; color:#e0e6f0; }
+        .nav-btn.active { background:#238636; color:#fff; }
+        /* --- Advanced Page: Left Sidebar Layout --- */
+        .advanced-layout { display:flex; gap:0; min-height:600px; }
+        .advanced-sidebar { width:200px; background:#161b22; border-right:1px solid #21262d; padding:8px 0; flex-shrink:0; }
+        .advanced-sidebar .sidebar-item { background:none; border:none; color:#8b949e; padding:10px 16px; cursor:pointer; font-size:13px; transition:all 0.2s; width:100%; text-align:left; display:block; }
+        .advanced-sidebar .sidebar-item:hover { background:#21262d; color:#e0e6f0; }
+        .advanced-sidebar .sidebar-item.active { background:#238636; color:#fff; border-left:3px solid #3fb950; }
+        .advanced-content { flex:1; min-width:0; padding:20px; }
+        .advanced-content .page { display:none; }
+        .advanced-content .page.active { display:block; }
+        /* --- Observation Page Layout --- */
+        .observation-layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        .obs-card { background:#161b22; border:1px solid #21262d; border-radius:10px; padding:16px; }
+        .obs-card h3 { font-size:15px; color:#58a6ff; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid #21262d; }
+        .obs-placeholder { color:#6e7681; font-size:13px; padding:20px 0; text-align:center; }
+        .obs-actions { margin-top:16px; display:flex; gap:8px; justify-content:flex-end; }
+        .main { padding:20px 24px; }
+        .page { display:none; }
+        .page.active { display:block; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:20px; }
+        .card { background:#161b22; border:1px solid #21262d; border-radius:10px; padding:16px; transition:border-color 0.2s; }
+        .card:hover { border-color:#30363d; }
+        .card-title { font-size:12px; color:#8b949e; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+        .card-value { font-size:32px; font-weight:700; color:#e0e6f0; }
+        .card-value.green { color:#3fb950; }
+        .card-sub { font-size:12px; color:#6e7681; margin-top:4px; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:left; padding:10px 16px; border-bottom:1px solid #21262d; font-size:14px; }
+        th { color:#8b949e; font-weight:500; background:#0d1117; }
+        tr:hover { background:#161b22; }
+        .badge { padding:2px 8px; border-radius:12px; font-size:12px; font-weight:500; }
+        .badge.online { background:rgba(63,185,80,0.15); color:#3fb950; }
+        .badge.offline { background:rgba(248,81,73,0.15); color:#f85149; }
+        .badge.sadp { background:rgba(88,166,255,0.15); color:#58a6ff; }
+        .badge.manual { background:rgba(240,136,62,0.15); color:#f0883e; }
+        .badge.yes { background:rgba(63,185,80,0.15); color:#3fb950; }
+        .badge.no { background:rgba(248,81,73,0.15); color:#f85149; }
+        .ptz-controls { display:grid; grid-template-columns:repeat(3, 80px); gap:8px; justify-content:center; margin:20px 0; }
+        .ptz-btn { width:80px; height:80px; border:1px solid #30363d; border-radius:10px; background:#161b22; color:#e0e6f0; font-size:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+        .ptz-btn:hover { background:#238636; border-color:#238636; }
+        .ptz-btn.center { background:#2

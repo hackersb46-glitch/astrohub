@@ -1,0 +1,33 @@
+        <div class="page" id="page-devices">
+            <div class="toolbar">
+                <h2 style="font-size:18px;margin:0">设备列表</h2>
+                <div class="toolbar-actions">
+                    <button class="btn btn-secondary" id="btnDiscover" onclick="discoverDevices()">
+                        <span id="discoverSpinner" class="spinner" style="display:none"></span>
+                        🔍 发现设备
+                    </button>
+                    <button class="btn btn-primary" onclick="addDeviceInline()">➕ 添加设备</button>
+                    <button class="btn btn-secondary" onclick="refreshDevices()">刷新</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>来源</th>
+                        <th>MAC</th>
+                        <th>IP</th>
+                        <th>网关</th>
+                        <th>名称</th>
+                        <th>型号</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="deviceTable">
+                    <tr><td colspan="8" style="text-align:center;color:#6e7681">暂无设备</td></tr>
+                </tbody>
+            </table>
+            <!-- 设备详细信息面板 -->
+            <div id="deviceInfoPanel" class="device-info-panel" style="display:none"></div>
+        </div>
+        <!-- ==================== 主控台 ==================== -->

@@ -1,0 +1,1154 @@
+{
+  "duplicates": {
+    "func:get_all_py_files": {
+      "primary": "full_dependency_analysis.py",
+      "primary_mtime": "2026-06-15 02:35",
+      "duplicates": [
+        [
+          "deep_dependency_analysis.py",
+          "2026-06-15 01:49"
+        ]
+      ]
+    },
+    "func:extract_imports": {
+      "primary": "full_dependency_analysis.py",
+      "primary_mtime": "2026-06-15 02:35",
+      "duplicates": [
+        [
+          "deep_dependency_analysis.py",
+          "2026-06-15 01:49"
+        ]
+      ]
+    },
+    "func:main": {
+      "primary": "full_dependency_analysis.py",
+      "primary_mtime": "2026-06-15 02:35",
+      "duplicates": [
+        [
+          "wasm_dependency_check.py",
+          "2026-06-15 02:18"
+        ],
+        [
+          "deep_dependency_analysis.py",
+          "2026-06-15 01:49"
+        ],
+        [
+          "src/ascom/alpaca/server.py",
+          "2026-05-21 01:17"
+        ],
+        [
+          "src/ascom/main.py",
+          "2026-05-21 01:16"
+        ],
+        [
+          "src/scripts/start_server.py",
+          "2026-05-08 12:37"
+        ],
+        [
+          "src/scripts/stop_server.py",
+          "2026-05-08 12:37"
+        ]
+      ]
+    },
+    "class:class": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/core/ptz_manager.py",
+          "2026-06-14 19:29"
+        ],
+        [
+          "src/advanced/function.py",
+          "2026-06-14 18:48"
+        ],
+        [
+          "src/core/nic_selector.py",
+          "2026-06-12 11:44"
+        ],
+        [
+          "src/core/sadp_discovery.py",
+          "2026-06-12 11:43"
+        ],
+        [
+          "src/advanced/onboarding.py",
+          "2026-05-30 17:53"
+        ],
+        [
+          "src/advanced/config_writer.py",
+          "2026-05-30 17:52"
+        ],
+        [
+          "src/ptz/sadp/discovery.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/isapi/client.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/websocket/core/ws_manager.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/core/stream_manager.py",
+          "2026-05-11 01:36"
+        ],
+        [
+          "src/core/calibration_manager.py",
+          "2026-05-05 17:37"
+        ],
+        [
+          "src/core/calibration_manager.py",
+          "2026-05-05 17:37"
+        ]
+      ]
+    },
+    "class:LimitTester": {
+      "primary": "src/advanced/limit.py",
+      "primary_mtime": "2026-06-13 04:42",
+      "duplicates": [
+        [
+          "src/ptz/ptz/limits.py",
+          "2026-05-23 11:19"
+        ]
+      ]
+    },
+    "func:set_managers": {
+      "primary": "src/api/router.py",
+      "primary_mtime": "2026-06-14 19:30",
+      "duplicates": [
+        [
+          "src/stream/api/router.py",
+          "2026-05-21 01:03"
+        ]
+      ]
+    },
+    "func:create_app": {
+      "primary": "src/api/router.py",
+      "primary_mtime": "2026-06-14 19:30",
+      "duplicates": [
+        [
+          "src/ascom/main.py",
+          "2026-05-21 01:16"
+        ]
+      ]
+    },
+    "class:ErrorCode": {
+      "primary": "src/websocket/constants.py",
+      "primary_mtime": "2026-05-21 01:14",
+      "duplicates": [
+        [
+          "src/ascom/constants.py",
+          "2026-05-21 01:14"
+        ]
+      ]
+    },
+    "class:ConnectionStatus": {
+      "primary": "src/websocket/constants.py",
+      "primary_mtime": "2026-05-21 01:14",
+      "duplicates": [
+        [
+          "src/ascom/constants.py",
+          "2026-05-21 01:14"
+        ]
+      ]
+    },
+    "func:ensure_directories": {
+      "primary": "src/config_paths.py",
+      "primary_mtime": "2026-06-12 18:22",
+      "duplicates": [
+        [
+          "src/config.py",
+          "2026-05-21 01:17"
+        ]
+      ]
+    },
+    "class:Device": {
+      "primary": "src/core/device_manager.py",
+      "primary_mtime": "2026-06-13 15:20",
+      "duplicates": [
+        [
+          "src/database.py",
+          "2026-05-21 01:17"
+        ]
+      ]
+    },
+    "func:get_all_nics": {
+      "primary": "src/core/net_detector.py",
+      "primary_mtime": "2026-05-07 00:47",
+      "duplicates": [
+        [
+          "src/ptz/core/network.py",
+          "2026-05-05 05:41"
+        ]
+      ]
+    },
+    "class:Orchestrator": {
+      "primary": "src/main/core/orchestrator.py",
+      "primary_mtime": "2026-06-15 00:21",
+      "duplicates": [
+        [
+          "src/core/orchestrator.py",
+          "2026-05-05 17:44"
+        ]
+      ]
+    },
+    "class:Logger": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/ptz/core/logger.py",
+          "2026-05-30 11:57"
+        ],
+        [
+          "src/stream/core/logger.py",
+          "2026-05-21 01:17"
+        ],
+        [
+          "src/logger.py",
+          "2026-05-06 23:35"
+        ]
+      ]
+    },
+    "class:ConfigManager": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/ptz/core/config.py",
+          "2026-05-05 05:31"
+        ]
+      ]
+    },
+    "class:CSVRecorder": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/ptz/core/recorder.py",
+          "2026-05-23 11:19"
+        ]
+      ]
+    },
+    "class:ISAPIClient": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/ptz/isapi/client.py",
+          "2026-05-23 11:19"
+        ]
+      ]
+    },
+    "class:PTZController": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/ptz/isapi/ptz.py",
+          "2026-06-11 20:18"
+        ]
+      ]
+    },
+    "class:MotionTester": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/ptz/ptz/motion.py",
+          "2026-05-23 11:19"
+        ]
+      ]
+    },
+    "func:check_reachable": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/ptz/sadp/ip_manager.py",
+          "2026-05-23 11:19"
+        ]
+      ]
+    },
+    "func:scan_for_devices": {
+      "primary": "src/core/ptz_manager.py",
+      "primary_mtime": "2026-06-14 19:29",
+      "duplicates": [
+        [
+          "src/ptz/sadp/discovery.py",
+          "2026-05-23 11:19"
+        ]
+      ]
+    },
+    "class:RtspUrlParser": {
+      "primary": "src/stream/core/stream.py",
+      "primary_mtime": "2026-05-21 01:03",
+      "duplicates": [
+        [
+          "src/stream/core/stream_manager.py",
+          "2026-05-21 01:03"
+        ]
+      ]
+    }
+  },
+  "modules": [
+    {
+      "module": "src/main",
+      "files": 9,
+      "file_list": [
+        [
+          "src/main/constants.py",
+          "2026-06-15 00:21"
+        ],
+        [
+          "src/main/main.py",
+          "2026-06-14 22:52"
+        ],
+        [
+          "src/main/__init__.py",
+          "2026-05-06 23:28"
+        ],
+        [
+          "src/main/api/router.py",
+          "2026-05-21 01:16"
+        ],
+        [
+          "src/main/api/__init__.py",
+          "2026-05-07 01:34"
+        ],
+        [
+          "src/main/core/config_merger.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/main/core/health_aggregator.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/main/core/orchestrator.py",
+          "2026-06-15 00:21"
+        ],
+        [
+          "src/main/core/__init__.py",
+          "2026-05-06 23:28"
+        ]
+      ],
+      "external_refs": 0,
+      "ref_list": [],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/main/main.py",
+          "src.main.core.orchestrator"
+        ],
+        [
+          "src/main/main.py",
+          "src.main.constants"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/api",
+      "files": 3,
+      "file_list": [
+        [
+          "src/api/astap_solve.py",
+          "2026-06-12 11:24"
+        ],
+        [
+          "src/api/router.py",
+          "2026-06-14 19:30"
+        ],
+        [
+          "src/api/__init__.py",
+          "2026-05-05 16:40"
+        ]
+      ],
+      "external_refs": 1,
+      "ref_list": [
+        [
+          "src/main/main.py",
+          "src.api.router"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/main/main.py",
+          "src.api.router"
+        ],
+        [
+          "src/api/router.py",
+          "src.api.astap_solve"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/core",
+      "files": 15,
+      "file_list": [
+        [
+          "src/core/ascom_manager.py",
+          "2026-05-05 17:43"
+        ],
+        [
+          "src/core/auth.py",
+          "2026-05-05 17:39"
+        ],
+        [
+          "src/core/calibration_manager.py",
+          "2026-05-05 17:37"
+        ],
+        [
+          "src/core/device_manager.py",
+          "2026-06-13 15:20"
+        ],
+        [
+          "src/core/file_naming.py",
+          "2026-05-07 20:03"
+        ],
+        [
+          "src/core/health_monitor.py",
+          "2026-05-05 17:45"
+        ],
+        [
+          "src/core/net_detector.py",
+          "2026-05-07 00:47"
+        ],
+        [
+          "src/core/nic_selector.py",
+          "2026-06-12 11:44"
+        ],
+        [
+          "src/core/orchestrator.py",
+          "2026-05-05 17:44"
+        ],
+        [
+          "src/core/ptz_manager.py",
+          "2026-06-14 19:29"
+        ],
+        [
+          "src/core/sadp_discovery.py",
+          "2026-06-12 11:43"
+        ],
+        [
+          "src/core/service_manager.py",
+          "2026-05-21 01:16"
+        ],
+        [
+          "src/core/stream_manager.py",
+          "2026-05-11 01:36"
+        ],
+        [
+          "src/core/ws_manager.py",
+          "2026-05-05 17:40"
+        ],
+        [
+          "src/core/__init__.py",
+          "2026-05-05 17:46"
+        ]
+      ],
+      "external_refs": 24,
+      "ref_list": [
+        [
+          "src/api/router.py",
+          "src.core.orchestrator"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.calibration_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.ascom_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.ws_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.auth"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.ptz_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.stream_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.health_monitor"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.sadp_discovery"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.file_naming"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/main/main.py",
+          "src.core.stream_manager"
+        ],
+        [
+          "src/main/main.py",
+          "src.core.calibration_manager"
+        ],
+        [
+          "src/main/main.py",
+          "src.core.device_manager"
+        ],
+        [
+          "src/main/main.py",
+          "src.core.sadp_discovery"
+        ],
+        [
+          "src/main/main.py",
+          "src.core.ptz_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.orchestrator"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.calibration_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.ascom_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.ws_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.auth"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.ptz_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.stream_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.health_monitor"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.sadp_discovery"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.file_naming"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.device_manager"
+        ],
+        [
+          "src/api/router.py",
+          "src.core.net_detector"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/ptz",
+      "files": 22,
+      "file_list": [
+        [
+          "src/ptz/constants.py",
+          "2026-05-07 15:21"
+        ],
+        [
+          "src/ptz/__init__.py",
+          "2026-05-21 17:44"
+        ],
+        [
+          "src/ptz/core/config.py",
+          "2026-05-05 05:31"
+        ],
+        [
+          "src/ptz/core/logger.py",
+          "2026-05-30 11:57"
+        ],
+        [
+          "src/ptz/core/network.py",
+          "2026-05-05 05:41"
+        ],
+        [
+          "src/ptz/core/recorder.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/core/system_info.py",
+          "2026-05-05 05:52"
+        ],
+        [
+          "src/ptz/core/ui.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/core/__init__.py",
+          "2026-05-21 17:59"
+        ],
+        [
+          "src/ptz/isapi/capabilities.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/isapi/client.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/isapi/ptz.py",
+          "2026-06-11 20:18"
+        ],
+        [
+          "src/ptz/isapi/__init__.py",
+          "2026-05-05 05:17"
+        ],
+        [
+          "src/ptz/ptz/limits.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/ptz/motion.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/ptz/__init__.py",
+          "2026-05-05 05:17"
+        ],
+        [
+          "src/ptz/report/generator.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/report/packager.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/report/__init__.py",
+          "2026-05-05 05:50"
+        ],
+        [
+          "src/ptz/sadp/discovery.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/sadp/ip_manager.py",
+          "2026-05-23 11:19"
+        ],
+        [
+          "src/ptz/sadp/__init__.py",
+          "2026-05-05 05:17"
+        ]
+      ],
+      "external_refs": 14,
+      "ref_list": [
+        [
+          "src/advanced/function.py",
+          "src.ptz.isapi.ptz"
+        ],
+        [
+          "src/advanced/function.py",
+          "src.ptz.isapi.client"
+        ],
+        [
+          "src/advanced/function.py",
+          "src.ptz.constants"
+        ],
+        [
+          "src/advanced/limit.py",
+          "src.ptz.core.logger"
+        ],
+        [
+          "src/advanced/limit.py",
+          "src.ptz.isapi.ptz"
+        ],
+        [
+          "src/advanced/limit.py",
+          "src.ptz.constants"
+        ],
+        [
+          "src/advanced/limit.py",
+          "src.ptz.isapi.client"
+        ],
+        [
+          "src/advanced/onboarding.py",
+          "src.ptz.isapi.client"
+        ],
+        [
+          "src/advanced/speed.py",
+          "src.ptz.isapi.ptz"
+        ],
+        [
+          "src/advanced/speed.py",
+          "src.ptz.core.logger"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/api/router.py",
+          "src.ptz.isapi.client"
+        ],
+        [
+          "src/api/router.py",
+          "src.ptz.core.system_info"
+        ],
+        [
+          "src/api/router.py",
+          "src.ptz.isapi.ptz"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/advanced",
+      "files": 8,
+      "file_list": [
+        [
+          "src/advanced/config_writer.py",
+          "2026-05-30 17:52"
+        ],
+        [
+          "src/advanced/device_config.py",
+          "2026-06-02 18:42"
+        ],
+        [
+          "src/advanced/device_path.py",
+          "2026-06-13 17:14"
+        ],
+        [
+          "src/advanced/function.py",
+          "2026-06-14 18:48"
+        ],
+        [
+          "src/advanced/limit.py",
+          "2026-06-13 04:42"
+        ],
+        [
+          "src/advanced/onboarding.py",
+          "2026-05-30 17:53"
+        ],
+        [
+          "src/advanced/speed.py",
+          "2026-06-13 04:43"
+        ],
+        [
+          "src/advanced/__init__.py",
+          "2026-05-07 03:49"
+        ]
+      ],
+      "external_refs": 7,
+      "ref_list": [
+        [
+          "src/api/router.py",
+          "src.advanced.onboarding"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.config_writer"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.device_path"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.speed"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.function"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.limit"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.device_config"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/api/router.py",
+          "src.advanced.onboarding"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.config_writer"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.device_path"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.speed"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.function"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.limit"
+        ],
+        [
+          "src/api/router.py",
+          "src.advanced.device_config"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/stream",
+      "files": 15,
+      "file_list": [
+        [
+          "src/stream/constants.py",
+          "2026-05-21 01:14"
+        ],
+        [
+          "src/stream/core.py",
+          "2026-05-21 17:51"
+        ],
+        [
+          "src/stream/__init__.py",
+          "2026-05-21 17:47"
+        ],
+        [
+          "src/stream/api/models.py",
+          "2026-05-07 05:08"
+        ],
+        [
+          "src/stream/api/router.py",
+          "2026-05-21 01:03"
+        ],
+        [
+          "src/stream/api/__init__.py",
+          "2026-05-05 13:07"
+        ],
+        [
+          "src/stream/core/distributor.py",
+          "2026-05-21 01:21"
+        ],
+        [
+          "src/stream/core/logger.py",
+          "2026-05-21 01:17"
+        ],
+        [
+          "src/stream/core/preview.py",
+          "2026-05-21 01:03"
+        ],
+        [
+          "src/stream/core/recorder.py",
+          "2026-05-21 01:03"
+        ],
+        [
+          "src/stream/core/stream.py",
+          "2026-05-21 01:03"
+        ],
+        [
+          "src/stream/core/stream_manager.py",
+          "2026-05-21 01:03"
+        ],
+        [
+          "src/stream/core/stream_monitor.py",
+          "2026-05-21 01:03"
+        ],
+        [
+          "src/stream/core/transcoder.py",
+          "2026-05-21 01:03"
+        ],
+        [
+          "src/stream/core/__init__.py",
+          "2026-05-21 17:59"
+        ]
+      ],
+      "external_refs": 2,
+      "ref_list": [
+        [
+          "src/api/router.py",
+          "src.stream.constants"
+        ],
+        [
+          "src/core/ptz_manager.py",
+          "src.stream.constants"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/api/router.py",
+          "src.stream.constants"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/websocket",
+      "files": 12,
+      "file_list": [
+        [
+          "src/websocket/constants.py",
+          "2026-05-21 01:14"
+        ],
+        [
+          "src/websocket/handlers.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/websocket/server.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/websocket/__init__.py",
+          "2026-05-21 01:21"
+        ],
+        [
+          "src/websocket/api/router.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/websocket/api/__init__.py",
+          "2026-05-05 14:44"
+        ],
+        [
+          "src/websocket/core/auth.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/websocket/core/broadcast.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/websocket/core/message_handler.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/websocket/core/monitor.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/websocket/core/ws_manager.py",
+          "2026-05-21 01:04"
+        ],
+        [
+          "src/websocket/core/__init__.py",
+          "2026-05-05 14:43"
+        ]
+      ],
+      "external_refs": 1,
+      "ref_list": [
+        [
+          "src/api/router.py",
+          "src.websocket.core.ws_manager"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/api/router.py",
+          "src.websocket.core.ws_manager"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/ascom",
+      "files": 16,
+      "file_list": [
+        [
+          "src/ascom/constants.py",
+          "2026-05-21 01:14"
+        ],
+        [
+          "src/ascom/main.py",
+          "2026-05-21 01:16"
+        ],
+        [
+          "src/ascom/__init__.py",
+          "2026-05-21 01:21"
+        ],
+        [
+          "src/ascom/alpaca/server.py",
+          "2026-05-21 01:17"
+        ],
+        [
+          "src/ascom/alpaca/telescope.py",
+          "2026-05-21 01:17"
+        ],
+        [
+          "src/ascom/alpaca/__init__.py",
+          "2026-05-21 01:15"
+        ],
+        [
+          "src/ascom/api/router.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/ascom/api/__init__.py",
+          "2026-05-21 01:21"
+        ],
+        [
+          "src/ascom/core/dome_driver.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/ascom/core/driver_manager.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/ascom/core/filter_wheel.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/ascom/core/focuser_driver.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/ascom/core/platform_detect.py",
+          "2026-05-21 01:17"
+        ],
+        [
+          "src/ascom/core/telescope_driver.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/ascom/core/weather_station.py",
+          "2026-05-21 01:05"
+        ],
+        [
+          "src/ascom/core/__init__.py",
+          "2026-05-21 01:21"
+        ]
+      ],
+      "external_refs": 2,
+      "ref_list": [
+        [
+          "src/api/router.py",
+          "src.ascom.constants"
+        ],
+        [
+          "src/api/router.py",
+          "src.ascom.core.driver_manager"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/api/router.py",
+          "src.ascom.constants"
+        ],
+        [
+          "src/api/router.py",
+          "src.ascom.core.driver_manager"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/storage",
+      "files": 2,
+      "file_list": [
+        [
+          "src/storage/store.py",
+          "2026-06-13 15:20"
+        ],
+        [
+          "src/storage/__init__.py",
+          "2026-05-23 13:49"
+        ]
+      ],
+      "external_refs": 1,
+      "ref_list": [
+        [
+          "src/api/router.py",
+          "src.storage.store"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/api/router.py",
+          "src.storage.store"
+        ]
+      ],
+      "can_delete": false
+    },
+    {
+      "module": "src/scripts",
+      "files": 3,
+      "file_list": [
+        [
+          "src/scripts/start_server.py",
+          "2026-05-08 12:37"
+        ],
+        [
+          "src/scripts/stop_server.py",
+          "2026-05-08 12:37"
+        ],
+        [
+          "src/scripts/__init__.py",
+          "2026-05-08 12:37"
+        ]
+      ],
+      "external_refs": 0,
+      "ref_list": [],
+      "reachable": false,
+      "reachable_paths": [],
+      "can_delete": true
+    },
+    {
+      "module": "src/web",
+      "files": 0,
+      "file_list": [],
+      "external_refs": 1,
+      "ref_list": [
+        [
+          "src/api/router.py",
+          "src.websocket.core.ws_manager"
+        ]
+      ],
+      "reachable": true,
+      "reachable_paths": [
+        [
+          "src/api/router.py",
+          "src.websocket.core.ws_manager"
+        ]
+      ],
+      "can_delete": false
+    }
+  ],
+  "backup_dirs": [
+    [
+      "src\\advanced\\backup_20260529",
+      0
+    ]
+  ],
+  "can_delete_modules": [
+    "src/scripts"
+  ]
+}

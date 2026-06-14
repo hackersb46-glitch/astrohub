@@ -1,0 +1,157 @@
+"""
+M4 Calibration Service v1.0 - 应用入口点
+
+初始化所有模块，启动FastAPI服务。
+支持 lifespan 管理各模块生命周期，uvicorn 启动方式。
+
+Usage:
+    python -m calibration.main --host 0.0.0.0 --port 8000
+    uvicorn calibration.main:app --host 0.0.0.0 --port 8000
+
+Author: 雅痞张@南方天文
+"""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+
+
+# ------------------------------------------------------------------ #
+#  模块导入 - 延迟到 create_app 中初始化
+# ------------------------------------------------------------------ #
+
+def create_app() -> FastAPI:
+    """创建并配置 FastAPI 应用程序。
+
+    初始化所有管理器实例，注入到路由层。
+
+    Returns:
+        配置完成的 FastAPI 应用
+    """
+    # 延迟导入
+    from src.calibration.api.router import router, set_managers
+    from src.calibration.core.auto_focus import AutoFocusCalibrator
+    from src.calibration.core.calibration_manager import CalibrationManager
+    from src.calibration.core.calibration_recovery import CalibrationRecovery
+    from src.calibration.core.calibration_storage import CalibrationStore
+    from src.calibration.core.color_balance import ColorBalanceCalibrator
+    from src.calibration.core.position_calibration import PositionCalibrator
+    from src.calibration.core.report_generator import ReportGenerator
+    from src.calibration.core.speed_mapping import SpeedMappingCalibrator
+
+    # 初始化各管理器
+    calibration_store = CalibrationStore()
+    auto_focus = AutoFocusCalibrator()
+    color_balance = ColorBalanceCalibrator()
+    speed_mapping = SpeedMappingCalibrator()
+    position_calibration = PositionCalibrator()
+    report_generator = ReportGenerator()
+    calibration_recovery = CalibrationRecovery(store=calibration_store)
+
+    # 注册校准步骤到CalibrationManager
+    calibration_manager = CalibrationManager(step_handlers={
+        "auto_focus": auto_focus.run_full_calibration,
+        "color_balance": color_balance.run_full_calibration,
+        "speed_mapping": speed_mapping.run_full_calibration,
+        "position_calibration": position_calibration.run_full_calibration,
+    })
+
+    # 注入到路由层
+    set_managers(
+        calibration_manager=calibration_manager,
+        auto_focus=auto_focus,
+        color_balance=color_balance,
+        speed_mapping=speed_mapping,
+        position_calibration=position_calibration,
+        calibration_store=calibration_store,
+        report_generator=report_generator,
+        calibration_recovery=calibration_recovery,
+    )
+
+    # 创建应用
+    app = FastAPI(
+        title="M4 Calibration Service",
+        description="设备校准、自动对焦、色彩平衡、速度映射 - M4 Calibration Service v1.0",
+        version="1.0",
+        lifespan=_lifespan,
+    )
+
+    # 挂载路由
+    app.include_router(router)
+
+    # 将管理器存储到 app.state 以便 lifespan 访问
+    app.state.calibration_manager = calibration_manager
+    app.state.auto_focus = auto_focus
+    app.state.color_balance = color_balance
+    app.state.speed_mapping = speed_mapping
+    app.state.position_calibration = position_calibration
+    app.state.calibration_store = calibration_store
+    app.state.report_generator = report_generator
+    app.state.calibration_recovery = calibration_recovery
+
+    return app
+
+
+# ------------------------------------------------------------------ #
+#  Lifespan 管理
+# ------------------------------------------------------------------ #
+
+@asynccontextmanager
+async def _lifespan(app: FastAPI):
+    """应用程序生命周期管理：启动时初始化，关闭时清理。"""
+    # === 启动阶段 ===
+    from src.calibration.core.logger import LOG
+
+    LOG.done("M4 Calibration Service 服务启动成功")
+
+    yield  # === 运行阶段 ===
+
+    # === 关闭阶段 ===
+    LOG.info("正在关闭 M4 Calibration Service ...")
+
+    # 重置校准状态
+    calibration_manager = app.state.calibration_manager
+    calibration_manager.reset()
+
+    LOG.done("M4 Calibration Service 服务已关闭")
+
+
+# ------------------------------------------------------------------ #
+#  创建全局 app 实例（供 uvicorn 调用）
+# ------------------------------------------------------------------ #
+
+app = create_app()
+
+
+# ------------------------------------------------------------------ #
+#  CLI 入口
+# ------------------------------------------------------------------ #
+
+def main() -> None:
+    """CLI 入口点。"""
+    parser = argparse.ArgumentParser(description="M4 Calibration Service v1.0")
+    parser.add_argument("--host", default="0.0.0.0", help="监听地址 (默认: 0.0.0.0)")
+    parser.add_argument("--port", type=int, default=8000, help="监听端口 (默认: 8000)")
+    parser.add_argument("--reload", action="store_true", help="开发模式热重载")
+
+    args = parser.parse_args()
+
+    try:
+        import uvicorn
+        uvicorn.run(
+            "calibration.main:app",
+            host=args.host,
+            port=args.port,
+            reload=args.reload,
+        )
+    except ImportError:
+        print("错误: 需要安装 uvicorn，请运行: pip install uvicorn")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

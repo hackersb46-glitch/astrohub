@@ -1,0 +1,156 @@
+"""
+M2 Device Manager v1.0 - 应用入口点
+
+初始化所有模块，启动FastAPI服务。
+支持 lifespan 管理各模块生命周期，uvicorn 启动方式。
+
+Usage:
+    python -m device.main --host 0.0.0.0 --port 8000
+    uvicorn device.main:app --host 0.0.0.0 --port 8000
+
+Author: 雅痞张@南方天文
+"""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from contextlib import asynccontextmanager
+from pathlib import Path
+
+from fastapi import FastAPI
+
+
+# ------------------------------------------------------------------ #
+#  模块导入 - 延迟到 create_app 中初始化
+# ------------------------------------------------------------------ #
+
+def create_app() -> FastAPI:
+    """创建并配置 FastAPI 应用程序。
+
+    初始化所有管理器实例，注入到路由层。
+
+    Returns:
+        配置完成的 FastAPI 应用
+    """
+    # 延迟导入（避免创建应用时就加载所有依赖）
+    from device.api.router import router, set_managers
+    from device.core.config_backup import ConfigBackup
+    from device.core.device_manager import DeviceManager
+    from device.core.group_manager import GroupManager
+    from device.core.heartbeat import HeartbeatEngine, HeartbeatStore
+    from device.core.lifecycle import DeviceLifecycle
+
+    # 初始化各管理器
+    device_manager = DeviceManager()
+    group_manager = GroupManager(device_manager=device_manager)
+    lifecycle = DeviceLifecycle(device_manager=device_manager)
+    config_backup = ConfigBackup()
+
+    # 注入到路由层
+    set_managers(
+        device_manager=device_manager,
+        group_manager=group_manager,
+        lifecycle=lifecycle,
+        config_backup=config_backup,
+    )
+
+    # 创建应用
+    app = FastAPI(
+        title="M2 Device Manager",
+        description="海康威视设备管理系统 - M2 Device Manager v1.0",
+        version="1.0",
+        lifespan=_lifespan,
+    )
+
+    # 挂载路由
+    app.include_router(router)
+
+    # 将管理器存储到 app.state 以便 lifespan 访问
+    app.state.device_manager = device_manager
+    app.state.group_manager = group_manager
+    app.state.lifecycle = lifecycle
+    app.state.config_backup = config_backup
+
+    return app
+
+
+# ------------------------------------------------------------------ #
+#  Lifespan 管理
+# ------------------------------------------------------------------ #
+
+@asynccontextmanager
+async def _lifespan(app: FastAPI):
+    """应用程序生命周期管理：启动时初始化，关闭时清理。"""
+    # === 启动阶段 ===
+    from device.core.logger import LOG
+
+    # 注册活跃设备到心跳引擎
+    device_manager = app.state.device_manager
+    heartbeat_store = HeartbeatStore()
+    heartbeat = HeartbeatEngine(store=heartbeat_store, device_manager=device_manager)
+    app.state.heartbeat = heartbeat
+
+    # 获取所有设备并注册心跳
+    all_devices = device_manager.list_devices()
+    active_macs = [
+        d["mac"] for d in all_devices
+        if d.get("status") == "active"
+    ]
+
+    for mac in active_macs:
+        heartbeat.register_device(mac)
+
+    if active_macs:
+        LOG.done(f"心跳引擎已注册 {len(active_macs)} 个活跃设备")
+
+    LOG.done("M2 Device Manager 服务启动成功")
+
+    yield  # === 运行阶段 ===
+
+    # === 关闭阶段 ===
+    LOG.info("正在关闭 M2 Device Manager ...")
+
+    # 停止心跳引擎
+    if app.state.heartbeat is not None:
+        await heartbeat.stop()
+        LOG.info("心跳引擎已停止")
+
+    LOG.done("M2 Device Manager 服务已关闭")
+
+
+# ------------------------------------------------------------------ #
+#  创建全局 app 实例（供 uvicorn 调用）
+# ------------------------------------------------------------------ #
+
+app = create_app()
+
+
+# ------------------------------------------------------------------ #
+#  CLI 入口
+# ------------------------------------------------------------------ #
+
+def main() -> None:
+    """CLI 入口点。"""
+    parser = argparse.ArgumentParser(description="M2 Device Manager v1.0")
+    parser.add_argument("--host", default="0.0.0.0", help="监听地址 (默认: 0.0.0.0)")
+    parser.add_argument("--port", type=int, default=8000, help="监听端口 (默认: 8000)")
+    parser.add_argument("--reload", action="store_true", help="开发模式热重载")
+
+    args = parser.parse_args()
+
+    try:
+        import uvicorn
+        uvicorn.run(
+            "device.main:app",
+            host=args.host,
+            port=args.port,
+            reload=args.reload,
+        )
+    except ImportError:
+        print("错误: 需要安装 uvicorn，请运行: pip install uvicorn")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

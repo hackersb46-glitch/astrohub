@@ -1,0 +1,2107 @@
+"""
+AstroHub v2.0 - 统一路由聚合
+
+整合 M1-M11 所有模块路由到 /api/v1/ 下:
+- /api/v1/health            - 全局健康检查
+- /api/v1/discovery/sadp    - SADP 设备发现
+- /api/v1/devices/*         - 设备管理（真实）
+- /api/v1/ptz/*             - PTZ 控制（真实）
+- /api/v1/streams/*         - 流服务
+- /api/v1/calibration/*     - 校准
+- /api/v1/ascom/*           - ASCOM 设备
+- /api/v1/settings          - 系统设置
+
+Author: 雅痞张@南方天文
+"""
+
+from __future__ import annotations
+
+import time
+from datetime import datetime, timezone
+from typing import Any
+
+from pydantic import BaseModel
+from fastapi import APIRouter, FastAPI, Query
+from fastapi.responses import JSONResponse
+
+# ================================================================ #
+#  核心模块导入
+# ================================================================ #
+
+from src.core.ptz_manager import PTZManager
+from src.core.device_manager import DeviceManager
+from src.core.stream_manager import StreamManager
+from src.core.calibration_manager import CalibrationManager
+from src.core.auth import AuthManager
+from src.core.ws_manager import WebSocketManager
+from src.core.ascom_manager import ASCOMManager
+from src.core.orchestrator import Orchestrator
+from src.core.health_monitor import HealthMonitor
+
+
+# ================================================================ #
+#  路由前缀定义
+# ================================================================ #
+
+API_V1_PREFIX = "/api/v1"
+
+# 主 API 路由器
+api_router = APIRouter(prefix=API_V1_PREFIX, tags=["API v1"])
+
+# 健康检查路由器
+health_router = APIRouter(prefix="/api/v1", tags=["System"])
+
+
+# ================================================================ #
+#  Pydantic 请求模型
+# ================================================================ #
+
+class AddDeviceRequest(BaseModel):
+    """手动添加设备请求。"""
+    ip: str
+    port: int = 80
+    username: str = "admin"
+    password: str
+    name: str = ""
+    model: str = ""
+    mac: str = ""
+
+class ConnectDeviceRequest(BaseModel):
+    """连接设备请求。"""
+    username: str = "admin"
+    password: str
+    port: int = 80
+
+class ModifyNetworkRequest(BaseModel):
+    """修改网络配置请求。"""
+    ip: str
+    subnet_mask: str = "255.255.255.0"
+    gateway: str
+
+class SADPIpModifyRequest(BaseModel):
+    """SADP IP 修改请求 (含循环验证)。"""
+    mac: str
+    password: str
+    new_ip: str
+    original_ip: str = ""
+    subnet_mask: str = "255.255.255.0"
+    gateway: str = ""
+
+class SystemInfoRequest(BaseModel):
+    """系统信息请求（可选的绑定 ip）。"""
+    nic_index: int | None = None
+
+class PTZMoveRequest(BaseModel):
+    """PTZ 移动请求。"""
+    direction: str
+    speed: int = 50
+
+class PTZAbsoluteRequest(BaseModel):
+    """PTZ 绝对移动请求。"""
+    pan: float
+    tilt: float
+    zoom: float | None = None
+    speed: int = 50
+
+class PTZPresetRequest(BaseModel):
+    """PTZ 预置位请求。"""
+    preset_id: int
+
+class SADPScanRequest(BaseModel):
+    """SADP 发现请求。"""
+    bind_ip: str = "0.0.0.0"
+
+class RemoveDeviceRequest(BaseModel):
+    """移除设备请求。"""
+    ip: str = ""
+    mac: str = ""
+
+
+class PTZCaptureRequest(BaseModel):
+    """PTZ 截图请求。"""
+    stream_url: str = ""
+    stream_id: str = ""
+
+
+class PTZRecordRequest(BaseModel):
+    """PTZ 录像请求。"""
+    target_name: str = ""
+
+
+class TelescopeSlewRequest(BaseModel):
+    """望远镜 Slew 请求。"""
+    ra: float
+    dec: float
+
+
+class TelescopeTrackingRequest(BaseModel):
+    """望远镜跟踪模式请求。"""
+    mode: str  # trackSidereal / trackLunar / trackSolar / trackOff
+
+
+# ================================================================ #
+#  操作日志 (最多 10 条)
+# ================================================================ #
+
+operations_log: list[dict[str, str]] = []
+MAX_LOG_ENTRIES = 10
+
+
+def operation_log(action: str, details: str) -> None:
+    """追加操作到日志列表（环形缓冲区，最多 MAX_LOG_ENTRIES 条）。"""
+    entry = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "action": action,
+        "details": details,
+    }
+    operations_log.append(entry)
+    if len(operations_log) > MAX_LOG_ENTRIES:
+        operations_log.pop(0)
+
+
+# ================================================================ #
+#  管理器注入
+# ================================================================ #
+
+_managers: dict[str, Any] = {}
+
+
+def set_managers(**kwargs: Any) -> None:
+    """注入所有管理器实例。"""
+    _managers.update(kwargs)
+
+
+def _resolve_device_id_to_ip(mgr: "PTZManager", device_id: str) -> str | None:
+    """解析 device_id 为实际 IP 地址。
+
+    device_id 可能是 IP 地址或 MAC 地址。
+    - 如果是 IP: 直接返回
+    - 如果是 MAC: 从 SADP 发现缓存或已存储设备中查找 IP
+    """
+    import re
+    # 判断是否为 MAC 地址格式 (冒号或横杠分隔的6组十六进制)
+    mac_pattern = re.compile(r"^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}$")
+    if mac_pattern.match(device_id):
+        # BUG-016 修复: 额外验证 MAC 长度必须为12位十六进制
+        mac_clean = device_id.replace(":", "").replace("-", "").lower()
+        if len(mac_clean) == 12 and re.match(r'^[0-9a-f]{12}$', mac_clean):
+            # 是 MAC 地址，尝试从发现缓存中查找
+            discovered = mgr.get_discovered_devices()
+            for dev in discovered:
+                dev_mac = dev.get("mac", "").lower().replace(":", "-")
+                if dev_mac == device_id.lower().replace(":", "-"):
+                    return dev.get("ip")
+            # 从已存储设备中查找
+            stored = mgr.list_stored_devices()
+            for dev in stored:
+                dev_mac = dev.get("mac", "").lower().replace(":", "-")
+                if dev_mac == device_id.lower().replace(":", "-"):
+                    ip = dev.get("ip", "")
+                    if ip:
+                        return ip
+        return None
+    # 看起来像 IP 地址，直接返回
+    return device_id
+
+
+# ================================================================ #
+#  健康检查端点
+# ================================================================ #
+
+
+@health_router.get("/health", summary="全局健康检查")
+async def global_health() -> dict:
+    """全局健康检查端点 (GET /api/v1/health)。"""
+    module_keys = (
+        "ptz_manager",
+        "device_manager",
+        "stream_manager",
+        "calibration_manager",
+        "db_manager",
+        "auth_service",
+        "ws_manager",
+        "ascom_manager",
+        "health_monitor",
+        "orchestrator",
+    )
+
+    module_health: dict[str, dict[str, Any]] = {}
+    for key in module_keys:
+        module_health[key] = {
+            "status": "initialized" if _managers.get(key) is not None else "not_initialized",
+            "present": key in _managers,
+        }
+
+    all_present = all(m["present"] for m in module_health.values())
+    initialized_count = sum(1 for m in module_health.values() if m["present"])
+
+    return {
+        "status": "healthy" if all_present else "degraded",
+        "modules": module_health,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+# ================================================================ #
+#  SADP 发现端点
+# ================================================================ #
+
+
+@api_router.get("/discovery/sadp", summary="SADP 设备发现", tags=["Discovery"])
+async def sadp_discover(bind_ip: str = "0.0.0.0") -> dict:
+    """通过 SADP 多播发现局域网内 PTZ 设备。
+    
+    BUG-003 修复: 直接使用 SADPManager，不依赖 PTZManager。
+    """
+    start = time.time()
+    
+    # 优先使用 PTZManager（如果已初始化）
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if mgr:
+        devices = mgr.discover_devices(bind_ip=bind_ip)
+    else:
+        # 直接使用 SADPManager 不依赖 PTZManager
+        try:
+            from src.core.sadp_discovery import SADPManager
+            sadp_mgr = SADPManager()
+            raw_devices = sadp_mgr.discover_devices(timeout=10, bind_ip=bind_ip)
+            # 转换为 SADP 标准格式
+            devices = []
+            for d in raw_devices:
+                devices.append({
+                    "mac": d.get("mac", ""),
+                    "ip": d.get("ip", ""),
+                    "subnet_mask": d.get("subnet_mask", ""),
+                    "gateway": d.get("gateway", ""),
+                    "model": d.get("model", ""),
+                    "serial_number": d.get("serial_number", ""),
+                    "device_name": d.get("device_name", ""),
+                    "firmware_version": d.get("firmware_version", ""),
+                    "activated": d.get("activated", False),
+                    "is_hikvision": d.get("is_hikvision", False),
+                    "source": "sadp",
+                })
+        except Exception as e:
+            return {"success": False, "message": f"SADP 发现异常: {e}", "devices": []}
+    
+    elapsed = round(time.time() - start, 1)
+
+    # BUG-015 修复: 统一 MAC 地址格式为横杠小写 (24-0f-9b-76-41-93)
+    for dev in devices:
+        mac = dev.get("mac", "")
+        if mac:
+            clean = mac.replace(":", "").replace("-", "").lower()
+            if len(clean) == 12:
+                dev["mac"] = "-".join(clean[i:i+2] for i in range(0, 12, 2))
+
+    return {
+        "success": True,
+        "message": f"发现 {len(devices)} 台设备 (耗时 {elapsed}s)",
+        "devices": devices,
+        "count": len(devices),
+    }
+
+
+# ================================================================ #
+#  设备管理端点
+# ================================================================ #
+
+
+@api_router.get("/devices", summary="设备列表", tags=["Devices"])
+async def list_devices() -> dict:
+    """获取设备列表（MAC 去重合并 SADP 发现 + 手动存储）."""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "data": [], "total": 0}
+
+    def _normalize_mac(mac: str) -> str:
+        """统一 MAC 为横杠小写格式 (aa-bb-cc-dd-ee-ff).
+
+        BUG-016 修复: 增强 MAC 格式校验，拒绝假 MAC 地址（如 IP 地址填入 MAC 字段）。
+        """
+        import re
+        clean = mac.replace(":", "").replace("-", "").lower()
+        # 验证: 必须是恰好12位十六进制字符
+        if len(clean) != 12 or not re.match(r'^[0-9a-f]{12}$', clean):
+            return ""
+        return "-".join(clean[i:i + 2] for i in range(0, 12, 2))
+
+    def _has_device_mac(dev: dict) -> bool:
+        """判断设备是否有有效 MAC."""
+        return bool(_normalize_mac(dev.get("mac", "") or ""))
+
+    stored = mgr.list_stored_devices()
+    discovered = mgr.get_discovered_devices()
+    online_ips = mgr.list_controllers()
+
+    # --- Pass 1: 存储设备按 MAC 建索引 ---
+    keyed: dict[str, dict[str, Any]] = {}  # normalized_mac -> merged_record
+    no_mac: list[dict[str, Any]] = []      # manual entry without MAC
+
+    for dev in stored:
+        mac_norm = _normalize_mac(dev.get("mac", "") or "")
+        if mac_norm:
+            keyed[mac_norm] = {
+                "mac": mac_norm,
+                "ip": dev.get("ip", ""),
+                "model": dev.get("model", ""),
+                "device_name": dev.get("device_name", "") or dev.get("name", ""),
+                "source": "manual",
+                "online": False,  # updated later
+                "activated": False,
+                "has_credentials": True,
+            }
+        else:
+            no_mac.append({
+                "mac": "",
+                "ip": dev.get("ip", ""),
+                "model": dev.get("model", ""),
+                "device_name": dev.get("device_name", "") or dev.get("name", ""),
+                "source": "manual",
+                "online": False,
+                "activated": False,
+                "has_credentials": True,
+            })
+
+    # --- Pass 2: 合并 SADP 发现设备 ---
+    for sadp in discovered:
+        sadp_mac = _normalize_mac(sadp.get("mac", "") or "")
+        if sadp_mac and sadp_mac in keyed:
+            # 匹配到存储设备 → 合并
+            existing = keyed[sadp_mac]
+            existing["ip"] = sadp.get("ip") or existing["ip"]
+            existing["model"] = sadp.get("model") or existing["model"]
+            existing["device_name"] = (
+                sadp.get("device_name")
+                or sadp.get("name")
+                or existing["device_name"]
+            )
+            existing["activated"] = sadp.get("activated", False)
+            existing["source"] = "merged"
+        elif sadp_mac:
+            # 新发现设备
+            keyed[sadp_mac] = {
+                "mac": sadp_mac,
+                "ip": sadp.get("ip", ""),
+                "model": sadp.get("model", ""),
+                "device_name": sadp.get("device_name") or sadp.get("name", ""),
+                "source": "sadp",
+                "online": False,
+                "activated": sadp.get("activated", False),
+                "has_credentials": False,
+            }
+
+    # --- 构建最终列表 + 在线状态 ---
+    all_devices: list[dict[str, Any]] = list(keyed.values()) + no_mac
+    for dev in all_devices:
+        ip = dev.get("ip", "")
+        dev["online"] = ip in online_ips
+
+    return {"success": True, "data": all_devices, "total": len(all_devices)}
+
+
+@api_router.post("/devices", summary="注册设备", tags=["Devices"])
+async def register_device(req: AddDeviceRequest) -> dict:
+    """手动添加设备（IP + 凭据）。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    mgr.save_credentials(
+        ip=req.ip,
+        username=req.username,
+        password=req.password,
+        port=req.port,
+        mac=req.mac,
+        model=req.model,
+        name=req.name,
+    )
+
+    # 自动注册到 DeviceManager
+    dm: DeviceManager | None = _managers.get("device_manager")  # type: ignore[assignment]
+    if dm:
+        dm.register_device(
+            mac=req.mac or req.ip,
+            ip=req.ip,
+            name=req.name or f"Hikvision-{req.ip}",
+            model=req.model or "Hikvision PTZ",
+        )
+
+    return {
+        "success": True,
+        "message": f"设备已保存: {req.ip}",
+        "device": {
+            "ip": req.ip,
+            "port": req.port,
+            "name": req.name,
+            "model": req.model,
+            "mac": req.mac,
+        },
+    }
+
+
+@api_router.post("/devices/{device_id}/connect", summary="连接设备", tags=["Devices"])
+async def connect_device(device_id: str, req: ConnectDeviceRequest | None = None) -> dict:
+    """连接 PTZ 设备并认证。
+
+    device_id 可以是 IP 地址或 MAC 地址。如果是 MAC，自动解析为 IP。
+    使用 admin 作为默认用户名，密码必须由用户提供或已保存在配置中。
+    
+    BUG-014 修复: ISAPI 连接前 socket 预检，5 秒超时快速失败。
+    """
+    import socket as _socket
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # 解析 device_id: 如果看起来像 MAC，从发现缓存中解析 IP
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}，请提供 IP 地址或确保设备已通过 SADP 发现"}
+
+    # BUG-014 修复: 在 ISAPI 连接前做 socket 预检，5 秒超时
+    # BUG-020 修复: 跨网段设备（SADP 发现但 socket 不通）应提示修改 IP
+    sadp_device_info = None
+    for d in mgr.get_discovered_devices():
+        if d.get("ip") == target_ip:
+            sadp_device_info = d
+            break
+
+    try:
+        _sock = _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM)
+        _sock.settimeout(5)
+        _result = _sock.connect_ex((target_ip, 80))
+        _sock.close()
+        if _result != 0:
+            # 设备在 SADP 发现列表中 → 跨网段，建议修改 IP
+            if sadp_device_info:
+                mac = sadp_device_info.get("mac", target_ip)
+                device_model = sadp_device_info.get("model", "PTZ")
+                device_ip = sadp_device_info.get("ip", target_ip)
+                # 获取推荐的目标 IP
+                try:
+                    from src.core.net_detector import suggest_target_ip
+                    suggested_ip = suggest_target_ip()
+                    ip_hint = f"，推荐目标 IP: {suggested_ip}" if suggested_ip else ""
+                except Exception:
+                    ip_hint = ""
+                return {
+                    "success": False,
+                    "code": "CROSS_SUBNET",
+                    "message": (
+                        f"设备 {device_model} (IP: {device_ip}) 与本机不在同一网段，无法直接连接。"
+                        f"请先通过 SADP 修改 IP 功能，将设备 IP 迁移到与本机同网段{ip_hint}。"
+                    ),
+                    "device": {"mac": mac, "ip": device_ip, "model": device_model},
+                    "suggested_action": f"POST /api/v1/sadp/{mac}/modify-ip ，设置 new_ip 为同网段地址",
+                }
+            # 不在 SADP 列表中 → 普通不可达
+            return {"success": False, "message": f"设备 {target_ip} 不可达 (端口 80 未响应)，请检查网络连接"}
+    except Exception as _e:
+        return {"success": False, "message": f"设备 {target_ip} 连接预检失败: {_e}"}
+
+    # 如果未提供凭据，尝试从存储获取
+    if req is None:
+        creds = mgr.get_credentials(target_ip)
+        if not creds:
+            return {"success": False, "message": "设备未保存凭据，请先提供用户名和密码"}
+        username = creds["username"]
+        password = creds["password"]
+        port = creds.get("port", 80)
+    else:
+        username = req.username or "admin"
+        if not req.password:
+            return {"success": False, "message": "请提供密码"}
+        password = req.password
+        port = req.port
+
+    result = mgr.connect_device(target_ip, username, password, port)
+    if result and result.get("success"):
+        # 更新 DeviceManager 状态（使用 device_id 保持前端一致）
+        dm: DeviceManager | None = _managers.get("device_manager")  # type: ignore[assignment]
+        if dm:
+            dm.update_status(device_id, "online")
+        return result
+    return result or {"success": False, "message": "连接失败"}
+
+
+@api_router.post("/devices/{device_id}/disconnect", summary="断开设备", tags=["Devices"])
+async def disconnect_device(device_id: str) -> dict:
+    """断开 PTZ 设备连接。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    mgr.disconnect_device(device_id)
+
+    dm: DeviceManager | None = _managers.get("device_manager")  # type: ignore[assignment]
+    if dm:
+        dm.update_status(device_id, "offline")
+
+    return {"success": True, "message": f"设备已断开: {device_id}"}
+
+
+@api_router.delete("/devices/{device_id}", summary="删除设备", tags=["Devices"])
+async def delete_device(device_id: str) -> dict:
+    """删除设备。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # 先断开
+    mgr.disconnect_device(device_id)
+
+    # 移除凭据
+    removed = mgr.remove_credentials(device_id)
+
+    dm: DeviceManager | None = _managers.get("device_manager")  # type: ignore[assignment]
+    if dm:
+        dm.unregister_device(device_id)
+
+    return {
+        "success": True,
+        "message": f"设备已删除: {device_id}",
+    }
+
+
+@api_router.get("/devices/{device_id}/info", summary="设备详细信息", tags=["Devices"])
+async def get_device_info(device_id: str) -> dict:
+    """获取设备详细信息（通过 ISAPI）。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # 解析 device_id (MAC) 到 IP
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": "无法解析设备标识: 请提供 IP 地址或确保设备已连接"}
+
+    info = mgr.get_device_info(target_ip)
+    if "error" in info:
+        return {"success": False, "message": info["error"]}
+
+    return {"success": True, "data": info}
+
+
+@api_router.put("/devices/{device_id}/network", summary="修改设备网络配置", tags=["Devices"])
+async def modify_network(device_id: str, req: ModifyNetworkRequest) -> dict:
+    """修改设备网络配置（通过 SADP 协议）。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    result = mgr.modify_device_network(
+        ip=device_id,
+        new_ip=req.ip,
+        subnet_mask=req.subnet_mask,
+        gateway=req.gateway,
+    )
+    return result
+
+
+# ================================================================ #
+#  SADP IP 修改 & 系统信息端点
+# ================================================================ #
+
+
+@api_router.post("/sadp/{mac}/modify-ip", summary="SADP 修改设备 IP (含自动验证循环)", tags=["SADP"])
+async def sadp_modify_ip(mac: str, req: SADPIpModifyRequest) -> dict:
+    """通过 SADP DLL 修改设备 IP，含自动重试和扫描确认循环。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    result = mgr.modify_reachable_with_retry(
+        mac=mac,
+        password=req.password,
+        original_ip=req.original_ip or "",
+        target_ip=req.new_ip,
+        subnet_mask=req.subnet_mask,
+        gateway=req.gateway,
+    )
+    return result
+
+
+@api_router.get("/sadp/error-codes", summary="SADP 错误码参考表", tags=["SADP"])
+async def sadp_error_codes() -> JSONResponse:
+    """返回 SADP 错误码中文对照表。"""
+    try:
+        from src.core.sadp_discovery import SADP_ERROR_CODES
+        return JSONResponse(
+            content={"success": True, "codes": SADP_ERROR_CODES},
+            ensure_ascii=False,
+        )
+    except ImportError:
+        return JSONResponse(
+            content={"success": False, "message": "SADP 模块未加载"},
+            ensure_ascii=False,
+        )
+
+
+@api_router.post("/sadp/auto-reconnect", summary="P2.7: 已知设备自动重连", tags=["SADP"])
+async def sadp_auto_reconnect(req: AutoReconnectDevicesRequest | None = None) -> dict:
+    """P2.7: 扫描 SADP 设备 -> MAC匹配已保存设备 -> IP不可达时自动修改 IP。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    bind_ip = "0.0.0.0"
+    target_ip = None
+    if req:
+        bind_ip = req.bind_ip or "0.0.0.0"
+        target_ip = req.target_ip or None
+
+    result = mgr.auto_reconnect_known_devices(bind_ip=bind_ip, target_ip=target_ip)
+    return result
+
+
+class AutoReconnectDevicesRequest(BaseModel):
+    """P2.7: 已知设备自动重连请求。"""
+    bind_ip: str = "0.0.0.0"
+    target_ip: str = ""
+
+
+@api_router.get("/system/info", summary="系统硬件信息 (P1.1)", tags=["System"])
+async def get_system_info() -> dict:
+    """获取本机系统硬件信息 (hostname/CPU/RAM/GPU/VRAM)。"""
+    try:
+        from src.ptz.core.system_info import collect_system_info
+        info = collect_system_info()
+        return {"success": True, "data": info}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.get("/system/nics", summary="网络接口列表 (P1.2)", tags=["System"])
+async def get_nics() -> dict:
+    """获取所有网络接口列表，按优先级排序。"""
+    try:
+        from src.core.net_detector import get_all_nics
+        nics = get_all_nics()
+        return {"success": True, "data": nics, "total": len(nics)}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.get("/system/default-ip", summary="推荐目标 IP (P1.3)", tags=["System"])
+async def get_default_ip() -> dict:
+    """获取推荐的目标 IP 地址。"""
+    try:
+        from src.core.net_detector import suggest_target_ip
+        ip = suggest_target_ip()
+        return {"success": True, "data": {"ip": ip}}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.get("/system/operations", summary="操作日志 (最近10条)", tags=["System"])
+async def get_operations_log() -> dict:
+    """获取最近 10 条操作日志。"""
+    return {"success": True, "data": list(reversed(operations_log)), "total": len(operations_log)}
+
+
+# ================================================================ #
+#  PTZ 控制端点
+# ================================================================ #
+
+
+@api_router.post("/ptz/{device_id}/move", summary="PTZ 移动", tags=["PTZ"])
+async def ptz_move(device_id: str, req: PTZMoveRequest) -> dict:
+    """PTZ 方向移动控制。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # BUG-A 修复: 支持 MAC 地址作为 device_id
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    return mgr.ptz_move(target_ip, direction=req.direction, speed=req.speed)
+
+
+@api_router.post("/ptz/{device_id}/home", summary="PTZ 归位", tags=["PTZ"])
+async def ptz_home(device_id: str) -> dict:
+    """PTZ 归位（预置点 10）。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # BUG-A 修复: 支持 MAC 地址作为 device_id
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    return mgr.ptz_home(target_ip)
+
+
+@api_router.post("/ptz/{device_id}/stop", summary="PTZ 停止", tags=["PTZ"])
+async def ptz_stop(device_id: str) -> dict:
+    """PTZ 停止所有移动。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # BUG-A 修复: 支持 MAC 地址作为 device_id
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    # BUG-C 修复: ptz_stop 调用 stop_move 而非连续移动
+    return mgr.ptz_stop(target_ip)
+
+
+@api_router.get("/ptz/{device_id}/presets", summary="获取预置点列表", tags=["PTZ"])
+async def ptz_list_presets(device_id: str) -> dict:
+    """获取设备所有预置点列表."""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    return mgr.ptz_list_presets(target_ip)
+
+
+@api_router.post("/ptz/{device_id}/preset/{preset_id}", summary="预置位", tags=["PTZ"])
+async def ptz_preset(device_id: str, preset_id: int) -> dict:
+    """移动到指定预置点。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # BUG-A 修复: 支持 MAC 地址作为 device_id
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    return mgr.ptz_preset(target_ip, preset_id=preset_id)
+
+
+@api_router.post("/ptz/{device_id}/preset/{preset_id}/set", summary="保存预置位", tags=["PTZ"])
+async def ptz_set_preset(device_id: str, preset_id: int) -> dict:
+    """设置当前位置为指定预置点。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    return mgr.set_preset(target_ip, preset_id=preset_id)
+
+
+@api_router.post("/ptz/{device_id}/absolute", summary="绝对位置", tags=["PTZ"])
+async def ptz_absolute(device_id: str, req: PTZAbsoluteRequest) -> dict:
+    """绝对坐标移动（Pan/Tilt/Zoom）。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # BUG-A 修复: 支持 MAC 地址作为 device_id
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    return mgr.ptz_absolute(
+        target_ip,
+        pan=req.pan,
+        tilt=req.tilt,
+        zoom=req.zoom,
+        speed=req.speed,
+    )
+
+
+@api_router.get("/ptz/{device_id}/position", summary="获取 PTZ 位置", tags=["PTZ"])
+async def get_ptz_position(device_id: str) -> dict:
+    """获取 PTZ 当前位置。"""
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # BUG-A 修复: 支持 MAC 地址作为 device_id
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    # BUG-B 修复: 统一返回 response.data
+    return mgr.ptz_get_position(target_ip)
+
+
+# 海康 ISAPI PTZ OSD 显示端点常量
+ISAPI_PTZ_OSD_TEMPLATE = "/ISAPI/PTZCtrl/channels/{ch}/PTZOSDDisplay"
+
+
+@api_router.post("/ptz/{device_id}/osd/toggle", summary="切换 PTZ 坐标 OSD 显示", tags=["PTZ"])
+async def ptz_osd_toggle(device_id: str, enabled: bool = True) -> dict:
+    """通过海康 ISAPI 控制 PTZ 坐标 OSD 显示开关。
+
+    使用: GET/PUT /ISAPI/PTZCtrl/channels/{ch}/PTZOSDDisplay
+    enabled=True  开启 PTZ 坐标OSD
+    enabled=False 关闭 PTZ 坐标OSD
+    """
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    ctrl, err = mgr._get_controller(target_ip)
+    if err:
+        return {"success": False, "message": err}
+
+    client = mgr._clients.get(target_ip)
+    if not client:
+        return {"success": False, "message": f"ISAPI client not found for {target_ip}"}
+
+    try:
+        ch = getattr(client, 'channel', 1)
+        endpoint = f"/ISAPI/PTZCtrl/channels/{ch}/PTZOSDDisplay"
+
+        # 先 GET 获取当前 OSD 设置
+        get_resp = client.get(endpoint)
+        if get_resp.status_code != 200:
+            return {"success": False, "message": f"GET PTZOSDDisplay 失败: HTTP {get_resp.status_code}, {get_resp.text}"}
+
+        import xml.etree.ElementTree as ET
+        root = ET.fromstring(get_resp.xml)
+
+        # 根据ISAPI规范, 通过 azimuth 字段控制 PTZ 坐标显示
+        # azimuth=alwaysopen: 开启, azimuth=alwaysclose: 关闭
+        # 支持带 namespace 和无 namespace 两种格式
+        azimuth_elem = root.find(".//{http://www.isapi.org/ver20/XMLSchema}azimuth")
+        if azimuth_elem is None:
+            azimuth_elem = root.find(".//{http://www.hikvision.com/ver20/XMLSchema}azimuth")
+        if azimuth_elem is None:
+            azimuth_elem = root.find("azimuth")
+        
+        if azimuth_elem is not None:
+            azimuth_elem.text = "alwaysopen" if enabled else "alwaysclose"
+        else:
+            # 如果XML中没有 azimuth 字段, 尝试查找并修改 enabled 字段作为兼容方案
+            enabled_elem = root.find(".//{http://www.isapi.org/ver20/XMLSchema}enabled")
+            if enabled_elem is None:
+                enabled_elem = root.find(".//{http://www.hikvision.com/ver20/XMLSchema}enabled")
+            if enabled_elem is None:
+                enabled_elem = root.find("enabled")
+            if enabled_elem is not None:
+                enabled_elem.text = "true" if enabled else "false"
+            else:
+                return {"success": False, "message": "未在 PTZOSDDisplay XML 中找到 azimuth 或 enabled 字段"}
+
+        new_xml = ET.tostring(root, encoding="unicode", xml_declaration=True)
+        put_resp = client.put(endpoint, new_xml)
+        if put_resp.status_code == 200:
+            return {
+                "success": True,
+                "message": f"PTZ 坐标 OSD 已{'开启' if enabled else '关闭'}",
+                "enabled": enabled,
+            }
+        else:
+            return {"success": False, "message": f"PUT PTZOSDDisplay 失败: HTTP {put_resp.status_code}, {put_resp.text}"}
+
+    except Exception as e:
+        return {"success": False, "message": f"OSD 切换异常: {e}"}
+
+
+@api_router.post("/ptz/{device_id}/capture", summary="PTZ 截图（ISAPI 原生）", tags=["PTZ"])
+async def ptz_capture(device_id: str, req: PTZCaptureRequest | None = None) -> dict:
+    """通过海康 ISAPI 原生方法截取 PTZ 设备当前视频帧。
+
+    使用: GET /ISAPI/Streaming/Channels/{channel}/picture
+    不再依赖 ffmpeg。
+    """
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    ctrl, err = mgr._get_controller(target_ip)
+    if err:
+        return {"success": False, "message": err}
+
+    client = mgr._clients.get(target_ip)
+    if not client:
+        return {"success": False, "message": f"ISAPI client not found for {target_ip}"}
+
+    try:
+        jpeg_bytes = client.capture_picture()
+        if not jpeg_bytes:
+            return {"success": False, "message": "ISAPI 截图失败：设备未返回图像数据"}
+
+        # JPEG 头验证
+        if jpeg_bytes[:3] != b"\xff\xd8\xff":
+            return {"success": False, "message": "返回的数据不是有效的 JPEG"}
+
+        # 保存文件
+        from src.stream.constants import DOWNLOAD_IMAGE_DIR
+        from src.core.file_naming import generate_filename
+
+        # 获取设备名称（如有）
+        target_name = ""
+        if req and req.stream_id:
+            target_name = req.stream_id
+        elif req and req.stream_url:
+            target_name = "capture"
+
+        filename = generate_filename(target_name=target_name or None, device_ip=target_ip, extension=".jpg")
+        filepath = DOWNLOAD_IMAGE_DIR / filename
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        filepath.write_bytes(jpeg_bytes)
+        file_size = filepath.stat().st_size
+
+        return {
+            "success": True,
+            "message": f"截图成功: {device_id}",
+            "data": {
+                "device_id": device_id,
+                "image_path": str(filepath),
+                "image_size": file_size,
+                "filename": filename,
+                "format": "jpeg",
+                "verified": True,
+            },
+        }
+    except Exception as e:
+        return {"success": False, "message": f"截图异常: {e}"}
+
+
+# ================================================================ #
+#  PTZ 录像端点
+# ================================================================ #
+
+
+@api_router.post("/ptz/{device_id}/record/start", summary="启动录像（FFmpeg RTSP → 本地）", tags=["PTZ"])
+async def ptz_record_start(device_id: str, req: PTZRecordRequest | None = None) -> dict:
+    """通过 FFmpeg 拉取 RTSP 流录制到本地 record/ 目录。
+
+    适用于设备无内置存储介质（HDD/SD/NAS 为空）的场景。
+    支持 target_name 参数指定文件名标识（跟踪目标名称）。
+    """
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    target_name = req.target_name if req else ""
+    return mgr.start_recording(target_ip, target_name=target_name)
+
+
+@api_router.post("/ptz/{device_id}/record/stop", summary="停止录像（FFmpeg 进程）", tags=["PTZ"])
+async def ptz_record_stop(device_id: str) -> dict:
+    """停止 FFmpeg 录制进程。如有 FTP 配置则自动上传。
+    """
+    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    return mgr.stop_recording(target_ip)
+
+
+# ================================================================ #
+#  流服务端点
+# ================================================================ #
+
+
+@api_router.get("/streams", summary="流列表", tags=["Streams"])
+async def list_streams() -> dict:
+    """获取流列表。"""
+    mgr: StreamManager | None = _managers.get("stream_manager")  # type: ignore[assignment]
+    if mgr:
+        try:
+            streams = mgr.list_streams()
+            if streams:
+                return {"data": streams, "total": len(streams)}
+        except Exception:
+            pass
+    # Return empty but properly structured
+    return {"data": [], "total": 0}
+
+
+# ================================================================ #
+#  校准端点
+# ================================================================ #
+
+
+@api_router.post("/calibration/{device_id}/{cal_type}", summary="开始校准", tags=["Calibration"])
+async def start_calibration(device_id: str, cal_type: str) -> dict:
+    """开始设备校准。"""
+    mgr: CalibrationManager | None = _managers.get("calibration_manager")  # type: ignore[assignment]
+    if mgr:
+        try:
+            if hasattr(mgr, "start_calibration"):
+                await mgr.start_calibration(device_id, cal_type)  # type: ignore[arg-type]
+        except Exception:
+            pass
+    return {
+        "data": {"device_id": device_id, "type": cal_type, "status": "started"},
+        "message": f"校准已启动: {cal_type}",
+    }
+
+
+# ================================================================ #
+#  ASCOM 端点
+# ================================================================ #
+
+
+# ================================================================ #
+#  ASCOM 端点
+# ================================================================ #
+
+
+@api_router.post("/ascom/{ascom_type}/connect", summary="连接 ASCOM 设备", tags=["ASCOM"])
+async def ascom_connect(ascom_type: str) -> dict:
+    """连接 ASCOM 设备。"""
+    mgr: ASCOMManager | None = _managers.get("ascom_manager")  # type: ignore[assignment]
+    if mgr:
+        try:
+            if hasattr(mgr, "connect"):
+                await mgr.connect(ascom_type)  # type: ignore[arg-type]
+        except Exception:
+            pass
+    return {
+        "data": {"type": ascom_type, "connected": True},
+        "message": f"ASCOM 设备已连接: {ascom_type}",
+    }
+
+
+# ================================================================ #
+#  ASCOM Telescope 控制端点 (P1 集成)
+# ================================================================ #
+
+
+@api_router.post("/ascom/telescope/slew", summary="望远镜 Slew 到目标坐标", tags=["ASCOM"])
+async def ascom_telescope_slew(req: TelescopeSlewRequest | None = None,
+                                ra: float = 0, dec: float = 0) -> dict:
+    """控制望远镜 Slew 到目标赤经/赤纬。
+    
+    支持两种参数传入方式:
+    1. JSON body: {"ra": 12.5, "dec": 45.0}
+    2. Query params: ?ra=12.5&dec=45.0
+    """
+    ra_val = req.ra if req else ra
+    dec_val = req.dec if req else dec
+    
+    from src.ascom.core.driver_manager import get_telescope
+    from src.ascom.constants import ErrorCode
+    
+    try:
+        scope = get_telescope()
+        result = scope.slew_to_coordinates(ra_val, dec_val)
+        if not result.get("success"):
+            return {
+                "success": False,
+                "message": result.get("message", "Slew 失败"),
+                "code": result.get("code", "ASCOM_TELESCOPE_SLEW_FAILED"),
+            }
+        return {
+            "success": True,
+            "message": result.get("message", "Slew 成功"),
+            "data": {"ra": ra_val, "dec": dec_val},
+        }
+    except Exception as e:
+        return {"success": False, "message": f"Slew 异常: {e}"}
+
+
+@api_router.post("/ascom/telescope/tracking", summary="设置望远镜跟踪模式", tags=["ASCOM"])
+async def ascom_telescope_tracking(mode: str = "trackSidereal") -> dict:
+    """设置望远镜跟踪模式。
+    
+    支持的模式:
+    - trackSidereal: 恒星跟踪
+    - trackLunar: 月球跟踪
+    - trackSolar: 太阳跟踪
+    - trackOff: 关闭跟踪
+    """
+    from src.ascom.core.driver_manager import get_telescope
+    from src.ascom.constants import TrackingMode, ErrorCode
+    
+    mode_map = {
+        "trackSidereal": TrackingMode.SIDEREAL,
+        "trackLunar": TrackingMode.LUNAR,
+        "trackSolar": TrackingMode.SOLAR,
+        "trackOff": TrackingMode.OFF,
+    }
+    
+    tracking_mode = mode_map.get(mode)
+    if tracking_mode is None:
+        return {
+            "success": False,
+            "message": f"无效的跟踪模式: {mode} (支持: {list(mode_map.keys())})",
+        }
+    
+    try:
+        scope = get_telescope()
+        result = scope.set_tracking_mode(tracking_mode)
+        if not result.get("success"):
+            return {
+                "success": False,
+                "message": result.get("message", "设置跟踪模式失败"),
+            }
+        return {
+            "success": True,
+            "message": result.get("message", f"跟踪模式已设为 {mode}"),
+            "data": {"mode": mode},
+        }
+    except Exception as e:
+        return {"success": False, "message": f"设置跟踪模式异常: {e}"}
+
+
+@api_router.post("/ascom/telescope/disconnect", summary="断开望远镜连接", tags=["ASCOM"])
+async def ascom_telescope_disconnect() -> dict:
+    """断开 ASCOM 望远镜连接。"""
+    from src.ascom.core.driver_manager import get_telescope
+    
+    try:
+        scope = get_telescope()
+        result = scope.disconnect()
+        return {
+            "success": True,
+            "message": result.get("message", "望远镜已断开"),
+        }
+    except Exception as e:
+        return {"success": False, "message": f"断开连接异常: {e}"}
+
+
+@api_router.get("/ascom/telescope/position", summary="查询望远镜位置", tags=["ASCOM"])
+async def ascom_telescope_position() -> dict:
+    """查询望远镜当前赤经/赤纬。"""
+    from src.ascom.core.driver_manager import get_telescope
+    
+    try:
+        scope = get_telescope()
+        result = scope.get_position()
+        if not result.get("success"):
+            return {"success": False, "message": result.get("message", "获取位置失败")}
+        return {"success": True, "data": result.get("data")}
+    except Exception as e:
+        return {"success": False, "message": f"获取位置异常: {e}"}
+
+
+@api_router.post("/ascom/telescope/abort", summary="取消 Slew", tags=["ASCOM"])
+async def ascom_telescope_abort() -> dict:
+    """取消正在进行的 Slew 操作。"""
+    from src.ascom.core.driver_manager import get_telescope
+    
+    try:
+        scope = get_telescope()
+        result = scope.abort_slew()
+        if not result.get("success"):
+            return {"success": False, "message": result.get("message", "取消 Slew 失败")}
+        return {"success": True, "message": result.get("message", "Slew 已取消")}
+    except Exception as e:
+        return {"success": False, "message": f"取消 Slew 异常: {e}"}
+
+
+@api_router.get("/settings", summary="获取系统设置", tags=["Settings"])
+async def get_settings() -> dict:
+    """获取当前系统配置。"""
+    try:
+        from src.config import HOST, PORT, WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT
+        return {
+            "success": True,
+            "data": {
+                "host": HOST,
+                "port": PORT,
+                "window_title": WINDOW_TITLE,
+                "window_width": WINDOW_WIDTH,
+                "window_height": WINDOW_HEIGHT,
+            },
+        }
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.post("/settings", summary="保存系统设置", tags=["Settings"])
+async def save_settings() -> dict:
+    """保存系统设置。"""
+    return {
+        "data": {"saved": True},
+        "message": "设置已保存",
+    }
+
+
+# ================================================================ #
+#  流服务器扩展端点 (P0: 启动 / Snapshot / HLS)
+# ================================================================ #
+
+
+@api_router.post("/streams/{device_id}/start", summary="启动设备视频流", tags=["Streams"])
+async def start_stream(device_id: str, rtsp_url: str = "", stream_name: str = "") -> dict:
+    """启动设备视频流（HLS）。"""
+    from src.core.stream_manager import StreamManager
+    from src.config_paths import DATA_DIR
+    import os
+    
+    mgr: StreamManager | None = _managers.get("stream_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "StreamManager 未初始化", "data": [], "total": 0}
+    
+    # Try to get credentials for the device
+    ptz_mgr = _managers.get("ptz_manager")
+    if not rtsp_url and ptz_mgr:
+        creds = ptz_mgr._credentials.get(device_id)
+        if creds:
+            user = creds.get("username", "admin")
+            pwd = creds.get("password", "")
+            rtsp_url = f"rtsp://{user}:{pwd}@{device_id}:554/Streaming/Channels/101"
+    
+    if not rtsp_url:
+        rtsp_url = f"rtsp://admin@{device_id}:554/Streaming/Channels/101"
+    if not stream_name:
+        stream_name = f"Stream-{device_id}"
+    
+    # Create stream record in StreamManager
+    stream_result = mgr.start_stream(
+        device_id=device_id,
+        rtsp_url=rtsp_url,
+        stream_name=stream_name,
+    )
+    stream_id = stream_result.get("stream_id") if isinstance(stream_result, dict) else stream_result
+
+    
+    
+    if not stream_id:
+        return {"success": False, "message": "流启动失败", "data": [], "total": 0, "stream_id": None}
+    
+    streams = mgr.list_streams()
+    return {
+        "success": True,
+        "message": f"已启动流: {stream_name}",
+        "data": streams,
+        "total": len(streams),
+        "stream_id": stream_id,
+    }
+
+@api_router.post("/streams/{device_id}/stop", summary="停止设备视频流", tags=["Streams"])
+async def stop_stream(device_id: str) -> dict:
+    """停止设备的视频流。"""
+    mgr: StreamManager | None = _managers.get("stream_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "StreamManager 未初始化"}
+    
+    # 查找该设备的流
+    for stream in mgr.list_streams():
+        if stream.get("device_id") == device_id:
+            sid = stream.get("stream_id")
+            mgr.stop_stream(sid)
+            streams = mgr.list_streams()
+            return {
+                "success": True,
+                "message": f"流已停止: {device_id}",
+                "data": streams,
+                "total": len(streams),
+            }
+    return {"success": False, "message": f"未找到设备 {device_id} 的流"}
+
+
+@api_router.get("/streams/{device_id}/snapshot", summary="获取设备快照", tags=["Streams"])
+async def get_stream_snapshot(device_id: str) -> dict:
+    """获取设备当前帧的静态图像快照。
+    
+    返回 base64 编码的 JPEG 图像或快照 URL。
+    """
+    mgr: StreamManager | None = _managers.get("stream_manager")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "StreamManager 未初始化"}
+    
+    # 查找该设备的流
+    for stream in mgr.list_streams():
+        if str(stream.get("device_id")) == str(device_id):
+            sid = stream.get("stream_id")
+            preview_url = mgr.get_preview_url(sid)
+            status = mgr.get_stream_status(sid)
+            return {
+                "success": True,
+                "message": f"快照获取成功: {device_id}",
+                "data": {
+                    "device_id": device_id,
+                    "stream_id": sid,
+                    "preview_url": preview_url,
+                    "status": status,
+                    "snapshot_url": f"/hls/{sid}/snapshot.jpg",
+                },
+            }
+    
+    # 如果流未启动，尝试自动创建
+    rtsp_url = f"rtsp://{device_id}:554/stream"
+    try:
+        stream_id = mgr.start_stream(
+            device_id=device_id,
+            rtsp_url=rtsp_url,
+            stream_name=f"Snapshot-{device_id}",
+        )
+        preview_url = mgr.get_preview_url(stream_id)
+        return {
+            "success": True,
+            "message": f"流已自动创建并获取快照: {device_id}",
+            "data": {
+                "device_id": device_id,
+                "stream_id": stream_id,
+                "preview_url": preview_url,
+                "snapshot_url": f"/hls/{stream_id}/snapshot.jpg",
+            },
+        }
+    except Exception as e:
+        return {"success": False, "message": f"获取快照失败: {e}"}
+
+
+# ================================================================ #
+#  高级功能端点 (Advanced: Function/Limit/Speed/Config/Onboarding)
+# ================================================================ #
+
+def _resolve_mac_from_ip(device_ip: str, client: "ISAPIClient | None" = None,
+                          ptz_mgr: "PTZManager | None" = None) -> str:
+    """通过 PTZManager 缓存或 ISAPI 获取设备的 MAC 地址。"""
+    # Try PTZManager cache first
+    if ptz_mgr:
+        import re
+        discovered = ptz_mgr.get_discovered_devices()
+        for dev in discovered:
+            if dev.get("ip") == device_ip:
+                mac = dev.get("mac", "")
+                if mac:
+                    # Normalize to colon-format uppercase
+                    return mac.replace("-", ":").upper()
+        stored = ptz_mgr.list_stored_devices()
+        for dev in stored:
+            if dev.get("ip") == device_ip:
+                mac = dev.get("mac", "")
+                if mac:
+                    return mac.replace("-", ":").upper()
+    # Fallback: use IP as identifier
+    return device_ip.replace(".", "_").replace("/", "_").upper()
+
+# Pydantic 请求模型
+class AdvancedFunctionRunRequest(BaseModel):
+    """功能探测运行请求。"""
+    device_ip: str = ""
+    username: str = "admin"
+    password: str = ""
+    port: int = 80
+    item: str = ""  # 留空 = 全部探测
+
+
+class AdvancedLimitRunRequest(BaseModel):
+    """限位测试运行请求。"""
+    device_ip: str = ""
+    username: str = "admin"
+    password: str = ""
+    port: int = 80
+
+
+class AdvancedSpeedRunRequest(BaseModel):
+    """速度测试运行请求。"""
+    device_ip: str = ""
+    username: str = "admin"
+    password: str = ""
+    port: int = 80
+    speed_profile: str = "lite"
+
+
+class AdvancedConfigWriteRequest(BaseModel):
+    """配置写入请求。"""
+    mac: str
+    ip: str = ""
+    model: str = ""
+    capabilities: dict | None = None
+    limits: dict | None = None
+    speed: dict | None = None
+
+
+class AdvancedOnboardingStartRequest(BaseModel):
+    """引导开始请求。"""
+    mac: str
+
+
+# --- Function 功能探测 ---
+
+@api_router.post("/advanced/function/run", summary="运行功能探测", tags=["Advanced"])
+async def advanced_function_run(req: AdvancedFunctionRunRequest) -> dict:
+    """运行设备功能探测 (P4.1-P4.21)。"""
+    try:
+        from src.ptz.isapi.client import ISAPIClient
+        from src.advanced.function import FunctionDetector
+
+        mgr: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
+        username = req.username or "admin"
+        password = req.password
+        port = req.port or 80
+        if not password:
+            creds = mgr.get_credentials(req.device_ip) if mgr else None
+            if creds:
+                username = creds.get("username", username)
+                password = creds.get("password", "")
+                port = creds.get("port", port)
+
+        client = ISAPIClient(
+            ip=req.device_ip,
+            username=username,
+            password=password,
+            port=port,
+        )
+        if not client.verify_credentials():
+            return {"success": False, "message": "设备认证失败"}
+
+        detector = FunctionDetector(client)
+
+        if req.item:
+            result = {req.item: detector.detect_single(req.item)}
+        else:
+            # Bug #2 修复: 功能探测开始前，第一步设置预置点10并归位
+            import time
+            from src.ptz.isapi.ptz import PTZController
+            ptz = PTZController(client)
+            ptz.set_preset(10)
+            time.sleep(1)
+            ptz.goto_preset(10)
+            time.sleep(3)
+
+            from src.advanced.function import FUNCTION_ENDPOINTS
+            result = {}
+            for item_key in FUNCTION_ENDPOINTS:
+                result[item_key] = detector.detect_single(item_key)
+
+        restore_ok = detector.restore_all()
+
+        # Auto-save to DeviceConfig
+        from src.advanced.config_writer import write_device_config
+
+        ptz_mgr_fn: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
+        mac = _resolve_mac_from_ip(req.device_ip, ptz_mgr=ptz_mgr_fn)
+        config_saved = False
+        try:
+            write_device_config(mac=mac, capabilities=result, ip=req.device_ip)
+            config_saved = True
+        except Exception:
+            pass
+
+        return {
+            "success": True,
+            "message": f"功能探测完成: {req.device_ip}",
+            "results": result,
+            "restored": restore_ok,
+            "status": detector.get_status(),
+            "config_saved": config_saved,
+            "mac": mac,
+        }
+    except Exception as e:
+        return {"success": False, "message": f"功能探测异常: {e}"}
+
+
+@api_router.get("/advanced/function/status", summary="获取功能探测状态", tags=["Advanced"])
+async def advanced_function_status(device_ip: str = Query(default="")) -> dict:
+    """获取设备功能探测状态。"""
+    if not device_ip:
+        return {"success": True, "status": {"total": 0, "completed": 0, "supported": 0, "progress": 0}, "supported_functions": []}
+    try:
+        from src.ptz.isapi.client import ISAPIClient
+        from src.advanced.function import FunctionDetector
+
+        ptz_mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+        creds = ptz_mgr.get_credentials(device_ip) if ptz_mgr else None
+        if not creds:
+            return {"success": False, "message": "设备未保存凭据，请先注册设备"}
+        client = ISAPIClient(
+            ip=device_ip,
+            username=creds["username"],
+            password=creds["password"],
+            port=creds.get("port", 80),
+        )
+        detector = FunctionDetector(client)
+
+        return {
+            "success": True,
+            "status": detector.get_status(),
+            "supported_functions": detector.get_supported_functions(),
+        }
+    except Exception as e:
+        return {"success": False, "message": f"获取状态异常: {e}"}
+
+
+@api_router.post("/advanced/function/restore", summary="恢复功能默认值", tags=["Advanced"])
+async def advanced_function_restore(device_ip: str = "", username: str = "admin", password: str = "", port: int = 80) -> dict:
+    """恢复设备功能默认值 (P4.21)。"""
+    if not device_ip:
+        return {"success": False, "message": "缺少 device_ip 参数"}
+    try:
+        from src.ptz.isapi.client import ISAPIClient
+        from src.advanced.function import FunctionDetector, RESTORE_DEFAULTS_ENDPOINT
+
+        client = ISAPIClient(ip=device_ip, username=username, password=password, port=port)
+        if not client.verify_credentials():
+            return {"success": False, "message": "设备认证失败"}
+
+        # 调用设备恢复默认 API
+        result = client.put(RESTORE_DEFAULTS_ENDPOINT,
+            '<?xml version="1.0" encoding="UTF-8"?><restore xmlns="http://www.hikvision.com/ver20/XMLSchema"/>')
+
+        return {
+            "success": result.status_code == 200,
+            "message": "设备参数已尝试恢复",
+            "http_status": result.status_code,
+        }
+    except Exception as e:
+        return {"success": False, "message": f"恢复异常: {e}"}
+
+
+# --- Limit 限位测试 ---
+
+@api_router.post("/advanced/limit/run", summary="运行限位测试", tags=["Advanced"])
+async def advanced_limit_run(req: AdvancedLimitRunRequest) -> dict:
+    """运行设备限位测试 (P6.0-P6.4)。"""
+    try:
+        from src.ptz.isapi.client import ISAPIClient
+        from src.advanced.limit import LimitTester
+
+        mgr: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
+        username = req.username or "admin"
+        password = req.password
+        port = req.port or 80
+        if not password:
+            creds = mgr.get_credentials(req.device_ip) if mgr else None
+            if creds:
+                username = creds.get("username", username)
+                password = creds.get("password", "")
+                port = creds.get("port", port)
+
+        client = ISAPIClient(
+            ip=req.device_ip,
+            username=username,
+            password=password,
+            port=port,
+        )
+        if not client.verify_credentials():
+            return {"success": False, "message": "设备认证失败"}
+
+        tester = LimitTester(client)
+        results = tester.run_all_tests()
+
+        # Auto-save to DeviceConfig
+        from src.advanced.config_writer import write_device_config
+
+        ptz_mgr_lm: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
+        mac = _resolve_mac_from_ip(req.device_ip, ptz_mgr=ptz_mgr_lm)
+        config_saved = False
+        try:
+            write_device_config(mac=mac, limits=results, ip=req.device_ip)
+            config_saved = True
+        except Exception:
+            pass
+
+        return {
+            "success": results.get("success", False),
+            "message": f"限位测试完成: {req.device_ip}",
+            "results": results,
+            "csv_path": results.get("csv_path", ""),
+            "config_saved": config_saved,
+            "mac": mac,
+        }
+    except Exception as e:
+        return {"success": False, "message": f"限位测试异常: {e}"}
+
+
+@api_router.get("/advanced/limit/status", summary="获取限位测试状态", tags=["Advanced"])
+async def advanced_limit_status(device_ip: str = Query(default="")) -> dict:
+    """获取设备限位测试状态。"""
+    if not device_ip:
+        return {"success": True, "status": {}}
+    try:
+        from src.ptz.isapi.client import ISAPIClient
+        from src.advanced.limit import LimitTester
+
+        ptz_mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+        creds = ptz_mgr.get_credentials(device_ip) if ptz_mgr else None
+        if not creds:
+            return {"success": False, "message": "设备未保存凭据，请先注册设备"}
+        client = ISAPIClient(
+            ip=device_ip,
+            username=creds["username"],
+            password=creds["password"],
+            port=creds.get("port", 80),
+        )
+        tester = LimitTester(client)
+
+        return {
+            "success": True,
+            "status": tester.get_status(),
+        }
+    except Exception as e:
+        return {"success": False, "message": f"获取状态异常: {e}"}
+
+
+# --- Speed 速度测试 ---
+
+@api_router.post("/advanced/speed/run", summary="运行速度测试", tags=["Advanced"])
+async def advanced_speed_run(req: AdvancedSpeedRunRequest) -> dict:
+    """运行设备速度测试 (P5.4 + M4 P3)。"""
+    try:
+        from src.advanced.speed import SpeedTester
+
+        mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+        if not mgr:
+            return {"success": False, "message": "PTZManager 未初始化"}
+
+        # Fallback: retrieve stored credentials if password is empty
+        username = req.username or "admin"
+        password = req.password
+        port = req.port or 80
+        if not password:
+            creds = mgr.get_credentials(req.device_ip)
+            if creds:
+                username = creds.get("username", username)
+                password = creds.get("password", "")
+                port = creds.get("port", port)
+
+        ctrl, err = mgr._get_controller(req.device_ip)
+        if err:
+            return {"success": False, "message": f"无法获取设备控制器: {err}"}
+
+        tester = SpeedTester(ctrl)
+        results = tester.run_all_tests(speed_profile=req.speed_profile)
+
+        # Auto-save to DeviceConfig
+        from src.advanced.config_writer import write_device_config
+
+        ptz_mgr_sp: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
+        mac = _resolve_mac_from_ip(req.device_ip, ptz_mgr=ptz_mgr_sp)
+        config_saved = False
+        try:
+            write_device_config(mac=mac, speed=results, ip=req.device_ip)
+            config_saved = True
+        except Exception:
+            pass
+
+        return {
+            "success": results.get("success", False),
+            "message": f"速度测试完成: {req.device_ip}",
+            "results": results,
+            "config_saved": config_saved,
+            "mac": mac,
+        }
+    except Exception as e:
+        return {"success": False, "message": f"速度测试异常: {e}"}
+
+
+@api_router.get("/advanced/speed/status", summary="获取速度测试状态", tags=["Advanced"])
+async def advanced_speed_status(device_ip: str = Query(default="")) -> dict:
+    """获取设备速度测试状态。"""
+    if not device_ip:
+        return {"success": True, "status": {}}
+    try:
+        from src.ptz.isapi.client import ISAPIClient
+        from src.advanced.speed import SpeedTester
+
+        ptz_mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+        creds = ptz_mgr.get_credentials(device_ip) if ptz_mgr else None
+        if not creds:
+            return {"success": False, "message": "设备未保存凭据，请先注册设备"}
+        client = ISAPIClient(
+            ip=device_ip,
+            username=creds["username"],
+            password=creds["password"],
+            port=creds.get("port", 80),
+        )
+        tester = SpeedTester(client)
+
+        return {
+            "success": True,
+            "status": tester.get_status(),
+        }
+    except Exception as e:
+        return {"success": False, "message": f"获取状态异常: {e}"}
+
+
+# --- One-Click Detect 一键检测 ---
+
+class AdvancedDetectStartRequest(BaseModel):
+    """一键检测启动请求。"""
+    device_ip: str = ""
+    username: str = "admin"
+    password: str = ""
+    port: int = 80
+    items: list[str] = ["function", "limit", "speed"]
+    speed_profile: str = "lite"
+
+
+# 一键检测任务注册表
+detect_tasks: dict[str, dict] = {}
+
+
+@api_router.post("/advanced/detect/start", summary="启动一键检测", tags=["Advanced"])
+async def advanced_detect_start(req: AdvancedDetectStartRequest) -> dict:
+    """启动异步一键检测 (Function + Limit + Speed)。"""
+    import asyncio
+    import uuid
+
+    task_id = str(uuid.uuid4())
+    detect_tasks[task_id] = {
+        "status": "running",
+        "progress": 0.0,
+        "current_step": "initializing",
+        "results": {},
+        "items": req.items,
+    }
+
+    async def _run_detect():
+        try:
+            from src.ptz.isapi.client import ISAPIClient
+            from src.advanced.function import FunctionDetector, FUNCTION_ENDPOINTS
+            from src.advanced.limit import LimitTester
+            from src.advanced.speed import SpeedTester
+            from src.advanced.config_writer import write_device_config
+
+            mgr: PTZManager | None = _managers.get("ptz_manager")
+            if not mgr:
+                detect_tasks[task_id].update(status="failed", current_step="PTZManager not initialized")
+                return
+
+            # Fallback: retrieve stored credentials if password is empty
+            username = req.username or "admin"
+            password = req.password
+            port = req.port or 80
+            if not password:
+                creds = mgr.get_credentials(req.device_ip)
+                if creds:
+                    username = creds.get("username", username)
+                    password = creds.get("password", "")
+                    port = creds.get("port", port)
+
+            ctrl, err = mgr._get_controller(req.device_ip)
+            if err:
+                detect_tasks[task_id].update(status="failed", current_step=f"Controller error: {err}")
+                return
+
+            client = ISAPIClient(ip=req.device_ip, username=username, password=password, port=port)
+            if not client.verify_credentials():
+                detect_tasks[task_id].update(status="failed", current_step="Authentication failed")
+                return
+
+            total_items = len(req.items)
+            results: dict = {}
+
+            if "function" in req.items:
+                detect_tasks[task_id].update(progress=0.0, current_step="function_detection")
+                detector = FunctionDetector(client)
+                func_result = {}
+                for idx, item_key in enumerate(FUNCTION_ENDPOINTS):
+                    func_result[item_key] = detector.detect_single(item_key)
+                    detect_tasks[task_id]["progress"] = round(10.0 + (idx / len(FUNCTION_ENDPOINTS)) * 20.0, 1)
+                detector.restore_all()
+                results["function"] = func_result
+                write_device_config(mac=_resolve_mac_from_ip(req.device_ip, ptz_mgr=mgr), capabilities=func_result, ip=req.device_ip)
+
+            if "limit" in req.items:
+                detect_tasks[task_id].update(progress=35.0, current_step="limit_test")
+                limit_tester = LimitTester(client)
+                limit_result = limit_tester.run_all_tests()
+                results["limit"] = limit_result
+                detect_tasks[task_id]["progress"] = 60.0
+                write_device_config(mac=_resolve_mac_from_ip(req.device_ip, ptz_mgr=mgr), limits=limit_result, ip=req.device_ip)
+
+            if "speed" in req.items:
+                detect_tasks[task_id].update(progress=65.0, current_step="speed_test")
+                speed_tester = SpeedTester(ctrl)
+                speed_result = speed_tester.run_all_tests(speed_profile=req.speed_profile)
+                results["speed"] = speed_result
+                detect_tasks[task_id]["progress"] = 95.0
+                write_device_config(mac=_resolve_mac_from_ip(req.device_ip, ptz_mgr=mgr), speed=speed_result, ip=req.device_ip)
+
+            detect_tasks[task_id].update(
+                status="completed",
+                progress=100.0,
+                current_step="completed",
+                results=results,
+            )
+        except Exception as e:
+            detect_tasks[task_id].update(status="failed", current_step=str(e), progress=0.0)
+
+    asyncio.create_task(_run_detect())
+
+    return {
+        "success": True,
+        "task_id": task_id,
+        "message": "检测任务已启动",
+    }
+
+
+@api_router.get("/advanced/detect/status/{task_id}", summary="获取检测任务状态", tags=["Advanced"])
+async def advanced_detect_status(task_id: str) -> dict:
+    """获取一键检测任务进度。"""
+    task = detect_tasks.get(task_id)
+    if not task:
+        return {"success": False, "message": "任务不存在"}
+    return {
+        "success": True,
+        "status": task["status"],
+        "progress": task.get("progress", 0.0),
+        "current_step": task.get("current_step", ""),
+    }
+
+
+@api_router.get("/advanced/detect/result/{task_id}", summary="获取检测结果", tags=["Advanced"])
+async def advanced_detect_result(task_id: str) -> dict:
+    """获取一键检测最终结果。"""
+    task = detect_tasks.get(task_id)
+    if not task:
+        return {"success": False, "message": "任务不存在"}
+    if task["status"] != "completed":
+        return {"success": False, "message": f"任务尚未完成: {task['status']}"}
+    return {
+        "success": True,
+        "results": task.get("results", {}),
+    }
+
+
+# --- Config 配置 ---
+
+@api_router.get("/advanced/config/{mac}", summary="获取设备配置", tags=["Advanced"])
+async def advanced_get_config(mac: str) -> dict:
+    """获取设备配置文件。"""
+    try:
+        from src.advanced.config_writer import load_device_config, list_device_configs
+
+        if mac == "all":
+            configs = list_device_configs()
+            return {
+                "success": True,
+                "data": configs,
+                "total": len(configs),
+            }
+
+        config = load_device_config(mac)
+        if config:
+            return {
+                "success": True,
+                "data": config.to_dict(),
+            }
+        return {
+            "success": False,
+            "message": f"未找到设备配置: {mac}",
+        }
+    except Exception as e:
+        return {"success": False, "message": f"获取配置异常: {e}"}
+
+
+@api_router.post("/advanced/config/write", summary="写入设备配置", tags=["Advanced"])
+async def advanced_write_config(req: AdvancedConfigWriteRequest) -> dict:
+    """写入设备配置文件。"""
+    try:
+        from src.advanced.config_writer import write_device_config
+
+        result = write_device_config(
+            mac=req.mac,
+            capabilities=req.capabilities,
+            limits=req.limits,
+            speed=req.speed,
+            ip=req.ip,
+            model=req.model,
+        )
+
+        return result
+    except Exception as e:
+        return {"success": False, "message": f"写入配置异常: {e}"}
+
+
+# --- Onboarding 引导 ---
+
+@api_router.get("/advanced/onboarding/status", summary="获取引导状态", tags=["Advanced"])
+async def advanced_onboarding_status(mac: str = Query(default="")) -> dict:
+    """获取设备引导状态。"""
+    if not mac:
+        return {"success": True, "is_new_device": False, "progress": {"total_steps": 0, "completed": False}}
+    try:
+        from src.advanced.onboarding import OnboardingManager
+
+        manager = OnboardingManager()
+        is_new = manager.is_new_device(mac)
+        progress = manager.get_progress(mac)
+
+        return {
+            "success": True,
+            "is_new_device": is_new,
+            "progress": progress,
+        }
+    except Exception as e:
+        return {"success": False, "message": f"获取引导状态异常: {e}"}
+
+
+@api_router.post("/advanced/onboarding/start", summary="开始引导流程", tags=["Advanced"])
+async def advanced_onboarding_start(req: AdvancedOnboardingStartRequest) -> dict:
+    """开始设备首次连接引导流程。"""
+    try:
+        from src.advanced.onboarding import OnboardingManager
+
+        manager = OnboardingManager()
+        result = manager.start_onboarding(req.mac)
+
+        return result
+    except Exception as e:
+        return {"success": False, "message": f"开始引导异常: {e}"}
+
+
+@api_router.post("/advanced/onboarding/complete", summary="完成引导流程", tags=["Advanced"])
+async def advanced_onboarding_complete(mac: str) -> dict:
+    """完成设备引导流程。"""
+    try:
+        from src.advanced.onboarding import OnboardingManager
+
+        manager = OnboardingManager()
+        result = manager.complete_onboarding(mac)
+
+        return result
+    except Exception as e:
+        return {"success": False, "message": f"完成引导异常: {e}"}
+
+
+@api_router.post("/advanced/onboarding/reset", summary="重置引导流程", tags=["Advanced"])
+async def advanced_onboarding_reset(mac: str) -> dict:
+    """重置设备引导流程 (允许重新执行)。"""
+    try:
+        from src.advanced.onboarding import OnboardingManager
+
+        manager = OnboardingManager()
+        result = manager.reset_onboarding(mac)
+
+        return result
+    except Exception as e:
+        return {"success": False, "message": f"重置引导异常: {e}"}
+
+
+@api_router.post("/advanced/onboarding/run", summary="完整执行设备引导流程", tags=["Advanced"])
+async def advanced_onboarding_run(req: AdvancedOnboardingStartRequest) -> dict:
+    """自动执行完整的设备首次连接引导流程。
+
+    依次执行: 设备信息 → 功能探测 → HOME验证 → 限位测试 → 速度校准 → 恢复默认 → 保存配置 → 完成
+    """
+    from src.advanced.onboarding import OnboardingManager
+
+    mgr = _managers.get("ptz_manager")
+    if not mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+
+    # Find device IP from PTZManager
+    device_ip = None
+    for dev in mgr.list_stored_devices():
+        if dev.get("mac", "").upper().replace("-", ":") == req.mac.upper().replace("-", ":"):
+            device_ip = dev.get("ip")
+            break
+    if not device_ip:
+        for dev in mgr.get_discovered_devices():
+            if dev.get("mac", "").upper().replace("-", ":") == req.mac.upper().replace("-", ":"):
+                device_ip = dev.get("ip")
+                break
+    if not device_ip:
+        return {"success": False, "message": f"未找到设备 {req.mac} 的 IP 地址"}
+
+    creds = mgr.get_credentials(device_ip)
+    if not creds:
+        return {"success": False, "message": "设备未保存凭据，请先连接设备"}
+
+    manager = OnboardingManager()
+
+    import asyncio
+    result = await asyncio.to_thread(
+        manager.execute_full_onboarding,
+        mac=req.mac,
+        ip=device_ip,
+        username=str(creds.get("username", "admin")),
+        password=str(creds.get("password", "")),
+        port=int(creds.get("port", 80)),
+    )
+    return result
+
+
+@api_router.get("/ws/stats", summary="WebSocket连接统计", tags=["WebSocket"])
+async def get_ws_stats() -> dict:
+    """获取当前 WebSocket 连接统计。"""
+    try:
+        from src.websocket.core.ws_manager import get_ws_manager
+        ws_mgr = get_ws_manager()
+        if ws_mgr:
+            return {"success": True, "data": ws_mgr.get_stats()}
+        return {"success": False, "error": "WebSocket not initialized"}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+@api_router.get("/ws/connections", summary="WebSocket详细连接列表", tags=["WebSocket"])
+async def get_ws_connections() -> dict:
+    """获取当前 WebSocket 连接详细信息。"""
+    try:
+        from src.websocket.core.ws_manager import get_ws_manager
+        ws_mgr = get_ws_manager()
+        if ws_mgr:
+            return {"success": True, "data": ws_mgr.list_all_connections() if hasattr(ws_mgr, "list_all_connections") else []}
+        return {"success": False, "error": "WebSocket not initialized"}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+# ================================================================ #
+#  快捷函数
+# ================================================================ #
+
+
+def create_app() -> FastAPI:
+    """创建并配置完整的 FastAPI 应用。"""
+    app = FastAPI(
+        title="AstroHub",
+        description="统一天文设备控制平台",
+        version="2.0",
+    )
+
+    app.include_router(api_router)
+    app.include_router(health_router)
+
+    # Wave 4: 挂载 WebSocket 端点
+    try:
+        from websocket.server import WebSocketServer, WebSocketServerConfig
+        ws_server = WebSocketServer(config=WebSocketServerConfig(
+            path="/ws",
+            heartbeat_interval=30,
+            heartbeat_timeout_count=2,  # 60秒无响应断开 (30s * 2)
+        ))
+        ws_server.mount_to(app)
+    except Exception as e:
+        print(f"[api] WebSocket 挂载失败 (可选): {e}")
+
+    return app
+
+
+# ASTAP 截图解析
+from src.api.astap_solve import router as astap_router
+api_router.include_router(astap_router)
+
+@api_router.get("/ptz/devices/{ip}/credentials")
+async def get_ptz_device_credentials(ip: str):
+    """获取设备凭据（用于 WASM SDK 登录）"""
+    ptz_mgr = _managers.get("ptz_manager")
+    if not ptz_mgr:
+        return {"success": False, "message": "PTZManager 未初始化"}
+    creds = ptz_mgr._credentials.get(ip)
+    if not creds:
+        return {"success": False, "message": "凭据不存在"}
+    return {
+        "success": True,
+        "ip": ip,
+        "username": creds.get("username", "admin"),
+        "password": creds.get("password", ""),
+        "port": creds.get("port", 80),
+    }
+

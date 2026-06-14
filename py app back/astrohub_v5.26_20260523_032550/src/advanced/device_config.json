@@ -1,0 +1,305 @@
+{
+  "function_detection": {
+    "P4.3": {
+      "p_id": "P4.3",
+      "item": "gain",
+      "label": "Gain 模拟增益",
+      "supported": false,
+      "endpoint": "/Image/channels/1/gain",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "GainLevel": 0
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.1": {
+      "p_id": "P4.1",
+      "item": "ir_led",
+      "label": "IrLED 红外补光",
+      "supported": false,
+      "endpoint": "/Image/channels/1/IrLight",
+      "min_val": 1,
+      "max_val": 100,
+      "current_values": {
+        "brightnessLimit": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.2": {
+      "p_id": "P4.2",
+      "item": "white_balance",
+      "label": "白平衡",
+      "supported": false,
+      "endpoint": "/Image/channels/1/whiteBalance",
+      "min_val": 0,
+      "max_val": 255,
+      "current_values": {
+        "WhiteBalanceRed": 50,
+        "WhiteBalanceBlue": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.4": {
+      "p_id": "P4.4",
+      "item": "focus",
+      "label": "Focus 聚焦",
+      "supported": false,
+      "endpoint": "/Image/channels/1/focusConfiguration",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "focusStyle": "SEMIAUTOMATIC"
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.5": {
+      "p_id": "P4.5",
+      "item": "shutter",
+      "label": "快门速度（手动模式）",
+      "supported": false,
+      "endpoint": "/Image/channels/1/Shutter",
+      "min_val": "1/30000",
+      "max_val": "1/25",
+      "current_values": {
+        "ShutterLevel": "1/25"
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.6": {
+      "p_id": "P4.6",
+      "item": "slow_shutter",
+      "label": "慢快门",
+      "supported": false,
+      "endpoint": "/Image/channels/1/Shutter",
+      "min_val": "1/30000",
+      "max_val": null,
+      "current_values": {
+        "minShutterLevelLimit": "1/30000"
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.7": {
+      "p_id": "P4.7",
+      "item": "iris",
+      "label": "光圈 Iris",
+      "supported": false,
+      "endpoint": "/Image/channels/1/Iris",
+      "min_val": 0,
+      "max_val": 400,
+      "current_values": {
+        "IrisLevel": 160
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.8": {
+      "p_id": "P4.8",
+      "item": "shutter_repeat",
+      "label": "快门速度",
+      "supported": false,
+      "endpoint": "/Image/channels/1/Shutter",
+      "min_val": "1/30000",
+      "max_val": "1/25",
+      "current_values": {
+        "ShutterLevel": "1/25"
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.9": {
+      "p_id": "P4.9",
+      "item": "dnr_temporal",
+      "label": "数字降噪-时域",
+      "supported": false,
+      "endpoint": "/Image/channels/1/noiseReduce",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "mode": "general"
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.10": {
+      "p_id": "P4.10",
+      "item": "dnr_spatial",
+      "label": "数字降噪-空域",
+      "supported": false,
+      "endpoint": "/Image/channels/1/noiseReduce",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "mode": "general"
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.11": {
+      "p_id": "P4.11",
+      "item": "ircut",
+      "label": "IRCUT 滤波片/日夜转换",
+      "supported": false,
+      "endpoint": "/Image/channels/1/IrcutFilter",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "IrcutFilterAction": "day"
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.12": {
+      "p_id": "P4.12",
+      "item": "wdr",
+      "label": "WDR 宽动态",
+      "supported": false,
+      "endpoint": "/Image/channels/1/WDR",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "WDRLevel": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.13": {
+      "p_id": "P4.13",
+      "item": "blc",
+      "label": "BLC 背光补偿",
+      "supported": false,
+      "endpoint": "/Image/channels/1/BLC",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "enabled": 0
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.14": {
+      "p_id": "P4.14",
+      "item": "dehaze",
+      "label": "Dehaze 除雾",
+      "supported": false,
+      "endpoint": "/Image/channels/1/dehaze",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "DehazeLevel": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.15": {
+      "p_id": "P4.15",
+      "item": "sharpness",
+      "label": "Sharpness 锐度",
+      "supported": false,
+      "endpoint": "/Image/channels/1/Sharpness",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "SharpnessLevel": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.16": {
+      "p_id": "P4.16",
+      "item": "brightness",
+      "label": "亮度",
+      "supported": false,
+      "endpoint": "/Image/channels/1/color",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "brightnessLevel": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.17": {
+      "p_id": "P4.17",
+      "item": "saturation",
+      "label": "饱和度",
+      "supported": false,
+      "endpoint": "/Image/channels/1/color",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "saturationLevel": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.18": {
+      "p_id": "P4.18",
+      "item": "contrast",
+      "label": "对比度",
+      "supported": false,
+      "endpoint": "/Image/channels/1/color",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "contrastLevel": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.19": {
+      "p_id": "P4.19",
+      "item": "sharpness_repeat",
+      "label": "Sharpness 锐度 (P4.19)",
+      "supported": false,
+      "endpoint": "/Image/channels/1/Sharpness",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "SharpnessLevel": 50
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    },
+    "P4.20": {
+      "p_id": "P4.20",
+      "item": "mirror",
+      "label": "Mirror 镜像",
+      "supported": false,
+      "endpoint": "/Image/channels/1/ImageFlip",
+      "min_val": 0,
+      "max_val": 100,
+      "current_values": {
+        "ImageFlipStyle": "CENTER"
+      },
+      "test_results": [],
+      "restored": true,
+      "error": null
+    }
+  }
+}

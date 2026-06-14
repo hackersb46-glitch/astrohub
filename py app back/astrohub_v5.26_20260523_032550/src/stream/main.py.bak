@@ -1,0 +1,111 @@
+"""M3 Stream Service v1.0"""
+from __future__ import annotations
+import argparse
+import sys
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+
+def create_app() -> FastAPI:
+    from src.stream.api.router import router, set_managers
+    from src.stream.core.distributor import (
+        ConcurrentStreamManager,
+        HttpFlvServer,
+        WebSocketPusher,
+    )
+    from src.stream.core.preview import (
+        LatencyOptimizer,
+        ScreenshotManager,
+        WebPlayer,
+    )
+    from src.stream.core.recorder import RecordingManager
+    from src.stream.core.stream_manager import StreamConnector
+    from src.stream.core.stream_monitor import (
+        AutoReconnector,
+        StatusReporter,
+        StreamDisconnectDetector,
+    )
+    from src.stream.core.transcoder import Transcoder
+
+    stream_manager = StreamConnector()
+    transcoder = Transcoder()
+    websocket_pusher = WebSocketPusher()
+    http_flv_server = HttpFlvServer()
+    concurrency_manager = ConcurrentStreamManager()
+    web_player = WebPlayer()
+    latency_optimizer = LatencyOptimizer()
+    screenshot_manager = ScreenshotManager()
+    disconnect_detector = StreamDisconnectDetector()
+    reconnector = AutoReconnector()
+    status_reporter = StatusReporter()
+    recorder = RecordingManager()
+
+    set_managers(
+        stream_manager=stream_manager,
+        transcoder=transcoder,
+        websocket_pusher=websocket_pusher,
+        http_flv_server=http_flv_server,
+        concurrency_manager=concurrency_manager,
+        web_player=web_player,
+        latency_optimizer=latency_optimizer,
+        screenshot_manager=screenshot_manager,
+        disconnect_detector=disconnect_detector,
+        reconnector=reconnector,
+        status_reporter=status_reporter,
+        recorder=recorder,
+    )
+
+    app = FastAPI(
+        title="M3 Stream Service",
+        description="Stream service",
+        version="1.0",
+        lifespan=_lifespan,
+    )
+    app.include_router(router)
+
+    app.state.stream_manager = stream_manager
+    app.state.transcoder = transcoder
+    app.state.websocket_pusher = websocket_pusher
+    app.state.http_flv_server = http_flv_server
+    app.state.concurrency_manager = concurrency_manager
+    app.state.web_player = web_player
+    app.state.latency_optimizer = latency_optimizer
+    app.state.screenshot_manager = screenshot_manager
+    app.state.disconnect_detector = disconnect_detector
+    app.state.reconnector = reconnector
+    app.state.status_reporter = status_reporter
+    app.state.recorder = recorder
+
+    return app
+
+@asynccontextmanager
+async def _lifespan(app: FastAPI):
+    from src.stream.core.logger import LOG
+    disconnect_detector = app.state.disconnect_detector
+    reconnector = app.state.reconnector
+
+    def _do_reconnect(stream_id: str) -> dict:
+        stream_manager = app.state.stream_manager
+        return stream_manager.disconnect_stream(stream_id)
+
+    reconnector.set_reconnect_fn(_do_reconnect)
+
+    def _on_disconnect(stream_ids: list[str]) -> None:
+        for sid in stream_ids:
+            reconnector.handle_disconnect(sid)
+
+    disconnect_detector.start(on_disconnect=_on_disconnect)
+    status_reporter = app.state.status_reporter
+    status_reporter.start_auto_report()
+    LOG.done("M3 Stream Service started")
+
+    yield
+
+    LOG.info("Shutting down M3 Stream Service...")
+    disconnect_detector.stop()
+    transcoder = app.state.transcoder
+    for item in transcoder.list_transcodes():
+        transcoder.stop_transcode(item.get("stream_id", ""))
+    recorder = app.state.recorder
+    for item in recorder.list_records():
+        recorder.stop_recording(item.get("stream_id", ""))
+    LOG.done("M3 Stream Service stopped")

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "profiles": {
+    "minimax:cn": {
+      "type": "api_key",
+      "provider": "minimax",
+      "key": "sk-cp-gP573zA1cMyH1FsFqTW_Y6QdtSInU0rjakjJnFPtC9V8bkblFrISrvwfqyyx9xd3KqxmUG_2WmchcRVZcZ9kRN0PcKc5Cv7nmq8mtZ_LQWnheASm3DERMbY"
+    },
+    "deepseek:default": {
+      "type": "api_key",
+      "provider": "deepseek",
+      "key": "sk-0add83777dbe4ea3b74b5342aab22a3f"
+    },
+    "minimax-portal:default": {
+      "type": "oauth",
+      "provider": "minimax-portal",
+      "access": "sk-cp-gP573zA1cMyH1FsFqTW_Y6QdtSInU0rjakjJnFPtC9V8bkblFrISrvwfqyyx9xd3KqxmUG_2WmchcRVZcZ9kRN0PcKc5Cv7nmq8mtZ_LQWnheASm3DERMbY",
+      "refresh": "bnqllMkuNqe3Kj1OzRWjNWZvj5A6XrP7bZFOzjCyCho=",
+      "expires": 1808947224430
+    }
+  }
+}

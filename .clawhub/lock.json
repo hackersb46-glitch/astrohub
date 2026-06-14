@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": {
+    "self-improving-agent": {
+      "version": "3.0.21",
+      "installedAt": 1777915289351
+    },
+    "self-improving": {
+      "version": "1.2.16",
+      "installedAt": 1777915381107
+    },
+    "proactivity": {
+      "version": "1.0.1",
+      "installedAt": 1777915876626
+    },
+    "code-review": {
+      "version": "1.0.0",
+      "installedAt": 1777917611258
+    },
+    "project-documentation": {
+      "version": "1.0.0",
+      "installedAt": 1777917619181
+    },
+    "project-orchestrator": {
+      "version": "0.2.0",
+      "installedAt": 1777917953128
+    }
+  }
+}

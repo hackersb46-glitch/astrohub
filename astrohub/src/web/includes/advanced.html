@@ -1,0 +1,653 @@
+<!-- 高级功能页面 - v5.31 左中右布局 -->
+<div class="page" id="page-advanced">
+    <div class="adv-layout">
+        <!-- 左侧：测试项目 (25%) -->
+        <div class="adv-left">
+            <div class="adv-section-title">测试项目</div>
+            <div class="adv-menu">
+                <button class="adv-menu-item active" data-test="function" onclick="selectAdvTest('function')">
+                    <span class="menu-icon">🔍</span>
+                    <span>功能测试</span>
+                </button>
+                <button class="adv-menu-item" data-test="limit" onclick="selectAdvTest('limit')">
+                    <span class="menu-icon">📐</span>
+                    <span>限位测试</span>
+                </button>
+                <button class="adv-menu-item" data-test="speed" onclick="selectAdvTest('speed')">
+                    <span class="menu-icon">⚡</span>
+                    <span>速度测试</span>
+                </button>
+                <button class="adv-menu-item" data-test="stream" onclick="selectAdvTest('stream')">
+                    <span class="menu-icon">📡</span>
+                    <span>推流/存储</span>
+                </button>
+                <button class="adv-menu-item" data-test="astrocal" onclick="selectAdvTest('astrocal')">
+                    <span class="menu-icon">🌟</span>
+                    <span>天文校准</span>
+                </button>
+            </div>
+            <div class="adv-section-title" style="margin-top:16px">操作</div>
+            <div class="adv-actions">
+                <button class="btn btn-primary btn-block" id="btnAdvRun" onclick="runAdvTest()">▶ 开始测试</button>
+                <button class="btn btn-secondary btn-block" id="btnAdvStop" onclick="stopAdvTest()" disabled>⏹ 停止</button>
+            </div>
+        </div>
+
+        <!-- 中间：实时画面 (55%) -->
+        <div class="adv-center">
+            <div class="adv-section-title">实时画面</div>
+            <div class="adv-video-box" id="advVideoBox">
+                <div id="advVideoPlaceholder">
+                    <div style="color:#6e7681;text-align:center;padding:40px">
+                        <div style="font-size:48px;margin-bottom:16px">📹</div>
+                        <div id="advVideoStatus">连接设备后显示实时画面</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧：测试输出 (20%) -->
+        <div class="adv-right">
+            <div class="adv-section-title">测试输出</div>
+            <div class="adv-output" id="advOutput">
+                <div class="output-line info">系统就绪</div>
+            </div>
+            <div class="adv-section-title" style="margin-top:8px">测试结果</div>
+            <div class="adv-result" id="advResult">
+                <div style="color:#6e7681;text-align:center;padding:20px">
+                    测试结果将在此显示
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* 高级功能 v5.31 布局 */
+.adv-layout {
+    display: flex;
+    gap: 0;
+    min-height: calc(100vh - 120px);
+    background: #0d1117;
+}
+
+.adv-left {
+    width: 25%;
+    min-width: 200px;
+    background: #161b22;
+    border-right: 1px solid #21262d;
+    padding: 12px;
+}
+
+.adv-center {
+    width: 55%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.adv-right {
+    width: 20%;
+    min-width: 240px;
+    background: #161b22;
+    border-left: 1px solid #21262d;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.adv-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #8b949e;
+    padding: 8px 0;
+    border-bottom: 1px solid #21262d;
+    margin-bottom: 8px;
+}
+
+.adv-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    margin: 4px 0;
+    border-radius: 6px;
+    background: #0d1117;
+    border: 1px solid #21262d;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+}
+
+.adv-menu-item:hover {
+    border-color: #30363d;
+    color: #e6edf3;
+}
+
+.adv-menu-item.active {
+    background: #238636;
+    border-color: #238636;
+    color: #fff;
+}
+
+.menu-icon {
+    font-size: 16px;
+}
+
+.adv-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.adv-video-box {
+    flex: 1;
+    background: #161b22;
+    border-radius: 8px;
+    border: 1px solid #21262d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+.adv-output {
+    flex: 1;
+    background: #0d1117;
+    border-radius: 6px;
+    border: 1px solid #21262d;
+    padding: 8px;
+    overflow-y: auto;
+    max-height: 300px;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+}
+
+.output-line {
+    padding: 2px 0;
+    line-height: 1.5;
+}
+
+.output-line.info { color: #8b949e; }
+.output-line.success { color: #3fb950; }
+.output-line.error { color: #f85149; }
+.output-line.warn { color: #d29922; }
+.output-line.test { color: #58a6ff; }
+
+.adv-result {
+    flex: 1;
+    background: #21262d;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    padding: 12px;
+    overflow-y: auto;
+    font-size: 12px;
+}
+</style>
+
+<script>
+// 高级功能页面控制
+let currentAdvTest = 'function';
+
+function selectAdvTest(test) {
+    currentAdvTest = test;
+    document.querySelectorAll('.adv-menu-item').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-test="${test}"]`).classList.add('active');
+    addAdvOutput('info', '选择测试: ' + test);
+}
+
+function addAdvOutput(type, text) {
+    const output = document.getElementById('advOutput');
+    const line = document.createElement('div');
+    line.className = 'output-line ' + type;
+    const time = new Date().toLocaleTimeString();
+    line.textContent = '[' + time + '] ' + text;
+    output.appendChild(line);
+    output.scrollTop = output.scrollHeight;
+}
+
+function runAdvTest() {
+    // 尝试从全局 connectedDevice 或下拉框获取设备
+    var deviceIp = '';
+    var username = 'admin';
+    var password = '';
+
+    if (window.connectedDevice && window.connectedDevice.ip) {
+        deviceIp = window.connectedDevice.ip;
+        username = window.connectedDevice.username || 'admin';
+        password = window.connectedDevice.password || '';
+    } else {
+        // 从下拉框获取
+        var deviceSelect = document.getElementById('advConnectDevice');
+        if (deviceSelect && deviceSelect.value) {
+            deviceIp = deviceSelect.value;
+        } else {
+            addAdvOutput('error', '请先连接设备');
+            return;
+        }
+    }
+
+    const btnRun = document.getElementById('btnAdvRun');
+    const btnStop = document.getElementById('btnAdvStop');
+    btnRun.disabled = true;
+    btnStop.disabled = false;
+
+    addAdvOutput('info', '开始测试: ' + currentAdvTest);
+    addAdvOutput('info', '设备: ' + deviceIp);
+
+    const apiMap = {
+        'function': '/api/v1/advanced/function/run',
+        'limit': '/api/v1/advanced/limit/run',
+        'speed': '/api/v1/advanced/speed/run',
+        'astrocal': '/api/v1/calibrate/start'
+    };
+
+    if (currentAdvTest === 'stream') {
+        addAdvOutput('info', '推流控制，请使用主控台');
+        btnRun.disabled = false;
+        btnStop.disabled = true;
+        return;
+    }
+
+    if (currentAdvTest === 'astrocal') {
+        // 天文校准 - 跳转到校准页面
+        startAstroCalibration(deviceIp, username, password);
+        btnRun.disabled = false;
+        btnStop.disabled = true;
+        return;
+    }
+
+    const apiUrl = apiMap[currentAdvTest];
+    if (!apiUrl) {
+        addAdvOutput('error', '未知测试类型');
+        btnRun.disabled = false;
+        btnStop.disabled = true;
+        return;
+    }
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            device_ip: deviceIp,
+            username: username,
+            password: password
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        btnRun.disabled = false;
+        btnStop.disabled = true;
+
+        if (data.success || data.status) {
+            addAdvOutput('success', '测试完成');
+            renderAdvResult(data);
+        } else {
+            addAdvOutput('error', data.message || '测试失败');
+        }
+    })
+    .catch(e => {
+        btnRun.disabled = false;
+        btnStop.disabled = true;
+        addAdvOutput('error', '请求异常: ' + e.message);
+    });
+}
+
+function stopAdvTest() {
+    addAdvOutput('warn', '停止测试');
+    document.getElementById('btnAdvRun').disabled = false;
+    document.getElementById('btnAdvStop').disabled = true;
+}
+
+function renderAdvResult(data) {
+    const resultEl = document.getElementById('advResult');
+    const results = data.results || data;
+
+    // 检测结果类型
+    if (results.pan_min !== undefined || results.tilt_min !== undefined) {
+        // 限位测试结果
+        let html = '<table style="width:100%;font-size:11px;border-collapse:collapse">';
+        html += '<tr style="border-bottom:1px solid #30363d"><th style="text-align:left;padding:4px">轴</th><th style="text-align:center;padding:4px">下限</th><th style="text-align:right;padding:4px">上限</th></tr>';
+
+        if (results.pan_min !== undefined) {
+            html += '<tr style="border-bottom:1px solid #21262d"><td style="padding:4px">P轴</td><td style="text-align:center;padding:4px">' + results.pan_min + '</td><td style="text-align:right;padding:4px">' + results.pan_max + '</td></tr>';
+        }
+        if (results.tilt_min !== undefined) {
+            html += '<tr style="border-bottom:1px solid #21262d"><td style="padding:4px">T轴</td><td style="text-align:center;padding:4px">' + results.tilt_min + '</td><td style="text-align:right;padding:4px">' + results.tilt_max + '</td></tr>';
+        }
+        if (results.zoom_min !== undefined) {
+            html += '<tr style="border-bottom:1px solid #21262d"><td style="padding:4px">Z轴</td><td style="text-align:center;padding:4px">' + results.zoom_min + '</td><td style="text-align:right;padding:4px">' + results.zoom_max + '</td></tr>';
+        }
+
+        html += '</table>';
+
+        // 翻转状态
+        if (results.has_flip !== undefined) {
+            html += '<div style="margin-top:8px;padding:8px;background:#161b22;border-radius:4px">';
+            html += '<span style="color:#8b949e">翻转支持:</span> ';
+            html += results.has_flip ? '<span style="color:#3fb950">✓ 是</span>' : '<span style="color:#f85149">✗ 否</span>';
+            html += '</div>';
+        }
+
+        // 稳定性验证
+        if (results.stability_check !== undefined) {
+            html += '<div style="margin-top:4px;padding:8px;background:#161b22;border-radius:4px">';
+            html += '<span style="color:#8b949e">稳定性:</span> ';
+            html += results.stability_check ? '<span style="color:#3fb950">✓ 通过</span>' : '<span style="color:#f85149">✗ 失败</span>';
+            html += '</div>';
+        }
+
+        resultEl.innerHTML = html;
+    } else {
+        // 功能测试结果
+        let html = '<table style="width:100%;font-size:11px;border-collapse:collapse">';
+        html += '<tr style="border-bottom:1px solid #30363d"><th style="text-align:left;padding:4px">项目</th><th style="text-align:center;padding:4px">支持</th><th style="text-align:right;padding:4px">范围</th></tr>';
+
+        for (const [key, val] of Object.entries(results)) {
+            if (typeof val === 'object' && val !== null) {
+                const label = val.label || key;
+                const supported = val.supported ? 'Y' : 'N';
+                const range = (val.min_val || '-') + '~' + (val.max_val || '-');
+                html += '<tr style="border-bottom:1px solid #21262d"><td style="padding:4px">' + label + '</td><td style="text-align:center;padding:4px">' + supported + '</td><td style="text-align:right;padding:4px">' + range + '</td></tr>';
+            }
+        }
+
+        html += '</table>';
+        resultEl.innerHTML = html;
+    }
+}
+
+// 更新视频状态
+function updateAdvVideoStatus() {
+    const statusEl = document.getElementById('advVideoStatus');
+    if (window.connectedDevice && window.connectedDevice.ip) {
+        if (statusEl) statusEl.textContent = '已连接: ' + window.connectedDevice.ip;
+    } else {
+        if (statusEl) statusEl.textContent = '连接设备后显示实时画面';
+    }
+}
+
+// 天文校准功能
+let astroCalSession = null;
+let astroCalMethod = 'manual'; // 'manual' or 'auto'
+
+function startAstroCalibration(deviceIp, username, password) {
+    addAdvOutput('info', '启动天文校准...');
+    
+    // 获取观测站位置（从配置或默认值）
+    const obsLat = window.astroCalConfig?.obs_lat || 29.45;
+    const obsLon = window.astroCalConfig?.obs_lon || 100.33;
+    
+    fetch('/api/v1/calibrate/start', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            device_ip: deviceIp,
+            obs_lat: obsLat,
+            obs_lon: obsLon,
+            method: astroCalMethod
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            astroCalSession = deviceIp;
+            addAdvOutput('success', '校准会话已创建');
+            
+            if (astroCalMethod === 'manual' && data.recommended_stars) {
+                showAstroCalStars(data.recommended_stars);
+            } else {
+                addAdvOutput('info', '请拍摄天空进行星图解析');
+            }
+            
+            renderAstroCalPanel();
+        } else {
+            addAdvOutput('error', data.message || '启动失败');
+        }
+    })
+    .catch(e => {
+        addAdvOutput('error', '请求异常: ' + e.message);
+    });
+}
+
+function showAstroCalStars(stars) {
+    addAdvOutput('info', '推荐校准星:');
+    stars.forEach((star, i) => {
+        addAdvOutput('test', (i+1) + '. ' + star.name + ' (Az=' + star.az.toFixed(1) + ', Alt=' + star.alt.toFixed(1) + ')');
+    });
+}
+
+function renderAstroCalPanel() {
+    const resultEl = document.getElementById('advResult');
+    
+    let html = '<div style="font-size:12px">';
+    html += '<div style="margin-bottom:8px;font-weight:600;color:#58a6ff">🌟 天文校准</div>';
+    
+    // 校准方法选择
+    html += '<div style="margin-bottom:12px">';
+    html += '<label style="color:#8b949e;margin-right:12px"><input type="radio" name="calMethod" value="manual" ' + (astroCalMethod === 'manual' ? 'checked' : '') + ' onchange="setAstroCalMethod(\'manual\')"> 手动对准</label>';
+    html += '<label style="color:#8b949e"><input type="radio" name="calMethod" value="auto" ' + (astroCalMethod === 'auto' ? 'checked' : '') + ' onchange="setAstroCalMethod(\'auto\')"> 自动解析</label>';
+    html += '</div>';
+    
+    // 操作区域
+    if (astroCalMethod === 'manual') {
+        html += '<div style="margin-bottom:8px">';
+        html += '<select id="astroCalStar" style="width:100%;padding:6px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0">';
+        html += '<option value="">选择恒星</option>';
+        html += '</select>';
+        html += '</div>';
+        html += '<button class="btn btn-primary btn-sm" style="width:100%" onclick="recordAstroCalPoint()">📍 记录当前位置</button>';
+    } else {
+        html += '<button class="btn btn-primary btn-sm" style="width:100%;margin-bottom:8px" onclick="captureAndSolve()">📷 拍摄并解析</button>';
+    }
+    
+    // 状态显示
+    html += '<div id="astroCalStatus" style="margin-top:12px;padding:8px;background:#0d1117;border-radius:4px;color:#8b949e">';
+    html += '等待操作...';
+    html += '</div>';
+    
+    // 计算按钮
+    html += '<div style="margin-top:12px;display:flex;gap:8px">';
+    html += '<button class="btn btn-warning btn-sm" style="flex:1" onclick="computeAstroCal()">计算参数</button>';
+    html += '<button class="btn btn-secondary btn-sm" style="flex:1" onclick="saveAstroCal()">保存</button>';
+    html += '</div>';
+    
+    html += '</div>';
+    resultEl.innerHTML = html;
+    
+    // 加载推荐星
+    if (astroCalMethod === 'manual') {
+        loadAstroCalStars();
+    }
+}
+
+function setAstroCalMethod(method) {
+    astroCalMethod = method;
+    renderAstroCalPanel();
+}
+
+function loadAstroCalStars() {
+    if (!window.connectedDevice) return;
+    
+    const obsLat = window.astroCalConfig?.obs_lat || 29.45;
+    const obsLon = window.astroCalConfig?.obs_lon || 100.33;
+    
+    fetch('/api/v1/calibrate/stars/recommended?lat=' + obsLat + '&lon=' + obsLon + '&count=5')
+    .then(r => r.json())
+    .then(data => {
+        if (data.success && data.recommended_stars) {
+            const select = document.getElementById('astroCalStar');
+            if (select) {
+                select.innerHTML = '<option value="">选择恒星</option>';
+                data.recommended_stars.forEach(star => {
+                    select.innerHTML += '<option value="' + star.name + '">' + star.name + ' (Az=' + star.az.toFixed(1) + ', Alt=' + star.alt.toFixed(1) + ')</option>';
+                });
+            }
+        }
+    });
+}
+
+function recordAstroCalPoint() {
+    if (!astroCalSession || !window.connectedDevice) {
+        addAdvOutput('error', '请先启动校准');
+        return;
+    }
+    
+    const starSelect = document.getElementById('astroCalStar');
+    const starName = starSelect ? starSelect.value : '';
+    
+    if (!starName) {
+        addAdvOutput('warn', '请先选择恒星');
+        return;
+    }
+    
+    // 先选择恒星
+    fetch('/api/v1/calibrate/select_star', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            device_ip: astroCalSession,
+            star_name: starName
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (!data.success) {
+            addAdvOutput('error', data.message || '选择失败');
+            return;
+        }
+        
+        // 获取当前PTZ位置并记录
+        const pan = window.connectedDevice.lastPan || 0;
+        const tilt = window.connectedDevice.lastTilt || 0;
+        
+        return fetch('/api/v1/calibrate/record', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                device_ip: astroCalSession,
+                pan: pan,
+                tilt: tilt
+            })
+        });
+    })
+    .then(r => r && r.json())
+    .then(data => {
+        if (data && data.success) {
+            addAdvOutput('success', '记录校准点 #' + data.point_index);
+            updateAstroCalStatus(data.coverage);
+        } else if (data) {
+            addAdvOutput('error', data.message || '记录失败');
+        }
+    })
+    .catch(e => addAdvOutput('error', '请求异常: ' + e.message));
+}
+
+function captureAndSolve() {
+    if (!astroCalSession) {
+        addAdvOutput('error', '请先启动校准');
+        return;
+    }
+    
+    addAdvOutput('info', '拍摄并解析中...');
+    
+    const pan = window.connectedDevice?.lastPan || 0;
+    const tilt = window.connectedDevice?.lastTilt || 0;
+    
+    fetch('/api/v1/calibrate/capture', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            device_ip: astroCalSession,
+            pan: pan,
+            tilt: tilt
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            addAdvOutput('success', '解析成功: RA=' + data.ra.toFixed(2) + 'h, DEC=' + data.dec.toFixed(2) + '°');
+            updateAstroCalStatus(data.coverage);
+        } else {
+            addAdvOutput('error', data.message || '解析失败');
+        }
+    })
+    .catch(e => addAdvOutput('error', '请求异常: ' + e.message));
+}
+
+function updateAstroCalStatus(coverage) {
+    const statusEl = document.getElementById('astroCalStatus');
+    if (!statusEl || !coverage) return;
+    
+    let html = '校准点: ' + (coverage.total_points || 0) + ' | ';
+    html += 'Az覆盖: ' + coverage.az_spread.toFixed(0) + '° | ';
+    html += 'Alt覆盖: ' + coverage.alt_spread.toFixed(0) + '°';
+    
+    if (coverage.needs_more) {
+        html += '<br><span style="color:#d29922">需要更多校准点</span>';
+    } else {
+        html += '<br><span style="color:#3fb950">可以计算参数</span>';
+    }
+    
+    statusEl.innerHTML = html;
+}
+
+function computeAstroCal() {
+    if (!astroCalSession) {
+        addAdvOutput('error', '请先启动校准');
+        return;
+    }
+    
+    addAdvOutput('info', '计算校准参数...');
+    
+    fetch('/api/v1/calibrate/compute', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({device_ip: astroCalSession})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            addAdvOutput('success', '计算成功!');
+            if (data.params) {
+                addAdvOutput('info', 'IA=' + data.params.IA?.toFixed(3) + '°, IH=' + data.params.IH?.toFixed(3) + '°');
+            }
+            if (data.rms) {
+                addAdvOutput('info', 'RMS: Az=' + (data.rms.az || 0).toFixed(3) + '°, Alt=' + (data.rms.alt || 0).toFixed(3) + '°');
+            }
+        } else {
+            addAdvOutput('error', data.message || '计算失败');
+        }
+    })
+    .catch(e => addAdvOutput('error', '请求异常: ' + e.message));
+}
+
+function saveAstroCal() {
+    if (!astroCalSession) {
+        addAdvOutput('error', '请先完成校准计算');
+        return;
+    }
+    
+    fetch('/api/v1/calibrate/save', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({device_ip: astroCalSession})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            addAdvOutput('success', '校准结果已保存');
+        } else {
+            addAdvOutput('error', data.message || '保存失败');
+        }
+    })
+    .catch(e => addAdvOutput('error', '请求异常: ' + e.message));
+}
+</script>
