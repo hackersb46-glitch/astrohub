@@ -1484,6 +1484,8 @@ function showStartupProgress() {
                         };
                         // Update button immediately
                         if (window.updateDeviceStatus) window.updateDeviceStatus();
+                        // v7.31: 连接成功后立即启用所有控件
+                        if (window.enableAllControls) window.enableAllControls();
                         // 动态加载设备图像参数(白平衡、快门、光圈、降噪、锐度、OSD)
                         // v5.42: 增加延迟确保设备连接完成
                         setTimeout(function() {
@@ -1539,6 +1541,8 @@ function showStartupProgress() {
                                 ip: dev.ip, model: dev.model || '', name: dev.name || '', device_name: dev.device_name || '',
                                 mac: dev.mac || '', username: 'admin', password: '', port: 80, online: true
                             };
+                            // v7.31: 连接成功后启用所有控件
+                            if (window.enableAllControls) window.enableAllControls();
                             if (window.clickLogin2) { window.clickLogin2(); }
                               if (window.updateDeviceStatus) window.updateDeviceStatus();
                         }
@@ -1571,6 +1575,8 @@ function showStartupProgress() {
                             mac: dev.mac || '', username: username, password: password, port: port, online: true
                         };
                         addLog('info', '已连接设备: ' + window.connectedDevice.ip);
+                        // v7.31: 连接成功后启用所有控件
+                        if (window.enableAllControls) window.enableAllControls();
                         // 动态加载设备图像参数
                         setTimeout(function() {
                             console.log('[CONNECT2] Calling loadDeviceImageParams for:', ip);
