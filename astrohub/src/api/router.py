@@ -511,46 +511,67 @@ async def set_active_device(mac: str) -> dict:
 
 @api_router.post("/devices", summary="注册设备", tags=["Devices"])
 async def register_device(req: AddDeviceRequest) -> dict:
-    """手动添加设备（IP + 凭据）并自动设为活跃。"""
+    """手动添加设备（IP + 凭据）并自动设为活跃。
+    
+    v7.17: 必须有 MAC 地址才能注册，如果没有则从 SADP 发现中查找。
+    """
     from src.advanced.device_config import set_current_device
     
     mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
     if not mgr:
         return {"success": False, "message": "PTZManager 未初始化"}
+    
+    # v7.17: 如果没有 MAC，从 SADP 发现中查找
+    device_mac = req.mac
+    device_model = req.model
+    device_name = req.name
+    
+    if not device_mac:
+        # 检查 SADP 发现中是否有该 IP 的设备
+        sadp_devices = mgr._discovered
+        for mac, info in sadp_devices.items():
+            if info.ip == req.ip:
+                device_mac = mac
+                device_model = device_model or getattr(info, 'model', None)
+                device_name = device_name or getattr(info, 'device_name', None)
+                break
+        
+        if not device_mac:
+            return {"success": False, "message": f"未发现设备 {req.ip}，请先执行 SADP 发现"}
 
+    # 使用正确的 MAC 保存
     mgr.save_credentials(
         ip=req.ip,
         username=req.username,
         password=req.password,
         port=req.port,
-        mac=req.mac,
-        model=req.model,
-        name=req.name,
+        mac=device_mac,  # v7.17: 必须使用真实 MAC
+        model=device_model,
+        name=device_name,
     )
 
-    # 自动注册到 DeviceManager
+    # 注册到 DeviceManager
     dm: DeviceManager | None = _managers.get("device_manager")  # type: ignore[assignment]
     if dm:
         dm.register_device(
-            mac=req.mac or req.ip,
+            mac=device_mac,  # v7.17: 使用真实 MAC
             ip=req.ip,
-            name=req.name or f"PTZ-{req.ip}",  # v7.16: 简化名称
-            model=req.model or "PTZ",  # v7.16: 简化型号
+            name=device_name or f"PTZ-{req.ip}",
+            model=device_model or "PTZ",
         )
     
     # 设为活跃设备
-    if req.mac:
-        set_current_device(req.mac, ip=req.ip, model=req.model, port=req.port)
+    set_current_device(device_mac, ip=req.ip, model=device_model, port=req.port)
 
     return {
         "success": True,
-        "message": f"设备已保存并设为活跃: {req.ip}",
+        "message": f"设备已保存: {device_mac} @ {req.ip}",
         "device": {
             "ip": req.ip,
             "port": req.port,
-            "name": req.name,
-            "model": req.model,
-            "mac": req.mac,
+            "name": device_name,
+            "model": device_model,
+            "mac": device_mac,
         },
     }
 

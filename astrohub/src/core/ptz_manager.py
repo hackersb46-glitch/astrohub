@@ -1468,20 +1468,27 @@ class PTZManager:
     def save_credentials(self, ip: str, username: str, password: str,
                          port: int = 80, mac: str = "", model: str = "",
                          name: str = "") -> None:
-        """保存设备凭据到内存 + 配置文件。"""
+        """保存设备凭据到内存 + 配置文件。
+        
+        v7.17: 必须有真实 MAC 地址才能保存。
+        """
+        if not mac or mac == ip:
+            LOG.log("warning", f"拒绝保存无效 MAC: {mac} (IP: {ip})")
+            return
+        
         self._credentials[ip] = {
             "username": username,
             "password": password,
             "port": port,
         }
-        self.config.upsert_device(mac or ip, {
+        self.config.upsert_device(mac, {  # v7.17: 只用真实 MAC 作为 key
             "ip": ip,
             "username": username,
             "password": password,
             "port": port,
             "model": model,
             "name": name,
-            "mac": mac or ip,
+            "mac": mac,  # v7.17: 真实 MAC
             "connected": False,
         })
 
