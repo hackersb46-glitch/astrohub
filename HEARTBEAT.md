@@ -1,8 +1,32 @@
 # 心跳与任务状态
 
-**最后更新**: 2026-06-14 22:17
-**状态**: v7.12 已推送到 GitHub
+**最后更新**: 2026-06-15 07:21
+**状态**: v7.30 开发中
 **工作空间**: C:\Users\admin\.openclaw\agents\dev-factory\astrohub
+
+---
+
+## v7.30 当前任务
+
+| 序号 | 问题 | 状态 |
+|------|------|------|
+| 1 | 视频窗体宽度限定1280 max，16:9横版 | ✅ 已修复 |
+| 2 | 刷新后ISAPI连接正常但显示"请连接设备" | ✅ 已修复 |
+| 3 | 增益/OSD/PTZ开关未禁用 | ✅ 已修复 |
+| 4 | 主控台模块级别禁用灰色 | 待确认 |
+
+---
+
+## v7.30 修复详情
+
+### 问题2修复
+- 移除 WASM `cbInitPluginComplete` 中创建覆盖层的逻辑
+- 覆盖层由 `restoreConnectionState` 和 disconnect 事件管理
+
+### 问题3修复
+- 修改 `loadDeviceImageParams` 函数
+- 不因缺少 function.json 而禁用画面控制
+- 设备已连接时显示 toast 提示，不调用 `disableImageControls`
 
 ---
 
@@ -18,28 +42,13 @@
 
 ---
 
-## 关键修复
-
-### 设备状态字段
-```
-active_device  = "当前在用"  → 断开就清空
-last_connected = "上次用过" → 断开不清空，保留记忆
-```
-
-### ISAPI 端点分离
-- 曝光模式: `/exposure` + `<ExposureType>`
-- 快门: `/Shutter` + `<ShutterLevel>` (独立端点)
-- 光圈: `/Iris` + `<IrisLevel>` (独立端点)
-
----
-
 ## 项目结构
 
 ```
 astrohub/
 ├── src/main/              # 主模块入口
 │   ├── main.py            # 程序入口
-│   └── constants.py       # 版本号 v7.12
+│   └── constants.py       # 版本号
 ├── src/api/router.py      # API 路由
 ├── src/core/ptz_manager.py # PTZ 管理器
 ├── src/web/               # 前端
@@ -62,5 +71,4 @@ python -m src.main.main --headless
 ## Git 仓库
 
 - **地址**: https://github.com/hackersb46-glitch/astrohub
-- **文件数**: 315 个
-- **最后提交**: v7.12
+- **最后提交**: v7.30

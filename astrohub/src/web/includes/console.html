@@ -274,6 +274,18 @@
         </div>
 
 <style>
+/* v7.30: 模块禁用样式 - 保留折叠展开功能 */
+.section-disabled .collapsible-content {
+    opacity: 0.4;
+    pointer-events: none;
+}
+.section-disabled .collapsible-header {
+    opacity: 0.6;
+}
+.section-disabled .collapsible-header:hover {
+    cursor: pointer;
+}
+
 /* v6.02: 拨杆开关样式 */
 .toggle-switch {
     position: relative;
@@ -399,6 +411,15 @@ var functionCacheLoaded = false;
 
 // v6.20 + v7.0: 禁用所有控制区域（PTZ + 媒体 + 跟踪 + 画面）
 function disableImageControls(reason) {
+    // v7.30: 模块级别禁用灰色样式
+    var sections = ['ptzControlSection', 'trackControlSection', 'mediaControlSection', 'imageControlSection'];
+    sections.forEach(function(sectionId) {
+        var section = document.getElementById(sectionId);
+        if (section) {
+            section.classList.add('section-disabled');
+        }
+    });
+    
     // v7.11: 禁用画面控制控件（包括增益）
     var controls = [
         'consoleBrightness', 'consoleContrast', 'consoleSaturation', 'consoleSharpness',
@@ -466,6 +487,15 @@ function disableImageControls(reason) {
 
 // v6.20 + v7.0: 启用所有控制区域
 function enableImageControls() {
+    // v7.30: 移除模块禁用样式
+    var sections = ['ptzControlSection', 'trackControlSection', 'mediaControlSection', 'imageControlSection'];
+    sections.forEach(function(sectionId) {
+        var section = document.getElementById(sectionId);
+        if (section) {
+            section.classList.remove('section-disabled');
+        }
+    });
+    
     // v7.11: 启用画面控制控件（包括增益）
     var controls = [
         'consoleBrightness', 'consoleContrast', 'consoleSaturation', 'consoleSharpness',
