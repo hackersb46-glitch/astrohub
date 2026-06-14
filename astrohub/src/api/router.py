@@ -408,8 +408,8 @@ async def list_devices() -> dict:
             no_mac.append({
                 "mac": "",
                 "ip": dev.get("ip", ""),
-                "name": dev.get("name", "") or dev.get("device_name", ""),
-                "model": dev.get("model", ""),
+                "name": dev.get("name", "") or dev.get("device_name", "") or f"PTZ-{dev.get('ip', '')}",  # v7.16: 简化名称
+                "model": dev.get("model", "") or "PTZ",  # v7.16: 简化型号
                 "source": "manual",
                 "online": False,
                 "activated": False,
@@ -436,16 +436,31 @@ async def list_devices() -> dict:
             keyed[sadp_mac] = {
                 "mac": sadp_mac,
                 "ip": sadp.get("ip", ""),
-                "name": sadp.get("device_name") or sadp.get("name", ""),
-                "model": sadp.get("model", ""),
+                "name": sadp.get("device_name") or sadp.get("name", "") or f"PTZ-{sadp.get('ip', '')}",  # v7.16: 简化名称
+                "model": sadp.get("model", "") or "PTZ",  # v7.16: 简化型号
                 "source": "sadp",
                 "online": False,
                 "activated": sadp.get("activated", False),
                 "has_credentials": False,
             }
 
-    # --- 构建最终列表 + 在线状态 ---
-    all_devices: list[dict[str, Any]] = list(keyed.values()) + no_mac
+    # --- 构建最终列表 + 在线状态 + v7.16: 按 IP 去重 ---
+    # 优先保留有 MAC 的记录，无 MAC 的作为补充
+    ip_to_device: dict[str, dict[str, Any]] = {}
+    
+    # 先添加有 MAC 的设备
+    for dev in keyed.values():
+        ip = dev.get("ip", "")
+        if ip:
+            ip_to_device[ip] = dev
+    
+    # 再添加无 MAC 的设备（如果 IP 不重复）
+    for dev in no_mac:
+        ip = dev.get("ip", "")
+        if ip and ip not in ip_to_device:
+            ip_to_device[ip] = dev
+    
+    all_devices = list(ip_to_device.values())
     for dev in all_devices:
         ip = dev.get("ip", "")
         dev["online"] = ip in online_ips
@@ -519,8 +534,8 @@ async def register_device(req: AddDeviceRequest) -> dict:
         dm.register_device(
             mac=req.mac or req.ip,
             ip=req.ip,
-            name=req.name or f"Hikvision-{req.ip}",
-            model=req.model or "Hikvision PTZ",
+            name=req.name or f"PTZ-{req.ip}",  # v7.16: 简化名称
+            model=req.model or "PTZ",  # v7.16: 简化型号
         )
     
     # 设为活跃设备
