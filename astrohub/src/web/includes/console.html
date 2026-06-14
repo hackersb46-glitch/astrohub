@@ -101,7 +101,7 @@
                         <!-- 实时画面 -->
                         <h3 style="font-size:15px;color:#3fb950;margin:0 0 8px">📺 实时画面</h3>
                         <div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;margin-bottom:12px;overflow:hidden;position:relative;width:100%;">
-                            <div id="divPlugin" style="width:100%;aspect-ratio:16/9;display:block;background:#000;"></div>
+                            <div id="divPlugin" style="width:100%;max-width:1280px;aspect-ratio:16/9;display:block;background:#000;margin:0 auto;"></div>
                         </div>
                         <!-- 媒体操作（折叠，整合Live Stack + 码流） -->
                         <div class="collapsible-section collapsed" id="mediaControlSection">
@@ -1096,6 +1096,12 @@ function setExposureMode(mode) {
 
 // v5.47: 更新快门光圈禁用状态
 function updateShutterIrisState() {
+    // v7.30: 检查设备是否连接
+    if (!window.connectedDevice || !window.connectedDevice.ip) {
+        // 设备未连接，所有控件保持禁用
+        return;
+    }
+    
     var exposureMode = document.getElementById('exposureMode');
     var shutterSelect = document.getElementById('shutterSpeed');
     var irisSelect = document.getElementById('irisLevel');

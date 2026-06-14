@@ -111,35 +111,58 @@ app.include_router(health_router)
 # app.include_router(calibrate_router)  # v7.12: 模块已删除
 # app.include_router(stack_router)      # v7.12: 模块已删除
 
-# ISAPI Proxy (v7.28: Add Digest auth for WASM SDK)
+# ISAPI Proxy
 @app.api_route("/ISAPI/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def isapi_proxy(request: Request, path: str):
-    import requests
-    import asyncio
-    
+    global _isapi_session
     camera_ip = "192.168.5.72"
     camera_port = 80
-    username = "admin"
-    password = "Nftw1357"
     target_url = f"http://{camera_ip}:{camera_port}/ISAPI/{path}"
     query_string = str(request.query_params)
     if query_string:
         target_url += f"?{query_string}"
     
-    body = await request.body()
+    # Forward all headers including cookies and deviceIdentify
+    headers = {}
+    for k, v in request.headers.items():
+        if k.lower() not in ["host", "content-length", "transfer-encoding"]:
+            headers[k] = v
+    
+    # Forward cookies explicitly
+    cookie_header = request.headers.get("cookie", "")
+    if cookie_header:
+        headers["cookie"] = cookie_header
+    
+    # Add sessionTag if device has one
+    device = None
+    for d in app.state.device_set if hasattr(app.state, 'device_set') else []:
+        if d.szIP == camera_ip:
+            device = d
+            break
+    if device and hasattr(device, 'sessionTag') and device.sessionTag:
+        headers['sessionTag'] = device.sessionTag
     
     try:
-        # Use requests with Digest auth (WASM SDK needs authenticated ISAPI)
-        loop = asyncio.get_event_loop()
-        resp = await loop.run_in_executor(None, lambda: requests.request(
-            method=request.method,
-            url=target_url,
-            headers={k: v for k, v in request.headers.items() if k.lower() not in ["host", "content-length", "transfer-encoding", "cookie"]},
-            data=body,
-            auth=requests.auth.HTTPDigestAuth(username, password),
-            timeout=30
-        ))
-        return Response(content=resp.content, status_code=resp.status_code, headers=dict(resp.headers))
+        body = await request.body()
+        # Rewrite sessionLogin response to disable sessionTag requirement
+        if 'sessionLogin' in path and request.method == 'POST':
+            async with _isapi_session.request(
+                method=request.method, url=target_url, headers=headers,
+                data=body, timeout=aiohttp.ClientTimeout(total=30)
+            ) as resp:
+                resp_body = await resp.read()
+                # Fix sessionTag bug
+                if 'isNeedSessionTag>true' in resp_body.decode('utf-8', errors='ignore'):
+                    resp_body = resp_body.decode('utf-8').replace('isNeedSessionTag>true', 'isNeedSessionTag>false').encode()
+                    log.info("Fixed sessionLogin: isNeedSessionTag=false")
+                return Response(content=resp_body, status_code=resp.status, headers=dict(resp.headers))
+        else:
+            async with _isapi_session.request(
+                method=request.method, url=target_url, headers=headers,
+                data=body, timeout=aiohttp.ClientTimeout(total=30)
+            ) as resp:
+                resp_body = await resp.read()
+                return Response(content=resp_body, status_code=resp.status, headers=dict(resp.headers))
     except Exception as e:
         log.error(f"ISAPI proxy error: {e}")
         return Response(content=f"Proxy error: {e}".encode(), status_code=502)
@@ -168,8 +191,7 @@ async def ws_internal(websocket: WebSocket):
     ws_query = str(websocket.query_params)
     camera_ws_url = f"ws://{camera_ip}:{camera_ws_port}/?{ws_query}" if ws_query else f"ws://{camera_ip}:{camera_ws_port}/"
     
-    log.info(f"WS /ws: query_params={ws_query}")
-    log.info(f"WS /ws: proxying to {camera_ws_url}")
+    log.info(f"WS /ws: proxying to {camera_ws_url[:60]}...")
     
     try:
         await websocket.accept()
