@@ -1,7 +1,7 @@
 {
   "agent:dev-factory:telegram:direct:8447197723": {
-    "sessionId": "2c7c3a56-5055-4485-9f16-0f4c43724de8",
-    "updatedAt": 1781468306085,
+    "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
+    "updatedAt": 1781473302110,
     "systemSent": true,
     "abortedLastRun": false,
     "thinkingLevel": "low",
@@ -11,7 +11,7 @@
     "modelOverrideSource": "user",
     "authProfileOverride": "zai:default",
     "authProfileOverrideSource": "auto",
-    "authProfileOverrideCompactionCount": 2,
+    "authProfileOverrideCompactionCount": 0,
     "chatType": "direct",
     "deliveryContext": {
       "channel": "telegram",
@@ -30,8 +30,8 @@
       "to": "telegram:8447197723",
       "accountId": "dev-factory"
     },
-    "sessionFile": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\sessions\\2c7c3a56-5055-4485-9f16-0f4c43724de8.jsonl",
-    "compactionCount": 2,
+    "sessionFile": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\sessions\\124556e7-d9a5-407b-9559-4c42e737a56e.jsonl",
+    "compactionCount": 0,
     "skillsSnapshot": {
       "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\nWhen a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.\n\n<available_skills>\n  <skill>\n    <name>baidu-search</name>\n    <description>Search the web using Baidu AI Search Engine (BDSE). Use for live information, documentation, or research topics.</description>\n    <location>~/.openclaw\\skills\\baidu-search\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>blogwatcher</name>\n    <description>Monitor blogs and RSS/Atom feeds for updates using the blogwatcher CLI.</description>\n    <location>~/.openclaw\\skills\\blogwatcher\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>blucli</name>\n    <description>BluOS CLI (blu) for discovery, playback, grouping, and volume.</description>\n    <location>~/.openclaw\\skills\\blucli\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>clawhub</name>\n    <description>Use the ClawHub CLI to search, install, update, and publish agent skills from clawhub.com. Use when you need to fetch new skills on the fly, sync installed skills to latest or a specific version, or publish new/updated skill folders with the npm-installed clawhub CLI.</description>\n    <location>~/.openclaw\\skills\\clawhub\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>code-review</name>\n    <description>Systematic code review patterns covering security, performance, maintainability, correctness, and testing — with severity levels, structured feedback guidance, review process, and anti-patterns to avoid. Use when reviewing PRs, establishing review standards, or improving review quality.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\code-review\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>coding-agent</name>\n    <description>Delegate coding tasks to Codex, Claude Code, or Pi agents via background process. Use when: (1) building/creating new features or apps, (2) reviewing PRs (spawn in temp dir), (3) refactoring large codebases, (4) iterative coding that needs file exploration. NOT for: simple one-liner fixes (just edit), reading code (use read tool), thread-bound ACP harness requests in chat (for example spawn/run Codex or Claude Code in a Discord thread; use sessions_spawn with runtime:&quot;acp&quot;), or any work in ~/clawd workspace (never spawn agents here). Claude Code: use --print --permission-mode bypassPermissions (no PTY). Codex/Pi/OpenCode: pty:true required.</description>\n    <location>~/.openclaw\\skills\\coding-agent\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>eightctl</name>\n    <description>Control Eight Sleep pods (status, temperature, alarms, schedules).</description>\n    <location>~/.openclaw\\skills\\eightctl\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>free-google-search-with-browser</name>\n    <description>Search Google using scrapling and return structured results (title, link, snippet). Invoke when user asks to search Google or find information online. Your device should be able to lanuch broswer with UI.</description>\n    <location>~/.openclaw\\skills\\free-google-search-with-browser\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>gh-issues</name>\n    <description>Fetch GitHub issues, spawn sub-agents to implement fixes and open PRs, then monitor and address PR review comments. Usage: /gh-issues [owner/repo] [--label bug] [--limit 5] [--milestone v1.0] [--assignee @me] [--fork user/repo] [--watch] [--interval 5] [--reviews-only] [--cron] [--dry-run] [--model glm-5] [--notify-channel -1002381931352]</description>\n    <location>~/.openclaw\\skills\\gh-issues\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>github</name>\n    <description>GitHub operations via `gh` CLI: issues, PRs, CI runs, code review, API queries. Use when: (1) checking PR status or CI, (2) creating/commenting on issues, (3) listing/filtering PRs or issues, (4) viewing run logs. NOT for: complex web UI interactions requiring manual browser flows (use browser tooling when available), bulk operations across many repos (script with gh api), or when gh auth is not configured.</description>\n    <location>~/.openclaw\\skills\\github\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>healthcheck</name>\n    <description>Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).</description>\n    <location>~/.openclaw\\skills\\healthcheck\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>mcporter</name>\n    <description>Use the mcporter CLI to list, configure, auth, and call MCP servers/tools directly (HTTP or stdio), including ad-hoc servers, config edits, and CLI/type generation.</description>\n    <location>~/.openclaw\\skills\\mcporter\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>nano-pdf</name>\n    <description>Edit PDFs with natural-language instructions using the nano-pdf CLI.</description>\n    <location>~/.openclaw\\skills\\nano-pdf\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>node-connect</name>\n    <description>Diagnose OpenClaw node connection and pairing failures for Android, iOS, and macOS companion apps. Use when QR/setup code/manual connect fails, local Wi-Fi works but VPS/tailnet does not, or errors mention pairing required, unauthorized, bootstrap token invalid or expired, gateway.bind, gateway.remote.url, Tailscale, or plugins.entries.device-pair.config.publicUrl.</description>\n    <location>~/.openclaw\\skills\\node-connect\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>notebooklm</name>\n    <description>Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses.</description>\n    <location>~/.openclaw\\skills\\notebook-lmskill-1-0-0\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>ollama-local</name>\n    <description>Manage and use local Ollama models. Use for model management (list/pull/remove), chat/completions, embeddings, and tool-use with local LLMs. Covers OpenClaw sub-agent integration and model selection guidance.</description>\n    <location>~/.openclaw\\skills\\ollama-local\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>openai-whisper</name>\n    <description>Local speech-to-text with the Whisper CLI (no API key).</description>\n    <location>~/.openclaw\\skills\\openai-whisper\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode</name>\n    <description>Spawn OpenCode as an ACP (Agent Client Protocol) subagent for complex coding tasks. Use when building games, web apps, multi-file projects, or when the user says &quot;use opencode&quot;, &quot;spawn opencode&quot;, &quot;code with opencode&quot;, or &quot;build with opencode&quot;. Triggers on any coding task that would benefit from a dedicated coding agent.</description>\n    <location>~/.openclaw\\skills\\opencode-games\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode-acp-control</name>\n    <description>Control OpenCode directly via the Agent Client Protocol (ACP). Start sessions, send prompts, resume conversations, and manage OpenCode updates.</description>\n    <location>~/.openclaw\\skills\\opencode-acp-control\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode-cli</name>\n    <description>OpenCode CLI integration skill. Designed for AI agents like OpenClaw to execute coding tasks via OpenCode CLI. Core features: (1) Plan→Build workflow (2) Session management (3) MCP integration (4) Background task monitoring. Use this skill when you need: multi-step coding, Plan→Build workflow, MCP integration, or background task monitoring. NOT for: simple one-line edits (use edit tool directly), quick file reads (use read tool directly).</description>\n    <location>~/.openclaw\\skills\\opencode-cli\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode-controller</name>\n    <description>Control and operate Opencode via slash commands. Use this skill to manage sessions, select models, switch agents (plan/build), and coordinate coding through Opencode.</description>\n    <location>~/.openclaw\\skills\\opencode-controller\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode-omo</name>\n    <description>Turn coding requests into completed work. Plan with Prometheus, execute with Atlas, and iterate with Sisyphus in OpenCode.</description>\n    <location>~/.openclaw\\skills\\opencode-omo\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>oracle</name>\n    <description>Best practices for using the oracle CLI (prompt + file bundling, engines, sessions, and file attachment patterns).</description>\n    <location>~/.openclaw\\skills\\oracle\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>planning-with-files</name>\n    <description>Implements Manus-style file-based planning to organize and track progress on complex tasks. Creates task_plan.md, findings.md, and progress.md. Use when asked to plan out, break down, or organize a multi-step project, research task, or any work requiring 5+ tool calls. Supports automatic session recovery after /clear.</description>\n    <location>~/.openclaw\\skills\\planning-with-files\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>Proactivity (Proactive Agent)</name>\n    <description>Anticipates needs, keeps work moving, and improves through use so the agent gets more proactive over time.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\proactivity\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>project-documentation</name>\n    <description>Complete workflow for project documentation including ADRs, PRDs, personas, and docs organization. Use when setting up documentation for a new project or improving existing docs. Triggers on project documentation, ADR, PRD, personas, docs structure, documentation setup.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\project-documentation\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>project-orchestrator</name>\n    <description>AI agent orchestrator with Neo4j knowledge graph, Meilisearch search, and Tree-sitter parsing. Use for coordinating multiple coding agents on complex projects with shared context and plans.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\project-orchestrator\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>self-improvement</name>\n    <description>Captures learnings, errors, and corrections to enable continuous improvement. Use when: (1) A command or operation fails unexpectedly, (2) User corrects Claude (&apos;No, that&apos;s wrong...&apos;, &apos;Actually...&apos;), (3) User requests a capability that doesn&apos;t exist, (4) An external API or tool fails, (5) Claude realizes its knowledge is outdated or incorrect, (6) A better approach is discovered for a recurring task. Also review learnings before major tasks.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\self-improving-agent\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>Self-Improving + Proactive Agent</name>\n    <description>Self-reflection + Self-criticism + Self-learning + Self-organizing memory. Agent evaluates its own work, catches mistakes, and improves permanently. Use when (1) a command, tool, API, or operation fails; (2) the user corrects you or rejects your work; (3) you realize your knowledge is outdated or incorrect; (4) you discover a better approach; (5) the user explicitly installs or references the skill for the current task.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\self-improving\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>session-logs</name>\n    <description>Search and analyze your own session logs (older/parent conversations) using jq.</description>\n    <location>~/.openclaw\\skills\\session-logs\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create, edit, improve, or audit AgentSkills. Use when creating a new skill from scratch or when asked to improve, review, audit, tidy up, or clean up an existing skill or SKILL.md file. Also use when editing or restructuring a skill directory (moving files to references/ or scripts/, removing stale content, validating against the AgentSkills spec). Triggers on phrases like &quot;create a skill&quot;, &quot;author a skill&quot;, &quot;tidy up a skill&quot;, &quot;improve this skill&quot;, &quot;review the skill&quot;, &quot;clean up the skill&quot;, &quot;audit the skill&quot;.</description>\n    <location>~/.openclaw\\skills\\skill-creator\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>summarize</name>\n    <description>Summarize or extract text/transcripts from URLs, podcasts, and local files (great fallback for “transcribe this YouTube/video”).</description>\n    <location>~/.openclaw\\skills\\summarize\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>superpower-with-files</name>\n    <description>Unified AI workflow with persistent memory, TDD execution, and 15 productivity skills. Use when starting any coding project or when you need planning, execution, debugging, or code review workflows.</description>\n    <location>~/.openclaw\\skills\\superpower-with-files\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>taskflow</name>\n    <description>Coordinate multi-step detached tasks as one durable TaskFlow job with owner context, state, waits, and child tasks.</description>\n    <location>~/AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>taskflow-inbox-triage</name>\n    <description>Example TaskFlow pattern for inbox triage, intent routing, waiting on replies, and later summaries.</description>\n    <location>~/AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow-inbox-triage\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>unified-search</name>\n    <description>统一搜索 + 识图入口。整合 minimax-websearch、web-anti-crawl-search、multi-search-engine-simple，以及 MiniMax 视觉识别。所有 agent 统一使用本 skill 作为联网搜索和图片分析的标准入口。</description>\n    <location>~/.openclaw\\skills\\unified-search\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>video-frames</name>\n    <description>Extract frames or short clips from videos using ffmpeg.</description>\n    <location>~/.openclaw\\skills\\video-frames\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed.</description>\n    <location>~/.openclaw\\skills\\weather\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>xurl</name>\n    <description>A CLI tool for making authenticated requests to the X (Twitter) API. Use this skill when you need to post tweets, reply, quote, search, read posts, manage followers, send DMs, upload media, or interact with any X API v2 endpoint.</description>\n    <location>~/.openclaw\\skills\\xurl\\SKILL.md</location>\n  </skill>\n</available_skills>",
       "skills": [
@@ -765,14 +765,14 @@
       "version": 0
     },
     "status": "running",
-    "startedAt": 1781468306062,
+    "startedAt": 1781473129017,
     "modelProvider": "zai",
     "model": "glm-5.1",
     "contextTokens": 202800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1781468274518,
-      "sessionId": "2c7c3a56-5055-4485-9f16-0f4c43724de8",
+      "generatedAt": 1781472948152,
+      "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
       "sessionKey": "agent:dev-factory:telegram:direct:8447197723",
       "provider": "zai",
       "model": "glm-5.1",
@@ -791,9 +791,9 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 36137,
+        "chars": 36639,
         "projectContextChars": 8663,
-        "nonProjectContextChars": 27474
+        "nonProjectContextChars": 27976
       },
       "injectedWorkspaceFiles": [
         {
@@ -1135,16 +1135,40 @@
         ]
       }
     },
-    "inputTokens": 71866,
-    "outputTokens": 98,
+    "inputTokens": 2054804,
+    "outputTokens": 1548,
     "cacheRead": 0,
     "cacheWrite": 0,
+    "totalTokens": 100243,
     "totalTokensFresh": true,
-    "totalTokens": 71866
+    "compactionCheckpoints": [
+      {
+        "checkpointId": "f09c5090-069c-4cc9-96ce-662dfa6b7539",
+        "sessionKey": "agent:dev-factory:telegram:direct:8447197723",
+        "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
+        "createdAt": 1781472545916,
+        "reason": "overflow-retry",
+        "tokensBefore": 140159,
+        "tokensAfter": 22728,
+        "summary": "块级别禁用，而不是逐个控件\n\n**解决方案**：\n\n1. 修复 `consoleWarning` 显示逻辑\n2. 给每个模块添加容器 ID，按模块整体禁用\n3. WASM 框体添加灰色占位\n\n让我开始精确修复：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\includes\\console.html.\n- Assistant: 现在修复画面区域，添加模块 ID 和提示框：\n[non-text content: toolCall]\n- Tool result (edit): Validation failed for tool \"edit\":\n  - edits.0: must be object\n\nReceived arguments:\n{\n  \"edits\": \"[{\\\"newText\\\": \\\"                    <!-- 中: 实时画面 + 媒体操作 -->\\\\n                    <div class=\\\\\\\"console-center\\\\\\\" id=\\\\\\\"displayModule\\\\\\\">\\\\n                        <!-- 实时画面 -->\\\\n                        <h3 style=\\\\\\\"font-size:15px;color:#3fb950;margin:0 0 8px\\\\\\\">📺 实时画面</h3>\\\\n                        <!-- v7.20: 提示框在画面区域内，灰色背景占位 -->\\\\n                        <div id=\\\\\\\"displayArea\\\\\\\" style=\\\\\\\"background:#0d1117;border:1px solid #30363d;border-radius:8px;margin-bottom:12px;overflow:hidde...\n- Assistant: ...\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\includes\\console.html.\n- Assistant: 继续为其他模块添加 ID：\n[non-text content: toolCall]\n- Tool result (edit): {\n  \"status\": \"error\",\n  \"tool\": \"edit\",\n  \"error\": \"No changes made to C:\\\\Users\\\\admin\\\\.openclaw\\\\agents\\\\dev-factory\\\\astrohub\\\\src\\\\web\\\\includes\\\\console.html. The replacement produced identical content. This might indicate an issue with special characters or the text not existing as expected.\"\n}\n- Assistant: 已经存在了。让我为右侧模块添加 ID：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\includes\\console.html.\n- Assistant: 现在重构 `setControlsEnabled` 函数，按模块级别禁用：\n[non-text content: toolCall]\n- Tool result (edit): Validation failed for tool \"edit\":\n  - edits.0: must be object\n\nReceived arguments:\n{\n  \"edits\": \"[{\\\"newText\\\": \\\"// ================================================================\\\\n//  v7.20: 统一禁用/启用控制架构（模块级别）\\\\n//  - 设备未连接 → 全局禁用，模块整体灰色\\\\n//  - 设备已连接 → 根据 function.json 决定哪些控件可用\\\\n//  - 自动模式 → 快门/光圈/增益禁用\\\\n// ================================================================\\\\n\\\\n// 模块容器ID\\\\nvar MODULE_IDS = {\\\\n    ptz: 'ptzModule',        // PTZ控制模块\\\\n    track: 'trackControlSection', // 跟踪控制模块\\\\n    media: 'mediaControlSection', // 媒体操作模块\\\\n    image: 'imageControlSection', // 画面控制模块\\\\n  ...\n- Assistant: 让我直接用 write 重写整个函数部分。先读取现有代码位置：\n[non-text content: toolCall]\n- Tool result (read): }\r\n}\r\n\r\n// ==================== 动态加载设备图像参数 ====================\r\nvar deviceImageParams = {};\r\nvar deviceFunctionData = null; // v5.42: 存储function.json数据\r\n\r\n// v6.20: 功能支持状态\r\nvar deviceFunctionData = null;\r\nvar functionCacheLoaded = false;\r\n\r\n// ================================================================\r\n//  v7.19: 统一禁用/启用控制架构\r\n//  - 设备未连接 → 全局禁用，所有控件灰色不可操作\r\n//  - 设备已连接 → 根据 function.json 决定哪些控件可用\r\n//  - 手动模式 → 白平衡/曝光下拉禁用\r\n// ================================================================\r\n\r\n// 控件ID分组（按功能模块）\r\nvar CONTROL_GROUPS = {\r\n    // 画面控制\r\n    image: ['consoleBrightness', 'consoleC...\n- Assistant: 我看到现有代码。让我用更简洁的修改方案：修改 `setControlsEnabled` 来使用模块级别的禁用。我需要找到旧代码的精确边界：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\includes\\console.html.\n- Assistant: 现在需要删除重复的 `updateManualModeControls` 函数（后面还有一个）。先检查：\n[non-text content: toolCall]\n- Tool result (exec): astrohub\\src\\web\\includes\\console.html:489:[7mfunction updateManualModeControls[0m() {\r\nastrohub\\src\\web\\includes\\console.html:498:[7mfunction updateShutterIrisState[0m() { updateManualModeControls(); }\r\nastrohub\\src\\web\\includes\\console.html:1099:[7mfunction updateManualModeControls[0m() {\r\nastrohub\\src\\web\\includes\\console.html:1117:[7mfunction updateShutterIrisState[0m() {\n- Assistant: 有重复。删除后面的重复定义：\n[non-text content: toolCall]\n- Tool result (read): function updateManualModeControls() {\r\n    var exposureMode = document.getElementById('exposureMode');\r\n    if (!exposureMode) return;\r\n    \r\n    var isManual = exposureMode.value === 'manual';\r\n    \r\n    // 手动模式下启用曝光控件，自动模式下禁用\r\n    MANUAL_MODE_ONLY.forEach(function(id) {\r\n        var el = document.getElementById(id);\r\n        if (el) {\r\n            el.disabled = !isManual;\r\n            el.style.opacity = isManual ? '1' : '0.5';\r\n            el.style.cursor = isManual ? 'pointer' : 'not-allowed';\r\n        }\r\n    });\r\n}\r\n\r\n// 保留旧函数名兼容\r\nfunction updateShutterIrisState() {\r\n    updateManualModeCo...\n- Assistant: 删除重复的函数：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\includes\\console.html.\n- Assistant: 更新版本号：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\main\\constants.py.\n- Assistant: [non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\index.html.\n- Assistant: ---\n\n## v7.20 修复总结\n\n### 问题诊断\n\n| 问题 | 根因 | 修复 |\n|------|------|------|\n| 刷新页面 WASM 框体消失 | `divPlugin` 无灰色背景占位 | 添加灰色背景 `#1a1e2e` |\n| 画面中巨大提示框 | `consoleWarning` z-index=10000 覆盖全页 | 移到画面框内部，精确定位 |\n| 增益/OSD 样式不一致 | 按控件逐个禁用，模块不统一 | 改为模块级别禁用 `pointerEvents` |\n\n### 修改内容\n\n**布局调整**：\n```\n主控台结构（v7.20）\n├─ console-left (id=\"ptzModule\")\n│   ├─ PTZ控制\n│   └─ 跟踪控制\n├─ console-center (id=\"displayModule\")\n│   ├─ 实时画面 (divPlugin 内含 consoleWarning)\n│   └─ 媒体操作\n└─ console-right (id=\"logModule\")\n    ├─ 操作日志\n    └─ 画面控制\n```\n\n**禁用逻辑（模块级别）**：\n```javascript\n// 模块整体禁用\n_setModule('ptzModule', false);\n_setModule('trackCon...\n- User: Conversation info (untrusted metadata):\n```json\n{\n  \"chat_id\": \"telegram:8447197723\",\n  \"message_id\": \"36375\",\n  \"sender_id\": \"8447197723\",\n  \"sender\": \"Yixing Zhang\",\n  \"timestamp\": \"Mon 2026-06-15 05:07 GMT+8\"\n}\n```\n\nSender (untrusted metadata):\n```json\n{\n  \"label\": \"Yixing Zhang (8447197723)\",\n  \"id\": \"8447197723\",\n  \"name\": \"Yixing Zhang\",\n  \"username\": \"ZhangyixingTG\"\n}\n```\n\n你在手动添加灰色背景？我不需要你手动的灰色背景，我需要的是正确渲染WASM\nwasm的宽度限定1280 max，自适应分辨率，固定16:9，横板。\n只要是wasm渲染了，就应该自动是灰色背景，不是你手动添加的，你现在的问题是wasm没有正确加载，或者没有正确调用，或者是渲染等等问题\n撤回wasm相关的修复，重新修复\n- Assistant: 明白了！问题不是手动添加灰色背景，而是 WASM 没有正确加载/渲染。我需要撤回相关修改，专注于 WASM 加载问题。\n[non-text content: toolCall]\n- Tool result (exec): [31;1mhead: [31;1mThe term 'head' is not recognized as a name of a cmdlet, function, script file, or executable program.[0m\r\n[31;1m[31;1mCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.[0m\n\n(Command exited with code 1)\n- Assistant: [non-text content: toolCall]\n- Tool result (exec): diff --git a/astrohub/src/web/includes/console.html b/astrohub/src/web/includes/console.html\r\nindex 1baa2f3..1585518 100644\r\n--- a/astrohub/src/web/includes/console.html\r\n+++ b/astrohub/src/web/includes/console.html\r\n@@ -1,10 +1,6 @@\r\n         <div class=\"page\" id=\"page-console\">\r\n             <div style=\"display:flex;justify-content:space-between;align-items:center;margin-bottom:8px\">\r\n                 <h2 style=\"font-size:18px;margin:0\">主控�?/h2>\r\n-                <div id=\"consoleWarning\" style=\"display:none;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);background:#4a3a1a;bo...\n- Assistant: 我需要找到 WASM 相关代码。让我搜索 WASM 初始化和渲染逻辑：\n[non-text content: toolCall]\n- Tool result (exec): astrohub\\src\\web\\index.html:156:            <div class=\"status-item\"><span class=\"status-dot red\" id=\"[7mwasm[0mDot\"></span><[0m\r\n[7m[0mspan id=\"wasmStatus\">��Ƶ: δ����</span></div>[0m\r\nastrohub\\src\\web\\index.html:195:    <!-- [7mWASM[0m SDK Plugin Container is in console.html -->\r\nastrohub\\src\\web\\index.html:198:        // [7mWASM[0m SDK global variables (before IIFE)\r\nastrohub\\src\\web\\index.html:200:        var [7mg_bLoggedIn[0m = false;\r\nastrohub\\src\\web\\index.html:204:var [7mg_bLoggedIn[0m2 = false;\r\nastrohub\\src\\web\\index.html:362:            // v7.12: ��ʼ�� [7mWASM[0m ״̬Ϊ\"δ����\"\r\nastrohub...\n- Assistant: 让我找到 WASM 初始化的核心逻辑：\n[non-text content: toolCall]\n- Tool result (read): // WASM SDK login (with loading indicator)\r\n                        showToast('info', '正在初始化视频流...');\r\n                        if (window.clickLogin2) { window.clickLogin2(); }\r\n\r\n                        // v6.54: 等待视频播放后启用按钮\r\n                        setTimeout(function() {\r\n                            _connectionOperationInProgress = false;\r\n                            if (window.setConnectionButtonsEnabled) window.setConnectionButtonsEnabled(true);\r\n                        }, 3000);\r\n                    } else if (result && result.message && result.message.indexOf('凭证') >= 0) {\r\n            ...\n- Assistant: 现在找到 WASM SDK 的初始化代码（clickLogin2 和 WebVideoCtrl）：\n[non-text content: toolCall]\n- Tool result (exec): astrohub\\src\\web\\index.html:438:                            if (container && window.[7mWebVideoCtrl[0m) {\r\nastrohub\\src\\web\\index.html:439:                                try { [7mWebVideoCtrl[0m.I_Resize(container.offsetWidth, cont[0m\r\n[7m[0mainer.offsetHeight); console.log('[WASM] Resized to', container.offsetWidth, container.offsetHeight); } catch(e) { cons[0m\r\n[7m[0mole.warn('Resize error:', e); }[0m\r\nastrohub\\src\\web\\index.html:443:                        if (window.connectedDevice && window.[7mclickLogin2[0m) {\r\nastrohub\\src\\web\\index.html:444:                            window.[7mclickL...\n- Assistant: 找到了！让我查看 WASM 初始化的完整逻辑：\n[non-text content: toolCall]\n- Tool result (read): <script src=\"static/websdk/wasm/webVideoCtrl.js\"></script>\r\n    <script src=\"static/websdk/wasm/jsPlugin-3.0.0.min.js\"></script>\r\n    <script>\r\n    // WASM SDK Initialization (GLOBAL scope)\r\n    (function() {\r\n        function initWasm() {\r\n            var iRet = window.WebVideoCtrl.I_SupportNoPlugin();\r\n            console.log('[WASM] I_SupportNoPlugin:', iRet);\r\n            if (!iRet) {\r\n                console.error('[WASM] Browser does not support noPlugin mode');\r\n                return;\r\n            }\r\n            WebVideoCtrl.I_InitPlugin(\"100%\", \"100%\", {\r\n                szId: \"divPlu...\n- Assistant: 现在我找到了 WASM 初始化逻辑。让我继续阅读 `clickLogin2` 函数：\n[non-text content: toolCall]\n- Tool result (read): function clickLogin2() {\r\n    console.log('[CLICKLOGIN2] Called');\r\n    if (typeof ptzLog === 'function') ptzLog('WASM SDK 登录开始...', 'debug');\r\n\r\n    // v6.43: 检查是否已播放成功,避免重复设置 connecting\r\n    if (g_bPlaying2) {\r\n        console.log('[CLICKLOGIN2] Already playing, skip');\r\n        return;\r\n    }\r\n\r\n    // 更新 WASM 状态为连接中\r\n    if (window.updateWasmStatus) window.updateWasmStatus('connecting');\r\n\r\n    if (!window.connectedDevice || !window.connectedDevice.ip) {\r\n        console.log('[WASM SDK] No device connected');\r\n        if (typeof ptzLog === 'function') ptzLog('未连接设备,无法登录', 'warning');\r\n    ...\n- Assistant: 现在我理解了 WASM 的流程。问题是刷新页面后，`window.connectedDevice` 被清空，但 WASM SDK 已经初始化完成。让我找到 `restoreConnectionState` 函数：\n[non-text content: toolCall]\n- Tool result (exec): astrohub\\src\\web\\index.html:249:            [7mrestoreConnectionState[0m();\r\nastrohub\\src\\web\\index.html:361:        [7mfunction restore[0mConnectionState() {\n- Assistant: [non-text content: toolCall]\n- Tool result (read): function restoreConnectionState() {\r\n            // v7.12: 初始化 WASM 状态为\"未连接\"\r\n            if (window.updateWasmStatus) window.updateWasmStatus('disconnected');\r\n            // v7.12: 初始状态禁用所有控件\r\n            if (window.disableAllControls) window.disableAllControls('请连接设备');\r\n\r\n            apiGet('/api/v1/ptz/connected').then(function(r) {\r\n                if (r && r.success && r.connected && r.device) {\r\n                    // v7.12: 已连接状态\r\n                    window.connectedDevice = r.device;\r\n                    console.log('[v7.12] 已恢复连接:', r.device.ip);\r\n\r\n                    // 启用所有控件\r\n  ...\n- Assistant: 现在我完全理解了问题：\n\n**问题根因**：\n1. `restoreConnectionState` 在页面加载时被调用\n2. 它先调用 `disableAllControls` 显示\"请连接设备\"提示\n3. 然后异步调用 `/api/v1/ptz/connected` 获取连接状态\n4. 但在 WASM 初始化完成（`cbInitPluginComplete`）之前，`consoleWarning` 就已经显示了\n\n**关键问题**：\n- `consoleWarning` 现在在 `divPlugin` 内部\n- WASM 初始化后会渲染 Canvas，但 `consoleWarning` 是绝对定位在上面\n- 刷新页面后，WASM 没有正确重新登录\n\n让我撤回对 `divPlugin` 的修改，恢复原来的结构，然后修复 `consoleWarning` 的显示逻辑：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\includes\\console.html.\n- Assistant: 现在修复 `setControlsEnabled` 中的 `consoleWarning` 显示逻辑：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\includes\\console.html.\n- Assistant: 现在更新版本号：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\main\\constants.py.\n- Assistant: ...\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\index.html.\n- Assistant: 现在让我检查 WASM 初始化完成后的提示框处理。在 index.html 中，`cbInitPluginComplete` 已经有处理覆盖层的逻辑，但用的是 `wasm-disconnected-overlay`，需要统一：\n[non-text content: toolCall]\n- Tool result (read): WebVideoCtrl.I_Stop();\r\n                },\r\n                cbSelWnd: function(xmlDoc) {\r\n                    g_iWndIndex = parseInt($(xmlDoc).find(\"SelectWnd\").eq(0).text(), 10);\r\n                },\r\n                cbInitPluginComplete: function() {\r\n                    console.log('[WASM] cbInitPluginComplete - inserting plugin');\r\n                    WebVideoCtrl.I_InsertOBJECTPlugin(\"divPlugin\");\r\n                    \r\n                    // v7.01: 如果设备已连接，不创建初始覆盖层（登录成功会移除）\r\n                    if (!window.connectedDevice || !window.connectedDevice.ip) {\r\n                        setTimeou...\n- Assistant: 现在我需要统一覆盖层的 ID。删除旧的 `wasm-disconnected-overlay` 逻辑，使用 `consoleWarning`：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\index.html.\n- Assistant: 现在更新 `clickLogin2` 中移除覆盖层的逻辑：\n[non-text content: toolCall]\n- Tool result (edit): Successfully replaced 1 block(s) in C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\index.html.\n- Assistant: ---\n\n## v7.21 修复总结\n\n### 问题诊断\n\n| 问题 | 根因 | 修复 |\n|------|------|------|\n| WASM 框体消失 | 手动添加灰色背景覆盖了 WASM Canvas | 撤回手动背景，`divPlugin` 保持默认 |\n| 提示框显示逻辑混乱 | 两套覆盖层（`wasm-disconnected-overlay` 和 `consoleWarning`） | 统一使用 `consoleWarning` |\n| 提示框覆盖画面 | 定位在 `divPlugin` 内部但 z-index 过高 | 调整为仅在 WASM 未播放时显示 |\n\n### 修改内容\n\n**`divPlugin` 结构（v7.21）**：\n```html\n<div id=\"displayArea\">\n    <div id=\"divPlugin\" style=\"width:100%;max-width:1280px;aspect-ratio:16/9\">\n        <!-- WASM Canvas 由 SDK 渲染 -->\n    </div>\n    <div id=\"consoleWarning\" style=\"display:none;position:absolute;top:0;left:0;width:100%;height:100%;...\">...\n\n## Tool Failures\n- edit: Validation failed for tool \"edit\": - edits.0: must be object Received arguments: { \"edits\": \"[{\\\"newText\\\": \\\" <!-- 中: 实时画面 + 媒体操作 -->\\\\n <div class=\\\\\\\"console-center\\\\\\\" id=\\\\\\\"displayModule\\\\\\\">\\\\n <!-- 实时画面 -->\\\\n <h3 style=\\\\\\\"font-...\n- edit: Validation failed for tool \"edit\": - edits.0: must be object Received arguments: { \"edits\": \"[{\\\"newText\\\": \\\"// ================================================================\\\\n// v7.20: 统一禁用/启用控制架构（模块级别）\\\\n// - 设备未连接 → 全局禁用，模块整体灰色\\\\n...\n\n<read-files>\nC:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\data\\registry.json\nC:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\api\\router.py\nC:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\config_paths.py\nC:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\core\\ptz_manager.py\n\n</read-files>\n\n<modified-files>\nC:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\main\\constants.py\nC:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\includes\\console.html\nC:\\Users\\admin\\.openclaw\\agents\\dev-factory\\astrohub\\src\\web\\index.html\n\n</modified-files>",
+        "firstKeptEntryId": "26492ce2",
+        "preCompaction": {
+          "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
+          "sessionFile": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\sessions\\124556e7-d9a5-407b-9559-4c42e737a56e.checkpoint.83e60946-44f0-41b3-9777-9d0aa2a2105d.jsonl",
+          "leafId": "e1b92f78"
+        },
+        "postCompaction": {
+          "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
+          "sessionFile": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\sessions\\124556e7-d9a5-407b-9559-4c42e737a56e.jsonl",
+          "leafId": "15c5b667",
+          "entryId": "15c5b667"
+        }
+      }
+    ]
   },
   "agent:dev-factory:main": {
     "sessionId": "e425d0bc-cea5-45e4-a60a-95b592654edb",
-    "updatedAt": 1781465201164,
+    "updatedAt": 1781472881743,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -1296,7 +1320,7 @@
       "version": 0
     },
     "status": "done",
-    "startedAt": 1781465181783,
+    "startedAt": 1781472863284,
     "compactionCheckpoints": [
       {
         "checkpointId": "1f72e13b-df72-4702-bf89-43402a0c3827",
@@ -1389,7 +1413,7 @@
     ],
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1781465181367,
+      "generatedAt": 1781472862880,
       "sessionId": "e425d0bc-cea5-45e4-a60a-95b592654edb",
       "sessionKey": "agent:dev-factory:main",
       "provider": "suanli",
@@ -1762,13 +1786,13 @@
     "modelProvider": "suanli",
     "model": "qwen3.7-plus",
     "contextTokens": 1048576,
-    "inputTokens": 313101,
-    "outputTokens": 70,
+    "inputTokens": 315295,
+    "outputTokens": 15,
     "cacheRead": 0,
     "cacheWrite": 0,
-    "totalTokens": 313101,
-    "endedAt": 1781465201065,
-    "runtimeMs": 19282
+    "totalTokens": 315295,
+    "endedAt": 1781472881636,
+    "runtimeMs": 18352
   },
   "agent:dev-factory:telegram:slash:8447197723": {
     "origin": {
@@ -7182,6 +7206,1045 @@
     "totalTokens": 33273,
     "totalTokensFresh": true,
     "cacheRead": 0,
+    "cacheWrite": 0
+  },
+  "agent:dev-factory:subagent:0e3f9272-2cac-4071-8c4f-ccb9020d9205": {
+    "sessionId": "e1a5affe-8978-43ba-b518-37db1192d265",
+    "updatedAt": 1781473132767,
+    "spawnDepth": 1,
+    "subagentRole": "leaf",
+    "subagentControlScope": "none",
+    "model": "qwen3.7-plus",
+    "modelProvider": "suanli",
+    "spawnedBy": "agent:dev-factory:telegram:direct:8447197723",
+    "spawnedWorkspaceDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory",
+    "deliveryContext": {
+      "channel": "telegram",
+      "to": "telegram:8447197723",
+      "accountId": "dev-factory"
+    },
+    "lastChannel": "telegram",
+    "lastTo": "telegram:8447197723",
+    "lastAccountId": "dev-factory",
+    "channel": "telegram",
+    "skillsSnapshot": {
+      "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\nWhen a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.\n\n<available_skills>\n  <skill>\n    <name>baidu-search</name>\n    <description>Search the web using Baidu AI Search Engine (BDSE). Use for live information, documentation, or research topics.</description>\n    <location>~/.openclaw\\skills\\baidu-search\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>blogwatcher</name>\n    <description>Monitor blogs and RSS/Atom feeds for updates using the blogwatcher CLI.</description>\n    <location>~/.openclaw\\skills\\blogwatcher\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>blucli</name>\n    <description>BluOS CLI (blu) for discovery, playback, grouping, and volume.</description>\n    <location>~/.openclaw\\skills\\blucli\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>clawhub</name>\n    <description>Use the ClawHub CLI to search, install, update, and publish agent skills from clawhub.com. Use when you need to fetch new skills on the fly, sync installed skills to latest or a specific version, or publish new/updated skill folders with the npm-installed clawhub CLI.</description>\n    <location>~/.openclaw\\skills\\clawhub\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>code-review</name>\n    <description>Systematic code review patterns covering security, performance, maintainability, correctness, and testing — with severity levels, structured feedback guidance, review process, and anti-patterns to avoid. Use when reviewing PRs, establishing review standards, or improving review quality.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\code-review\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>coding-agent</name>\n    <description>Delegate coding tasks to Codex, Claude Code, or Pi agents via background process. Use when: (1) building/creating new features or apps, (2) reviewing PRs (spawn in temp dir), (3) refactoring large codebases, (4) iterative coding that needs file exploration. NOT for: simple one-liner fixes (just edit), reading code (use read tool), thread-bound ACP harness requests in chat (for example spawn/run Codex or Claude Code in a Discord thread; use sessions_spawn with runtime:&quot;acp&quot;), or any work in ~/clawd workspace (never spawn agents here). Claude Code: use --print --permission-mode bypassPermissions (no PTY). Codex/Pi/OpenCode: pty:true required.</description>\n    <location>~/.openclaw\\skills\\coding-agent\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>eightctl</name>\n    <description>Control Eight Sleep pods (status, temperature, alarms, schedules).</description>\n    <location>~/.openclaw\\skills\\eightctl\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>free-google-search-with-browser</name>\n    <description>Search Google using scrapling and return structured results (title, link, snippet). Invoke when user asks to search Google or find information online. Your device should be able to lanuch broswer with UI.</description>\n    <location>~/.openclaw\\skills\\free-google-search-with-browser\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>gh-issues</name>\n    <description>Fetch GitHub issues, spawn sub-agents to implement fixes and open PRs, then monitor and address PR review comments. Usage: /gh-issues [owner/repo] [--label bug] [--limit 5] [--milestone v1.0] [--assignee @me] [--fork user/repo] [--watch] [--interval 5] [--reviews-only] [--cron] [--dry-run] [--model glm-5] [--notify-channel -1002381931352]</description>\n    <location>~/.openclaw\\skills\\gh-issues\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>github</name>\n    <description>GitHub operations via `gh` CLI: issues, PRs, CI runs, code review, API queries. Use when: (1) checking PR status or CI, (2) creating/commenting on issues, (3) listing/filtering PRs or issues, (4) viewing run logs. NOT for: complex web UI interactions requiring manual browser flows (use browser tooling when available), bulk operations across many repos (script with gh api), or when gh auth is not configured.</description>\n    <location>~/.openclaw\\skills\\github\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>healthcheck</name>\n    <description>Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).</description>\n    <location>~/.openclaw\\skills\\healthcheck\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>mcporter</name>\n    <description>Use the mcporter CLI to list, configure, auth, and call MCP servers/tools directly (HTTP or stdio), including ad-hoc servers, config edits, and CLI/type generation.</description>\n    <location>~/.openclaw\\skills\\mcporter\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>nano-pdf</name>\n    <description>Edit PDFs with natural-language instructions using the nano-pdf CLI.</description>\n    <location>~/.openclaw\\skills\\nano-pdf\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>node-connect</name>\n    <description>Diagnose OpenClaw node connection and pairing failures for Android, iOS, and macOS companion apps. Use when QR/setup code/manual connect fails, local Wi-Fi works but VPS/tailnet does not, or errors mention pairing required, unauthorized, bootstrap token invalid or expired, gateway.bind, gateway.remote.url, Tailscale, or plugins.entries.device-pair.config.publicUrl.</description>\n    <location>~/.openclaw\\skills\\node-connect\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>notebooklm</name>\n    <description>Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses.</description>\n    <location>~/.openclaw\\skills\\notebook-lmskill-1-0-0\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>ollama-local</name>\n    <description>Manage and use local Ollama models. Use for model management (list/pull/remove), chat/completions, embeddings, and tool-use with local LLMs. Covers OpenClaw sub-agent integration and model selection guidance.</description>\n    <location>~/.openclaw\\skills\\ollama-local\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>openai-whisper</name>\n    <description>Local speech-to-text with the Whisper CLI (no API key).</description>\n    <location>~/.openclaw\\skills\\openai-whisper\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode</name>\n    <description>Spawn OpenCode as an ACP (Agent Client Protocol) subagent for complex coding tasks. Use when building games, web apps, multi-file projects, or when the user says &quot;use opencode&quot;, &quot;spawn opencode&quot;, &quot;code with opencode&quot;, or &quot;build with opencode&quot;. Triggers on any coding task that would benefit from a dedicated coding agent.</description>\n    <location>~/.openclaw\\skills\\opencode-games\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode-acp-control</name>\n    <description>Control OpenCode directly via the Agent Client Protocol (ACP). Start sessions, send prompts, resume conversations, and manage OpenCode updates.</description>\n    <location>~/.openclaw\\skills\\opencode-acp-control\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode-cli</name>\n    <description>OpenCode CLI integration skill. Designed for AI agents like OpenClaw to execute coding tasks via OpenCode CLI. Core features: (1) Plan→Build workflow (2) Session management (3) MCP integration (4) Background task monitoring. Use this skill when you need: multi-step coding, Plan→Build workflow, MCP integration, or background task monitoring. NOT for: simple one-line edits (use edit tool directly), quick file reads (use read tool directly).</description>\n    <location>~/.openclaw\\skills\\opencode-cli\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode-controller</name>\n    <description>Control and operate Opencode via slash commands. Use this skill to manage sessions, select models, switch agents (plan/build), and coordinate coding through Opencode.</description>\n    <location>~/.openclaw\\skills\\opencode-controller\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>opencode-omo</name>\n    <description>Turn coding requests into completed work. Plan with Prometheus, execute with Atlas, and iterate with Sisyphus in OpenCode.</description>\n    <location>~/.openclaw\\skills\\opencode-omo\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>oracle</name>\n    <description>Best practices for using the oracle CLI (prompt + file bundling, engines, sessions, and file attachment patterns).</description>\n    <location>~/.openclaw\\skills\\oracle\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>planning-with-files</name>\n    <description>Implements Manus-style file-based planning to organize and track progress on complex tasks. Creates task_plan.md, findings.md, and progress.md. Use when asked to plan out, break down, or organize a multi-step project, research task, or any work requiring 5+ tool calls. Supports automatic session recovery after /clear.</description>\n    <location>~/.openclaw\\skills\\planning-with-files\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>Proactivity (Proactive Agent)</name>\n    <description>Anticipates needs, keeps work moving, and improves through use so the agent gets more proactive over time.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\proactivity\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>project-documentation</name>\n    <description>Complete workflow for project documentation including ADRs, PRDs, personas, and docs organization. Use when setting up documentation for a new project or improving existing docs. Triggers on project documentation, ADR, PRD, personas, docs structure, documentation setup.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\project-documentation\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>project-orchestrator</name>\n    <description>AI agent orchestrator with Neo4j knowledge graph, Meilisearch search, and Tree-sitter parsing. Use for coordinating multiple coding agents on complex projects with shared context and plans.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\project-orchestrator\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>self-improvement</name>\n    <description>Captures learnings, errors, and corrections to enable continuous improvement. Use when: (1) A command or operation fails unexpectedly, (2) User corrects Claude (&apos;No, that&apos;s wrong...&apos;, &apos;Actually...&apos;), (3) User requests a capability that doesn&apos;t exist, (4) An external API or tool fails, (5) Claude realizes its knowledge is outdated or incorrect, (6) A better approach is discovered for a recurring task. Also review learnings before major tasks.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\self-improving-agent\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>Self-Improving + Proactive Agent</name>\n    <description>Self-reflection + Self-criticism + Self-learning + Self-organizing memory. Agent evaluates its own work, catches mistakes, and improves permanently. Use when (1) a command, tool, API, or operation fails; (2) the user corrects you or rejects your work; (3) you realize your knowledge is outdated or incorrect; (4) you discover a better approach; (5) the user explicitly installs or references the skill for the current task.</description>\n    <location>~/.openclaw\\agents\\dev-factory\\skills\\self-improving\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>session-logs</name>\n    <description>Search and analyze your own session logs (older/parent conversations) using jq.</description>\n    <location>~/.openclaw\\skills\\session-logs\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create, edit, improve, or audit AgentSkills. Use when creating a new skill from scratch or when asked to improve, review, audit, tidy up, or clean up an existing skill or SKILL.md file. Also use when editing or restructuring a skill directory (moving files to references/ or scripts/, removing stale content, validating against the AgentSkills spec). Triggers on phrases like &quot;create a skill&quot;, &quot;author a skill&quot;, &quot;tidy up a skill&quot;, &quot;improve this skill&quot;, &quot;review the skill&quot;, &quot;clean up the skill&quot;, &quot;audit the skill&quot;.</description>\n    <location>~/.openclaw\\skills\\skill-creator\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>summarize</name>\n    <description>Summarize or extract text/transcripts from URLs, podcasts, and local files (great fallback for “transcribe this YouTube/video”).</description>\n    <location>~/.openclaw\\skills\\summarize\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>superpower-with-files</name>\n    <description>Unified AI workflow with persistent memory, TDD execution, and 15 productivity skills. Use when starting any coding project or when you need planning, execution, debugging, or code review workflows.</description>\n    <location>~/.openclaw\\skills\\superpower-with-files\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>taskflow</name>\n    <description>Coordinate multi-step detached tasks as one durable TaskFlow job with owner context, state, waits, and child tasks.</description>\n    <location>~/AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>taskflow-inbox-triage</name>\n    <description>Example TaskFlow pattern for inbox triage, intent routing, waiting on replies, and later summaries.</description>\n    <location>~/AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow-inbox-triage\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>unified-search</name>\n    <description>统一搜索 + 识图入口。整合 minimax-websearch、web-anti-crawl-search、multi-search-engine-simple，以及 MiniMax 视觉识别。所有 agent 统一使用本 skill 作为联网搜索和图片分析的标准入口。</description>\n    <location>~/.openclaw\\skills\\unified-search\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>video-frames</name>\n    <description>Extract frames or short clips from videos using ffmpeg.</description>\n    <location>~/.openclaw\\skills\\video-frames\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed.</description>\n    <location>~/.openclaw\\skills\\weather\\SKILL.md</location>\n  </skill>\n  <skill>\n    <name>xurl</name>\n    <description>A CLI tool for making authenticated requests to the X (Twitter) API. Use this skill when you need to post tweets, reply, quote, search, read posts, manage followers, send DMs, upload media, or interact with any X API v2 endpoint.</description>\n    <location>~/.openclaw\\skills\\xurl\\SKILL.md</location>\n  </skill>\n</available_skills>",
+      "skills": [
+        {
+          "name": "baidu-search",
+          "primaryEnv": "BAIDU_API_KEY",
+          "requiredEnv": [
+            "BAIDU_API_KEY"
+          ]
+        },
+        {
+          "name": "blogwatcher",
+          "requiredEnv": []
+        },
+        {
+          "name": "blucli",
+          "requiredEnv": []
+        },
+        {
+          "name": "clawhub",
+          "requiredEnv": []
+        },
+        {
+          "name": "code-review"
+        },
+        {
+          "name": "coding-agent",
+          "requiredEnv": []
+        },
+        {
+          "name": "eightctl",
+          "requiredEnv": []
+        },
+        {
+          "name": "free-google-search-with-browser"
+        },
+        {
+          "name": "gh-issues",
+          "primaryEnv": "GH_TOKEN",
+          "requiredEnv": []
+        },
+        {
+          "name": "github",
+          "requiredEnv": []
+        },
+        {
+          "name": "healthcheck"
+        },
+        {
+          "name": "mcporter",
+          "requiredEnv": []
+        },
+        {
+          "name": "nano-pdf",
+          "requiredEnv": []
+        },
+        {
+          "name": "node-connect"
+        },
+        {
+          "name": "notebooklm"
+        },
+        {
+          "name": "ollama-local"
+        },
+        {
+          "name": "openai-whisper",
+          "requiredEnv": []
+        },
+        {
+          "name": "opencode"
+        },
+        {
+          "name": "opencode-acp-control"
+        },
+        {
+          "name": "opencode-cli"
+        },
+        {
+          "name": "opencode-controller"
+        },
+        {
+          "name": "opencode-omo",
+          "requiredEnv": []
+        },
+        {
+          "name": "oracle",
+          "requiredEnv": []
+        },
+        {
+          "name": "planning-with-files"
+        },
+        {
+          "name": "Proactivity (Proactive Agent)"
+        },
+        {
+          "name": "project-documentation"
+        },
+        {
+          "name": "project-orchestrator"
+        },
+        {
+          "name": "self-improvement"
+        },
+        {
+          "name": "Self-Improving + Proactive Agent"
+        },
+        {
+          "name": "session-logs",
+          "requiredEnv": []
+        },
+        {
+          "name": "skill-creator"
+        },
+        {
+          "name": "summarize",
+          "requiredEnv": []
+        },
+        {
+          "name": "superpower-with-files"
+        },
+        {
+          "name": "taskflow"
+        },
+        {
+          "name": "taskflow-inbox-triage"
+        },
+        {
+          "name": "unified-search"
+        },
+        {
+          "name": "video-frames",
+          "requiredEnv": []
+        },
+        {
+          "name": "weather",
+          "requiredEnv": []
+        },
+        {
+          "name": "xurl",
+          "requiredEnv": []
+        }
+      ],
+      "resolvedSkills": [
+        {
+          "name": "baidu-search",
+          "description": "Search the web using Baidu AI Search Engine (BDSE). Use for live information, documentation, or research topics.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\baidu-search\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\baidu-search",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\baidu-search\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\baidu-search"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "blogwatcher",
+          "description": "Monitor blogs and RSS/Atom feeds for updates using the blogwatcher CLI.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\blogwatcher\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\blogwatcher",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\blogwatcher\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\blogwatcher"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "blucli",
+          "description": "BluOS CLI (blu) for discovery, playback, grouping, and volume.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\blucli\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\blucli",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\blucli\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\blucli"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "clawhub",
+          "description": "Use the ClawHub CLI to search, install, update, and publish agent skills from clawhub.com. Use when you need to fetch new skills on the fly, sync installed skills to latest or a specific version, or publish new/updated skill folders with the npm-installed clawhub CLI.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\clawhub\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\clawhub",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\clawhub\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\clawhub"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "code-review",
+          "description": "Systematic code review patterns covering security, performance, maintainability, correctness, and testing — with severity levels, structured feedback guidance, review process, and anti-patterns to avoid. Use when reviewing PRs, establishing review standards, or improving review quality.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\code-review\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\code-review",
+          "source": "openclaw-workspace",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\code-review\\SKILL.md",
+            "source": "openclaw-workspace",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\code-review"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "coding-agent",
+          "description": "Delegate coding tasks to Codex, Claude Code, or Pi agents via background process. Use when: (1) building/creating new features or apps, (2) reviewing PRs (spawn in temp dir), (3) refactoring large codebases, (4) iterative coding that needs file exploration. NOT for: simple one-liner fixes (just edit), reading code (use read tool), thread-bound ACP harness requests in chat (for example spawn/run Codex or Claude Code in a Discord thread; use sessions_spawn with runtime:\"acp\"), or any work in ~/clawd workspace (never spawn agents here). Claude Code: use --print --permission-mode bypassPermissions (no PTY). Codex/Pi/OpenCode: pty:true required.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\coding-agent\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\coding-agent",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\coding-agent\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\coding-agent"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "eightctl",
+          "description": "Control Eight Sleep pods (status, temperature, alarms, schedules).",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\eightctl\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\eightctl",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\eightctl\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\eightctl"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "free-google-search-with-browser",
+          "description": "Search Google using scrapling and return structured results (title, link, snippet). Invoke when user asks to search Google or find information online. Your device should be able to lanuch broswer with UI.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\free-google-search-with-browser\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\free-google-search-with-browser",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\free-google-search-with-browser\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\free-google-search-with-browser"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "gh-issues",
+          "description": "Fetch GitHub issues, spawn sub-agents to implement fixes and open PRs, then monitor and address PR review comments. Usage: /gh-issues [owner/repo] [--label bug] [--limit 5] [--milestone v1.0] [--assignee @me] [--fork user/repo] [--watch] [--interval 5] [--reviews-only] [--cron] [--dry-run] [--model glm-5] [--notify-channel -1002381931352]",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\gh-issues\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\gh-issues",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\gh-issues\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\gh-issues"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "github",
+          "description": "GitHub operations via `gh` CLI: issues, PRs, CI runs, code review, API queries. Use when: (1) checking PR status or CI, (2) creating/commenting on issues, (3) listing/filtering PRs or issues, (4) viewing run logs. NOT for: complex web UI interactions requiring manual browser flows (use browser tooling when available), bulk operations across many repos (script with gh api), or when gh auth is not configured.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\github\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\github",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\github\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\github"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "healthcheck",
+          "description": "Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\healthcheck\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\healthcheck",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\healthcheck\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\healthcheck"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "mcporter",
+          "description": "Use the mcporter CLI to list, configure, auth, and call MCP servers/tools directly (HTTP or stdio), including ad-hoc servers, config edits, and CLI/type generation.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\mcporter\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\mcporter",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\mcporter\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\mcporter"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "nano-pdf",
+          "description": "Edit PDFs with natural-language instructions using the nano-pdf CLI.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\nano-pdf\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\nano-pdf",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\nano-pdf\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\nano-pdf"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "node-connect",
+          "description": "Diagnose OpenClaw node connection and pairing failures for Android, iOS, and macOS companion apps. Use when QR/setup code/manual connect fails, local Wi-Fi works but VPS/tailnet does not, or errors mention pairing required, unauthorized, bootstrap token invalid or expired, gateway.bind, gateway.remote.url, Tailscale, or plugins.entries.device-pair.config.publicUrl.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\node-connect\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\node-connect",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\node-connect\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\node-connect"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "notebooklm",
+          "description": "Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\notebook-lmskill-1-0-0\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\notebook-lmskill-1-0-0",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\notebook-lmskill-1-0-0\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\notebook-lmskill-1-0-0"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "ollama-local",
+          "description": "Manage and use local Ollama models. Use for model management (list/pull/remove), chat/completions, embeddings, and tool-use with local LLMs. Covers OpenClaw sub-agent integration and model selection guidance.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\ollama-local\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\ollama-local",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\ollama-local\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\ollama-local"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "openai-whisper",
+          "description": "Local speech-to-text with the Whisper CLI (no API key).",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\openai-whisper\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\openai-whisper",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\openai-whisper\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\openai-whisper"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "opencode",
+          "description": "Spawn OpenCode as an ACP (Agent Client Protocol) subagent for complex coding tasks. Use when building games, web apps, multi-file projects, or when the user says \"use opencode\", \"spawn opencode\", \"code with opencode\", or \"build with opencode\". Triggers on any coding task that would benefit from a dedicated coding agent.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\opencode-games\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-games",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\opencode-games\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-games"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "opencode-acp-control",
+          "description": "Control OpenCode directly via the Agent Client Protocol (ACP). Start sessions, send prompts, resume conversations, and manage OpenCode updates.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\opencode-acp-control\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-acp-control",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\opencode-acp-control\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-acp-control"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "opencode-cli",
+          "description": "OpenCode CLI integration skill. Designed for AI agents like OpenClaw to execute coding tasks via OpenCode CLI. Core features: (1) Plan→Build workflow (2) Session management (3) MCP integration (4) Background task monitoring. Use this skill when you need: multi-step coding, Plan→Build workflow, MCP integration, or background task monitoring. NOT for: simple one-line edits (use edit tool directly), quick file reads (use read tool directly).",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\opencode-cli\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-cli",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\opencode-cli\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-cli"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "opencode-controller",
+          "description": "Control and operate Opencode via slash commands. Use this skill to manage sessions, select models, switch agents (plan/build), and coordinate coding through Opencode.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\opencode-controller\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-controller",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\opencode-controller\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-controller"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "opencode-omo",
+          "description": "Turn coding requests into completed work. Plan with Prometheus, execute with Atlas, and iterate with Sisyphus in OpenCode.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\opencode-omo\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-omo",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\opencode-omo\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\opencode-omo"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "oracle",
+          "description": "Best practices for using the oracle CLI (prompt + file bundling, engines, sessions, and file attachment patterns).",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\oracle\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\oracle",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\oracle\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\oracle"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "planning-with-files",
+          "description": "Implements Manus-style file-based planning to organize and track progress on complex tasks. Creates task_plan.md, findings.md, and progress.md. Use when asked to plan out, break down, or organize a multi-step project, research task, or any work requiring 5+ tool calls. Supports automatic session recovery after /clear.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\planning-with-files\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\planning-with-files",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\planning-with-files\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\planning-with-files"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "Proactivity (Proactive Agent)",
+          "description": "Anticipates needs, keeps work moving, and improves through use so the agent gets more proactive over time.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\proactivity\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\proactivity",
+          "source": "openclaw-workspace",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\proactivity\\SKILL.md",
+            "source": "openclaw-workspace",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\proactivity"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "project-documentation",
+          "description": "Complete workflow for project documentation including ADRs, PRDs, personas, and docs organization. Use when setting up documentation for a new project or improving existing docs. Triggers on project documentation, ADR, PRD, personas, docs structure, documentation setup.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\project-documentation\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\project-documentation",
+          "source": "openclaw-workspace",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\project-documentation\\SKILL.md",
+            "source": "openclaw-workspace",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\project-documentation"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "project-orchestrator",
+          "description": "AI agent orchestrator with Neo4j knowledge graph, Meilisearch search, and Tree-sitter parsing. Use for coordinating multiple coding agents on complex projects with shared context and plans.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\project-orchestrator\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\project-orchestrator",
+          "source": "openclaw-workspace",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\project-orchestrator\\SKILL.md",
+            "source": "openclaw-workspace",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\project-orchestrator"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "self-improvement",
+          "description": "Captures learnings, errors, and corrections to enable continuous improvement. Use when: (1) A command or operation fails unexpectedly, (2) User corrects Claude ('No, that's wrong...', 'Actually...'), (3) User requests a capability that doesn't exist, (4) An external API or tool fails, (5) Claude realizes its knowledge is outdated or incorrect, (6) A better approach is discovered for a recurring task. Also review learnings before major tasks.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\self-improving-agent\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\self-improving-agent",
+          "source": "openclaw-workspace",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\self-improving-agent\\SKILL.md",
+            "source": "openclaw-workspace",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\self-improving-agent"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "Self-Improving + Proactive Agent",
+          "description": "Self-reflection + Self-criticism + Self-learning + Self-organizing memory. Agent evaluates its own work, catches mistakes, and improves permanently. Use when (1) a command, tool, API, or operation fails; (2) the user corrects you or rejects your work; (3) you realize your knowledge is outdated or incorrect; (4) you discover a better approach; (5) the user explicitly installs or references the skill for the current task.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\self-improving\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\self-improving",
+          "source": "openclaw-workspace",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\self-improving\\SKILL.md",
+            "source": "openclaw-workspace",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\skills\\self-improving"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "session-logs",
+          "description": "Search and analyze your own session logs (older/parent conversations) using jq.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\session-logs\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\session-logs",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\session-logs\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\session-logs"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "skill-creator",
+          "description": "Create, edit, improve, or audit AgentSkills. Use when creating a new skill from scratch or when asked to improve, review, audit, tidy up, or clean up an existing skill or SKILL.md file. Also use when editing or restructuring a skill directory (moving files to references/ or scripts/, removing stale content, validating against the AgentSkills spec). Triggers on phrases like \"create a skill\", \"author a skill\", \"tidy up a skill\", \"improve this skill\", \"review the skill\", \"clean up the skill\", \"audit the skill\".",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\skill-creator\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\skill-creator",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\skill-creator\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\skill-creator"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "summarize",
+          "description": "Summarize or extract text/transcripts from URLs, podcasts, and local files (great fallback for “transcribe this YouTube/video”).",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\summarize\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\summarize",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\summarize\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\summarize"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "superpower-with-files",
+          "description": "Unified AI workflow with persistent memory, TDD execution, and 15 productivity skills. Use when starting any coding project or when you need planning, execution, debugging, or code review workflows.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\superpower-with-files\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\superpower-with-files",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\superpower-with-files\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\superpower-with-files"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "taskflow",
+          "description": "Coordinate multi-step detached tasks as one durable TaskFlow job with owner context, state, waits, and child tasks.",
+          "filePath": "C:\\Users\\admin\\AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow",
+          "source": "openclaw-bundled",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow\\SKILL.md",
+            "source": "openclaw-bundled",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "taskflow-inbox-triage",
+          "description": "Example TaskFlow pattern for inbox triage, intent routing, waiting on replies, and later summaries.",
+          "filePath": "C:\\Users\\admin\\AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow-inbox-triage\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow-inbox-triage",
+          "source": "openclaw-bundled",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow-inbox-triage\\SKILL.md",
+            "source": "openclaw-bundled",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\AppData\\Roaming\\npm\\node_modules\\openclaw\\skills\\taskflow-inbox-triage"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "unified-search",
+          "description": "统一搜索 + 识图入口。整合 minimax-websearch、web-anti-crawl-search、multi-search-engine-simple，以及 MiniMax 视觉识别。所有 agent 统一使用本 skill 作为联网搜索和图片分析的标准入口。",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\unified-search\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\unified-search",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\unified-search\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\unified-search"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "video-frames",
+          "description": "Extract frames or short clips from videos using ffmpeg.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\video-frames\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\video-frames",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\video-frames\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\video-frames"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "weather",
+          "description": "Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\weather\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\weather",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\weather\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\weather"
+          },
+          "disableModelInvocation": false
+        },
+        {
+          "name": "xurl",
+          "description": "A CLI tool for making authenticated requests to the X (Twitter) API. Use this skill when you need to post tweets, reply, quote, search, read posts, manage followers, send DMs, upload media, or interact with any X API v2 endpoint.",
+          "filePath": "C:\\Users\\admin\\.openclaw\\skills\\xurl\\SKILL.md",
+          "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\xurl",
+          "source": "openclaw-managed",
+          "sourceInfo": {
+            "path": "C:\\Users\\admin\\.openclaw\\skills\\xurl\\SKILL.md",
+            "source": "openclaw-managed",
+            "scope": "project",
+            "origin": "top-level",
+            "baseDir": "C:\\Users\\admin\\.openclaw\\skills\\xurl"
+          },
+          "disableModelInvocation": false
+        }
+      ],
+      "version": 0
+    },
+    "sessionFile": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory\\sessions\\e1a5affe-8978-43ba-b518-37db1192d265.jsonl",
+    "status": "timeout",
+    "startedAt": 1781473006788,
+    "abortedLastRun": true,
+    "endedAt": 1781473132696,
+    "runtimeMs": 120036,
+    "contextTokens": 1048576,
+    "agentHarnessId": "pi",
+    "systemPromptReport": {
+      "source": "run",
+      "generatedAt": 1781473012606,
+      "sessionId": "e1a5affe-8978-43ba-b518-37db1192d265",
+      "sessionKey": "agent:dev-factory:subagent:0e3f9272-2cac-4071-8c4f-ccb9020d9205",
+      "provider": "suanli",
+      "model": "qwen3.7-plus",
+      "workspaceDir": "C:\\Users\\admin\\.openclaw\\agents\\dev-factory",
+      "bootstrapMaxChars": 12000,
+      "bootstrapTotalMaxChars": 60000,
+      "bootstrapTruncation": {
+        "warningMode": "once",
+        "warningShown": false,
+        "truncatedFiles": 0,
+        "nearLimitFiles": 0,
+        "totalNearLimit": false
+      },
+      "sandbox": {
+        "mode": "off",
+        "sandboxed": false
+      },
+      "systemPrompt": {
+        "chars": 22768,
+        "projectContextChars": 0,
+        "nonProjectContextChars": 22768
+      },
+      "injectedWorkspaceFiles": [],
+      "skills": {
+        "promptChars": 15379,
+        "entries": [
+          {
+            "name": "baidu-search",
+            "blockChars": 258
+          },
+          {
+            "name": "blogwatcher",
+            "blockChars": 215
+          },
+          {
+            "name": "blucli",
+            "blockChars": 196
+          },
+          {
+            "name": "clawhub",
+            "blockChars": 404
+          },
+          {
+            "name": "code-review",
+            "blockChars": 450
+          },
+          {
+            "name": "coding-agent",
+            "blockChars": 804
+          },
+          {
+            "name": "eightctl",
+            "blockChars": 204
+          },
+          {
+            "name": "free-google-search-with-browser",
+            "blockChars": 388
+          },
+          {
+            "name": "gh-issues",
+            "blockChars": 480
+          },
+          {
+            "name": "github",
+            "blockChars": 544
+          },
+          {
+            "name": "healthcheck",
+            "blockChars": 463
+          },
+          {
+            "name": "mcporter",
+            "blockChars": 302
+          },
+          {
+            "name": "nano-pdf",
+            "blockChars": 206
+          },
+          {
+            "name": "node-connect",
+            "blockChars": 513
+          },
+          {
+            "name": "notebooklm",
+            "blockChars": 419
+          },
+          {
+            "name": "ollama-local",
+            "blockChars": 354
+          },
+          {
+            "name": "openai-whisper",
+            "blockChars": 205
+          },
+          {
+            "name": "opencode",
+            "blockChars": 505
+          },
+          {
+            "name": "opencode-acp-control",
+            "blockChars": 305
+          },
+          {
+            "name": "opencode-cli",
+            "blockChars": 588
+          },
+          {
+            "name": "opencode-controller",
+            "blockChars": 326
+          },
+          {
+            "name": "opencode-omo",
+            "blockChars": 268
+          },
+          {
+            "name": "oracle",
+            "blockChars": 248
+          },
+          {
+            "name": "planning-with-files",
+            "blockChars": 479
+          },
+          {
+            "name": "Proactivity (Proactive Agent)",
+            "blockChars": 287
+          },
+          {
+            "name": "project-documentation",
+            "blockChars": 453
+          },
+          {
+            "name": "project-orchestrator",
+            "blockChars": 370
+          },
+          {
+            "name": "self-improvement",
+            "blockChars": 652
+          },
+          {
+            "name": "Self-Improving + Proactive Agent",
+            "blockChars": 610
+          },
+          {
+            "name": "session-logs",
+            "blockChars": 225
+          },
+          {
+            "name": "skill-creator",
+            "blockChars": 731
+          },
+          {
+            "name": "summarize",
+            "blockChars": 268
+          },
+          {
+            "name": "superpower-with-files",
+            "blockChars": 362
+          },
+          {
+            "name": "taskflow",
+            "blockChars": 285
+          },
+          {
+            "name": "taskflow-inbox-triage",
+            "blockChars": 295
+          },
+          {
+            "name": "unified-search",
+            "blockChars": 286
+          },
+          {
+            "name": "video-frames",
+            "blockChars": 201
+          },
+          {
+            "name": "weather",
+            "blockChars": 388
+          },
+          {
+            "name": "xurl",
+            "blockChars": 359
+          }
+        ]
+      },
+      "tools": {
+        "listChars": 0,
+        "schemaChars": 12063,
+        "entries": [
+          {
+            "name": "read",
+            "summaryChars": 298,
+            "schemaChars": 304,
+            "propertiesCount": 3
+          },
+          {
+            "name": "edit",
+            "summaryChars": 326,
+            "schemaChars": 834,
+            "propertiesCount": 2
+          },
+          {
+            "name": "write",
+            "summaryChars": 127,
+            "schemaChars": 225,
+            "propertiesCount": 2
+          },
+          {
+            "name": "exec",
+            "summaryChars": 698,
+            "schemaChars": 1096,
+            "propertiesCount": 12
+          },
+          {
+            "name": "process",
+            "summaryChars": 322,
+            "schemaChars": 961,
+            "propertiesCount": 12
+          },
+          {
+            "name": "image_generate",
+            "summaryChars": 387,
+            "schemaChars": 2169,
+            "propertiesCount": 14
+          },
+          {
+            "name": "music_generate",
+            "summaryChars": 150,
+            "schemaChars": 1348,
+            "propertiesCount": 11
+          },
+          {
+            "name": "video_generate",
+            "summaryChars": 225,
+            "schemaChars": 3841,
+            "propertiesCount": 21
+          },
+          {
+            "name": "sessions_yield",
+            "summaryChars": 97,
+            "schemaChars": 60,
+            "propertiesCount": 1
+          },
+          {
+            "name": "web_fetch",
+            "summaryChars": 129,
+            "schemaChars": 374,
+            "propertiesCount": 3
+          },
+          {
+            "name": "image",
+            "summaryChars": 201,
+            "schemaChars": 342,
+            "propertiesCount": 6
+          },
+          {
+            "name": "memory_search",
+            "summaryChars": 385,
+            "schemaChars": 260,
+            "propertiesCount": 4
+          },
+          {
+            "name": "memory_get",
+            "summaryChars": 239,
+            "schemaChars": 249,
+            "propertiesCount": 4
+          }
+        ]
+      }
+    },
+    "inputTokens": 29765,
+    "outputTokens": 4421,
+    "totalTokens": 16278,
+    "totalTokensFresh": true,
+    "cacheRead": 143616,
     "cacheWrite": 0
   }
 }
