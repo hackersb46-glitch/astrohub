@@ -165,7 +165,7 @@
             </div>
             <!-- 重启按钮 -->
             <button class="btn btn-secondary btn-sm" onclick="confirmRestart()" style="padding:2px 8px">重启</button>
-            <span class="version">v7.24</span>
+            <span class="version">v7.12</span>
         </div>
     </div>
     <div class="nav">
@@ -381,14 +381,6 @@ function showStartupProgress() {
                         setTimeout(function() { window.loadDeviceImageParams(r.device.ip); }, 300);
                     }
 
-                    // v7.22: WASM 登录（等待 SDK 初始化完成）
-                    setTimeout(function() {
-                        if (window.WebVideoCtrl && window.WebVideoCtrl.I_GetWndSet && window.clickLogin2) {
-                            console.log('[v7.22] 触发 WASM 登录');
-                            window.clickLogin2();
-                        }
-                    }, 500);
-
                 } else if (r && r.success && !r.connected && r.device) {
                     // v7.12: 未连接但有上次设备 → 自动连接
                     console.log('[v7.12] 有上次连接设备，自动连接:', r.device.ip);
@@ -432,7 +424,13 @@ function showStartupProgress() {
                     if (btn.getAttribute('data-page') === 'devices') { refreshDevices(); }
                     if (btn.getAttribute('data-page') === 'console') {
                         refreshPtzDeviceList();
-                        // v7.22: 不再覆盖 divPlugin 内容，WASM SDK 会管理 Canvas
+                        // v6.12: 预渲染 WASM(如果已连接)
+                        if (window.connectedDevice && window.connectedDevice.ip) {
+                            var container = document.getElementById('divPlugin');
+                            if (container && !container.innerHTML.trim()) {
+                                container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#6e7681;font-size:14px">正在加载画面...</div>';
+                            }
+                        }
                         loadWasmDevices();
                         // Resize WASM player when console becomes visible
                         setTimeout(function() {
