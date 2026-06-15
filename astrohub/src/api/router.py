@@ -1934,15 +1934,21 @@ async def advanced_function_run(req: AdvancedFunctionRunRequest) -> dict:
         except Exception:
             pass
 
-        return {
-            "success": True,
-            "message": f"功能探测完成: {req.device_ip}",
-            "results": result,
-            "restored": restore_ok,
-            "status": detector.get_status(),
-            "config_saved": config_saved,
-            "mac": mac,
-        }
+        # v7.33: 直接返回 run_all 的结果（包含 _format, detected_at, functions）
+        if not req.item:
+            # result 已经是 run_all 的完整输出
+            return result
+        else:
+            # 单项探测返回旧格式
+            return {
+                "success": True,
+                "message": f"功能探测完成: {req.device_ip}",
+                "results": result,
+                "restored": restore_ok,
+                "status": detector.get_status(),
+                "config_saved": config_saved,
+                "mac": mac,
+            }
     except Exception as e:
         return {"success": False, "message": f"功能探测异常: {e}"}
 
