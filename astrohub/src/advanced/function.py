@@ -628,53 +628,11 @@ class FunctionDetector:
         return results
 
     def _write_config(self, result: FunctionResult) -> None:
-        """v6.03: 将探测结果写入 data/devices/{mac}/function.json。"""
-        # 使用动态路径
-        function_path = self._get_function_path()
-        
-        config = {}
-        if os.path.exists(function_path):
-            try:
-                with open(function_path, "r", encoding="utf-8") as f:
-                    config = json.load(f)
-            except (json.JSONDecodeError, OSError):
-                config = {}
-
-        if "function_detection" not in config:
-            config["function_detection"] = {}
-
-        entry = {
-            "p_id": result.p_id,
-            "item": result.item,
-            "label": result.label,
-            "supported": result.supported,
-            "endpoint": result.endpoint,
-            "min_val": result.min_val,
-            "max_val": result.max_val,
-            "current_values": result.current_values,
-            "test_results": result.test_results,
-            "restored": result.restored,
-            "error": result.error,
-        }
-        # v7.08: 保存 opt_values（如果有）
-        if result.opt_values:
-            entry["opt_values"] = result.opt_values
-        config["function_detection"][result.p_id or result.item] = entry
-        
-        # 添加设备信息和时间戳
-        self._init_device_info()
-        config["device_info"] = {
-            "ip": self._device_info.get("ip", ""),
-            "mac": self._mac_clean,
-            "model": self._model_short,
-        }
-        config["detected_at"] = datetime.now(timezone.utc).replace(tzinfo=None).isoformat()
-
-        try:
-            with open(function_path, "w", encoding="utf-8") as f:
-                json.dump(config, f, ensure_ascii=False, indent=2)
-        except OSError as e:
-            pass  # 静默失败,不影响主流程
+        """v7.32: 已废弃，仅更新内存中的结果，不再写入文件。
+        所有保存统一在 run_all() 函数最后执行。
+        """
+        # 仅更新内存结果，不写入文件
+        pass
 
     def traverse_function(self, item_key: str) -> FunctionResult:
         """探测并遍历单个功能(严格按 CSV 流程)。
@@ -982,36 +940,35 @@ class FunctionDetector:
 
         # 步骤4: 构建完整输出
         output = {
+            "_format": "AstroHub Function Detection v1.0 - 读取格式: output.functions[item_key].opt_values",
+            "_path": "data/devices/{mac}/function.json",
             "success": True,
             "total_functions": len(FUNCTION_ENDPOINTS),
             "supported_count": sum(1 for r in result.values() if r.get("supported", False)),
             "device_info": {
                 "ip": self.client.ip,
-                "port": self.client.port,
+                "mac": self._mac_clean or "",
+                "model": self._model_short or "",
             },
-            "detected_at": datetime.now(timezone.utc).replace(tzinfo=None).isoformat(),  # v7.32: 添加时间戳
+            "detected_at": datetime.now(timezone.utc).replace(tzinfo=None).isoformat(),
             "functions": {}
         }
 
         for item_key, data in result.items():
-            func_def = FUNCTION_ENDPOINTS.get(item_key, {})
             output["functions"][item_key] = {
                 "p_id": data.get("p_id", ""),
+                "item": data.get("item", item_key),
                 "label": data.get("label", item_key),
                 "supported": data.get("supported", False),
                 "min": data.get("min_val"),
                 "max": data.get("max_val"),
                 "endpoint": data.get("endpoint", ""),
-                "test_key": data.get("test_key", ""),
-                "api_method": "GET/PUT",
-                "test_results": data.get("test_results", []),
+                "opt_values": data.get("opt_values", []),
                 "current_values": data.get("current_values", {}),
+                "test_results": data.get("test_results", []),
                 "restored": data.get("restored", False),
                 "error": data.get("error")
             }
-            # v7.32: 添加 opt_values
-            if data.get("opt_values"):
-                output["functions"][item_key]["opt_values"] = data.get("opt_values")
 
         # 步骤5: 保存到function.json
         try:

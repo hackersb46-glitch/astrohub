@@ -1,7 +1,7 @@
 {
   "agent:dev-factory:telegram:direct:8447197723": {
     "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
-    "updatedAt": 1781484629368,
+    "updatedAt": 1781485220959,
     "systemSent": true,
     "abortedLastRun": false,
     "thinkingLevel": "low",
@@ -765,13 +765,13 @@
       "version": 0
     },
     "status": "running",
-    "startedAt": 1781484629333,
+    "startedAt": 1781485220934,
     "modelProvider": "zai",
     "model": "glm-5.1",
     "contextTokens": 202800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1781484459248,
+      "generatedAt": 1781484823444,
       "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
       "sessionKey": "agent:dev-factory:telegram:direct:8447197723",
       "provider": "zai",
@@ -1135,8 +1135,8 @@
         ]
       }
     },
-    "inputTokens": 578546,
-    "outputTokens": 739,
+    "inputTokens": 615328,
+    "outputTokens": 744,
     "cacheRead": 0,
     "cacheWrite": 0,
     "totalTokensFresh": true,
@@ -1210,11 +1210,11 @@
     ],
     "memoryFlushAt": 1781479007178,
     "memoryFlushCompactionCount": 1,
-    "totalTokens": 139621
+    "totalTokens": 161784
   },
   "agent:dev-factory:main": {
     "sessionId": "e425d0bc-cea5-45e4-a60a-95b592654edb",
-    "updatedAt": 1781483984172,
+    "updatedAt": 1781485169804,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -1366,7 +1366,7 @@
       "version": 0
     },
     "status": "done",
-    "startedAt": 1781483966443,
+    "startedAt": 1781485162716,
     "compactionCheckpoints": [
       {
         "checkpointId": "1f72e13b-df72-4702-bf89-43402a0c3827",
@@ -1459,7 +1459,7 @@
     ],
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1781483965979,
+      "generatedAt": 1781485162333,
       "sessionId": "e425d0bc-cea5-45e4-a60a-95b592654edb",
       "sessionKey": "agent:dev-factory:main",
       "provider": "suanli",
@@ -1832,13 +1832,13 @@
     "modelProvider": "suanli",
     "model": "qwen3.7-plus",
     "contextTokens": 1048576,
-    "inputTokens": 318390,
-    "outputTokens": 15,
-    "cacheRead": 0,
+    "inputTokens": 2307,
+    "outputTokens": 70,
+    "cacheRead": 317056,
     "cacheWrite": 0,
-    "totalTokens": 318390,
-    "endedAt": 1781483984093,
-    "runtimeMs": 17650
+    "totalTokens": 319363,
+    "endedAt": 1781485169733,
+    "runtimeMs": 7017
   },
   "agent:dev-factory:telegram:slash:8447197723": {
     "origin": {

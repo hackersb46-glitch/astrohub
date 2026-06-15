@@ -652,10 +652,10 @@ function loadDeviceImageParams(deviceIp) {
     
     // v7.32: 必须有 function.json 才能启用画面控制
     apiGet('/api/v1/ptz/' + deviceIp + '/function').then(function(r) {
-        if (r && r.success && r.data && r.data.function_detection) {
+        if (r && r.success && r.data && r.data.functions) {
             deviceFunctionData = r.data;
             functionCacheLoaded = true;
-            console.log('[IMAGE] function.json loaded from cache');
+            console.log('[IMAGE] function.json loaded, detected_at:', r.data.detected_at);
             enableImageControls();
             // 移除覆盖层
             removeFunctionOverlay();
