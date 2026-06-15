@@ -221,8 +221,7 @@
                                     <div class="form-group" style="margin-bottom:4px">
                                         <label style="font-size:11px;color:#8b949e">曝光模式</label>
                                         <select id="exposureMode" style="width:100%;padding:4px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:12px" onchange="setExposureMode(this.value);updateShutterIrisState()">
-                                            <option value="auto">自动</option>
-                                            <option value="manual">手动</option>
+                                            <!-- v7.35: 从 function.json 动态加载 -->
                                         </select>
                                     </div>
                                     <!-- 快门/光圈整合一行 -->
