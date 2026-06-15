@@ -1,7 +1,7 @@
 {
   "agent:dev-factory:telegram:direct:8447197723": {
     "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
-    "updatedAt": 1781491164038,
+    "updatedAt": 1781492828900,
     "systemSent": true,
     "abortedLastRun": false,
     "thinkingLevel": "low",
@@ -765,13 +765,13 @@
       "version": 0
     },
     "status": "running",
-    "startedAt": 1781491164004,
+    "startedAt": 1781492828868,
     "modelProvider": "zai",
     "model": "glm-5.1",
     "contextTokens": 202800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1781490268945,
+      "generatedAt": 1781492658107,
       "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
       "sessionKey": "agent:dev-factory:telegram:direct:8447197723",
       "provider": "zai",
@@ -1135,8 +1135,8 @@
         ]
       }
     },
-    "inputTokens": 3284362,
-    "outputTokens": 4379,
+    "inputTokens": 1008920,
+    "outputTokens": 1856,
     "cacheRead": 0,
     "cacheWrite": 0,
     "totalTokensFresh": true,
@@ -1210,7 +1210,7 @@
     ],
     "memoryFlushAt": 1781479007178,
     "memoryFlushCompactionCount": 1,
-    "totalTokens": 133895
+    "totalTokens": 146507
   },
   "agent:dev-factory:main": {
     "sessionId": "e425d0bc-cea5-45e4-a60a-95b592654edb",

@@ -14,44 +14,47 @@ def test_speed_limit():
         page.click('[data-page="advanced"]')
         page.wait_for_timeout(2000)
         
-        print('\n=== 测试1: 限位测试 (Limit) ===')
-        # 点击限位测试菜单
+        print('\n=== Test 1: Limit - Start Check ===')
         page.click('[data-test="limit"]')
         page.wait_for_timeout(1000)
         
-        # 检查运行按钮
         run_btn = page.query_selector('#btnAdvRun')
         if run_btn:
-            print('运行按钮存在')
+            print('[OK] Run button found')
             run_btn.click()
-            page.wait_for_timeout(5000)
-            
-            # 检查输出
-            output = page.evaluate('document.getElementById("advOutput")?.innerText || "无输出"')
-            print(f'输出: {output[:200]}...')
-        else:
-            print('未找到运行按钮')
+            page.wait_for_timeout(3000)
+            output = page.evaluate('document.getElementById("advOutput")?.innerText || "None"')
+            if 'limit' in output.lower() or 'device' in output.lower() or '192.168' in output:
+                print('[OK] Limit test started')
+                print(f'Output: {output[:150]}')
+            else:
+                print(f'Output: {output[:100]}')
         
-        print('\n=== 测试2: 速度测试 (Speed) ===')
-        # 点击速度测试菜单
+        print('\n=== Test 2: Speed - Start Check ===')
+        page.wait_for_timeout(15000)
+        
         page.click('[data-test="speed"]')
         page.wait_for_timeout(1000)
         
-        # 检查运行按钮
         run_btn = page.query_selector('#btnAdvRun')
         if run_btn:
-            print('运行按钮存在')
-            run_btn.click()
-            page.wait_for_timeout(5000)
+            is_disabled = page.evaluate('document.getElementById("btnAdvRun")?.disabled')
+            print(f'Button status: {"Disabled" if is_disabled else "Enabled"}')
             
-            # 检查输出
-            output = page.evaluate('document.getElementById("advOutput")?.innerText || "无输出"')
-            print(f'输出: {output[:200]}...')
-        else:
-            print('未找到运行按钮')
+            if not is_disabled:
+                run_btn.click()
+                page.wait_for_timeout(3000)
+                output = page.evaluate('document.getElementById("advOutput")?.innerText || "None"')
+                if 'speed' in output.lower() or 'device' in output.lower() or '192.168' in output:
+                    print('[OK] Speed test started')
+                    print(f'Output: {output[:150]}')
+                else:
+                    print(f'Output: {output[:100]}')
+            else:
+                print('[WARN] Button disabled, waiting for Limit to complete...')
         
         browser.close()
-        print('\n=== 测试完成 ===')
+        print('\n=== Test Complete ===')
 
 if __name__ == '__main__':
     test_speed_limit()

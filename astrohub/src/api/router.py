@@ -2179,7 +2179,7 @@ async def advanced_speed_run(req: AdvancedSpeedRunRequest) -> dict:
         mac_key = mac.upper().replace(":", "-")
 
         tester = SpeedTester(ptz)
-        results = tester.run_all_tests(config=None, mac=mac_key, device_id=device_id, speed_profile=req.speed_profile)
+        results = tester.run_all_tests(config=None, speed_profile=req.speed_profile)
 
         # Auto-save to DataStore
         config_saved = False
