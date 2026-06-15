@@ -1,7 +1,7 @@
 {
   "agent:dev-factory:telegram:direct:8447197723": {
     "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
-    "updatedAt": 1781485220959,
+    "updatedAt": 1781486900979,
     "systemSent": true,
     "abortedLastRun": false,
     "thinkingLevel": "low",
@@ -765,13 +765,13 @@
       "version": 0
     },
     "status": "running",
-    "startedAt": 1781485220934,
+    "startedAt": 1781486900952,
     "modelProvider": "zai",
     "model": "glm-5.1",
     "contextTokens": 202800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1781484823444,
+      "generatedAt": 1781486537296,
       "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
       "sessionKey": "agent:dev-factory:telegram:direct:8447197723",
       "provider": "zai",
@@ -791,9 +791,9 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 36639,
+        "chars": 36137,
         "projectContextChars": 8663,
-        "nonProjectContextChars": 27976
+        "nonProjectContextChars": 27474
       },
       "injectedWorkspaceFiles": [
         {
@@ -1135,8 +1135,8 @@
         ]
       }
     },
-    "inputTokens": 615328,
-    "outputTokens": 744,
+    "inputTokens": 83485,
+    "outputTokens": 3,
     "cacheRead": 0,
     "cacheWrite": 0,
     "totalTokensFresh": true,
@@ -1210,7 +1210,7 @@
     ],
     "memoryFlushAt": 1781479007178,
     "memoryFlushCompactionCount": 1,
-    "totalTokens": 161784
+    "totalTokens": 83485
   },
   "agent:dev-factory:main": {
     "sessionId": "e425d0bc-cea5-45e4-a60a-95b592654edb",

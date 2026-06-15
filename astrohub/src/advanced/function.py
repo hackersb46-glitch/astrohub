@@ -128,6 +128,18 @@ FUNCTION_ENDPOINTS: dict[str, dict[str, Any]] = {
         "description": "通过 PTZ continuous 端点控制 focus+/-",
     },
 
+    # --- P4.4c 曝光模式 (Exposure Mode) ---
+    "exposure_mode": {
+        "p_id": "P4.4c",
+        "label": "曝光模式",
+        "endpoint": "/Image/channels/{ch}/exposure",
+        "test_key": "ExposureType",
+        "test_value": "auto",
+        "test_values": ["manual", "auto", "IrisFirst", "ShutterFirst"],
+        "mode": "exposure_mode",
+        "description": "曝光模式: manual/auto/IrisFirst(光圈优先)/ShutterFirst(快门优先)",
+    },
+
     # --- P4.5 快门速度 ---
     "shutter": {
         "p_id": "P4.5",
@@ -705,8 +717,8 @@ class FunctionDetector:
 
             # 解析取值范围 (如果不是 read_only 模式)
             if mode != "read_only":
-                # v7.08: 对于 shutter/iris 模式，尝试从 capabilities 获取 opt 值
-                if mode in ("shutter", "iris"):
+                # v7.08: 对于 shutter/iris/exposure_mode 模式，尝试从 capabilities 获取 opt 值
+                if mode in ("shutter", "iris", "exposure_mode"):
                     opt_values = self._fetch_capabilities_opt_values(endpoint, cap_def["test_key"])
                     if opt_values:
                         result.opt_values = opt_values
@@ -826,7 +838,14 @@ class FunctionDetector:
                 "success": success,
                 "note": f"F{test_val/100:.1f}" if test_val else None,
             })
-            
+        
+        elif mode == "exposure_mode":
+            # v7.34: 曝光模式型 - 从 capabilities 获取 opt_values
+            # 支持: manual, auto, IrisFirst(光圈优先), ShutterFirst(快门优先)
+            test_values = cap_def.get("test_values", ["auto"])
+            for val in test_values:
+                success = self._test_value(cap_def, endpoint, val, item_key)
+                result.test_results.append({"value": val, "success": success})
 
         # ---- Verify: supported = True if GET succeeded and has current values ----
         # PUT success is optional - some devices don't allow modification
