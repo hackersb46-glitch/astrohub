@@ -2017,6 +2017,7 @@ async def advanced_limit_run(req: AdvancedLimitRunRequest) -> dict:
     try:
         from src.ptz.isapi.client import ISAPIClient
         from src.advanced.limit import LimitTester
+        from src.storage.store import get_store  # v7.37: 添加导入
 
         mgr: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
         username = req.username or "admin"
