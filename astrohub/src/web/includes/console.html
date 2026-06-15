@@ -646,29 +646,37 @@ function loadDeviceImageParams(deviceIp) {
     
     console.log('[IMAGE] Loading image params for:', deviceIp);
     
-    // v6.41: 重置状态，但允许无缓存时加载
+    // v6.41: 重置状态
     functionCacheLoaded = false;
     deviceFunctionData = null;
     
-    // v6.41: 尝试加载 function.json 缓存，失败也继续加载其他参数
+    // v7.32: 必须有 function.json 才能启用画面控制
     apiGet('/api/v1/ptz/' + deviceIp + '/function').then(function(r) {
         if (r && r.success && r.data && r.data.function_detection) {
             deviceFunctionData = r.data;
             functionCacheLoaded = true;
             console.log('[IMAGE] function.json loaded from cache');
             enableImageControls();
+            // 移除覆盖层
+            removeFunctionOverlay();
+            // 加载图像参数
+            loadAllImageParams(deviceIp);
         } else {
-            console.warn('[IMAGE] function.json not found');
-            // v7.30: 设备已连接时不禁用画面控制，只显示提示
-            showToast('info', '未找到功能测试记录，建议运行功能测试');
+            console.warn('[IMAGE] function.json not found - disabling image controls');
+            // 禁用画面控制
+            disableImageControls('请执行功能检测，以启用此功能');
+            // 显示覆盖层
+            showFunctionOverlay();
         }
     }).catch(function(e) {
         console.warn('[IMAGE] function.json failed:', e);
-        // v7.30: 设备已连接时不禁用画面控制，只显示提示
-        showToast('info', '未找到功能测试记录，建议运行功能测试');
+        disableImageControls('请执行功能检测，以启用此功能');
+        showFunctionOverlay();
     });
-    
-    // v6.41: 无论如何都加载参数（使用 ISAPI 直接读取）
+}
+
+// v7.32: 加载所有图像参数
+function loadAllImageParams(deviceIp) {
     loadExposure(deviceIp);
     loadOsdStatus(deviceIp);
     loadWhiteBalance(deviceIp);
@@ -677,7 +685,44 @@ function loadDeviceImageParams(deviceIp) {
     loadIris(deviceIp);
     loadSharpness(deviceIp);
     loadColorParams(deviceIp);
-    loadGain(deviceIp);  // v7.03: 加载增益
+    loadGain(deviceIp);
+}
+
+// v7.32: 显示功能检测覆盖层
+function showFunctionOverlay() {
+    var section = document.getElementById('imageControlSection');
+    if (!section) return;
+    
+    // 移除旧覆盖层
+    var oldOverlay = document.getElementById('function-required-overlay');
+    if (oldOverlay) oldOverlay.remove();
+    
+    // 创建覆盖层
+    var overlay = document.createElement('div');
+    overlay.id = 'function-required-overlay';
+    overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(13,17,23,0.9);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px;';
+    overlay.innerHTML = '<div style="color:#f0883e;font-size:14px;text-align:center">请执行功能检测</div><div style="color:#8b949e;font-size:12px;text-align:center">以启用此功能</div><button class="btn btn-primary btn-sm" onclick="goToFunctionTest()" style="margin-top:8px">前往功能检测</button>';
+    
+    section.style.position = 'relative';
+    section.appendChild(overlay);
+}
+
+// v7.32: 移除功能检测覆盖层
+function removeFunctionOverlay() {
+    var overlay = document.getElementById('function-required-overlay');
+    if (overlay) overlay.remove();
+}
+
+// v7.32: 跳转到功能检测页面
+function goToFunctionTest() {
+    // 移除覆盖层
+    removeFunctionOverlay();
+    // 跳转到高级功能页面
+    document.querySelector('[data-page="advanced"]').click();
+    // 选择功能检测
+    setTimeout(function() {
+        document.querySelector('[data-test="function"]').click();
+    }, 500);
 }
 
 // 加载 OSD 状态
@@ -849,6 +894,23 @@ function loadNoiseReduce(deviceIp) {
 
 // 加载快门
 function loadShutter(deviceIp) {
+    // v7.32: 必须有 function.json
+    if (!deviceFunctionData || !deviceFunctionData.functions || !deviceFunctionData.functions.shutter) {
+        console.warn('[Shutter] No function.json data available');
+        return;
+    }
+    
+    var shutterValues = deviceFunctionData.functions.shutter.opt_values;
+    if (!shutterValues || !Array.isArray(shutterValues) || shutterValues.length === 0) {
+        console.warn('[Shutter] shutter not supported');
+        var shutterSelect = document.getElementById('shutterSpeed');
+        if (shutterSelect) {
+            shutterSelect.innerHTML = '<option value="">-- 不支持 --</option>';
+            shutterSelect.disabled = true;
+        }
+        return;
+    }
+    
     apiGet('/api/v1/ptz/' + deviceIp + '/image/shutter').then(function(r) {
         if (r && r.success && r.data) {
             var sh = r.data;
@@ -857,51 +919,41 @@ function loadShutter(deviceIp) {
             var shutterSelect = document.getElementById('shutterSpeed');
             if (shutterSelect) {
                 shutterSelect.innerHTML = '';
+                shutterSelect.disabled = false;
                 
-                // v7.08: 从 function.json 获取 opt_values
-                var shutterValues = null;
-                if (deviceFunctionData && deviceFunctionData.functions && deviceFunctionData.functions.shutter) {
-                    shutterValues = deviceFunctionData.functions.shutter.opt_values;
-                }
-                
-                if (shutterValues && Array.isArray(shutterValues)) {
-                    // 使用设备返回的 opt_values
-                    shutterValues.forEach(function(p) {
-                        var opt = document.createElement('option');
-                        opt.value = p;
-                        opt.textContent = p;
-                        if (p === sh.current_level) opt.selected = true;
-                        shutterSelect.appendChild(opt);
-                    });
-                } else {
-                    // 回退到默认值
-                    var shutterPresets = ['1/25', '1/30', '1/60', '1/125', '1/250', '1/500', '1/1000', '1/2000', '1/4000', '1/8000'];
-                    shutterPresets.forEach(function(p) {
-                        var opt = document.createElement('option');
-                        opt.value = p;
-                        opt.textContent = p;
-                        if (p === sh.current_level) opt.selected = true;
-                        shutterSelect.appendChild(opt);
-                    });
-                }
+                shutterValues.forEach(function(p) {
+                    var opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    if (p === sh.current_level) opt.selected = true;
+                    shutterSelect.appendChild(opt);
+                });
             }
         }
     }).catch(function(e) {
         console.warn('[Shutter] Load failed:', e);
-        // 设置默认选项
-        var shutterSelect = document.getElementById('shutterSpeed');
-        if (shutterSelect) {
-            shutterSelect.innerHTML = '';
-            var presets = ['1/25', '1/30', '1/60', '1/125', '1/250', '1/500', '1/1000'];
-            presets.forEach(function(p) {
-                shutterSelect.innerHTML += '<option value="' + p + '">' + p + '</option>';
-            });
-        }
     });
 }
 
 // 加载光圈
 function loadIris(deviceIp) {
+    // v7.32: 必须有 function.json
+    if (!deviceFunctionData || !deviceFunctionData.functions || !deviceFunctionData.functions.iris) {
+        console.warn('[Iris] No function.json data available');
+        return;
+    }
+    
+    var irisValues = deviceFunctionData.functions.iris.opt_values;
+    if (!irisValues || !Array.isArray(irisValues) || irisValues.length === 0) {
+        console.warn('[Iris] iris not supported');
+        var irisSelect = document.getElementById('irisLevel');
+        if (irisSelect) {
+            irisSelect.innerHTML = '<option value="">-- 不支持 --</option>';
+            irisSelect.disabled = true;
+        }
+        return;
+    }
+    
     apiGet('/api/v1/ptz/' + deviceIp + '/image/iris').then(function(r) {
         if (r && r.success && r.data) {
             var ir = r.data;
@@ -910,62 +962,23 @@ function loadIris(deviceIp) {
             var irisSelect = document.getElementById('irisLevel');
             if (irisSelect) {
                 irisSelect.innerHTML = '';
+                irisSelect.disabled = false;
                 
-                var current = ir.current_level || 160;
+                var current = ir.current_level;
                 
-                // v7.08: 从 function.json 获取 opt_values
-                var irisValues = null;
-                if (deviceFunctionData && deviceFunctionData.functions && deviceFunctionData.functions.iris) {
-                    irisValues = deviceFunctionData.functions.iris.opt_values;
-                }
-                
-                if (irisValues && Array.isArray(irisValues)) {
-                    // 使用设备返回的 opt_values
-                    irisValues.forEach(function(val) {
-                        var numVal = parseInt(val);
-                        var opt = document.createElement('option');
-                        opt.value = numVal;
-                        // 计算 F 值
-                        var fNum = numVal / 100;
-                        opt.textContent = 'F' + fNum.toFixed(1);
-                        if (numVal === current) opt.selected = true;
-                        irisSelect.appendChild(opt);
-                    });
-                } else {
-                    // 回退到默认 F 值映射
-                    var fValues = [
-                        {val: 160, label: 'F1.6'},
-                        {val: 200, label: 'F2.0'},
-                        {val: 280, label: 'F2.8'},
-                        {val: 400, label: 'F4.0'},
-                        {val: 560, label: 'F5.6'},
-                        {val: 800, label: 'F8.0'},
-                        {val: 1100, label: 'F11'},
-                        {val: 1600, label: 'F16'},
-                        {val: 2200, label: 'F22'}
-                    ];
-                    
-                    fValues.forEach(function(f) {
-                        var opt = document.createElement('option');
-                        opt.value = f.val;
-                        opt.textContent = f.label;
-                        if (f.val === current) opt.selected = true;
-                        irisSelect.appendChild(opt);
-                    });
-                }
+                irisValues.forEach(function(val) {
+                    var numVal = parseInt(val);
+                    var opt = document.createElement('option');
+                    opt.value = numVal;
+                    var fNum = numVal / 100;
+                    opt.textContent = 'F' + fNum.toFixed(1);
+                    if (numVal === current) opt.selected = true;
+                    irisSelect.appendChild(opt);
+                });
             }
         }
     }).catch(function(e) {
         console.warn('[Iris] Load failed:', e);
-        // 设置默认选项
-        var irisSelect = document.getElementById('irisLevel');
-        if (irisSelect) {
-            irisSelect.innerHTML = '<option value="">-- 选择 --</option>';
-            var fValues = ['F1.6', 'F2.0', 'F2.8', 'F4.0', 'F5.6', 'F8.0', 'F11', 'F16', 'F22'];
-            fValues.forEach(function(f) {
-                irisSelect.innerHTML += '<option value="' + f + '">' + f + '</option>';
-            });
-        }
     });
 }
 
@@ -1385,4 +1398,8 @@ window.togglePtzOsd = togglePtzOsd;
 window.toggleInfoOsd = toggleInfoOsd;
 window.updatePtzOsdButtons = updatePtzOsdButtons;
 window.updateInfoOsdButtons = updateInfoOsdButtons;
+// v7.32: 新增功能检测相关函数
+window.goToFunctionTest = goToFunctionTest;
+window.showFunctionOverlay = showFunctionOverlay;
+window.removeFunctionOverlay = removeFunctionOverlay;
 </script>
