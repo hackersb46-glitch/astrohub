@@ -989,6 +989,7 @@ class FunctionDetector:
                 "ip": self.client.ip,
                 "port": self.client.port,
             },
+            "detected_at": datetime.now(timezone.utc).replace(tzinfo=None).isoformat(),  # v7.32: 添加时间戳
             "functions": {}
         }
 
@@ -1008,6 +1009,9 @@ class FunctionDetector:
                 "restored": data.get("restored", False),
                 "error": data.get("error")
             }
+            # v7.32: 添加 opt_values
+            if data.get("opt_values"):
+                output["functions"][item_key]["opt_values"] = data.get("opt_values")
 
         # 步骤5: 保存到function.json
         try:
