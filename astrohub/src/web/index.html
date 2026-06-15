@@ -1238,12 +1238,15 @@ function showStartupProgress() {
         function showToast(type, message) {
             var container = document.getElementById('toastContainer');
             var toast = document.createElement('div');
-            toast.className = 'toast ' + type;
+            toast.className = 'toast ' + type + ' show';  // v7.39: 添加 show class
             toast.textContent = message;
             container.appendChild(toast);
             setTimeout(function() {
-                if (toast.parentNode) toast.parentNode.removeChild(toast);
-            }, 4000);
+                toast.classList.remove('show');
+                setTimeout(function() {
+                    if (toast.parentNode) toast.parentNode.removeChild(toast);
+                }, 300);
+            }, 3700);
         }
         // Logging
         function addLog(level, msg) {
