@@ -340,6 +340,7 @@ class FunctionResult:
     supported: bool = False
     min_val: str | int = 0
     max_val: str | int = 0
+    opt_values: list[str] | None = None  # v7.32: 添加 opt_values 字段
     current_values: dict[str, Any] = field(default_factory=dict)
     test_results: list[dict] = field(default_factory=list)
     restored: bool = True
