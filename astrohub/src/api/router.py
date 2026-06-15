@@ -1912,22 +1912,11 @@ async def advanced_function_run(req: AdvancedFunctionRunRequest) -> dict:
 
         if req.item:
             result = {req.item: detector.detect_single(req.item)}
+            restore_ok = detector.restore_all()
         else:
-            # Bug #2 修复: 功能探测开始前，第一步设置预置点10并归位
-            import time
-            from src.ptz.isapi.ptz import PTZController
-            ptz = PTZController(client)
-            ptz.set_preset(10)
-            time.sleep(1)
-            ptz.goto_preset(10)
-            time.sleep(3)
-
-            from src.advanced.function import FUNCTION_ENDPOINTS
-            result = {}
-            for item_key in FUNCTION_ENDPOINTS:
-                result[item_key] = detector.detect_single(item_key)
-
-        restore_ok = detector.restore_all()
+            # v7.33: 使用 run_all 统一保存 function.json
+            result = detector.run_all()
+            restore_ok = result.get("success", False)
 
         # Auto-save to DataStore (按设计文档)
         from src.storage.store import get_store
