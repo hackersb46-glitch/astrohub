@@ -206,6 +206,7 @@ var g_bPlaying2 = false;
 var g_iRtspPort2 = 554;
 var g_iWndIndex2 = 0;
 var g_iWebSocketPort = 7681;
+var g_iStreamType = 3;  // v7.34: 用户选择的码流类型，默认第三码流
         var g_iWndIndex = 0;
 var g_iChannelList = [];
 var g_iChannelID = 1;
@@ -2721,12 +2722,12 @@ function clickLogin2() {
                 getChannelInfo().then(function() {
                     console.log('[WASM SDK] 获取通道结束');
                     // v7.0: 默认使用第三码流
-                    clickStartRealPlay({ iStreamType: 3 });
+                    clickStartRealPlay({ iStreamType: g_iStreamType });
                 }).catch(function(err) {
                     console.log('[WASM SDK] 获取通道失败: ' + err);
                     g_iChannelID = 1;
                     // v7.0: 默认使用第三码流
-                    clickStartRealPlay({ iStreamType: 3 });
+                    clickStartRealPlay({ iStreamType: g_iStreamType });
                 });
                 }); // end tokenPromise.then
             }, 500);
@@ -2810,6 +2811,7 @@ function getChannelInfo() {
 function changeStreamType(streamType) {
     console.log('[changeStreamType] streamType=' + streamType);
     var parsedType = parseInt(streamType, 10);
+    g_iStreamType = parsedType;  // v7.34: 保存用户选择的码流
 
     // 先停止当前播放
     if (g_bPlaying2 && g_szDeviceIdentify2) {

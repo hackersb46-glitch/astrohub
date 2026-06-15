@@ -1,7 +1,7 @@
 {
   "agent:dev-factory:telegram:direct:8447197723": {
     "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
-    "updatedAt": 1781486900979,
+    "updatedAt": 1781489279570,
     "systemSent": true,
     "abortedLastRun": false,
     "thinkingLevel": "low",
@@ -765,13 +765,13 @@
       "version": 0
     },
     "status": "running",
-    "startedAt": 1781486900952,
+    "startedAt": 1781489279546,
     "modelProvider": "zai",
     "model": "glm-5.1",
     "contextTokens": 202800,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1781486537296,
+      "generatedAt": 1781488047975,
       "sessionId": "124556e7-d9a5-407b-9559-4c42e737a56e",
       "sessionKey": "agent:dev-factory:telegram:direct:8447197723",
       "provider": "zai",
@@ -791,9 +791,9 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 36137,
+        "chars": 36639,
         "projectContextChars": 8663,
-        "nonProjectContextChars": 27474
+        "nonProjectContextChars": 27976
       },
       "injectedWorkspaceFiles": [
         {
@@ -1135,8 +1135,8 @@
         ]
       }
     },
-    "inputTokens": 83485,
-    "outputTokens": 3,
+    "inputTokens": 191173,
+    "outputTokens": 846,
     "cacheRead": 0,
     "cacheWrite": 0,
     "totalTokensFresh": true,
@@ -1210,11 +1210,11 @@
     ],
     "memoryFlushAt": 1781479007178,
     "memoryFlushCompactionCount": 1,
-    "totalTokens": 83485
+    "totalTokens": 92954
   },
   "agent:dev-factory:main": {
     "sessionId": "e425d0bc-cea5-45e4-a60a-95b592654edb",
-    "updatedAt": 1781485169804,
+    "updatedAt": 1781488786419,
     "systemSent": true,
     "abortedLastRun": false,
     "chatType": "direct",
@@ -1366,7 +1366,7 @@
       "version": 0
     },
     "status": "done",
-    "startedAt": 1781485162716,
+    "startedAt": 1781488766359,
     "compactionCheckpoints": [
       {
         "checkpointId": "1f72e13b-df72-4702-bf89-43402a0c3827",
@@ -1459,7 +1459,7 @@
     ],
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1781485162333,
+      "generatedAt": 1781488765925,
       "sessionId": "e425d0bc-cea5-45e4-a60a-95b592654edb",
       "sessionKey": "agent:dev-factory:main",
       "provider": "suanli",
@@ -1832,13 +1832,13 @@
     "modelProvider": "suanli",
     "model": "qwen3.7-plus",
     "contextTokens": 1048576,
-    "inputTokens": 2307,
-    "outputTokens": 70,
-    "cacheRead": 317056,
+    "inputTokens": 321309,
+    "outputTokens": 84,
+    "cacheRead": 0,
     "cacheWrite": 0,
-    "totalTokens": 319363,
-    "endedAt": 1781485169733,
-    "runtimeMs": 7017
+    "totalTokens": 321309,
+    "endedAt": 1781488786305,
+    "runtimeMs": 19946
   },
   "agent:dev-factory:telegram:slash:8447197723": {
     "origin": {
