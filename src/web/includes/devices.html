@@ -1,0 +1,64 @@
+        <div class="page" id="page-devices">
+            <!-- 本机信息仪表盘 -->
+            <div id="localhostCard" class="dashboard-section" style="display:none;margin-bottom:20px">
+                <h3 style="margin:0 0 16px 0;font-size:16px;color:#58a6ff">🖥️ 本机信息</h3>
+                <div class="dashboard-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">
+                    <div class="stat-card" style="background:linear-gradient(135deg,#1a1f2e,#252d3d);border-radius:8px;padding:16px;text-align:center">
+                        <div style="font-size:11px;color:#8b949e;margin-bottom:8px">计算机名</div>
+                        <div id="localhost-hostname" style="font-size:18px;font-weight:600;color:#e0e6f0">-</div>
+                    </div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#1a1f2e,#252d3d);border-radius:8px;padding:16px;text-align:center">
+                        <div style="font-size:11px;color:#8b949e;margin-bottom:8px">处理器型号</div>
+                        <div id="localhost-cpu" style="font-size:14px;font-weight:600;color:#e0e6f0;word-break:break-all">-</div>
+                    </div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#1a1f2e,#252d3d);border-radius:8px;padding:16px;text-align:center">
+                        <div style="font-size:11px;color:#8b949e;margin-bottom:8px">内存容量</div>
+                        <div id="localhost-ram" style="font-size:18px;font-weight:600;color:#58a6ff">-</div>
+                    </div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#1a1f2e,#252d3d);border-radius:8px;padding:16px;text-align:center">
+                        <div style="font-size:11px;color:#8b949e;margin-bottom:8px">GPU型号</div>
+                        <div id="localhost-gpu" style="font-size:12px;font-weight:600;color:#e0e6f0;word-break:break-all">-</div>
+                    </div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#1a1f2e,#252d3d);border-radius:8px;padding:16px;text-align:center">
+                        <div style="font-size:11px;color:#8b949e;margin-bottom:8px">本机IP</div>
+                        <div id="localhost-ip" style="font-size:18px;font-weight:600;color:#3fb950">-</div>
+                    </div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#1a1f2e,#252d3d);border-radius:8px;padding:16px;text-align:center">
+                        <div style="font-size:11px;color:#8b949e;margin-bottom:8px">网关</div>
+                        <div id="localhost-gateway" style="font-size:18px;font-weight:600;color:#f0883e">-</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="toolbar">
+                <h2 style="font-size:18px;margin:0">设备列表</h2>
+                <div class="toolbar-actions">
+                    <button class="btn btn-secondary" id="btnDiscover" onclick="discoverDevices()">
+                        <span id="discoverSpinner" class="spinner" style="display:none"></span>
+                        🔍 发现设备
+                    </button>
+                    <button class="btn btn-primary" onclick="showAddDeviceModal()">➕ 添加设备</button>
+                    <button class="btn btn-secondary" onclick="refreshDevices()">刷新</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>设备型号</th>
+                        <th>设备名称</th>
+                        <th>MAC</th>
+                        <th>IP地址</th>
+                        <th>网关地址</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="deviceTable">
+                    <tr><td colspan="7" style="text-align:center;color:#6e7681">暂无设备</td></tr>
+                </tbody>
+            </table>
+            <!-- 设备详细信息面板 -->
+            <div id="deviceInfoPanel" class="device-info-panel" style="display:none"></div>
+        </div>
+        <!-- ==================== 主控台 ==================== -->
