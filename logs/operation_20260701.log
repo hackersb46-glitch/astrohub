@@ -1,0 +1,110 @@
+[2026-07-01 01:40:49.839] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 01:41:36.511] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 04:23:14.856] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 04:23:28.726] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 04:23:28.766] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 04:23:37.355] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-07-01 04:23:37.360] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 04:23:43.864] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-01 04:23:43.942] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 04:23:44.280] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 04:23:48.938] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-07-01 04:23:48.941] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 04:23:53.430] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-01 04:23:53.518] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 04:23:53.874] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 04:51:26.380] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 04:55:59.288] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 04:58:13.260] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 04:58:13.973] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 04:58:14.160] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 07:15:24.886] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 07:41:10.124] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 08:06:28.350] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 08:06:29.791] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 08:06:29.794] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 08:21:06.247] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-01 08:21:06.387] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 08:21:06.797] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 08:21:09.459] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 08:21:09.548] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 08:32:02.987] [INFO   ] [operation_logger] [ptz] preset_goto: {"device": "192.168.5.72", "preset_id": 10}
+[2026-07-01 08:32:02.989] [INFO   ] [operation_logger] [web] ptz: 预置点: 前往 #10...
+[2026-07-01 08:32:02.992] [INFO   ] [operation_logger] [web] ptz: 预置点: 已前往 #10
+[2026-07-01 08:32:44.223] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 92, "blue": 115}
+[2026-07-01 08:32:44.256] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-01 08:32:45.586] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 156, "blue": 115}
+[2026-07-01 08:32:45.709] [INFO   ] [operation_logger] [web] ptz: 白平衡R (红增益): 156
+[2026-07-01 08:32:47.829] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 156, "blue": 115}
+[2026-07-01 08:32:48.026] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-01 12:10:25.310] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 12:10:25.439] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 12:10:39.419] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260701_121039_0001.jpg"}
+[2026-07-01 12:10:40.123] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-07-01 12:19:52.764] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 12:19:52.766] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 12:19:56.090] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260701_121956_0002.jpg"}
+[2026-07-01 12:19:56.093] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-07-01 12:20:51.953] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/100"}
+[2026-07-01 12:20:52.121] [INFO   ] [operation_logger] [web] ptz: 快门: 1/100
+[2026-07-01 12:25:34.696] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 12:25:34.704] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 12:25:35.252] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 13:39:28.023] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 13:40:02.849] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 13:47:55.189] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 13:47:56.551] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 13:47:56.553] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 18:15:09.015] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:15:10.546] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 18:15:10.860] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 18:16:38.815] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:16:40.135] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 18:16:40.138] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 18:18:52.057] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:18:53.541] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 18:18:53.824] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 18:19:04.909] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260701_181904_0003.jpg"}
+[2026-07-01 18:19:04.913] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-07-01 18:19:06.853] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-07-01 18:19:08.858] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-07-01 18:33:40.079] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:33:41.771] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 18:33:41.837] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 18:33:49.056] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-07-01 18:33:49.059] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 18:33:52.082] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-01 18:33:52.085] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 18:33:52.414] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:33:59.075] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260701_183359_0004.jpg"}
+[2026-07-01 18:33:59.079] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-07-01 18:34:00.973] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-07-01 18:34:03.075] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-07-01 18:35:33.309] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:35:34.757] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 18:35:34.760] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 18:35:42.270] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-07-01 18:35:42.273] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 18:35:45.276] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-01 18:35:45.278] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 18:35:45.662] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:35:52.561] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260701_183552_0005.jpg"}
+[2026-07-01 18:35:52.716] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-07-01 18:35:54.631] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-07-01 18:35:56.687] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-07-01 18:37:46.138] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:37:47.710] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-01 18:37:47.713] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-01 18:37:55.091] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-07-01 18:37:55.093] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 18:37:58.120] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-01 18:37:58.122] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-01 18:37:58.572] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-01 18:38:05.119] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260701_183805_0006.jpg"}
+[2026-07-01 18:38:05.123] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-07-01 18:38:07.063] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-07-01 18:38:09.090] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-07-02 22:00:19.939] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260702_220019_0001.jpg"}
+[2026-07-02 22:01:12.470] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260702_220112_0002.jpg"}
+[2026-07-02 22:01:23.834] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260702_220123_0003.jpg"}
+[2026-07-02 22:02:18.069] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260702_220218_0004.jpg"}

@@ -1,0 +1,68 @@
+[2026-06-19 04:14:57.990] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 04:14:58.088] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 06:16:11.106] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 06:16:11.110] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 06:16:11.221] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 06:16:11.275] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 06:56:38.852] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 06:56:38.857] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 06:56:38.961] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 06:56:39.049] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 06:57:12.050] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 06:57:12.161] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 07:21:21.336] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 07:21:21.339] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 07:21:21.431] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 07:21:21.494] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 07:39:11.302] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 07:39:11.305] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 07:39:11.404] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 07:39:11.446] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 08:12:29.646] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 08:12:29.650] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 08:12:29.740] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 08:12:29.815] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 08:41:36.038] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 08:41:36.042] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 08:41:36.179] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 08:41:36.181] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 09:37:46.356] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 09:37:46.360] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 09:37:46.453] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 09:37:46.519] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 10:20:23.645] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 10:20:23.649] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 10:20:23.744] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 10:20:23.831] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 10:20:40.379] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 10:20:40.383] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 10:20:40.455] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 10:20:40.526] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 10:21:21.662] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 10:21:21.755] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 16:06:48.461] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 16:06:48.624] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 17:22:52.245] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 17:22:52.252] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 17:22:52.327] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 17:22:52.376] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 17:23:33.627] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 17:23:33.631] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 17:23:33.705] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 17:23:33.754] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 17:26:36.360] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"contrast": 47}}
+[2026-06-19 17:26:36.363] [INFO   ] [operation_logger] [web] ptz: 对比度: 47
+[2026-06-19 17:26:58.569] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 17:26:58.692] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 18:51:23.224] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 18:51:23.228] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 18:51:23.357] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 18:51:23.412] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 18:52:45.762] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 18:52:45.767] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 18:52:45.843] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 18:52:45.956] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 19:39:58.119] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-19 19:39:58.124] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-19 19:39:58.315] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-19 19:39:58.384] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 

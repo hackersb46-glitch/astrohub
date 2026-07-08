@@ -1,0 +1,1866 @@
+        <div class="page" id="page-console">
+            <div id="consoleWarning" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);background:#4a3a1a;border:2px solid #d29922;border-radius:12px;padding:32px 48px;color:#d29922;font-size:16px;z-index:10000;text-align:center;width:300px">
+                <strong style="font-size:20px">⚠️ 请连接设备</strong><br><br>
+                <span style="color:#8b949e;font-size:14px">在设备管理页面连接设备</span>
+            </div>
+            <div id="ptzControlArea">
+                <!-- 左右布局: 左控制, 中间画面+媒体, 右日志+画面控制 -->
+                <div class="console-layout">
+                    <!-- 左: PTZ控制(整合:指向+预置点+变焦/对焦) -->
+                    <div class="console-left">
+                        <!-- PTZ控制(折叠) -->
+                        <div class="collapsible-section" id="ptzControlSection">
+                            <div class="collapsible-header" onclick="toggleSection('ptzControlSection')">
+                                <h3 style="font-size:15px;color:#58a6ff;margin:0">🎯 运动控制</h3>
+                                <span class="collapse-icon">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <!-- 指向控制 + 信息展示 -->
+                                <div style="display:flex;gap:8px;align-items:stretch">
+                                    <!-- 左侧:方向控制 + 速度 -->
+                                    <div style="flex:0 0 auto;display:flex;flex-direction:column;justify-content:space-between">
+                                        <div class="ptz-controls">
+                                            <button class="ptz-btn" onmousedown="ptzMove('up-left')" ontouchstart="ptzMove('up-left')">↖</button>
+                                            <button class="ptz-btn" onmousedown="ptzMove('up')" ontouchstart="ptzMove('up')">↑</button>
+                                            <button class="ptz-btn" onmousedown="ptzMove('up-right')" ontouchstart="ptzMove('up-right')">↗</button>
+                                            <button class="ptz-btn" onmousedown="ptzMove('left')" ontouchstart="ptzMove('left')">←</button>
+                                            <button class="ptz-btn" onclick="ptzHome()" title="归位">⌂</button>
+                                            <button class="ptz-btn" onmousedown="ptzMove('right')" ontouchstart="ptzMove('right')">→</button>
+                                            <button class="ptz-btn" onmousedown="ptzMove('down-left')" ontouchstart="ptzMove('down-left')">↙</button>
+                                            <button class="ptz-btn" onmousedown="ptzMove('down')" ontouchstart="ptzMove('down')">↓</button>
+                                            <button class="ptz-btn" onmousedown="ptzMove('down-right')" ontouchstart="ptzMove('down-right')">↘</button>
+                                        </div>
+                                        <div class="ptz-speed" style="width:170px;font-size:11px;margin-top:8px">
+                                            <label style="font-size:11px">速度:</label>
+                                            <input type="range" id="ptzSpeed" min="1" max="7" value="4" style="width:90px">
+                                            <span id="ptzSpeedVal" style="font-size:11px">4</span>
+                                        </div>
+                                    </div>
+                                    <!-- 右侧:光圈快门 + P/T/Z(竖排,宽度减少15%) -->
+                                    <div style="flex:0 0 110px;display:flex;flex-direction:column;gap:0">
+                                        <div class="info-block" style="flex:1">
+                                            <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">光圈</span><span class="info-value" id="ptzIris">--</span></div>
+                                            <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">快门</span><span class="info-value" id="ptzShutter">--</span></div>
+                                            <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">R</span><span class="info-value" id="ptzWbR">--</span></div>
+                                            <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">B</span><span class="info-value" id="ptzWbB">--</span></div>
+                                            <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">空域</span><span class="info-value" id="ptzDnrSpatial">--</span></div>
+                                            <div class="info-row" style="padding:1px 4px;font-size:12px"><span class="info-label">时域</span><span class="info-value" id="ptzDnrTemporal">--</span></div>
+                                        </div>
+                                        <div style="border-top:2px solid #30363d;margin-top:2px;padding-top:2px"></div>
+                                        <div class="info-block" style="flex:1">
+                                            <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">Pan</span><span class="info-value" id="ptzPan">--</span></div>
+                                            <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">Tilt</span><span class="info-value" id="ptzTilt">--</span></div>
+                                            <div class="info-row" style="padding:1px 4px;font-size:12px"><span class="info-label">Zoom</span><span class="info-value" id="ptzZoom">--</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 码流控制 -->
+                                <div class="section-subtitle">码流</div>
+                                <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:8px">
+                                    <button class="btn btn-primary btn-sm" id="btnStreamMain" onclick="switchAndPlay(1)" title="主码流">主</button>
+                                    <button class="btn btn-primary btn-sm" id="btnStreamSub" onclick="switchAndPlay(2)" title="子码流">子</button>
+                                    <button class="btn btn-primary btn-sm" id="btnStreamThird" onclick="switchAndPlay(3)" title="第三码流">三</button>
+                                    <button class="btn btn-primary btn-sm" id="btnStreamStop" onclick="doStopPreview()" title="停止预览">⏹</button>
+                                </div>
+                                <!-- 预置点 -->
+                                <div class="section-subtitle">预置点</div>
+                                <div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:8px">
+                                    <select id="ptzPresetSelect" style="padding:6px 8px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px;min-width:100px">
+                                        <option value="">选择预置点</option>
+                                    </select>
+                                    <button class="btn btn-primary btn-sm" onclick="ptzGotoSelectedPreset()">前往</button>
+                                    <button class="btn btn-primary btn-sm" onclick="ptzWritePreset()">写入</button>
+                                </div>
+                                <!-- 信息显示开关 -->
+                                <div class="section-subtitle">信息显示</div>
+                                <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px">
+                                    <div style="display:flex;align-items:center;gap:6px">
+                                        <span style="color:#8b949e;font-size:11px">OSD</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="infoOsdSwitch" onchange="toggleInfoOsdSwitch(this.checked)">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display:flex;align-items:center;gap:6px">
+                                        <span style="color:#8b949e;font-size:11px">PTZ</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="ptzOsdSwitch" checked onchange="togglePtzOsdSwitch(this.checked)">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 媒体信息(折叠,默认展开) -->
+                        <div class="collapsible-section" id="mediaLogSection" style="margin-top:12px">
+                            <div class="collapsible-header" onclick="toggleSection('mediaLogSection')">
+                                <h3 style="font-size:15px;color:#58a6ff;margin:0">📡 媒体信息</h3>
+                                <span class="collapse-icon">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:8px;overflow-y:auto;height:200px" class="hide-scrollbar">
+                                    <div id="mediaLogBox" style="font-size:11px;font-family:monospace;color:#8b949e">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 中: 实时画面 + 媒体操作 -->
+                    <div class="console-center">
+                        <div class="console-video-wrap" style="background:#0d1117;border:1px solid #30363d;border-radius:8px;margin-bottom:12px;overflow:hidden;position:relative;width:100%;">
+                            <!-- v7.98: WASM 播放器占位区域,保留16:9比例 -->
+                            <div id="divPlugin" style="width:100%;aspect-ratio:16/9;display:block;margin:0 auto"></div>
+                            <!-- v8.10: 框选区域 overlay(默认隐藏) -->
+                            <div id="regionOverlay" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;cursor:crosshair;z-index:100">
+                                <div id="regionBox" style="position:absolute;border:2px dashed #3fb950;background:rgba(63,185,80,0.15);display:none;pointer-events:none"></div>
+                            </div>
+                        </div>
+                        <!-- 媒体操作 + 跟踪控制 并排 -->
+                        <div style="display:flex;gap:12px;width:100%">
+                            <div style="flex:1">
+                                <div class="collapsible-section" id="mediaControlSection">
+                                    <div class="collapsible-header" onclick="toggleSection('mediaControlSection')">
+                                        <h3 style="font-size:15px;color:#3fb950;margin:0">📷 媒体操作</h3>
+                                        <span class="collapse-icon">▼</span>
+                                    </div>
+                            <div class="collapsible-content">
+                                <div style="display:flex;flex-direction:column;gap:12px">
+                                    <!-- 截图/录像 -->
+                                    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+                                        <button class="btn btn-primary btn-sm" id="btnConsoleSnapshot" onclick="consoleSnapshot()">📷 截图</button>
+                                        <button class="btn btn-warning btn-sm" id="btnConsoleRecord" onclick="toggleRecord()">⏺ 录像</button>
+                                    </div>
+                                    <div id="consoleRecordStatus" style="font-size:11px;color:#8b949e;text-align:center">未录像</div>
+
+                                    <!-- Live Stack -->
+                                    <div class="section-subtitle">Live Stack 实时叠加</div>
+                                    <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:8px">
+                                        <button class="btn btn-secondary btn-sm" data-stack="off" onclick="setLiveStackMode('off')">关闭</button>
+                                        <button class="btn btn-secondary btn-sm" data-stack="2s" onclick="setLiveStackMode('2s')">2s</button>
+                                        <button class="btn btn-secondary btn-sm" data-stack="5s" onclick="setLiveStackMode('5s')">5s</button>
+                                        <button class="btn btn-secondary btn-sm" data-stack="10s" onclick="setLiveStackMode('10s')">10s</button>
+                                        <button class="btn btn-secondary btn-sm" data-stack="30s" onclick="setLiveStackMode('30s')">30s</button>
+                                    </div>
+                                    <div style="font-size:12px;color:#8b949e;text-align:center;margin-bottom:8px">
+                                        硬件曝光: <input type="number" id="hardwareExposureMs" value="100" style="width:60px;padding:2px 4px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:11px"> ms
+                                    </div>
+                                    <div class="btn-group" style="justify-content:center">
+                                        <button class="btn btn-primary btn-sm" id="btnLiveStackStart" onclick="startLiveStack()">▶ 开始</button>
+                                        <button class="btn btn-warning btn-sm" id="btnLiveStackStop" onclick="stopLiveStack()" disabled>⏹ 停止</button>
+                                        <button class="btn btn-success btn-sm" id="btnLiveStackSave" onclick="saveLiveStack()" disabled>💾 保存</button>
+                                    </div>
+                                    <div id="liveStackStatus" style="font-size:11px;color:#8b949e;text-align:center">叠加: 关闭</div>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                            <!-- 跟踪控制 -->
+                            <div style="flex:1">
+                                <div class="collapsible-section" id="trackControlSection">
+                                    <div class="collapsible-header" onclick="toggleSection('trackControlSection')">
+                                        <h3 style="font-size:15px;color:#f0883e;margin:0">🛤 跟踪控制</h3>
+                                        <span class="collapse-icon">▼</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:8px">
+                                            <button class="btn btn-secondary" id="btnTrackSidereal" onclick="setTracking('trackSidereal')">恒星跟踪</button>
+                                            <button class="btn btn-secondary" id="btnTrackLunar" onclick="setTracking('trackLunar')">月球跟踪</button>
+                                            <button class="btn btn-secondary" id="btnTrackSolar" onclick="setTracking('trackSolar')">太阳跟踪</button>
+                                            <button class="btn btn-danger" id="btnTrackOff" onclick="setTracking('trackOff')">关闭跟踪</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 右: 操作日志 + 画面控制 -->
+                    <div class="console-right">
+                        <!-- 操作日志(折叠,默认展开) -->
+                        <div class="collapsible-section" id="logControlSection">
+                            <div class="collapsible-header" onclick="toggleSection('logControlSection')">
+                                <h3 style="font-size:15px;color:#8b949e;margin:0">📋 操作日志</h3>
+                                <span class="collapse-icon">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:8px;overflow-y:auto;height:270px" class="hide-scrollbar">
+                                    <div id="operationLogBox" style="font-size:12px;font-family:monospace;color:#8b949e">
+                                        <div style="color:#6e7681">等待连接...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 画面控制(折叠,移到右侧) -->
+                        <div class="collapsible-section" id="imageControlSection" style="margin-top:12px">
+                            <div class="collapsible-header" onclick="toggleSection('imageControlSection')">
+                                <h3 style="font-size:15px;color:#d29922;margin:0">🎨 画面控制</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();refreshImageControls()" style="margin-left:10px;padding:2px 8px;font-size:12px">刷新</button>
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();resetImageControls()" style="margin-left:5px;padding:2px 8px;font-size:12px">重置</button>
+                                <span class="collapse-icon">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="card">
+                                    <!-- 基础调节 -->
+                                    <div style="display:flex;gap:8px;margin-bottom:4px">
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#8b949e">亮度 <span id="brightnessVal" style="color:#58a6ff">50</span></label>
+                                            <input type="range" id="consoleBrightness" min="0" max="100" value="50" style="width:100%" oninput="document.getElementById('brightnessVal').textContent=this.value" onchange="adjustImage('brightness', this.value)">
+                                        </div>
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#8b949e">对比度 <span id="contrastVal" style="color:#58a6ff">50</span></label>
+                                            <input type="range" id="consoleContrast" min="0" max="100" value="50" style="width:100%" oninput="document.getElementById('contrastVal').textContent=this.value" onchange="adjustImage('contrast', this.value)">
+                                        </div>
+                                    </div>
+                                    <!-- 饱和度 + 锐度 - v6.02: 合并同一行 -->
+                                    <div style="display:flex;gap:8px;margin-bottom:4px">
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#8b949e">饱和度 <span id="saturationVal" style="color:#58a6ff">50</span></label>
+                                            <input type="range" id="consoleSaturation" min="0" max="100" value="50" style="width:100%" oninput="document.getElementById('saturationVal').textContent=this.value" onchange="adjustImage('saturation', this.value)">
+                                        </div>
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#8b949e">锐度 <span id="sharpnessVal" style="color:#58a6ff">50</span></label>
+                                            <input type="range" id="consoleSharpness" min="0" max="100" value="50" style="width:100%" oninput="document.getElementById('sharpnessVal').textContent=this.value" onchange="setSharpness(this.value)">
+                                        </div>
+                                    </div>
+                                    <!-- 降噪(移到饱和度/锐度下方) -->
+                                    <div style="display:flex;gap:8px;margin-bottom:4px">
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#8b949e">空域降噪 <span id="dnrSpatialVal" style="color:#58a6ff">--</span></label>
+                                            <input type="range" id="dnrSpatial" min="0" max="100" value="50" style="width:100%" oninput="document.getElementById('dnrSpatialVal').textContent=this.value" onchange="setNoiseReduce('spatial', this.value)">
+                                        </div>
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#8b949e">时域降噪 <span id="dnrTemporalVal" style="color:#58a6ff">--</span></label>
+                                            <input type="range" id="dnrTemporal" min="0" max="100" value="50" style="width:100%" oninput="document.getElementById('dnrTemporalVal').textContent=this.value" onchange="setNoiseReduce('temporal', this.value)">
+                                        </div>
+                                    </div>
+                                    <!-- 白平衡 -->
+                                    <div class="form-group" style="margin-bottom:4px">
+                                        <label style="font-size:11px;color:#8b949e">白平衡</label>
+                                        <select id="wbMode" style="width:100%;padding:4px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:12px" onchange="onWbModeChange(this.value)">
+                                            <option value="auto">自动</option>
+                                            <option value="manual">手动</option>
+                                            <option value="local">局部</option>
+                                        </select>
+                                    </div>
+                                    <!-- R/B 滑动条(仅手动模式显示) -->
+                                    <div id="wbManualControls" style="display:none;flex-direction:row;gap:8px;margin-bottom:4px">
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#f85149">R <span id="wbRedVal" style="color:#f85149">--</span></label>
+                                            <input type="range" id="wbRed" min="0" max="255" value="50" style="width:100%" oninput="document.getElementById('wbRedVal').textContent=this.value" onchange="setWhiteBalanceGain('red', this.value)" disabled>
+                                        </div>
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#58a6ff">B <span id="wbBlueVal" style="color:#58a6ff">--</span></label>
+                                            <input type="range" id="wbBlue" min="0" max="255" value="50" style="width:100%" oninput="document.getElementById('wbBlueVal').textContent=this.value" onchange="setWhiteBalanceGain('blue', this.value)" disabled>
+                                        </div>
+                                    </div>
+                                    <!-- 局部白平衡控制(仅局部模式显示) -->
+                                    <div id="wbLocalControls" style="display:none;margin-bottom:4px">
+                                        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:4px">
+                                            <button class="btn btn-secondary btn-sm" id="btnWbRegionSelect" onclick="toggleRegionMode('whitebalance')">框选</button>
+                                            <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+                                                <span style="color:#8b949e;font-size:11px">定时:</span>
+                                                <input type="text" id="wbTimerInput" value="0" style="width:50px;padding:2px 4px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:11px" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                                <span style="color:#8b949e;font-size:11px">分钟</span>
+                                                <button class="btn btn-primary btn-sm" onclick="confirmWbTimer()">确认</button>
+                                                <span id="wbTimerDisplay" style="color:#f85149;font-size:11px"></span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-danger btn-sm" id="btnWbLocalStop" onclick="stopAutoWhiteBalance()" style="display:none;width:100%">停止</button>
+                                    </div>
+                                    <!-- 对焦 -->
+                                    <div class="form-group" style="margin-bottom:4px">
+                                        <label style="font-size:11px;color:#8b949e">对焦</label>
+                                        <select id="focusMode" style="width:100%;padding:4px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:12px" onchange="onFocusModeChange(this.value)">
+                                            <option value="auto">自动</option>
+                                            <option value="manual">手动</option>
+                                            <option value="local">局部</option>
+                                        </select>
+                                    </div>
+                                    <!-- 焦点移动按钮(仅手动模式显示) -->
+                                    <div id="focusMoveControls" style="display:none;margin-bottom:4px">
+                                        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+                                            <span style="color:#8b949e;font-size:11px">焦点:</span>
+                                            <button class="btn btn-secondary btn-sm" onmousedown="ptzFocus('far')" onmouseup="ptzStop()" ontouchstart="ptzFocus('far')" ontouchend="ptzStop()">远</button>
+                                            <button class="btn btn-secondary btn-sm" onmousedown="ptzFocus('near')" onmouseup="ptzStop()" ontouchstart="ptzFocus('near')" ontouchend="ptzStop()">近</button>
+                                        </div>
+                                    </div>
+                                    <!-- 局部对焦控制(仅局部模式显示) -->
+                                    <div id="focusLocalControls" style="display:none;margin-bottom:4px">
+                                        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:4px">
+                                            <button class="btn btn-secondary btn-sm" id="btnFocusRegionSelect" onclick="toggleRegionMode('focus')">框选</button>
+                                            <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+                                                <span style="color:#8b949e;font-size:11px">定时:</span>
+                                                <input type="text" id="focusTimerInput" value="0" style="width:50px;padding:2px 4px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:11px" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                                <span style="color:#8b949e;font-size:11px">分钟</span>
+                                                <button class="btn btn-primary btn-sm" onclick="confirmFocusTimer()">确认</button>
+                                                <span id="focusTimerDisplay" style="color:#f85149;font-size:11px"></span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-danger btn-sm" id="btnFocusLocalStop" onclick="stopAutoFocus()" style="display:none;width:100%">停止</button>
+                                    </div>
+                                    <!-- 曝光模式 + 快门/光圈 (v5.47: 整合到一行) -->
+                                    <div class="form-group" style="margin-bottom:4px">
+                                        <label style="font-size:11px;color:#8b949e">曝光模式</label>
+                                        <select id="exposureMode" style="width:100%;padding:4px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:12px" onchange="setExposureMode(this.value);updateShutterIrisState()">
+                                            <!-- v7.35: 从 function.json 动态加载 -->
+                                        </select>
+                                    </div>
+                                    <!-- 快门/光圈整合一行 -->
+                                    <div style="display:flex;gap:8px;margin-bottom:4px">
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#8b949e">快门</label>
+                                            <select id="shutterSpeed" style="width:100%;padding:3px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:11px" onchange="setShutterSpeed(this.value)" disabled>
+                                                <option value="">--</option>
+                                            </select>
+                                        </div>
+                                        <div style="flex:1">
+                                            <label style="font-size:11px;color:#8b949e">光圈</label>
+                                            <select id="irisLevel" style="width:100%;padding:3px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:11px" onchange="setIris(this.value)" disabled>
+                                                <option value="">--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- v7.03: 增益控制 -->
+                                    <div style="margin-bottom:8px">
+                                        <label style="font-size:11px;color:#8b949e">增益 <span id="gainVal" style="color:#58a6ff">--</span></label>
+                                        <input type="range" id="gainLevel" min="0" max="100" value="0" style="width:100%" oninput="document.getElementById('gainVal').textContent=this.value" onchange="setGain(this.value)" disabled>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<style>
+/* v7.30: 模块禁用样式 - 保留折叠展开功能 */
+.section-disabled .collapsible-content {
+    opacity: 0.4;
+    pointer-events: none;
+}
+.section-disabled .collapsible-header {
+    opacity: 0.6;
+}
+.section-disabled .collapsible-header:hover {
+    cursor: pointer;
+}
+
+/* v6.02: 拨杆开关样式 */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+}
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #30363d;
+    transition: 0.3s;
+    border-radius: 22px;
+}
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #e0e6f0;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+input:checked + .toggle-slider {
+    background-color: #238636;
+}
+input:checked + .toggle-slider:before {
+    transform: translateX(18px);
+}
+
+/* 折叠面板样式 */
+.collapsible-section {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+.collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    cursor: pointer;
+    background: #0d1117;
+    transition: background 0.2s;
+}
+.collapsible-header:hover {
+    background: #161b22;
+}
+.collapse-icon {
+    color: #8b949e;
+    font-size: 12px;
+    transition: transform 0.2s;
+}
+.collapsible-section.collapsed .collapse-icon {
+    transform: rotate(-90deg);
+}
+.collapsible-content {
+    padding: 12px;
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s;
+}
+.collapsible-section.collapsed .collapsible-content {
+    max-height: 0;
+    padding: 0 12px;
+}
+.section-subtitle {
+    font-size: 12px;
+    color: #6e7681;
+    margin: 8px 0 4px;
+    padding-top: 8px;
+    border-top: 1px solid #21262d;
+}
+.section-subtitle:first-child {
+    border-top: none;
+    padding-top: 0;
+}
+
+/* v7.55: PTZ信息方块样式 */
+.info-block {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    font-size: 13px;
+}
+.info-row-2val {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+.info-row-2val > div {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 6px;
+    font-size: 11px;
+}
+.info-label {
+    color: #8b949e;
+    font-weight: 500;
+}
+.info-value {
+    color: #58a6ff;
+    font-weight: 600;
+}
+.info-label-sm {
+    color: #8b949e;
+    font-size: 10px;
+}
+.info-value-sm {
+    color: #58a6ff;
+    font-size: 10px;
+}
+/* v7.57: PTZ信息横向一行 */
+.info-row-h {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 4px 6px;
+    margin-top: 4px;
+}
+.info-row-h .info-label {
+    font-size: 12px;
+    color: #8b949e;
+}
+.info-row-h .info-value {
+    font-size: 12px;
+    color: #58a6ff;
+    font-weight: 600;
+    min-width: 28px;
+    text-align: right;
+}
+.info-divider {
+    width: 1px;
+    height: 14px;
+    background: #30363d;
+    margin: 0 2px;
+}
+</style>
+
+<script>
+// 等待 apiGet/apiPost 可用后再定义函数
+(function() {
+    // 检查 apiGet 是否已定义
+    if (typeof apiGet === 'undefined') {
+        console.warn('[CONSOLE] apiGet not yet defined, will retry on DOMContentLoaded');
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM 加载完成后重新执行
+            if (typeof apiGet !== 'undefined') {
+                console.log('[CONSOLE] apiGet now available');
+            }
+        });
+    }
+})();
+
+// 折叠/展开控制
+function toggleSection(sectionId) {
+    var section = document.getElementById(sectionId);
+    if (section) {
+        section.classList.toggle('collapsed');
+    }
+}
+
+// ==================== 动态加载设备图像参数 ====================
+var deviceImageParams = {};
+var deviceFunctionData = null; // v5.42: 存储function.json数据
+
+// v6.20: 功能支持状态
+var deviceFunctionData = null;
+var functionCacheLoaded = false;
+
+// v7.59: 初始化加载标志位(防止初始化时触发操作日志)
+var _isInitializingImageParams = false;
+
+// v8.40: 定时器状态
+var wbTimerId = null;
+var wbTimerSeconds = 0;
+var focusTimerId = null;
+var focusTimerSeconds = 0;
+
+// v6.20 + v7.0: 禁用所有控制区域(PTZ + 媒体 + 跟踪 + 画面)
+function disableImageControls(reason) {
+    // v7.30: 模块级别禁用灰色样式
+    var sections = ['ptzControlSection', 'trackControlSection', 'mediaControlSection', 'imageControlSection', 'logControlSection'];
+    sections.forEach(function(sectionId) {
+        var section = document.getElementById(sectionId);
+        if (section) {
+            section.classList.add('section-disabled');
+        }
+    });
+
+    // v7.11: 禁用画面控制控件(不包括 OSD 开关,它们在运动控制)
+    var controls = [
+        'consoleBrightness', 'consoleContrast', 'consoleSaturation', 'consoleSharpness',
+        'wbMode', 'wbRed', 'wbBlue', 'dnrSpatial', 'dnrTemporal',
+        'exposureMode', 'shutterSpeed', 'irisLevel', 'gainLevel',
+    ];
+    controls.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.disabled = true;
+            el.style.opacity = '0.5';
+            el.style.cursor = 'not-allowed';
+        }
+    });
+
+    // v7.0: 禁用 PTZ 控制按钮
+    var ptzSection = document.getElementById('ptzControlSection');
+    if (ptzSection) {
+        var ptzBtns = ptzSection.querySelectorAll('.btn, .ptz-btn');
+        ptzBtns.forEach(function(btn) {
+            if (btn.id !== 'ptzSpeed') {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            }
+        });
+    }
+
+    // v7.0: 禁用媒体操作按钮
+    var mediaButtons = ['btnConsoleSnapshot', 'btnConsoleRecord', 'btnLiveStackStart', 'btnLiveStackStop', 'btnLiveStackSave'];
+    mediaButtons.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.disabled = true;
+            el.style.opacity = '0.5';
+            el.style.cursor = 'not-allowed';
+        }
+    });
+
+    // v7.0: 禁用跟踪控制按钮
+    var trackButtons = ['btnTrackSidereal', 'btnTrackLunar', 'btnTrackSolar', 'btnTrackOff'];
+    trackButtons.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.disabled = true;
+            el.style.opacity = '0.5';
+            el.style.cursor = 'not-allowed';
+        }
+    });
+
+    // v7.01: 显示主控台提示框,移除画面控制区的提示
+    var consoleWarning = document.getElementById('consoleWarning');
+    if (consoleWarning) {
+        consoleWarning.style.display = 'block';
+    }
+
+    // 移除画面控制区的旧提示(如果存在)
+    var oldWarning = document.getElementById('functionCacheWarning');
+    if (oldWarning) oldWarning.remove();
+
+    // v7.0: 停止 PTZ 坐标刷新
+    if (window.stopPtzImagePoll) window.stopPtzImagePoll();
+}
+
+// v6.20 + v7.0: 启用所有控制区域
+function enableImageControls() {
+    // v7.30: 移除模块禁用样式
+    var sections = ['ptzControlSection', 'trackControlSection', 'mediaControlSection', 'imageControlSection', 'logControlSection'];
+    sections.forEach(function(sectionId) {
+        var section = document.getElementById(sectionId);
+        if (section) {
+            section.classList.remove('section-disabled');
+        }
+    });
+
+    // v7.11: 启用画面控制控件（不包括 OSD 开关，它们在运动控制）
+    var controls = [
+        'consoleBrightness', 'consoleContrast', 'consoleSaturation', 'consoleSharpness',
+        'wbMode', 'wbRed', 'wbBlue', 'dnrSpatial', 'dnrTemporal',
+        'exposureMode', 'shutterSpeed', 'irisLevel', 'gainLevel',
+    ];
+    controls.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.disabled = false;
+            el.style.opacity = '1';
+            el.style.cursor = 'pointer';
+        }
+    });
+
+    // v7.0: 启用 PTZ 控制按钮
+    var ptzSection = document.getElementById('ptzControlSection');
+    if (ptzSection) {
+        var ptzBtns = ptzSection.querySelectorAll('.btn, .ptz-btn');
+        ptzBtns.forEach(function(btn) {
+            if (btn.id !== 'ptzSpeed') {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            }
+        });
+    }
+
+    // v7.0: 启用媒体操作按钮
+    var mediaButtons = ['btnConsoleSnapshot', 'btnConsoleRecord', 'btnLiveStackStart', 'btnLiveStackStop', 'btnLiveStackSave'];
+    mediaButtons.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.disabled = false;
+            el.style.opacity = '1';
+            el.style.cursor = 'pointer';
+        }
+    });
+
+    // v7.0: 启用跟踪控制按钮
+    var trackButtons = ['btnTrackSidereal', 'btnTrackLunar', 'btnTrackSolar', 'btnTrackOff'];
+    trackButtons.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.disabled = false;
+            el.style.opacity = '1';
+            el.style.cursor = 'pointer';
+        }
+    });
+
+    // v7.01: 隐藏主控台提示框
+    var consoleWarning = document.getElementById('consoleWarning');
+    if (consoleWarning) {
+        consoleWarning.style.display = 'none';
+    }
+
+    // v7.0: 启动 PTZ 坐标刷新
+    if (window.startPtzImagePoll) window.startPtzImagePoll();
+}
+
+// 连接设备时加载图像参数(从function.json读取范围,从ISAPI读取当前值)
+// v6.20: 优先读取缓存,无缓存时禁用控件
+// v6.41: 修复下拉菜单加载中问题
+// 当 function.json 不存在时,仍然加载基础参数(使用默认范围)
+// v6.43: 刷新画面控制按钮
+function refreshImageControls() {
+    if (!window.connectedDevice || !window.connectedDevice.ip) {
+        console.warn('[IMAGE] No device connected');
+        return;
+    }
+    console.log('[IMAGE] Refreshing image controls...');
+    loadDeviceImageParams(window.connectedDevice.ip);
+}
+
+// v6.50: 重置画面控制到系统默认值
+function resetImageControls() {
+    if (!window.connectedDevice || !window.connectedDevice.ip) {
+        console.warn('[IMAGE] No device connected');
+        return;
+    }
+
+    // v7.117: 使用统一弹窗确认
+    showModal({
+        type: 'confirm',
+        title: '重置',
+        message: '确认重置画面控制到系统默认值?',
+        onConfirm: function() {
+            var dev = window.connectedDevice.ip;
+            console.log('[IMAGE] Resetting image controls to defaults...');
+
+            // 系统默认值
+            var defaults = {
+                brightness: 50,
+                contrast: 50,
+                saturation: 50,
+                sharpness: 50,
+                wbRed: 100,
+                wbBlue: 100,
+                dnrSpatial: 50,
+                dnrTemporal: 50,
+                exposureMode: 'auto',
+                shutterSpeed: '1/100',
+                irisLevel: 1600
+            };
+
+            // 更新 UI
+            document.getElementById('consoleBrightness').value = defaults.brightness;
+            document.getElementById('brightnessVal').textContent = defaults.brightness;
+            document.getElementById('consoleContrast').value = defaults.contrast;
+            document.getElementById('contrastVal').textContent = defaults.contrast;
+            document.getElementById('consoleSaturation').value = defaults.saturation;
+            document.getElementById('saturationVal').textContent = defaults.saturation;
+            document.getElementById('consoleSharpness').value = defaults.sharpness;
+            document.getElementById('sharpnessVal').textContent = defaults.sharpness;
+            document.getElementById('wbRed').value = defaults.wbRed;
+            document.getElementById('wbRedVal').textContent = defaults.wbRed;
+            document.getElementById('wbBlue').value = defaults.wbBlue;
+            document.getElementById('wbBlueVal').textContent = defaults.wbBlue;
+            document.getElementById('dnrSpatial').value = defaults.dnrSpatial;
+            document.getElementById('dnrSpatialVal').textContent = defaults.dnrSpatial;
+            document.getElementById('dnrTemporal').value = defaults.dnrTemporal;
+            document.getElementById('dnrTemporalVal').textContent = defaults.dnrTemporal;
+            document.getElementById('exposureMode').value = defaults.exposureMode;
+            document.getElementById('shutterSpeed').value = defaults.shutterSpeed;
+            document.getElementById('irisLevel').value = defaults.irisLevel;
+
+            // 发送 API 请求重置设备
+            apiPost('/api/v1/ptz/' + dev + '/image/reset', {})
+                .then(function(r) {
+                    if (r && r.success) {
+                        showToast('success', '画面控制已重置到系统默认值');
+                        if (typeof operationLog === 'function') operationLog('画面重置', 'success');
+                    } else {
+                        showToast('error', '重置失败: ' + (r.message || '未知错误'));
+                    }
+                })
+                .catch(function(e) {
+                    showToast('error', '重置请求失败');
+                });
+        }
+    });
+}
+
+function loadDeviceImageParams(deviceIp) {
+    if (!deviceIp) return;
+
+    if (typeof apiGet === 'undefined') {
+        console.error('[IMAGE] apiGet not defined');
+        return;
+    }
+
+    console.log('[IMAGE] Loading image params for:', deviceIp);
+
+    // v6.41: 重置状态
+    functionCacheLoaded = false;
+    deviceFunctionData = null;
+
+    // v7.32: 必须有 function.json 才能启用画面控制
+    apiGet('/api/v1/ptz/' + deviceIp + '/function').then(function(r) {
+        if (r && r.success && r.data && r.data.functions) {
+            deviceFunctionData = r.data;
+            functionCacheLoaded = true;
+            console.log('[IMAGE] function.json loaded, detected_at:', r.data.detected_at);
+            enableImageControls();
+            // 移除覆盖层
+            removeFunctionOverlay();
+            // 加载图像参数
+            loadAllImageParams(deviceIp);
+        } else {
+            console.warn('[IMAGE] function.json not found - disabling image controls');
+            // 禁用画面控制
+            disableImageControls('请执行功能检测,以启用此功能');
+            // 显示覆盖层
+            showFunctionOverlay();
+        }
+    }).catch(function(e) {
+        console.warn('[IMAGE] function.json failed:', e);
+        disableImageControls('请执行功能检测,以启用此功能');
+        showFunctionOverlay();
+    });
+}
+
+// v7.32: 加载所有图像参数
+function loadAllImageParams(deviceIp) {
+    _isInitializingImageParams = true;  // v7.59: 开始初始化,禁止记录日志
+    loadExposure(deviceIp);
+    loadOsdStatus(deviceIp);
+    loadWhiteBalance(deviceIp);
+    loadNoiseReduce(deviceIp);
+    loadShutter(deviceIp);
+    loadIris(deviceIp);
+    loadSharpness(deviceIp);
+    loadColorParams(deviceIp);
+    loadGain(deviceIp);
+    // v7.59: 延迟结束初始化标志(等待异步加载完成)
+    setTimeout(function() { _isInitializingImageParams = false; }, 3000);
+}
+
+// v7.32: 显示功能检测覆盖层
+function showFunctionOverlay() {
+    var section = document.getElementById('imageControlSection');
+    if (!section) return;
+
+    // 移除旧覆盖层
+    var oldOverlay = document.getElementById('function-required-overlay');
+    if (oldOverlay) oldOverlay.remove();
+
+    // 创建覆盖层
+    var overlay = document.createElement('div');
+    overlay.id = 'function-required-overlay';
+    overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(13,17,23,0.9);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px;';
+    overlay.innerHTML = '<div style="color:#f0883e;font-size:14px;text-align:center">请执行功能检测</div><div style="color:#8b949e;font-size:12px;text-align:center">以启用此功能</div><button class="btn btn-primary btn-sm" onclick="goToFunctionTest()" style="margin-top:8px">前往功能检测</button>';
+
+    section.style.position = 'relative';
+    section.appendChild(overlay);
+}
+
+// v7.32: 移除功能检测覆盖层
+function removeFunctionOverlay() {
+    var overlay = document.getElementById('function-required-overlay');
+    if (overlay) overlay.remove();
+}
+
+// v7.32: 跳转到功能检测页面
+function goToFunctionTest() {
+    // 移除覆盖层
+    removeFunctionOverlay();
+    // 跳转到高级功能页面
+    document.querySelector('[data-page="advanced"]').click();
+    // 选择功能检测
+    setTimeout(function() {
+        document.querySelector('[data-test="function"]').click();
+    }, 500);
+}
+
+// 加载 OSD 状态
+function loadOsdStatus(deviceIp) {
+    // PTZ OSD
+    apiGet('/api/v1/ptz/' + deviceIp + '/osd/ptz').then(function(r) {
+        if (r && r.success) {
+            var enabled = r.enabled || r.data?.enabled || false;
+            updatePtzOsdButtons(enabled);
+            // 保存到 localStorage
+            localStorage.setItem('osd_ptz_' + deviceIp, enabled ? '1' : '0');
+        } else {
+            // 从 localStorage 读取上次设置
+            var saved = localStorage.getItem('osd_ptz_' + deviceIp);
+            if (saved !== null) {
+                updatePtzOsdButtons(saved === '1');
+            }
+        }
+    }).catch(function(e) {
+        var saved = localStorage.getItem('osd_ptz_' + deviceIp);
+        if (saved !== null) {
+            updatePtzOsdButtons(saved === '1');
+        }
+    });
+
+    // Info OSD
+    apiGet('/api/v1/ptz/' + deviceIp + '/osd/info').then(function(r) {
+        if (r && r.success) {
+            var enabled = r.enabled || r.data?.enabled || false;
+            updateInfoOsdButtons(enabled);
+            localStorage.setItem('osd_info_' + deviceIp, enabled ? '1' : '0');
+        } else {
+            var saved = localStorage.getItem('osd_info_' + deviceIp);
+            if (saved !== null) {
+                updateInfoOsdButtons(saved === '1');
+            }
+        }
+    }).catch(function(e) {
+        var saved = localStorage.getItem('osd_info_' + deviceIp);
+        if (saved !== null) {
+            updateInfoOsdButtons(saved === '1');
+        }
+    });
+}
+
+function updatePtzOsdButtons(enabled) {
+    var btnOn = document.getElementById('btnPtzOsdOn');
+    var btnOff = document.getElementById('btnPtzOsdOff');
+    if (btnOn && btnOff) {
+        if (enabled) {
+            btnOn.className = 'btn btn-sm btn-primary';
+            btnOff.className = 'btn btn-sm btn-secondary';
+        } else {
+            btnOn.className = 'btn btn-sm btn-secondary';
+            btnOff.className = 'btn btn-sm btn-primary';
+        }
+    }
+    // 同步运动控制区的 PTZ OSD 开关
+    var sw = document.getElementById('ptzOsdSwitch');
+    if (sw) sw.checked = enabled;
+}
+
+function updateInfoOsdButtons(enabled) {
+    var btnOn = document.getElementById('btnInfoOsdOn');
+    var btnOff = document.getElementById('btnInfoOsdOff');
+    if (btnOn && btnOff) {
+        if (enabled) {
+            btnOn.className = 'btn btn-sm btn-primary';
+            btnOff.className = 'btn btn-sm btn-secondary';
+        } else {
+            btnOn.className = 'btn btn-sm btn-secondary';
+            btnOff.className = 'btn btn-sm btn-primary';
+        }
+    }
+    // v6.14: 同步开关状态
+    var sw = document.getElementById('infoOsdSwitch');
+    if (sw) sw.checked = enabled;
+}
+
+// 加载白平衡
+function loadWhiteBalance(deviceIp) {
+    apiGet('/api/v1/ptz/' + deviceIp + '/image/whitebalance').then(function(r) {
+        if (r && r.success && r.data) {
+            var wb = r.data;
+            deviceImageParams.whiteBalance = wb;
+
+            var wbModeSelect = document.getElementById('wbMode');
+            if (wbModeSelect) {
+                // 根据设备返回的模式设置下拉菜单
+                if (wb.mode === 'manual') {
+                    wbModeSelect.value = 'manual';
+                } else {
+                    wbModeSelect.value = 'auto';
+                }
+                // 触发显示/隐藏逻辑
+                onWbModeChange(wbModeSelect.value);
+            }
+
+            // 更新 R/B 滑动条
+            var wbRed = document.getElementById('wbRed');
+            var wbBlue = document.getElementById('wbBlue');
+            var wbRedVal = document.getElementById('wbRedVal');
+            var wbBlueVal = document.getElementById('wbBlueVal');
+
+            if (wbRed && wb.red_gain !== undefined) {
+                wbRed.value = wb.red_gain;
+                if (wbRedVal) wbRedVal.textContent = wb.red_gain;
+            }
+            if (wbBlue && wb.blue_gain !== undefined) {
+                wbBlue.value = wb.blue_gain;
+                if (wbBlueVal) wbBlueVal.textContent = wb.blue_gain;
+            }
+
+            // 设置范围
+            if (wb.min !== undefined && wb.max !== undefined) {
+                if (wbRed) { wbRed.min = wb.min; wbRed.max = wb.max; }
+                if (wbBlue) { wbBlue.min = wb.min; wbBlue.max = wb.max; }
+            }
+
+            // 只有手动模式时 R/B 滑动条才可用
+            var isManual = wb.mode === 'manual';
+            if (wbRed) wbRed.disabled = !isManual;
+            if (wbBlue) wbBlue.disabled = !isManual;
+        }
+    }).catch(function(e) {
+        console.warn('[WB] Load failed:', e);
+    });
+}
+
+// 加载降噪
+function loadNoiseReduce(deviceIp) {
+    apiGet('/api/v1/ptz/' + deviceIp + '/image/noisereduce').then(function(r) {
+        if (r && r.success && r.data) {
+            var nr = r.data;
+            deviceImageParams.noiseReduce = nr;
+
+            var dnrSpatial = document.getElementById('dnrSpatial');
+            var dnrTemporal = document.getElementById('dnrTemporal');
+            var dnrSpatialVal = document.getElementById('dnrSpatialVal');
+            var dnrTemporalVal = document.getElementById('dnrTemporalVal');
+
+            if (dnrSpatial && nr.spatial_level !== undefined) {
+                dnrSpatial.value = nr.spatial_level;
+                if (dnrSpatialVal) dnrSpatialVal.textContent = nr.spatial_level;
+            }
+            if (dnrTemporal && nr.temporal_level !== undefined) {
+                dnrTemporal.value = nr.temporal_level;
+                if (dnrTemporalVal) dnrTemporalVal.textContent = nr.temporal_level;
+            }
+        }
+    }).catch(function(e) {
+        console.warn('[DNR] Load failed:', e);
+    });
+}
+
+// 加载快门
+function loadShutter(deviceIp) {
+    // v7.32: 必须有 function.json
+    if (!deviceFunctionData || !deviceFunctionData.functions || !deviceFunctionData.functions.shutter) {
+        console.warn('[Shutter] No function.json data available');
+        return;
+    }
+
+    var shutterValues = deviceFunctionData.functions.shutter.opt_values;
+    if (!shutterValues || !Array.isArray(shutterValues) || shutterValues.length === 0) {
+        console.warn('[Shutter] shutter not supported');
+        var shutterSelect = document.getElementById('shutterSpeed');
+        if (shutterSelect) {
+            shutterSelect.innerHTML = '<option value="">-- 不支持 --</option>';
+            shutterSelect.disabled = true;
+        }
+        return;
+    }
+
+    apiGet('/api/v1/ptz/' + deviceIp + '/image/shutter').then(function(r) {
+        if (r && r.success && r.data) {
+            var sh = r.data;
+            deviceImageParams.shutter = sh;
+
+            var shutterSelect = document.getElementById('shutterSpeed');
+            if (shutterSelect) {
+                shutterSelect.innerHTML = '';
+                shutterSelect.disabled = false;
+
+                shutterValues.forEach(function(p) {
+                    var opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    if (p === sh.current_level) opt.selected = true;
+                    shutterSelect.appendChild(opt);
+                });
+            }
+        }
+    }).catch(function(e) {
+        console.warn('[Shutter] Load failed:', e);
+    });
+}
+
+// 加载光圈
+function loadIris(deviceIp) {
+    // v7.32: 必须有 function.json
+    if (!deviceFunctionData || !deviceFunctionData.functions || !deviceFunctionData.functions.iris) {
+        console.warn('[Iris] No function.json data available');
+        return;
+    }
+
+    var irisValues = deviceFunctionData.functions.iris.opt_values;
+    if (!irisValues || !Array.isArray(irisValues) || irisValues.length === 0) {
+        console.warn('[Iris] iris not supported');
+        var irisSelect = document.getElementById('irisLevel');
+        if (irisSelect) {
+            irisSelect.innerHTML = '<option value="">-- 不支持 --</option>';
+            irisSelect.disabled = true;
+        }
+        return;
+    }
+
+    apiGet('/api/v1/ptz/' + deviceIp + '/image/iris').then(function(r) {
+        if (r && r.success && r.data) {
+            var ir = r.data;
+            deviceImageParams.iris = ir;
+
+            var irisSelect = document.getElementById('irisLevel');
+            if (irisSelect) {
+                irisSelect.innerHTML = '';
+                irisSelect.disabled = false;
+
+                var current = ir.current_level;
+
+                irisValues.forEach(function(val) {
+                    var numVal = parseInt(val);
+                    var opt = document.createElement('option');
+                    opt.value = numVal;
+                    var fNum = numVal / 100;
+                    opt.textContent = 'F' + fNum.toFixed(1);
+                    if (numVal === current) opt.selected = true;
+                    irisSelect.appendChild(opt);
+                });
+            }
+        }
+    }).catch(function(e) {
+        console.warn('[Iris] Load failed:', e);
+    });
+}
+
+// 加载锐度
+function loadSharpness(deviceIp) {
+    apiGet('/api/v1/ptz/' + deviceIp + '/image/sharpness').then(function(r) {
+        if (r && r.success && r.data) {
+            var sp = r.data;
+            deviceImageParams.sharpness = sp;
+
+            var slider = document.getElementById('consoleSharpness');
+            var range = document.getElementById('sharpnessRange');
+
+            if (slider) {
+                slider.min = sp.min || 0;
+                slider.max = sp.max || 100;
+                slider.value = sp.current_level || 50;
+            }
+            if (range) {
+                range.textContent = '(' + (sp.min || 0) + '~' + (sp.max || 100) + ')';
+            }
+        }
+    }).catch(function(e) {
+        console.warn('[Sharpness] Load failed:', e);
+    });
+}
+
+// 加载亮度/对比度/饱和度
+function loadColorParams(deviceIp) {
+    apiGet('/api/v1/ptz/' + deviceIp + '/image/color').then(function(r) {
+        if (r && r.success && r.data) {
+            var c = r.data;
+            deviceImageParams.color = c;
+
+            var brightness = document.getElementById('consoleBrightness');
+            var contrast = document.getElementById('consoleContrast');
+            var saturation = document.getElementById('consoleSaturation');
+
+            if (brightness && c.brightness !== undefined) brightness.value = c.brightness;
+            if (contrast && c.contrast !== undefined) contrast.value = c.contrast;
+            if (saturation && c.saturation !== undefined) saturation.value = c.saturation;
+        }
+    }).catch(function(e) {
+        console.warn('[Color] Load failed:', e);
+    });
+}
+
+// ==================== 设置函数 ====================
+
+// 设置锐度
+function setSharpness(value) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+    apiPost('/api/v1/ptz/' + dev + '/image/sharpness', { level: parseInt(value) })
+        .then(function(r) { if (r && r.success && typeof operationLog === 'function' && !_isInitializingImageParams) operationLog('锐度: ' + value, 'success'); });
+}
+
+// 设置白平衡模式
+// 白平衡模式切换:显示/隐藏对应控件
+function onWbModeChange(mode) {
+    var manualControls = document.getElementById('wbManualControls');
+    var localControls = document.getElementById('wbLocalControls');
+    var wbRed = document.getElementById('wbRed');
+    var wbBlue = document.getElementById('wbBlue');
+
+    if (mode === 'manual') {
+        if (manualControls) manualControls.style.display = 'flex';
+        if (localControls) localControls.style.display = 'none';
+        if (wbRed) wbRed.disabled = false;
+        if (wbBlue) wbBlue.disabled = false;
+        setWhiteBalanceMode('manual');
+    } else if (mode === 'local') {
+        if (manualControls) manualControls.style.display = 'none';
+        if (localControls) localControls.style.display = 'block';
+        if (wbRed) wbRed.disabled = true;
+        if (wbBlue) wbBlue.disabled = true;
+        // v8.39: 局部模式自动切换到手动模式
+        setWhiteBalanceMode('manual');
+    } else {
+        // 自动
+        if (manualControls) manualControls.style.display = 'none';
+        if (localControls) localControls.style.display = 'none';
+        if (wbRed) wbRed.disabled = true;
+        if (wbBlue) wbBlue.disabled = true;
+        setWhiteBalanceMode('auto');
+    }
+}
+
+// 停止自动白平衡
+function stopAutoWhiteBalance() {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+    // 调用后端停止接口
+    apiPost('/api/v1/ptz/' + dev + '/whitebalance/stop', {}).then(function(r) {
+        if (r && r.success) {
+            showToast('success', '已停止自动白平衡');
+            if (typeof operationLog === 'function') operationLog('停止自动白平衡', 'success');
+        }
+    }).catch(function(e) {
+        showToast('error', '停止失败');
+    });
+    // 恢复按钮状态
+    var stopBtn = document.getElementById('btnWbLocalStop');
+    var selectBtn = document.getElementById('btnWbRegionSelect');
+    if (stopBtn) stopBtn.style.display = 'none';
+    if (selectBtn) { selectBtn.textContent = '框选'; selectBtn.classList.remove('btn-danger'); selectBtn.classList.add('btn-secondary'); }
+    stopWbTimer();
+}
+
+// 对焦模式切换:显示/隐藏对应控件
+function onFocusModeChange(mode) {
+    var moveControls = document.getElementById('focusMoveControls');
+    var localControls = document.getElementById('focusLocalControls');
+
+    if (mode === 'manual') {
+        if (moveControls) moveControls.style.display = 'block';
+        if (localControls) localControls.style.display = 'none';
+        setFocusMode('manual');
+    } else if (mode === 'local') {
+        if (moveControls) moveControls.style.display = 'none';
+        if (localControls) localControls.style.display = 'block';
+        // v8.39: 局部模式自动切换到手动模式
+        setFocusMode('manual');
+    } else {
+        // 自动
+        if (moveControls) moveControls.style.display = 'none';
+        if (localControls) localControls.style.display = 'none';
+        setFocusMode('auto');
+    }
+}
+
+// 停止自动对焦
+function stopAutoFocus() {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+    apiPost('/api/v1/ptz/' + dev + '/focus/stop', {}).then(function(r) {
+        if (r && r.success) {
+            showToast('success', '已停止自动对焦');
+            if (typeof operationLog === 'function') operationLog('停止自动对焦', 'success');
+        }
+    }).catch(function(e) {
+        showToast('error', '停止失败');
+    });
+    var stopBtn = document.getElementById('btnFocusLocalStop');
+    var selectBtn = document.getElementById('btnFocusRegionSelect');
+    if (stopBtn) stopBtn.style.display = 'none';
+    if (selectBtn) { selectBtn.textContent = '框选'; selectBtn.classList.remove('btn-danger'); selectBtn.classList.add('btn-secondary'); }
+    stopFocusTimer();
+}
+
+// v8.40: 白平衡定时器
+function confirmWbTimer() {
+    var input = document.getElementById('wbTimerInput');
+    if (!input) return;
+    var minutes = parseInt(input.value) || 0;
+    if (minutes <= 0) {
+        stopWbTimer();
+        showToast('warning', '请输入大于0的分钟数');
+        return;
+    }
+    var region = localStorage.getItem('region_whitebalance');
+    if (!region) {
+        showToast('warning', '请先框选区域');
+        return;
+    }
+    stopWbTimer();
+    wbTimerSeconds = minutes * 60;
+    updateWbTimerDisplay();
+    wbTimerId = setInterval(function() {
+        wbTimerSeconds--;
+        updateWbTimerDisplay();
+        if (wbTimerSeconds <= 0) {
+            clearInterval(wbTimerId);
+            wbTimerId = null;
+            executeScheduledSearch('whitebalance');
+        }
+    }, 1000);
+    showToast('success', '白平衡定时已启动: ' + minutes + '分钟');
+}
+
+function stopWbTimer() {
+    if (wbTimerId) { clearInterval(wbTimerId); wbTimerId = null; }
+    wbTimerSeconds = 0;
+    var display = document.getElementById('wbTimerDisplay');
+    if (display) display.textContent = '';
+}
+
+function updateWbTimerDisplay() {
+    var display = document.getElementById('wbTimerDisplay');
+    if (!display) return;
+    if (wbTimerSeconds <= 0) { display.textContent = ''; return; }
+    var m = Math.floor(wbTimerSeconds / 60);
+    var s = wbTimerSeconds % 60;
+    display.textContent = '(' + m + ':' + (s < 10 ? '0' : '') + s + ')';
+}
+
+// v8.40: 对焦定时器
+function confirmFocusTimer() {
+    var input = document.getElementById('focusTimerInput');
+    if (!input) return;
+    var minutes = parseInt(input.value) || 0;
+    if (minutes <= 0) {
+        stopFocusTimer();
+        showToast('warning', '请输入大于0的分钟数');
+        return;
+    }
+    var region = localStorage.getItem('region_focus');
+    if (!region) {
+        showToast('warning', '请先框选区域');
+        return;
+    }
+    stopFocusTimer();
+    focusTimerSeconds = minutes * 60;
+    updateFocusTimerDisplay();
+    focusTimerId = setInterval(function() {
+        focusTimerSeconds--;
+        updateFocusTimerDisplay();
+        if (focusTimerSeconds <= 0) {
+            clearInterval(focusTimerId);
+            focusTimerId = null;
+            executeScheduledSearch('focus');
+        }
+    }, 1000);
+    showToast('success', '对焦定时已启动: ' + minutes + '分钟');
+}
+
+function stopFocusTimer() {
+    if (focusTimerId) { clearInterval(focusTimerId); focusTimerId = null; }
+    focusTimerSeconds = 0;
+    var display = document.getElementById('focusTimerDisplay');
+    if (display) display.textContent = '';
+}
+
+function updateFocusTimerDisplay() {
+    var display = document.getElementById('focusTimerDisplay');
+    if (!display) return;
+    if (focusTimerSeconds <= 0) { display.textContent = ''; return; }
+    var m = Math.floor(focusTimerSeconds / 60);
+    var s = focusTimerSeconds % 60;
+    display.textContent = '(' + m + ':' + (s < 10 ? '0' : '') + s + ')';
+}
+
+// v8.40: 定时触发执行（使用保存的选区）
+function executeScheduledSearch(mode) {
+    var regionStr = localStorage.getItem('region_' + mode);
+    if (!regionStr) {
+        showToast('warning', (mode === 'whitebalance' ? '白平衡' : '对焦') + '无保存选区');
+        return;
+    }
+    var dev = window.connectedDevice;
+    if (!dev || !dev.ip) { showToast('error', '未连接设备'); return; }
+    var region = JSON.parse(regionStr);
+    var endpoint = mode === 'whitebalance' ? '/api/v1/vision/whitebalance-search' : '/api/v1/vision/focus-search';
+    var label = mode === 'whitebalance' ? '白平衡' : '对焦';
+    showToast('info', label + '定时执行中...');
+    operationLog('── ' + label + '定时执行 ──', 'info');
+    var body = JSON.stringify({ x: region.x, y: region.y, w: region.w, h: region.h });
+    fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body })
+        .then(function(resp) {
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            var reader = resp.body.getReader();
+            var decoder = new TextDecoder();
+            var buf = '';
+            function pump() {
+                return reader.read().then(function(r) {
+                    if (r.done) return;
+                    buf += decoder.decode(r.value, { stream: true });
+                    var parts = buf.split('\n\n');
+                    buf = parts.pop();
+                    for (var i = 0; i < parts.length; i++) {
+                        var line = parts[i];
+                        if (!line.startsWith('data: ')) continue;
+                        try {
+                            var ev = JSON.parse(line.slice(6));
+                            if (ev.type === 'wb' || ev.type === 'focus') {
+                                operationLog('调整 #' + ev.step + ': ' + ev.stage + ' R=' + ev.red_gain + ' B=' + ev.blue_gain + ' Δ=' + ev.delta, 'info');
+                            } else if (ev.type === 'done') {
+                                operationLog('── ' + label + '完成: R=' + ev.final_red + ' B=' + ev.final_blue + ' (' + ev.total_steps + '步) ──', 'success');
+                            } else if (ev.type === 'error') {
+                                operationLog(label + '错误: ' + ev.message, 'error');
+                            }
+                        } catch (e) {}
+                    }
+                    return pump();
+                });
+            }
+            return pump();
+        })
+        .then(function() {
+            // 执行完成后，重新启动定时器
+            if (mode === 'whitebalance' && wbTimerId === null) {
+                var minutes = parseInt(document.getElementById('wbTimerInput').value) || 0;
+                if (minutes > 0) {
+                    wbTimerSeconds = minutes * 60;
+                    updateWbTimerDisplay();
+                    wbTimerId = setInterval(function() {
+                        wbTimerSeconds--;
+                        updateWbTimerDisplay();
+                        if (wbTimerSeconds <= 0) {
+                            clearInterval(wbTimerId);
+                            wbTimerId = null;
+                            executeScheduledSearch('whitebalance');
+                        }
+                    }, 1000);
+                }
+            }
+            if (mode === 'focus' && focusTimerId === null) {
+                var minutes = parseInt(document.getElementById('focusTimerInput').value) || 0;
+                if (minutes > 0) {
+                    focusTimerSeconds = minutes * 60;
+                    updateFocusTimerDisplay();
+                    focusTimerId = setInterval(function() {
+                        focusTimerSeconds--;
+                        updateFocusTimerDisplay();
+                        if (focusTimerSeconds <= 0) {
+                            clearInterval(focusTimerId);
+                            focusTimerId = null;
+                            executeScheduledSearch('focus');
+                        }
+                    }, 1000);
+                }
+            }
+        })
+        .catch(function(e) {
+            showToast('error', label + '定时执行失败: ' + e.message);
+        });
+}
+function setWhiteBalanceMode(mode) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+
+    apiPost('/api/v1/ptz/' + dev + '/image/whitebalance', { mode: mode })
+        .then(function(r) {
+            if (r && r.success) {
+                showToast('success', '白平衡: ' + (mode === 'auto' ? '自动' : '手动'));
+                if (typeof operationLog === 'function' && !_isInitializingImageParams) operationLog('白平衡: ' + (mode === 'auto' ? '自动' : '手动'), 'success');
+            }
+        });
+}
+
+// 设置白平衡增益 R/B
+function setWhiteBalanceGain(channel, value) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+
+    // 更新显示
+    if (channel === 'red') {
+        var el = document.getElementById('wbRedVal');
+        if (el) el.textContent = value;
+    } else {
+        var el = document.getElementById('wbBlueVal');
+        if (el) el.textContent = value;
+    }
+
+    var key = channel === 'red' ? 'red_gain' : 'blue_gain';
+    var label = channel === 'red' ? 'R (红增益)' : 'B (蓝增益)';
+
+    // v6.56: 只发送增益值,不发送模式(模式已通过下拉菜单切换)
+    apiPost('/api/v1/ptz/' + dev + '/image/whitebalance', { [key]: parseInt(value) })
+        .then(function(r) {
+            if (r && r.success) {
+                showToast('success', label + ': ' + value);
+                if (typeof operationLog === 'function' && !_isInitializingImageParams) operationLog('白平衡' + label + ': ' + value, 'success');
+            }
+        });
+}
+
+// 设置降噪
+function setNoiseReduce(type, value) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+
+    var el = document.getElementById(type === 'spatial' ? 'dnrSpatialVal' : 'dnrTemporalVal');
+    if (el) el.textContent = value;
+
+    var key = type === 'spatial' ? 'spatial_level' : 'temporal_level';
+    var label = type === 'spatial' ? '空域降噪' : '时域降噪';
+
+    apiPost('/api/v1/ptz/' + dev + '/image/noisereduce', { [key]: parseInt(value) })
+        .then(function(r) {
+            if (r && r.success) {
+                showToast('success', label + ': ' + value);
+                if (typeof operationLog === 'function' && !_isInitializingImageParams) operationLog(label + ': ' + value, 'success');
+            }
+        });
+}
+
+// 加载曝光模式
+function loadExposure(deviceIp) {
+    // v7.54: 从 function.json 加载曝光模式选项
+    if (!deviceFunctionData || !deviceFunctionData.functions || !deviceFunctionData.functions.exposure_mode) {
+        console.warn('[Exposure] No function.json data available');
+        return;
+    }
+
+    var exposureValues = deviceFunctionData.functions.exposure_mode.opt_values;
+    if (!exposureValues || !Array.isArray(exposureValues) || exposureValues.length === 0) {
+        console.warn('[Exposure] exposure_mode not supported');
+        var select = document.getElementById('exposureMode');
+        if (select) {
+            select.innerHTML = '<option value="">-- 不支持 --</option>';
+            select.disabled = true;
+        }
+        return;
+    }
+
+    // 填充选项
+    var select = document.getElementById('exposureMode');
+    if (select) {
+        select.innerHTML = '';
+        select.disabled = false;
+
+        exposureValues.forEach(function(p) {
+            var opt = document.createElement('option');
+            opt.value = p;
+            // 中文标签
+            var labelMap = {
+                'manual': '手动',
+                'auto': '自动',
+                'IrisFirst': '光圈优先',
+                'ShutterFirst': '快门优先'
+            };
+            opt.textContent = labelMap[p] || p;
+            select.appendChild(opt);
+        });
+    }
+
+    // 获取当前值
+    apiGet('/api/v1/ptz/' + deviceIp + '/image/exposure').then(function(r) {
+        if (r && r.success && r.data) {
+            if (select && r.data.mode) {
+                select.value = r.data.mode;
+                // 更新快门光圈禁用状态
+                updateShutterIrisState();
+            }
+        }
+    }).catch(function(e) {
+        console.warn('[Exposure] Load failed:', e);
+    });
+}
+
+// 设置曝光模式
+function setExposureMode(mode) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+    // v7.54: 支持多种曝光模式的中文显示
+    var labelMap = {
+        'manual': '手动',
+        'auto': '自动',
+        'IrisFirst': '光圈优先',
+        'ShutterFirst': '快门优先'
+    };
+    apiPost('/api/v1/ptz/' + dev + '/image/exposure', { mode: mode })
+        .then(function(r) {
+            if (r && r.success) {
+                showToast('success', '曝光模式: ' + (labelMap[mode] || mode));
+                if (typeof operationLog === 'function' && !_isInitializingImageParams) operationLog('曝光: ' + (labelMap[mode] || mode), 'success');
+            }
+        });
+    // v5.47: 更新快门光圈禁用状态
+    updateShutterIrisState();
+}
+
+// v5.47: 更新快门光圈禁用状态
+function updateShutterIrisState() {
+    // v7.30: 检查设备是否连接
+    if (!window.connectedDevice || !window.connectedDevice.ip) {
+        // 设备未连接,所有控件保持禁用
+        return;
+    }
+
+    var exposureMode = document.getElementById('exposureMode');
+    var shutterSelect = document.getElementById('shutterSpeed');
+    var irisSelect = document.getElementById('irisLevel');
+    var gainSlider = document.getElementById('gainLevel');
+    if (!exposureMode || !shutterSelect || !irisSelect) return;
+
+    // v7.54: 支持多种曝光模式
+    var mode = exposureMode.value;
+    var shutterEnabled = (mode === 'manual' || mode === 'ShutterFirst');
+    var irisEnabled = (mode === 'manual' || mode === 'IrisFirst');
+    var gainEnabled = (mode === 'manual' || mode === 'ShutterFirst' || mode === 'IrisFirst');
+    shutterSelect.disabled = !shutterEnabled;
+    irisSelect.disabled = !irisEnabled;
+    if (gainSlider) gainSlider.disabled = !gainEnabled;
+
+    // v8.40: 自动模式时隐藏快门/光圈/增益
+    var shutterRow = shutterSelect.parentElement.parentElement;
+    var gainRow = gainSlider ? gainSlider.parentElement : null;
+    if (mode === 'auto') {
+        shutterRow.style.display = 'none';
+        if (gainRow) gainRow.style.display = 'none';
+    } else {
+        shutterRow.style.display = '';
+        if (gainRow) gainRow.style.display = '';
+        shutterSelect.style.opacity = shutterEnabled ? '1' : '0.5';
+        irisSelect.style.opacity = irisEnabled ? '1' : '0.5';
+        if (gainSlider) gainSlider.style.opacity = gainEnabled ? '1' : '0.5';
+    }
+}
+
+// 设置快门
+function setShutterSpeed(value) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+    apiPost('/api/v1/ptz/' + dev + '/image/shutter', { level: value })
+        .then(function(r) {
+            if (r && r.success) {
+                showToast('success', '快门: ' + value);
+                if (typeof operationLog === 'function' && !_isInitializingImageParams) operationLog('快门: ' + value, 'success');
+            }
+        });
+}
+
+// 设置光圈
+function setIris(value) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev || !value) return;
+    apiPost('/api/v1/ptz/' + dev + '/image/iris', { level: parseInt(value) })
+        .then(function(r) {
+            if (r && r.success) {
+                var select = document.getElementById('irisLevel');
+                var label = select.options[select.selectedIndex].text;
+                showToast('success', '光圈: ' + label);
+                if (typeof operationLog === 'function' && !_isInitializingImageParams) operationLog('光圈: ' + label, 'success');
+            }
+        });
+}
+
+// v7.03: 设置增益
+function setGain(value) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+    apiPost('/api/v1/ptz/' + dev + '/image/gain', { level: parseInt(value) })
+        .then(function(r) {
+            if (r && r.success) {
+                showToast('success', '增益: ' + value);
+                if (typeof operationLog === 'function' && !_isInitializingImageParams) operationLog('增益: ' + value, 'success');
+            }
+        });
+}
+
+// v7.03: 加载增益
+function loadGain(deviceIp) {
+    apiGet('/api/v1/ptz/' + deviceIp + '/image/gain').then(function(r) {
+        if (r && r.success && r.data) {
+            var g = r.data;
+            deviceImageParams.gain = g;
+
+            var slider = document.getElementById('gainLevel');
+            var valEl = document.getElementById('gainVal');
+
+            if (slider) {
+                slider.min = 0;
+                slider.max = g.limit || 100;
+                slider.value = g.current_level || 0;
+            }
+            if (valEl) valEl.textContent = g.current_level || 0;
+        }
+    }).catch(function(e) {
+        console.warn('[Gain] Load failed:', e);
+    });
+}
+
+// v6.02: PTZ OSD 开关
+function togglePtzOsdSwitch(enabled) {
+    ptzOsdEnabled = enabled;
+    togglePtzOsd(enabled);
+}
+
+// v6.02: Info OSD 开关
+function toggleInfoOsdSwitch(enabled) {
+    infoOsdEnabled = enabled;
+    toggleInfoOsd(enabled);
+}
+
+// 切换 PTZ OSD
+function togglePtzOsd(enabled) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+
+    updatePtzOsdButtons(enabled);
+    localStorage.setItem('osd_ptz_' + dev, enabled ? '1' : '0');
+
+    apiPost('/api/v1/ptz/' + dev + '/osd/ptz', { enabled: enabled })
+        .then(function(r) {
+            if (r && r.success) showToast('success', 'PTZ OSD: ' + (enabled ? '显示' : '关闭'));
+        });
+}
+
+// 切换 Info OSD
+function toggleInfoOsd(enabled) {
+    var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+    if (!dev) return;
+
+    updateInfoOsdButtons(enabled);
+    localStorage.setItem('osd_info_' + dev, enabled ? '1' : '0');
+
+    apiPost('/api/v1/ptz/' + dev + '/osd/info', { enabled: enabled })
+        .then(function(r) {
+            if (r && r.success) showToast('success', 'Info OSD: ' + (enabled ? '显示' : '关闭'));
+        });
+}
+
+// v5.42: 开关式 OSD 切换
+var ptzOsdEnabled = false;
+var infoOsdEnabled = false;
+
+function togglePtzOsdToggle() {
+    ptzOsdEnabled = !ptzOsdEnabled;
+    var btn = document.getElementById('btnPtzOsd');
+    if (btn) {
+        btn.textContent = ptzOsdEnabled ? '显示' : '关闭';
+        btn.className = 'btn btn-sm ' + (ptzOsdEnabled ? 'btn-primary' : 'btn-secondary');
+    }
+    togglePtzOsd(ptzOsdEnabled);
+}
+
+function toggleInfoOsdToggle() {
+    infoOsdEnabled = !infoOsdEnabled;
+    var btn = document.getElementById('btnInfoOsd');
+    if (btn) {
+        btn.textContent = infoOsdEnabled ? '显示' : '关闭';
+        btn.className = 'btn btn-sm ' + (infoOsdEnabled ? 'btn-primary' : 'btn-secondary');
+    }
+    toggleInfoOsd(infoOsdEnabled);
+}
+
+// 更新按钮状态
+function updatePtzOsdButtons(enabled) {
+    // v7.01: 更新 toggle switch
+    var switchEl = document.getElementById('ptzOsdSwitch');
+    if (switchEl) {
+        switchEl.checked = enabled;
+    }
+    ptzOsdEnabled = enabled;
+}
+
+function updateInfoOsdButtons(enabled) {
+    // v7.01: 更新 toggle switch
+    var switchEl = document.getElementById('infoOsdSwitch');
+    if (switchEl) {
+        switchEl.checked = enabled;
+    }
+    infoOsdEnabled = enabled;
+}
+
+// ==================== v7.0: PTZ 坐标 + 图像参数实时刷新 ====================
+var _ptzImagePollInterval = null;
+
+function startPtzImagePoll() {
+    if (_ptzImagePollInterval) return; // 已在运行
+
+    _ptzImagePollInterval = setInterval(function() {
+        if (!window.connectedDevice || !window.connectedDevice.ip) return;
+
+        var dev = window.connectedDevice.ip;
+
+        // 1. PTZ 坐标 - v7.55: 分别更新三个元素
+        apiGet('/api/v1/ptz/' + dev + '/position').then(function(r) {
+            if (r && r.success && r.data) {
+                var panEl = document.getElementById('ptzPan');
+                var tiltEl = document.getElementById('ptzTilt');
+                var zoomEl = document.getElementById('ptzZoom');
+                if (panEl) panEl.textContent = r.data.pan || 0;
+                if (tiltEl) tiltEl.textContent = r.data.tilt || 0;
+                if (zoomEl) zoomEl.textContent = r.data.zoom || 0;
+            }
+        }).catch(function(e) {});
+
+        // 2. 白平衡 R/B - v7.55: 只显示数值
+        apiGet('/api/v1/ptz/' + dev + '/image/whitebalance').then(function(r) {
+            if (r && r.success && r.data) {
+                var wb = r.data;
+                var rEl = document.getElementById('ptzWbR');
+                var bEl = document.getElementById('ptzWbB');
+                if (rEl) rEl.textContent = wb.red_gain || '--';
+                if (bEl) bEl.textContent = wb.blue_gain || '--';
+            }
+        }).catch(function(e) {});
+
+        // 3. 降噪空域/时域 - v7.55: 只显示数值
+        apiGet('/api/v1/ptz/' + dev + '/image/noisereduce').then(function(r) {
+            if (r && r.success && r.data) {
+                var nr = r.data;
+                var sEl = document.getElementById('ptzDnrSpatial');
+                var tEl = document.getElementById('ptzDnrTemporal');
+                var spatialVal = (nr.spatial_level !== undefined && nr.spatial_level !== null) ? nr.spatial_level : '--';
+                var temporalVal = (nr.temporal_level !== undefined && nr.temporal_level !== null) ? nr.temporal_level : '--';
+                if (sEl) sEl.textContent = spatialVal;
+                if (tEl) tEl.textContent = temporalVal;
+            }
+        }).catch(function(e) {});
+
+        // 4. 光圈 - v7.55: 只显示数值
+        apiGet('/api/v1/ptz/' + dev + '/image/iris').then(function(r) {
+            if (r && r.success && r.data) {
+                var ir = r.data;
+                var iEl = document.getElementById('ptzIris');
+                if (iEl) iEl.textContent = ir.current_level || '--';
+            }
+        }).catch(function(e) {});
+
+        // 5. 快门 - v7.55: 只显示数值
+        apiGet('/api/v1/ptz/' + dev + '/image/shutter').then(function(r) {
+            if (r && r.success && r.data) {
+                var sh = r.data;
+                var sEl = document.getElementById('ptzShutter');
+                if (sEl) sEl.textContent = sh.current_level || '--';
+            }
+        }).catch(function(e) {});
+    }, 1000);
+}
+
+function stopPtzImagePoll() {
+    if (_ptzImagePollInterval) {
+        clearInterval(_ptzImagePollInterval);
+        _ptzImagePollInterval = null;
+    }
+}
+
+// 暴露到全局
+window.startPtzImagePoll = startPtzImagePoll;
+window.stopPtzImagePoll = stopPtzImagePoll;
+
+// ==================== 暴露到全局 ====================
+window.toggleSection = toggleSection;
+window.loadDeviceImageParams = loadDeviceImageParams;
+window.setSharpness = setSharpness;
+window.setWhiteBalanceMode = setWhiteBalanceMode;
+window.setWhiteBalanceGain = setWhiteBalanceGain;
+window.setNoiseReduce = setNoiseReduce;
+window.setShutterSpeed = setShutterSpeed;
+window.setIris = setIris;
+window.setExposureMode = setExposureMode;
+window.togglePtzOsd = togglePtzOsd;
+window.toggleInfoOsd = toggleInfoOsd;
+window.updatePtzOsdButtons = updatePtzOsdButtons;
+window.updateInfoOsdButtons = updateInfoOsdButtons;
+// v7.32: 新增功能检测相关函数
+window.goToFunctionTest = goToFunctionTest;
+window.showFunctionOverlay = showFunctionOverlay;
+window.removeFunctionOverlay = removeFunctionOverlay;
+// v8.38: 白平衡/对焦模式切换 + 停止函数
+window.onWbModeChange = onWbModeChange;
+window.onFocusModeChange = onFocusModeChange;
+window.stopAutoWhiteBalance = stopAutoWhiteBalance;
+window.stopAutoFocus = stopAutoFocus;
+</script>

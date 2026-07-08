@@ -1,0 +1,52 @@
+[2026-06-22 05:16:26.313] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 05:16:26.425] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 05:44:11.937] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 05:44:12.046] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 05:45:49.631] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": false}
+[2026-06-22 05:45:49.922] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": false}
+[2026-06-22 05:45:49.923] [INFO   ] [operation_logger] [web] ptz: Info OSD: 关闭
+[2026-06-22 05:45:50.220] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 关闭
+[2026-06-22 05:45:55.392] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": true}
+[2026-06-22 05:45:55.559] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": true}
+[2026-06-22 05:45:56.079] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-06-22 05:45:56.130] [INFO   ] [operation_logger] [web] ptz: Info OSD: 显示
+[2026-06-22 05:45:56.174] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 显示
+[2026-06-22 05:45:56.174] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-06-22 05:46:01.597] [INFO   ] [operation_logger] [image] reset: {"device": "192.168.5.72"}
+[2026-06-22 05:46:01.828] [INFO   ] [operation_logger] [web] ptz: 画面重置
+[2026-06-22 05:46:13.364] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "auto"}
+[2026-06-22 05:46:15.512] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-06-22 05:46:15.613] [INFO   ] [operation_logger] [web] ptz: 对焦模式: auto
+[2026-06-22 05:46:15.869] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-06-22 05:46:32.129] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "192_168_5_72-20260622-0001.jpg"}
+[2026-06-22 05:46:32.227] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-06-22 05:55:48.544] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 05:55:48.656] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 06:03:39.784] [INFO   ] [operation_logger] [ptz] record_start: {"device": "192.168.5.72", "target": ""}
+[2026-06-22 06:03:42.177] [INFO   ] [operation_logger] [ptz] record_start: {"device": "192.168.5.72", "target": ""}
+[2026-06-22 06:16:34.766] [INFO   ] [operation_logger] [ptz] record_start: {"device": "192.168.5.72", "target": "test"}
+[2026-06-22 06:17:10.009] [INFO   ] [operation_logger] [ptz] record_start: {"device": "192.168.5.72", "target": "test"}
+[2026-06-22 06:17:38.144] [INFO   ] [operation_logger] [ptz] record_start: {"device": "192.168.5.72", "target": "test"}
+[2026-06-22 06:18:05.484] [INFO   ] [operation_logger] [ptz] record_stop: {"device": "192.168.5.72"}
+[2026-06-22 06:43:04.824] [INFO   ] [operation_logger] [ptz] record_start: {"device": "192.168.5.72", "target": ""}
+[2026-06-22 06:43:06.970] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-06-22 06:48:53.446] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "iDS-2DF8C832IXS-A_20260622_064853_0002.jpg"}
+[2026-06-22 06:48:53.454] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-06-22 12:16:29.136] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 12:16:29.258] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 16:25:30.418] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 16:25:30.420] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 16:28:15.538] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 16:28:15.540] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 16:29:23.130] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 16:29:23.132] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 16:29:23.472] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-22 16:30:31.315] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 16:30:31.317] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 16:30:31.648] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-22 16:34:34.904] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 16:34:34.906] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 16:34:35.250] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-22 16:40:26.761] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-22 16:40:26.763] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-22 16:40:27.100] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接

@@ -1,0 +1,735 @@
+[2026-07-08 05:32:22.522] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 05:32:23.119] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 05:32:23.124] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 05:32:23.623] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-08 05:32:23.627] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-08 05:32:28.359] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 05:32:28.509] [INFO   ] [operation_logger] [web] ptz: 曝光: 局部
+[2026-07-08 05:32:31.004] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 05:32:31.558] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1709~2625, Y=871~1597, 共665016像素
+[2026-07-08 05:32:31.560] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门升档 1/600 快门=1/600 光圈=160 增益=72 亮度=99.5/50
+[2026-07-08 05:32:33.603] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门升档 1/1000 快门=1/1000 光圈=160 增益=72 亮度=99.5/50
+[2026-07-08 05:32:35.636] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 快门升档 1/1250 快门=1/1250 光圈=160 增益=72 亮度=99.5/50
+[2026-07-08 05:32:37.669] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 快门升档 1/1750 快门=1/1750 光圈=160 增益=72 亮度=99.3/50
+[2026-07-08 05:32:39.692] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 快门升档 1/2500 快门=1/2500 光圈=160 增益=72 亮度=98.4/50
+[2026-07-08 05:32:42.010] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 快门升档 1/3500 快门=1/3500 光圈=160 增益=72 亮度=93.6/50
+[2026-07-08 05:32:44.301] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #7: 快门升档 1/6000 快门=1/6000 光圈=160 增益=72 亮度=87.8/50
+[2026-07-08 05:32:46.354] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #8: 快门升档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=74.3/50
+[2026-07-08 05:32:48.676] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #9: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=64.4/50
+[2026-07-08 05:32:51.096] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #10: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=45.2/50
+[2026-07-08 05:32:53.133] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #11: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=66.6/50
+[2026-07-08 05:32:55.263] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #12: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=45.4/50
+[2026-07-08 05:32:57.304] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #13: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=66.7/50
+[2026-07-08 05:32:59.363] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #14: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=45.4/50
+[2026-07-08 05:33:01.498] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #15: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=66.8/50
+[2026-07-08 05:33:03.550] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #16: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46/50
+[2026-07-08 05:33:05.857] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #17: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=66.7/50
+[2026-07-08 05:33:07.914] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #18: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46.5/50
+[2026-07-08 05:33:10.006] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #19: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=66.8/50
+[2026-07-08 05:33:12.067] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #20: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46.1/50
+[2026-07-08 05:33:14.162] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #21: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=66.9/50
+[2026-07-08 05:33:16.239] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #22: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46.3/50
+[2026-07-08 05:33:18.307] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #23: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=67.1/50
+[2026-07-08 05:33:20.486] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #24: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46.5/50
+[2026-07-08 05:33:22.527] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #25: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=67.2/50
+[2026-07-08 05:33:24.629] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #26: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46.6/50
+[2026-07-08 05:33:26.753] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #27: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=67.3/50
+[2026-07-08 05:33:28.836] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #28: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46.7/50
+[2026-07-08 05:33:30.887] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #29: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=67.4/50
+[2026-07-08 05:33:33.028] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #30: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46.8/50
+[2026-07-08 05:33:35.110] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #31: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=67.5/50
+[2026-07-08 05:33:37.195] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #32: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=47/50
+[2026-07-08 05:33:39.269] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #33: 快门升档 1/30000 快门=1/30000 光圈=160 增益=72 亮度=67.6/50
+[2026-07-08 05:33:41.338] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #34: 快门降档 1/10000 快门=1/10000 光圈=160 增益=72 亮度=46.8/50
+[2026-07-08 05:33:42.568] [INFO   ] [operation_logger] [web] ptz: 用户停止亮度搜索
+[2026-07-08 05:33:43.401] [INFO   ] [operation_logger] [web] ptz: 亮度: 用户停止
+[2026-07-08 05:33:43.412] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 06:01:17.600] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 06:01:18.215] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 06:01:18.218] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 06:01:19.766] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-08 06:01:19.786] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-08 06:01:26.951] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 06:01:26.957] [INFO   ] [operation_logger] [web] ptz: 曝光: 局部
+[2026-07-08 06:01:29.841] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 06:01:30.450] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1339~2570, Y=485~1600, 共1372565像素
+[2026-07-08 06:01:30.451] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门升档 1/10000 快门=1/10000 光圈=1100 增益=73 亮度=61.3/50
+[2026-07-08 06:01:32.582] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门升档 1/30000 快门=1/30000 光圈=1100 增益=73 亮度=51.2/50
+[2026-07-08 06:01:34.707] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/10000 快门=1/10000 光圈=1100 增益=73 亮度=32.8/50
+[2026-07-08 06:01:36.804] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 光圈收小 F140.0 快门=1/10000 光圈=1400 增益=73 亮度=53.3/50
+[2026-07-08 06:01:38.862] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 光圈开大 F110.0 快门=1/10000 光圈=1100 增益=73 亮度=43.3/50
+[2026-07-08 06:01:40.976] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 光圈收小 F140.0 快门=1/10000 光圈=1400 增益=73 亮度=52.8/50
+[2026-07-08 06:01:43.074] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #7: 增益粗调 78 快门=1/10000 光圈=1100 增益=78 亮度=42.6/50
+[2026-07-08 06:01:45.208] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #8: 增益精调 73 快门=1/10000 光圈=1100 增益=73 亮度=51.6/50
+[2026-07-08 06:01:47.292] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #9: 增益精调 74 快门=1/10000 光圈=1100 增益=74 亮度=42.6/50
+[2026-07-08 06:01:49.379] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #10: 增益精调 75 快门=1/10000 光圈=1100 增益=75 亮度=44.9/50
+[2026-07-08 06:01:51.492] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #11: 增益精调 76 快门=1/10000 光圈=1100 增益=76 亮度=46.5/50
+[2026-07-08 06:01:53.572] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #12: 增益精调 77 快门=1/10000 光圈=1100 增益=77 亮度=48.5/50
+[2026-07-08 06:01:55.651] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #13: 亮度达标 50.0≈50.0 快门=1/10000 光圈=1100 增益=77 亮度=50/50
+[2026-07-08 06:01:55.655] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=50 快门=1/10000 光圈=1100 增益=77 (13步) ──
+[2026-07-08 06:01:55.660] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 06:02:23.088] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 06:02:23.734] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1417~2390, Y=478~1568, 共1060570像素
+[2026-07-08 06:02:23.737] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门升档 1/10000 快门=1/10000 光圈=1100 增益=73 亮度=47.4/19
+[2026-07-08 06:02:25.784] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门升档 1/30000 快门=1/30000 光圈=1100 增益=73 亮度=47.4/19
+[2026-07-08 06:02:28.175] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 光圈收小 F140.0 快门=1/30000 光圈=1400 增益=73 亮度=30.4/19
+[2026-07-08 06:02:30.284] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 光圈收小 F160.0 快门=1/30000 光圈=1600 增益=73 亮度=30.9/19
+[2026-07-08 06:02:32.657] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 光圈收小 F190.0 快门=1/30000 光圈=1900 增益=73 亮度=27.6/19
+[2026-07-08 06:02:34.798] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 光圈收小 F220.0 快门=1/30000 光圈=2200 增益=73 亮度=24/19
+[2026-07-08 06:02:36.900] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #7: 亮度达标 19.5≈19.0 快门=1/30000 光圈=2200 增益=73 亮度=19.5/19
+[2026-07-08 06:02:36.904] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=19.5 快门=1/30000 光圈=2200 增益=73 (7步) ──
+[2026-07-08 06:02:36.906] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 06:02:51.850] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 06:02:52.788] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1339~2406, Y=408~1440, 共1101144像素
+[2026-07-08 06:02:52.788] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门降档 1/3500 快门=1/3500 光圈=1100 增益=73 亮度=21.9/50
+[2026-07-08 06:02:55.159] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/2500 快门=1/2500 光圈=1100 增益=73 亮度=21.9/50
+[2026-07-08 06:02:57.250] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/1750 快门=1/1750 光圈=1100 增益=73 亮度=21.9/50
+[2026-07-08 06:02:59.462] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/1250 快门=1/1250 光圈=1100 增益=73 亮度=21.9/50
+[2026-07-08 06:03:01.603] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 快门降档 1/1000 快门=1/1000 光圈=1100 增益=73 亮度=21.9/50
+[2026-07-08 06:03:03.706] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 快门降档 1/600 快门=1/600 光圈=1100 增益=73 亮度=21.9/50
+[2026-07-08 06:03:05.980] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #7: 快门降档 1/425 快门=1/425 光圈=1100 增益=73 亮度=21.9/50
+[2026-07-08 06:03:08.076] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #8: 快门降档 1/300 快门=1/300 光圈=1100 增益=73 亮度=21.9/50
+[2026-07-08 06:03:10.239] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #9: 快门降档 1/250 快门=1/250 光圈=1100 增益=73 亮度=22/50
+[2026-07-08 06:03:12.180] [INFO   ] [operation_logger] [web] ptz: 用户停止亮度搜索
+[2026-07-08 06:03:12.342] [INFO   ] [operation_logger] [web] ptz: 亮度: 用户停止
+[2026-07-08 06:03:12.348] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 07:04:48.610] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 07:04:49.453] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 07:04:49.593] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 07:04:50.411] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-08 07:04:50.557] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-08 07:04:55.822] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 07:04:55.966] [INFO   ] [operation_logger] [web] ptz: 曝光: 局部
+[2026-07-08 07:04:58.501] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 07:04:59.122] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1760~2483, Y=980~1542, 共406326像素
+[2026-07-08 07:04:59.124] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门升档 1/50 快门=1/50 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:01.150] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门升档 1/75 快门=1/75 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:03.178] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 快门升档 1/100 快门=1/100 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:05.181] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 快门升档 1/120 快门=1/120 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:07.194] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 快门升档 1/150 快门=1/150 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:09.194] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 快门升档 1/175 快门=1/175 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:11.253] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #7: 快门升档 1/200 快门=1/200 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:13.263] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #8: 快门升档 1/225 快门=1/225 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:15.293] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #9: 快门升档 1/250 快门=1/250 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:17.291] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #10: 快门升档 1/300 快门=1/300 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:19.585] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #11: 快门升档 1/425 快门=1/425 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:21.615] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #12: 快门升档 1/600 快门=1/600 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:23.616] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #13: 快门升档 1/1000 快门=1/1000 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:25.935] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #14: 快门升档 1/1250 快门=1/1250 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:27.962] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #15: 快门升档 1/1750 快门=1/1750 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:29.995] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #16: 快门升档 1/2500 快门=1/2500 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:32.323] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #17: 快门升档 1/3500 快门=1/3500 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:34.329] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #18: 快门升档 1/6000 快门=1/6000 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:36.369] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #19: 快门升档 1/10000 快门=1/10000 光圈=160 增益=60 亮度=99.6/50
+[2026-07-08 07:05:38.409] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #20: 快门升档 1/30000 快门=1/30000 光圈=160 增益=60 亮度=98.9/50
+[2026-07-08 07:05:40.455] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #21: 光圈收小 F20.0 快门=1/30000 光圈=200 增益=60 亮度=84.2/50
+[2026-07-08 07:05:42.508] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #22: 光圈收小 F24.0 快门=1/30000 光圈=240 增益=60 亮度=84.3/50
+[2026-07-08 07:05:44.854] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #23: 光圈收小 F28.0 快门=1/30000 光圈=280 增益=60 亮度=84.1/50
+[2026-07-08 07:05:46.903] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #24: 光圈收小 F34.0 快门=1/30000 光圈=340 增益=60 亮度=83.5/50
+[2026-07-08 07:05:49.078] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #25: 光圈收小 F40.0 快门=1/30000 光圈=400 增益=60 亮度=75.9/50
+[2026-07-08 07:05:51.461] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #26: 光圈收小 F48.0 快门=1/30000 光圈=480 增益=60 亮度=70.4/50
+[2026-07-08 07:05:53.835] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #27: 光圈收小 F56.0 快门=1/30000 光圈=560 增益=60 亮度=64.4/50
+[2026-07-08 07:05:55.866] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #28: 光圈收小 F68.0 快门=1/30000 光圈=680 增益=60 亮度=56.8/50
+[2026-07-08 07:05:58.153] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #29: 光圈收小 F96.0 快门=1/30000 光圈=960 增益=60 亮度=50.7/50
+[2026-07-08 07:06:00.467] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #30: 快门降档 1/10000 快门=1/10000 光圈=960 增益=60 亮度=42.8/50
+[2026-07-08 07:06:02.549] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #31: 光圈收小 F110.0 快门=1/30000 光圈=1100 增益=60 亮度=64.1/50
+[2026-07-08 07:06:04.916] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #32: 光圈收小 F140.0 快门=1/30000 光圈=1400 增益=60 亮度=53.4/50
+[2026-07-08 07:06:06.979] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #33: 光圈开大 F110.0 快门=1/30000 光圈=1100 增益=60 亮度=45/50
+[2026-07-08 07:06:09.027] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #34: 增益粗调 55 快门=1/30000 光圈=1100 增益=55 亮度=54.3/50
+[2026-07-08 07:06:11.148] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #35: 增益精调 60 快门=1/30000 光圈=1100 增益=60 亮度=46.2/50
+[2026-07-08 07:06:13.256] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #36: 增益精调 59 快门=1/30000 光圈=1100 增益=59 亮度=54.3/50
+[2026-07-08 07:06:15.335] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #37: 增益精调 58 快门=1/30000 光圈=1100 增益=58 亮度=52.9/50
+[2026-07-08 07:06:17.458] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #38: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=50.8/50
+[2026-07-08 07:06:19.497] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #39: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.5/50
+[2026-07-08 07:06:21.548] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #40: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:06:23.696] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #41: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.8/50
+[2026-07-08 07:06:25.803] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #42: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:06:27.893] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #43: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.7/50
+[2026-07-08 07:06:30.102] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #44: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48.1/50
+[2026-07-08 07:06:32.157] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #45: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.7/50
+[2026-07-08 07:06:34.203] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #46: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:06:36.344] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #47: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.7/50
+[2026-07-08 07:06:38.724] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #48: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:06:40.776] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #49: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.7/50
+[2026-07-08 07:06:42.866] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #50: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:06:44.942] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #51: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.5/50
+[2026-07-08 07:06:46.989] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #52: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:06:49.173] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #53: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.6/50
+[2026-07-08 07:06:51.266] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #54: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:06:53.318] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #55: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.7/50
+[2026-07-08 07:06:55.475] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #56: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:06:57.558] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #57: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.8/50
+[2026-07-08 07:06:59.867] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #58: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:07:02.234] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #59: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.8/50
+[2026-07-08 07:07:04.348] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #60: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:07:06.628] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #61: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.8/50
+[2026-07-08 07:07:08.691] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #62: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:07:10.747] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #63: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.9/50
+[2026-07-08 07:07:13.052] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #64: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:07:15.095] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #65: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.9/50
+[2026-07-08 07:07:17.494] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #66: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:07:19.548] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #67: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.9/50
+[2026-07-08 07:07:21.616] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #68: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48/50
+[2026-07-08 07:07:23.759] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #69: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=51/50
+[2026-07-08 07:07:25.817] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #70: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48.1/50
+[2026-07-08 07:07:27.881] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #71: 增益精调 56 快门=1/30000 光圈=1100 增益=56 亮度=50.7/50
+[2026-07-08 07:07:30.060] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #72: 增益精调 57 快门=1/30000 光圈=1100 增益=57 亮度=48.1/50
+[2026-07-08 07:07:32.220] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #73: 亮度达标 50.4≈50.0 快门=1/30000 光圈=1100 增益=57 亮度=50.4/50
+[2026-07-08 07:07:32.223] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=50.4 快门=1/30000 光圈=1100 增益=57 (73步) ──
+[2026-07-08 07:07:32.244] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 07:13:22.722] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": null, "gain_limit": 50}
+[2026-07-08 07:13:23.083] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 30, "gain_limit": null}
+[2026-07-08 07:23:39.291] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 07:23:39.928] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 07:23:39.932] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 07:26:14.937] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-08 07:26:15.091] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-08 07:26:29.512] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 07:26:29.523] [INFO   ] [operation_logger] [web] ptz: 曝光: 局部
+[2026-07-08 07:26:48.371] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 151, "blue": 2}
+[2026-07-08 07:26:48.497] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 07:26:54.736] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 07:26:54.743] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 07:26:57.129] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 151, "blue": 2}
+[2026-07-08 07:26:57.273] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 07:27:01.796] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 07:27:01.807] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 07:27:03.718] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 151, "blue": 2}
+[2026-07-08 07:27:03.730] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 07:27:06.574] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 07:27:06.585] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 07:46:26.760] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 07:46:27.362] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 07:46:27.364] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 08:17:00.565] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-08 08:17:00.707] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-08 08:17:01.063] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 08:17:02.438] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 08:17:03.325] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 08:17:03.325] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-08 08:17:03.452] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 08:27:21.297] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-08 08:27:21.300] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-08 08:27:27.571] [INFO   ] [operation_logger] [web] ptz: 最大增益: 65
+[2026-07-08 08:27:27.898] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": null, "gain_limit": 65}
+[2026-07-08 08:27:35.624] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 55}}
+[2026-07-08 08:27:35.771] [INFO   ] [operation_logger] [web] ptz: 亮度: 55
+[2026-07-08 08:27:37.500] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 08:27:37.543] [INFO   ] [operation_logger] [web] ptz: 曝光: 局部
+[2026-07-08 08:27:39.950] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 08:27:40.639] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1375~2429, Y=324~1314, 共1043460像素
+[2026-07-08 08:27:40.642] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门降档 1/6000 快门=1/6000 光圈=F11.0 增益=30 亮度=20.3/50
+[2026-07-08 08:27:42.702] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/3500 快门=1/3500 光圈=F11.0 增益=30 亮度=25.6/50
+[2026-07-08 08:27:44.788] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/2500 快门=1/2500 光圈=F11.0 增益=30 亮度=32.5/50
+[2026-07-08 08:27:46.858] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/1750 快门=1/1750 光圈=F11.0 增益=30 亮度=38.5/50
+[2026-07-08 08:27:48.947] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 快门降档 1/1250 快门=1/1250 光圈=F11.0 增益=30 亮度=46.8/50
+[2026-07-08 08:27:51.046] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 快门升档 1/1750 快门=1/1750 光圈=F11.0 增益=30 亮度=54.5/50
+[2026-07-08 08:27:53.099] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #7: 光圈开大 F9.6 快门=1/1750 光圈=F9.6 增益=30 亮度=46.1/50
+[2026-07-08 08:27:55.170] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #8: 光圈收小 F11.0 快门=1/1750 光圈=F11.0 增益=30 亮度=54.6/50
+[2026-07-08 08:27:57.253] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #9: 光圈开大 F9.6 快门=1/1750 光圈=F9.6 增益=30 亮度=45.2/50
+[2026-07-08 08:27:59.317] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #10: 增益粗调 25 快门=1/1750 光圈=F9.6 增益=25 亮度=54.6/50
+[2026-07-08 08:28:01.408] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #11: 增益精调 30 快门=1/1750 光圈=F9.6 增益=30 亮度=46.1/50
+[2026-07-08 08:28:03.447] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #12: 增益精调 29 快门=1/1750 光圈=F9.6 增益=29 亮度=54.3/50
+[2026-07-08 08:28:05.567] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #13: 增益精调 28 快门=1/1750 光圈=F9.6 增益=28 亮度=52.3/50
+[2026-07-08 08:28:07.688] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #14: 亮度达标 49.7≈50.0 快门=1/1750 光圈=F9.6 增益=28 亮度=49.7/50
+[2026-07-08 08:28:07.691] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=49.7 快门=1/1750 光圈=F9.6 增益=28 (14步) ──
+[2026-07-08 08:28:07.698] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 08:28:18.412] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 08:28:19.003] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1188~2323, Y=511~1446, 共1061225像素
+[2026-07-08 08:28:19.006] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门升档 1/30000 快门=1/30000 光圈=F11.0 增益=30 亮度=51.2/20
+[2026-07-08 08:28:21.065] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/10000 快门=1/10000 光圈=F11.0 增益=30 亮度=14.3/20
+[2026-07-08 08:28:23.150] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 光圈收小 F14.0 快门=1/10000 光圈=F14.0 增益=30 亮度=22/20
+[2026-07-08 08:28:25.511] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 光圈开大 F11.0 快门=1/10000 光圈=F11.0 增益=30 亮度=15.1/20
+[2026-07-08 08:28:27.555] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 光圈开大 F9.6 快门=1/10000 光圈=F9.6 增益=30 亮度=19.2/20
+[2026-07-08 08:28:29.705] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 光圈收小 F11.0 快门=1/10000 光圈=F11.0 增益=30 亮度=23.2/20
+[2026-07-08 08:28:31.762] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #7: 增益粗调 35 快门=1/10000 光圈=F11.0 增益=35 亮度=19.3/20
+[2026-07-08 08:28:33.861] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #8: 增益精调 30 快门=1/10000 光圈=F11.0 增益=30 亮度=25/20
+[2026-07-08 08:28:36.189] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #9: 增益精调 29 快门=1/10000 光圈=F11.0 增益=29 亮度=21.1/20
+[2026-07-08 08:28:38.278] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #10: 增益精调 28 快门=1/10000 光圈=F11.0 增益=28 亮度=20.8/20
+[2026-07-08 08:28:40.399] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #11: 增益精调 29 快门=1/10000 光圈=F11.0 增益=29 亮度=19.5/20
+[2026-07-08 08:28:42.507] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #12: 增益震荡3次，回滚最佳增益30 快门=1/10000 光圈=F11.0 增益=30 亮度=20.7/20
+[2026-07-08 08:28:42.510] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=20.7 快门=1/10000 光圈=F11.0 增益=30 (12步) ──
+[2026-07-08 08:28:42.515] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 08:31:14.838] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-08 08:31:15.043] [INFO   ] [operation_logger] [web] ptz: 对焦模式: auto
+[2026-07-08 08:33:20.509] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-08 08:33:20.694] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-08 08:33:24.065] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 33}}
+[2026-07-08 08:33:24.112] [INFO   ] [operation_logger] [web] ptz: 亮度: 33
+[2026-07-08 08:33:26.915] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 45}}
+[2026-07-08 08:33:27.113] [INFO   ] [operation_logger] [web] ptz: 亮度: 45
+[2026-07-08 09:50:54.061] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 09:50:54.621] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-08 09:50:54.627] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 09:50:54.924] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-08 09:50:54.964] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-08 09:50:58.951] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 151, "blue": 2}
+[2026-07-08 09:50:59.122] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 09:51:02.254] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 151, "blue": 2}
+[2026-07-08 09:51:02.262] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 09:51:09.196] [INFO   ] [operation_logger] [web] ptz: 用户停止
+[2026-07-08 09:51:09.200] [ERROR  ] [operation_logger] [web] ptz: 白平衡异常: Failed to fetch
+[2026-07-08 09:51:20.333] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 151, "blue": 2}
+[2026-07-08 09:51:20.340] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 09:51:22.998] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-08 09:51:23.613] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1304~2708, Y=495~1796, 共1826604像素
+[2026-07-08 09:51:23.615] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: coarse R=146 B=2 → R=164.8 G=0.6 B=0.8 (Δ=266.1149)
+[2026-07-08 09:51:25.830] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: medium R=146 B=2 → R=154.7 G=2.1 B=0.9 (Δ=72.2722)
+[2026-07-08 09:51:27.891] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: medium R=144 B=4 → R=157.8 G=1.8 B=0.9 (Δ=87.3335)
+[2026-07-08 09:51:30.249] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: medium R=142 B=6 → R=153.5 G=2.4 B=0.9 (Δ=63.8179)
+[2026-07-08 09:51:32.350] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: medium R=140 B=8 → R=152 G=2.8 B=0.9 (Δ=54.4639)
+[2026-07-08 09:51:34.442] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: medium R=138 B=10 → R=151.7 G=3.1 B=1 (Δ=48.3077)
+[2026-07-08 09:51:36.546] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: medium R=136 B=12 → R=150.2 G=3.4 B=0.9 (Δ=43.3753)
+[2026-07-08 09:51:38.621] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: medium R=134 B=14 → R=148.9 G=4 B=1 (Δ=36.8292)
+[2026-07-08 09:51:40.717] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: medium R=132 B=16 → R=148.5 G=4.5 B=1.1 (Δ=32.9319)
+[2026-07-08 09:51:42.825] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: medium R=130 B=18 → R=147.6 G=5.2 B=2.1 (Δ=27.869)
+[2026-07-08 09:51:44.942] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: medium R=128 B=20 → R=146.1 G=6 B=4.6 (Δ=23.6588)
+[2026-07-08 09:51:47.037] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: medium R=126 B=18 → R=144.6 G=6.9 B=8.3 (Δ=20.0461)
+[2026-07-08 09:51:49.418] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: medium R=124 B=20 → R=145.2 G=7.3 B=4.2 (Δ=19.2166)
+[2026-07-08 09:51:51.497] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: medium R=122 B=21 → R=142 G=8.4 B=8 (Δ=15.9784)
+[2026-07-08 09:51:53.615] [DEBUG  ] [operation_logger] [web] ptz: 调整 #15: medium R=120 B=19 → R=140.3 G=9.5 B=10.1 (Δ=13.8118)
+[2026-07-08 09:51:55.696] [DEBUG  ] [operation_logger] [web] ptz: 调整 #16: medium R=118 B=21 → R=139.2 G=10.1 B=5.9 (Δ=13.2035)
+[2026-07-08 09:51:57.778] [DEBUG  ] [operation_logger] [web] ptz: 调整 #17: medium R=116 B=23 → R=137.3 G=11.3 B=9.9 (Δ=11.3128)
+[2026-07-08 09:51:59.887] [DEBUG  ] [operation_logger] [web] ptz: 调整 #18: medium R=114 B=21 → R=135.9 G=12.2 B=13.1 (Δ=10.2313)
+[2026-07-08 09:52:02.021] [DEBUG  ] [operation_logger] [web] ptz: 调整 #19: fine R=114 B=21 → R=135.6 G=12.7 B=9.4 (Δ=9.9637)
+[2026-07-08 09:52:04.088] [DEBUG  ] [operation_logger] [web] ptz: 调整 #20: fine R=113 B=21 → R=140.8 G=12.6 B=8.3 (Δ=10.5276)
+[2026-07-08 09:52:06.209] [DEBUG  ] [operation_logger] [web] ptz: 调整 #21: fine R=112 B=21 → R=136.3 G=13 B=9.2 (Δ=9.7897)
+[2026-07-08 09:52:08.284] [DEBUG  ] [operation_logger] [web] ptz: 调整 #22: fine R=111 B=21 → R=135.5 G=13.5 B=9.1 (Δ=9.3773)
+[2026-07-08 09:52:10.649] [DEBUG  ] [operation_logger] [web] ptz: 调整 #23: fine R=110 B=21 → R=135.5 G=13.9 B=9.1 (Δ=9.104)
+[2026-07-08 09:52:12.966] [DEBUG  ] [operation_logger] [web] ptz: 调整 #24: fine R=109 B=21 → R=134.3 G=14.4 B=9.1 (Δ=8.6876)
+[2026-07-08 09:52:15.285] [DEBUG  ] [operation_logger] [web] ptz: 调整 #25: fine R=108 B=21 → R=133 G=15.1 B=8.9 (Δ=8.2484)
+[2026-07-08 09:52:17.518] [DEBUG  ] [operation_logger] [web] ptz: 调整 #26: fine R=107 B=21 → R=131.2 G=15.7 B=8.9 (Δ=7.8053)
+[2026-07-08 09:52:19.880] [DEBUG  ] [operation_logger] [web] ptz: 调整 #27: fine R=106 B=21 → R=130.9 G=16.3 B=8.5 (Δ=7.517)
+[2026-07-08 09:52:21.969] [DEBUG  ] [operation_logger] [web] ptz: 调整 #28: fine R=105 B=21 → R=128.9 G=16.9 B=8.7 (Δ=7.1283)
+[2026-07-08 09:52:24.169] [DEBUG  ] [operation_logger] [web] ptz: 调整 #29: fine R=104 B=21 → R=143.6 G=20.3 B=8.6 (Δ=6.6579)
+[2026-07-08 09:52:26.300] [DEBUG  ] [operation_logger] [web] ptz: 调整 #30: fine R=103 B=21 → R=142 G=21.6 B=8.6 (Δ=6.1854)
+[2026-07-08 09:52:28.403] [DEBUG  ] [operation_logger] [web] ptz: 调整 #31: fine R=102 B=21 → R=141.1 G=22.9 B=8.7 (Δ=5.7668)
+[2026-07-08 09:52:30.472] [DEBUG  ] [operation_logger] [web] ptz: 调整 #32: fine R=101 B=21 → R=139.6 G=24.9 B=8.9 (Δ=5.2517)
+[2026-07-08 09:52:32.560] [DEBUG  ] [operation_logger] [web] ptz: 调整 #33: fine R=100 B=21 → R=138.3 G=27.2 B=8.8 (Δ=4.7624)
+[2026-07-08 09:52:34.673] [DEBUG  ] [operation_logger] [web] ptz: 调整 #34: fine R=99 B=21 → R=137.1 G=28.2 B=8.5 (Δ=4.5671)
+[2026-07-08 09:52:36.753] [DEBUG  ] [operation_logger] [web] ptz: 调整 #35: fine R=98 B=21 → R=135.8 G=29.2 B=8.3 (Δ=4.3619)
+[2026-07-08 09:52:38.832] [DEBUG  ] [operation_logger] [web] ptz: 调整 #36: fine R=97 B=21 → R=135.3 G=30.2 B=8.2 (Δ=4.2081)
+[2026-07-08 09:52:41.308] [DEBUG  ] [operation_logger] [web] ptz: 调整 #37: fine R=96 B=21 → R=135.6 G=31 B=8 (Δ=4.1203)
+[2026-07-08 09:52:43.396] [DEBUG  ] [operation_logger] [web] ptz: 调整 #38: fine R=95 B=21 → R=133.5 G=32 B=8 (Δ=3.9213)
+[2026-07-08 09:52:45.445] [DEBUG  ] [operation_logger] [web] ptz: 调整 #39: done R=95 B=21 → R=130.9 G=33.1 B=8 (Δ=3.7094)
+[2026-07-08 09:52:48.126] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=95 B=21 (39步) ──
+[2026-07-08 09:52:48.139] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 09:53:10.155] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 95, "blue": 21}
+[2026-07-08 09:53:10.342] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 10:50:19.254] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 95, "blue": 21}
+[2026-07-08 10:50:19.398] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 10:50:21.564] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-08 10:50:21.743] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-08 10:50:21.851] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-08 10:50:23.715] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1391~2368, Y=736~1568, 共812864像素
+[2026-07-08 10:50:23.717] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=10.87 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-08 10:50:25.656] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=6.34 (0.2s) 采样(best=10.9,方向=近)
+[2026-07-08 10:50:27.634] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=3.11 (0.2s) 采样(best=10.9,方向=近)
+[2026-07-08 10:50:29.552] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: scan focus_near 反差=2.33 (0.2s) 采样(best=10.9,方向=近)
+[2026-07-08 10:50:31.535] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: scan focus_near 反差=1.99 (0.2s) 采样(best=10.9,方向=近)
+[2026-07-08 10:50:33.483] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: scan focus_far 反差=1.75 (0.2s) 反向(方向=远,尝试2/3)
+[2026-07-08 10:50:35.440] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: scan focus_far 反差=1.95 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-08 10:50:37.367] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: scan focus_far 反差=2.22 (0.2s) 采样(best=2.2,方向=远)
+[2026-07-08 10:50:39.390] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: scan focus_far 反差=2.75 (0.2s) 采样(best=2.8,方向=远)
+[2026-07-08 10:50:41.367] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: scan focus_far 反差=4.45 (0.2s) 采样(best=4.4,方向=远)
+[2026-07-08 10:50:43.282] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: scan focus_far 反差=8.43 (0.2s) 采样(best=8.4,方向=远)
+[2026-07-08 10:50:45.212] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: scan focus_far 反差=34.58 (0.2s) 采样(best=34.6,方向=远)
+[2026-07-08 10:50:47.169] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: scan focus_far 反差=29.39 (0.2s) 采样(best=34.6,方向=远)
+[2026-07-08 10:50:49.083] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: scan focus_far 反差=8.82 (0.2s) 采样(best=34.6,方向=远)
+[2026-07-08 10:50:51.039] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: scan focus_far 反差=3.85 (0.2s) 采样(best=34.6,方向=远)
+[2026-07-08 10:50:53.000] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: scan focus_near 反差=2.66 (0.2s) 趋势下降,反向(方向=近,尝试3/3)
+[2026-07-08 10:50:54.947] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: scan focus_near 反差=3.35 (0.2s) 开始对焦(方向=近,尝试3/3)
+[2026-07-08 10:50:56.868] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: scan focus_near 反差=5.29 (0.2s) 采样(best=5.3,方向=近)
+[2026-07-08 10:50:58.819] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: scan focus_near 反差=17.48 (0.2s) 采样(best=17.5,方向=近)
+[2026-07-08 10:51:00.755] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: scan focus_near 反差=32.4 (0.2s) 采样(best=32.4,方向=近)
+[2026-07-08 10:51:02.676] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: scan focus_near 反差=13.58 (0.2s) 采样(best=32.4,方向=近)
+[2026-07-08 10:51:04.715] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: scan focus_near 反差=5.48 (0.2s) 采样(best=32.4,方向=近)
+[2026-07-08 10:51:06.674] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: scan focus_near 反差=3.25 (0.2s) 采样(best=32.4,方向=近)
+[2026-07-08 10:51:08.629] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: error stop 反差=2.6 (0s) 对焦失败(3次重试耗尽)
+[2026-07-08 10:51:08.749] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=2.58 (24步) ──
+[2026-07-08 10:51:08.758] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 10:53:19.963] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-08 10:53:21.597] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:23.592] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:25.556] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:27.523] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:29.471] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:31.443] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:33.396] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:35.341] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:37.279] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:39.349] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:41.305] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:43.231] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:45.184] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:47.115] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:49.066] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:50.987] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:52.920] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:54.858] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:56.817] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:53:58.736] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:54:00.694] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:54:02.613] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:54:04.612] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:54:06.544] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:54:08.475] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:54:10.454] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:54:12.400] [INFO   ] [operation_logger] [web] ptz: 调整 #27: error R=undefined B=undefined Δ=undefined
+[2026-07-08 10:54:12.510] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成 (27步) ──
+[2026-07-08 10:56:12.527] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-08 10:56:14.414] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:16.337] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:18.314] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:20.298] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:22.218] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:24.167] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:26.384] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:28.305] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:30.259] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:32.184] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:34.100] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:36.059] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:38.029] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:39.844] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 95, "blue": 21}
+[2026-07-08 10:56:39.894] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 10:56:39.993] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:41.938] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:43.501] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 95, "blue": 21}
+[2026-07-08 10:56:43.512] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 10:56:43.899] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:45.854] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:47.776] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:49.732] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:51.696] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:53.649] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:55.572] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:57.529] [INFO   ] [operation_logger] [web] ptz: 调整 #23: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 10:56:59.480] [INFO   ] [operation_logger] [web] ptz: 调整 #24: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 10:57:01.569] [INFO   ] [operation_logger] [web] ptz: 调整 #25: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 10:57:03.488] [INFO   ] [operation_logger] [web] ptz: 调整 #26: fine R=undefined B=undefined Δ=undefined
+[2026-07-08 10:57:05.330] [INFO   ] [operation_logger] [web] ptz: 调整 #27: done R=undefined B=undefined Δ=undefined
+[2026-07-08 10:57:05.458] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成 (27步) ──
+[2026-07-08 10:59:05.477] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-08 10:59:07.100] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:59:09.031] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:59:11.056] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 10:59:12.990] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 10:59:14.940] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 10:59:16.909] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 10:59:18.869] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-08 10:59:20.698] [INFO   ] [operation_logger] [web] ptz: 调整 #8: done R=undefined B=undefined Δ=undefined
+[2026-07-08 10:59:20.849] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成 (8步) ──
+[2026-07-08 10:59:35.721] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 10:59:35.737] [INFO   ] [operation_logger] [web] ptz: 曝光: 局部
+[2026-07-08 10:59:38.122] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 10:59:38.742] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1397~2336, Y=784~1517, 共688287像素
+[2026-07-08 10:59:38.745] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门降档 1/6000 快门=1/6000 光圈=F11.0 增益=29 亮度=21.4/50
+[2026-07-08 10:59:41.316] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/3500 快门=1/3500 光圈=F11.0 增益=29 亮度=26.9/50
+[2026-07-08 10:59:43.403] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=37.2/50
+[2026-07-08 10:59:45.487] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/1750 快门=1/1750 光圈=F11.0 增益=29 亮度=46.5/50
+[2026-07-08 10:59:47.866] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 快门升档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=54.2/50
+[2026-07-08 10:59:49.922] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 光圈开大 F9.6 快门=1/2500 光圈=F9.6 增益=29 亮度=44.7/50
+[2026-07-08 10:59:52.025] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #7: 光圈收小 F11.0 快门=1/2500 光圈=F11.0 增益=29 亮度=51.9/50
+[2026-07-08 10:59:54.185] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #8: 光圈开大 F9.6 快门=1/2500 光圈=F9.6 增益=29 亮度=42.8/50
+[2026-07-08 10:59:56.269] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #9: 增益粗调 24 快门=1/2500 光圈=F9.6 增益=24 亮度=52.5/50
+[2026-07-08 10:59:58.616] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #10: 增益精调 29 快门=1/2500 光圈=F9.6 增益=29 亮度=43.5/50
+[2026-07-08 11:00:00.662] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #11: 增益精调 28 快门=1/2500 光圈=F9.6 增益=28 亮度=52.6/50
+[2026-07-08 11:00:02.742] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #12: 亮度达标 49.6≈50.0 快门=1/2500 光圈=F9.6 增益=28 亮度=49.6/50
+[2026-07-08 11:00:02.746] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=49.6 快门=1/2500 光圈=F9.6 增益=28 (12步) ──
+[2026-07-08 11:00:02.751] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 11:00:16.184] [INFO   ] [operation_logger] [web] ptz: 局部最大增益: 100
+[2026-07-08 11:02:22.902] [INFO   ] [operation_logger] [web] ptz: ── 亮度定时执行 ──
+[2026-07-08 11:02:23.560] [INFO   ] [operation_logger] [web] ptz: 亮度 #1: 快门降档 1/6000 快门=1/6000 光圈=F11.0 增益=29 亮度=47.7
+[2026-07-08 11:02:25.942] [INFO   ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/3500 快门=1/3500 光圈=F11.0 增益=29 亮度=30.7
+[2026-07-08 11:02:28.315] [INFO   ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=40.6
+[2026-07-08 11:02:30.413] [INFO   ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/1750 快门=1/1750 光圈=F11.0 增益=29 亮度=48.8
+[2026-07-08 11:02:32.453] [INFO   ] [operation_logger] [web] ptz: 亮度 #5: 快门升档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=54.2
+[2026-07-08 11:02:34.531] [INFO   ] [operation_logger] [web] ptz: 亮度 #6: 光圈开大 F9.6 快门=1/2500 光圈=F9.6 增益=29 亮度=45.2
+[2026-07-08 11:02:36.582] [INFO   ] [operation_logger] [web] ptz: 亮度 #7: 光圈开大 F6.8 快门=1/2500 光圈=F6.8 增益=29 亮度=45
+[2026-07-08 11:02:38.645] [INFO   ] [operation_logger] [web] ptz: 亮度 #8: 光圈收小 F9.6 快门=1/2500 光圈=F9.6 增益=29 亮度=52.1
+[2026-07-08 11:02:40.721] [INFO   ] [operation_logger] [web] ptz: 亮度 #9: 增益粗调 34 快门=1/2500 光圈=F6.8 增益=34 亮度=44.7
+[2026-07-08 11:02:42.800] [INFO   ] [operation_logger] [web] ptz: 亮度 #10: 增益精调 29 快门=1/2500 光圈=F6.8 增益=29 亮度=56
+[2026-07-08 11:02:45.127] [INFO   ] [operation_logger] [web] ptz: 亮度 #11: 增益精调 30 快门=1/2500 光圈=F6.8 增益=30 亮度=46.6
+[2026-07-08 11:02:47.200] [INFO   ] [operation_logger] [web] ptz: 亮度 #12: 增益精调 31 快门=1/2500 光圈=F6.8 增益=31 亮度=47.9
+[2026-07-08 11:02:49.272] [INFO   ] [operation_logger] [web] ptz: 亮度 #13: 增益震荡3次，回滚最佳增益29 快门=1/2500 光圈=F6.8 增益=29 亮度=50.9
+[2026-07-08 11:02:49.274] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=50.9 快门=1/2500 光圈=F6.8 增益=29 (13步) ──
+[2026-07-08 11:04:49.293] [INFO   ] [operation_logger] [web] ptz: ── 亮度定时执行 ──
+[2026-07-08 11:04:49.903] [INFO   ] [operation_logger] [web] ptz: 亮度 #1: 亮度达标 50.4≈50.0 快门=1/10000 光圈=F11.0 增益=29 亮度=50.4
+[2026-07-08 11:04:49.903] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=50.4 快门=1/10000 光圈=F11.0 增益=29 (1步) ──
+[2026-07-08 11:06:49.908] [INFO   ] [operation_logger] [web] ptz: ── 亮度定时执行 ──
+[2026-07-08 11:06:50.551] [INFO   ] [operation_logger] [web] ptz: 亮度 #1: 快门升档 1/30000 快门=1/30000 光圈=F11.0 增益=29 亮度=50.6
+[2026-07-08 11:06:52.625] [INFO   ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/10000 快门=1/10000 光圈=F11.0 增益=29 亮度=17
+[2026-07-08 11:06:54.687] [INFO   ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/6000 快门=1/6000 光圈=F11.0 增益=29 亮度=26.3
+[2026-07-08 11:06:57.030] [INFO   ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/3500 快门=1/3500 光圈=F11.0 增益=29 亮度=32.3
+[2026-07-08 11:06:59.106] [INFO   ] [operation_logger] [web] ptz: 亮度 #5: 快门降档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=42.6
+[2026-07-08 11:07:01.479] [INFO   ] [operation_logger] [web] ptz: 亮度 #6: 光圈收小 F14.0 快门=1/10000 光圈=F14.0 增益=29 亮度=50.8
+[2026-07-08 11:07:03.526] [INFO   ] [operation_logger] [web] ptz: 亮度 #7: 光圈开大 F11.0 快门=1/10000 光圈=F11.0 增益=29 亮度=33.7
+[2026-07-08 11:07:05.573] [INFO   ] [operation_logger] [web] ptz: 亮度 #8: 光圈开大 F9.6 快门=1/10000 光圈=F9.6 增益=29 亮度=41.7
+[2026-07-08 11:07:07.656] [INFO   ] [operation_logger] [web] ptz: 亮度 #9: 亮度达标 49.9≈50.0 快门=1/10000 光圈=F9.6 增益=29 亮度=49.9
+[2026-07-08 11:07:07.660] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=49.9 快门=1/10000 光圈=F9.6 增益=29 (9步) ──
+[2026-07-08 11:09:07.668] [INFO   ] [operation_logger] [web] ptz: ── 亮度定时执行 ──
+[2026-07-08 11:09:08.553] [INFO   ] [operation_logger] [web] ptz: 亮度 #1: 快门降档 1/6000 快门=1/6000 光圈=F11.0 增益=29 亮度=44.9
+[2026-07-08 11:09:10.700] [INFO   ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/3500 快门=1/3500 光圈=F11.0 增益=29 亮度=27.7
+[2026-07-08 11:09:13.061] [INFO   ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=37.1
+[2026-07-08 11:09:15.128] [INFO   ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/1750 快门=1/1750 光圈=F11.0 增益=29 亮度=44
+[2026-07-08 11:09:17.200] [INFO   ] [operation_logger] [web] ptz: 亮度 #5: 快门升档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=52.5
+[2026-07-08 11:09:19.257] [INFO   ] [operation_logger] [web] ptz: 亮度 #6: 光圈开大 F9.6 快门=1/1750 光圈=F9.6 增益=29 亮度=43.4
+[2026-07-08 11:09:21.302] [INFO   ] [operation_logger] [web] ptz: 亮度 #7: 光圈开大 F6.8 快门=1/1750 光圈=F6.8 增益=29 亮度=43.6
+[2026-07-08 11:09:23.457] [INFO   ] [operation_logger] [web] ptz: 亮度 #8: 光圈收小 F9.6 快门=1/1750 光圈=F9.6 增益=29 亮度=51.2
+[2026-07-08 11:09:25.534] [INFO   ] [operation_logger] [web] ptz: 亮度 #9: 增益粗调 34 快门=1/1750 光圈=F6.8 增益=34 亮度=44.3
+[2026-07-08 11:09:27.579] [INFO   ] [operation_logger] [web] ptz: 亮度 #10: 增益粗调 39 快门=1/1750 光圈=F6.8 增益=39 亮度=48.9
+[2026-07-08 11:09:29.754] [INFO   ] [operation_logger] [web] ptz: 亮度 #11: 增益精调 34 快门=1/1750 光圈=F6.8 增益=34 亮度=60.1
+[2026-07-08 11:09:31.832] [INFO   ] [operation_logger] [web] ptz: 亮度 #12: 增益精调 35 快门=1/1750 光圈=F6.8 增益=35 亮度=48.5
+[2026-07-08 11:09:33.885] [INFO   ] [operation_logger] [web] ptz: 亮度 #13: 增益震荡3次，回滚最佳增益29 快门=1/1750 光圈=F6.8 增益=29 亮度=50.7
+[2026-07-08 11:09:33.889] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=50.7 快门=1/1750 光圈=F6.8 增益=29 (13步) ──
+[2026-07-08 11:11:33.896] [INFO   ] [operation_logger] [web] ptz: ── 亮度定时执行 ──
+[2026-07-08 11:11:34.867] [INFO   ] [operation_logger] [web] ptz: 亮度 #1: 快门升档 1/30000 快门=1/30000 光圈=F11.0 增益=29 亮度=52.8
+[2026-07-08 11:11:36.717] [INFO   ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/10000 快门=1/10000 光圈=F11.0 增益=29 亮度=17.7
+[2026-07-08 11:11:39.042] [INFO   ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/6000 快门=1/6000 光圈=F11.0 增益=29 亮度=27.1
+[2026-07-08 11:11:41.122] [INFO   ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/3500 快门=1/3500 光圈=F11.0 增益=29 亮度=33.1
+[2026-07-08 11:11:43.438] [INFO   ] [operation_logger] [web] ptz: 亮度 #5: 快门降档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=44.4
+[2026-07-08 11:11:45.496] [INFO   ] [operation_logger] [web] ptz: 亮度 #6: 光圈收小 F14.0 快门=1/10000 光圈=F14.0 增益=29 亮度=53
+[2026-07-08 11:11:47.558] [INFO   ] [operation_logger] [web] ptz: 亮度 #7: 光圈开大 F11.0 快门=1/10000 光圈=F11.0 增益=29 亮度=35.6
+[2026-07-08 11:11:50.129] [INFO   ] [operation_logger] [web] ptz: 亮度 #8: 光圈开大 F9.6 快门=1/10000 光圈=F9.6 增益=29 亮度=44
+[2026-07-08 11:11:52.136] [INFO   ] [operation_logger] [web] ptz: 亮度 #9: 光圈收小 F11.0 快门=1/10000 光圈=F11.0 增益=29 亮度=52.2
+[2026-07-08 11:11:54.439] [INFO   ] [operation_logger] [web] ptz: 亮度 #10: 增益粗调 34 快门=1/10000 光圈=F9.6 增益=34 亮度=43.4
+[2026-07-08 11:11:56.820] [INFO   ] [operation_logger] [web] ptz: 亮度 #11: 增益粗调 39 快门=1/10000 光圈=F9.6 增益=39 亮度=42.5
+[2026-07-08 11:11:58.809] [INFO   ] [operation_logger] [web] ptz: 亮度 #12: 增益精调 34 快门=1/10000 光圈=F9.6 增益=34 亮度=53.7
+[2026-07-08 11:12:00.999] [INFO   ] [operation_logger] [web] ptz: 亮度 #13: 增益精调 35 快门=1/10000 光圈=F9.6 增益=35 亮度=42.4
+[2026-07-08 11:12:05.936] [ERROR  ] [operation_logger] [web] ptz: 亮度错误: 截图失败
+[2026-07-08 11:14:05.948] [INFO   ] [operation_logger] [web] ptz: ── 亮度定时执行 ──
+[2026-07-08 11:14:06.534] [INFO   ] [operation_logger] [web] ptz: 亮度 #1: 快门降档 1/6000 快门=1/6000 光圈=F11.0 增益=29 亮度=46.4
+[2026-07-08 11:14:08.593] [INFO   ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/3500 快门=1/3500 光圈=F11.0 增益=29 亮度=28.5
+[2026-07-08 11:14:10.676] [INFO   ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=37.6
+[2026-07-08 11:14:12.720] [INFO   ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/1750 快门=1/1750 光圈=F11.0 增益=29 亮度=45.5
+[2026-07-08 11:14:14.736] [INFO   ] [operation_logger] [web] ptz: 亮度 #5: 快门升档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=53.9
+[2026-07-08 11:14:16.780] [INFO   ] [operation_logger] [web] ptz: 亮度 #6: 光圈开大 F9.6 快门=1/10000 光圈=F9.6 增益=29 亮度=44.2
+[2026-07-08 11:14:18.830] [INFO   ] [operation_logger] [web] ptz: 亮度 #7: 光圈收小 F11.0 快门=1/10000 光圈=F11.0 增益=29 亮度=53.5
+[2026-07-08 11:14:20.928] [INFO   ] [operation_logger] [web] ptz: 亮度 #8: 光圈开大 F9.6 快门=1/10000 光圈=F9.6 增益=29 亮度=44.5
+[2026-07-08 11:14:23.052] [INFO   ] [operation_logger] [web] ptz: 亮度 #9: 增益粗调 24 快门=1/10000 光圈=F9.6 增益=24 亮度=53.3
+[2026-07-08 11:14:25.420] [INFO   ] [operation_logger] [web] ptz: 亮度 #10: 增益精调 29 快门=1/10000 光圈=F9.6 增益=29 亮度=34.7
+[2026-07-08 11:14:27.480] [INFO   ] [operation_logger] [web] ptz: 亮度 #11: 增益精调 30 快门=1/10000 光圈=F9.6 增益=30 亮度=42.9
+[2026-07-08 11:14:29.544] [INFO   ] [operation_logger] [web] ptz: 亮度 #12: 增益精调 31 快门=1/10000 光圈=F9.6 增益=31 亮度=43.6
+[2026-07-08 11:14:31.901] [INFO   ] [operation_logger] [web] ptz: 亮度 #13: 增益精调 32 快门=1/10000 光圈=F9.6 增益=32 亮度=45.9
+[2026-07-08 11:14:34.084] [INFO   ] [operation_logger] [web] ptz: 亮度 #14: 增益精调 33 快门=1/10000 光圈=F9.6 增益=33 亮度=48.4
+[2026-07-08 11:14:36.136] [INFO   ] [operation_logger] [web] ptz: 亮度 #15: 增益精调 34 快门=1/10000 光圈=F9.6 增益=34 亮度=49.1
+[2026-07-08 11:14:38.479] [INFO   ] [operation_logger] [web] ptz: 亮度 #16: 增益精调 33 快门=1/10000 光圈=F9.6 增益=33 亮度=50.8
+[2026-07-08 11:14:40.809] [INFO   ] [operation_logger] [web] ptz: 亮度 #17: 增益震荡3次，回滚最佳增益29 快门=1/10000 光圈=F9.6 增益=29 亮度=49.5
+[2026-07-08 11:14:40.812] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=49.5 快门=1/10000 光圈=F9.6 增益=29 (17步) ──
+[2026-07-08 11:15:59.439] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-08 11:15:59.617] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-08 11:16:00.251] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-08 11:16:02.063] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1375~2348, Y=482~1497, 共987595像素
+[2026-07-08 11:16:02.063] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=57.3 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-08 11:16:04.068] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=48.45 (0.2s) 采样(best=57.3,方向=近)
+[2026-07-08 11:16:06.046] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=34.9 (0.2s) 采样(best=57.3,方向=近)
+[2026-07-08 11:16:08.022] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=28.1 (0.2s) 样条峰值=57.3@pos=0.01,回退3步
+[2026-07-08 11:16:09.999] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=34.73 (0.2s) 逼近(剩余2步,峰值=57.3)
+[2026-07-08 11:16:11.983] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=47.54 (0.2s) 逼近(剩余1步,峰值=57.3)
+[2026-07-08 11:16:13.949] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=54.85 (0.1s) 粗逼近完成(best2=57.3),开始精逼近(0.1s)
+[2026-07-08 11:16:15.810] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=56.14 (0.1s) 精逼近(步1/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:17.663] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=55.82 (0.1s) 精逼近(步2/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:19.531] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=51.52 (0.1s) 精逼近(步3/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:21.411] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: fine focus_far 反差=54.65 (0.1s) 精逼近(步4/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:23.286] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: fine focus_near 反差=53.16 (0.1s) 精逼近(步5/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:25.128] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: fine focus_far 反差=55.19 (0.1s) 精逼近(步6/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:26.977] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: fine focus_near 反差=56.43 (0.1s) 精逼近(步7/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:28.844] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: fine focus_far 反差=55.73 (0.1s) 精逼近(步8/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:30.696] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: fine focus_near 反差=54.21 (0.1s) 精逼近(步9/10,best3=57.3,best2=57.3)
+[2026-07-08 11:16:32.579] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: done stop 反差=57.92 (0s) 对焦成功(best3=57.9,best2=57.3,best1=57.3)
+[2026-07-08 11:16:32.730] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=56.97 (17步) ──
+[2026-07-08 11:16:32.737] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 11:16:40.909] [INFO   ] [operation_logger] [web] ptz: ── 亮度定时执行 ──
+[2026-07-08 11:16:41.519] [INFO   ] [operation_logger] [web] ptz: 亮度 #1: 快门降档 1/6000 快门=1/6000 光圈=F11.0 增益=29 亮度=48.8
+[2026-07-08 11:16:43.816] [INFO   ] [operation_logger] [web] ptz: 亮度 #2: 快门降档 1/3500 快门=1/3500 光圈=F11.0 增益=29 亮度=29.1
+[2026-07-08 11:16:45.868] [INFO   ] [operation_logger] [web] ptz: 亮度 #3: 快门降档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=40.9
+[2026-07-08 11:16:47.978] [INFO   ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/1750 快门=1/1750 光圈=F11.0 增益=29 亮度=49
+[2026-07-08 11:16:50.285] [INFO   ] [operation_logger] [web] ptz: 亮度 #5: 快门升档 1/2500 快门=1/2500 光圈=F11.0 增益=29 亮度=56.1
+[2026-07-08 11:16:52.328] [INFO   ] [operation_logger] [web] ptz: 亮度 #6: 光圈开大 F9.6 快门=1/2500 光圈=F9.6 增益=29 亮度=47.7
+[2026-07-08 11:16:54.504] [INFO   ] [operation_logger] [web] ptz: 亮度 #7: 光圈开大 F6.8 快门=1/2500 光圈=F6.8 增益=29 亮度=49
+[2026-07-08 11:16:56.640] [INFO   ] [operation_logger] [web] ptz: 亮度 #8: 光圈收小 F9.6 快门=1/2500 光圈=F9.6 增益=29 亮度=57.1
+[2026-07-08 11:16:58.696] [INFO   ] [operation_logger] [web] ptz: 亮度 #9: 增益粗调 34 快门=1/2500 光圈=F9.6 增益=34 亮度=49.2
+[2026-07-08 11:17:00.898] [INFO   ] [operation_logger] [web] ptz: 亮度 #10: 增益精调 29 快门=1/2500 光圈=F9.6 增益=29 亮度=51.7
+[2026-07-08 11:17:02.867] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-08 11:17:02.930] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-08 11:17:03.078] [INFO   ] [operation_logger] [web] ptz: 亮度 #11: 增益精调 30 快门=1/2500 光圈=F9.6 增益=30 亮度=43.3
+[2026-07-08 11:17:05.155] [INFO   ] [operation_logger] [web] ptz: 亮度 #12: 增益精调 31 快门=1/2500 光圈=F9.6 增益=31 亮度=45.2
+[2026-07-08 11:17:07.239] [INFO   ] [operation_logger] [web] ptz: 亮度 #13: 增益精调 32 快门=1/2500 光圈=F9.6 增益=32 亮度=48
+[2026-07-08 11:17:09.289] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 11:17:09.352] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-08 11:17:11.417] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-08 11:17:11.459] [INFO   ] [operation_logger] [web] ptz: 亮度 #14: 亮度达标 49.9≈50.0 快门=1/2500 光圈=F9.6 增益=32 亮度=49.9
+[2026-07-08 11:17:11.464] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=49.9 快门=1/2500 光圈=F9.6 增益=32 (14步) ──
+[2026-07-08 11:17:11.465] [INFO   ] [operation_logger] [web] ptz: 对焦模式: auto
+[2026-07-08 11:20:15.908] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-08 11:20:17.562] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 11:20:19.571] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 11:20:21.527] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-08 11:20:23.491] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 11:20:25.425] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 11:20:27.396] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-08 11:20:29.399] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-08 11:20:31.223] [INFO   ] [operation_logger] [web] ptz: 调整 #8: done R=undefined B=undefined Δ=undefined
+[2026-07-08 11:20:31.348] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成 (8步) ──
+[2026-07-08 16:56:30.995] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 16:56:31.899] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 95, "blue": 21}
+[2026-07-08 16:56:32.020] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 17:03:58.773] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-08 17:03:58.944] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-08 17:04:06.613] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 95, "blue": 21}
+[2026-07-08 17:04:06.625] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 17:04:12.941] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 95, "blue": 21}
+[2026-07-08 17:04:13.080] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 17:04:53.830] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-08 17:04:54.587] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1179~2998, Y=507~1777, 共2310130像素
+[2026-07-08 17:04:54.587] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: step=2 R=93 B=23 → R=157.3 G=157.3 B=12.4 (Δ=1.4481)
+[2026-07-08 17:04:56.731] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: step=2 R=91 B=25 → R=163.8 G=163.8 B=24.2 (Δ=1.2858)
+[2026-07-08 17:04:58.883] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: step=2 R=89 B=27 → R=164.7 G=164.7 B=31.6 (Δ=1.2249)
+[2026-07-08 17:05:01.264] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: step=2 R=87 B=29 → R=165.2 G=165.2 B=41 (Δ=1.1577)
+[2026-07-08 17:05:06.176] [ERROR  ] [operation_logger] [web] ptz: 白平衡失败: 截图失败
+[2026-07-08 17:05:06.181] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 17:05:18.702] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 87, "blue": 29}
+[2026-07-08 17:05:18.708] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 17:05:20.608] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-08 17:05:21.281] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1227~2596, Y=450~1767, 共1802973像素
+[2026-07-08 17:05:21.283] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: step=2 R=85 B=31 → R=169.7 G=169.7 B=16.5 (Δ=1.3194)
+[2026-07-08 17:05:23.661] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: step=2 R=83 B=33 → R=172.9 G=172.9 B=54.1 (Δ=1.0542)
+[2026-07-08 17:05:25.760] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: step=1 R=82 B=33 → R=173.7 G=173.7 B=70.2 (Δ=0.9512)
+[2026-07-08 17:05:27.841] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: step=1 R=81 B=33 → R=174.3 G=174.3 B=70.2 (Δ=0.9471)
+[2026-07-08 17:05:29.925] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: step=1 R=80 B=33 → R=174.8 G=174.8 B=70.6 (Δ=0.9396)
+[2026-07-08 17:05:32.017] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: step=1 R=79 B=33 → R=175.2 G=175.2 B=69.9 (Δ=0.9407)
+[2026-07-08 17:05:34.392] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: step=1 R=78 B=33 → R=175.3 G=175.3 B=68.9 (Δ=0.946)
+[2026-07-08 17:05:36.530] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: step=1 R=77 B=33 → R=175.9 G=175.9 B=69.6 (Δ=0.9354)
+[2026-07-08 17:05:38.642] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: step=1 R=76 B=33 → R=176.6 G=176.6 B=69.4 (Δ=0.9317)
+[2026-07-08 17:05:40.727] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: step=1 R=75 B=33 → R=177.1 G=177.1 B=69.9 (Δ=0.9236)
+[2026-07-08 17:05:42.785] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: step=1 R=74 B=33 → R=177.5 G=177.5 B=69.1 (Δ=0.925)
+[2026-07-08 17:05:44.921] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: step=1 R=73 B=33 → R=177.9 G=177.9 B=69 (Δ=0.9219)
+[2026-07-08 17:05:46.991] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: step=1 R=72 B=33 → R=178.8 G=178.8 B=69.9 (Δ=0.9098)
+[2026-07-08 17:05:49.201] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: step=1 R=71 B=33 → R=179.3 G=179.3 B=69.3 (Δ=0.9092)
+[2026-07-08 17:05:51.546] [DEBUG  ] [operation_logger] [web] ptz: 调整 #15: step=1 R=70 B=33 → R=180 G=180 B=68.7 (Δ=0.9082)
+[2026-07-08 17:05:53.640] [DEBUG  ] [operation_logger] [web] ptz: 调整 #16: step=1 R=69 B=33 → R=181 G=181 B=69.4 (Δ=0.895)
+[2026-07-08 17:05:55.797] [DEBUG  ] [operation_logger] [web] ptz: 调整 #17: step=1 R=68 B=33 → R=181.6 G=181.6 B=69.4 (Δ=0.8898)
+[2026-07-08 17:05:58.154] [DEBUG  ] [operation_logger] [web] ptz: 调整 #18: step=1 R=67 B=33 → R=182.4 G=182.4 B=68.4 (Δ=0.8904)
+[2026-07-08 17:06:00.238] [DEBUG  ] [operation_logger] [web] ptz: 调整 #19: step=1 R=66 B=33 → R=183.5 G=183.5 B=69.3 (Δ=0.8746)
+[2026-07-08 17:06:02.460] [DEBUG  ] [operation_logger] [web] ptz: 调整 #20: step=1 R=65 B=33 → R=184.4 G=184.4 B=69.1 (Δ=0.8676)
+[2026-07-08 17:06:04.774] [DEBUG  ] [operation_logger] [web] ptz: 调整 #21: step=1 R=64 B=33 → R=185 G=185 B=68.1 (Δ=0.8689)
+[2026-07-08 17:06:06.872] [DEBUG  ] [operation_logger] [web] ptz: 调整 #22: step=1 R=63 B=33 → R=186.1 G=186.1 B=68.2 (Δ=0.8561)
+[2026-07-08 17:06:08.992] [DEBUG  ] [operation_logger] [web] ptz: 调整 #23: step=1 R=62 B=33 → R=186.9 G=186.9 B=68.1 (Δ=0.8478)
+[2026-07-08 17:06:11.386] [DEBUG  ] [operation_logger] [web] ptz: 调整 #24: step=1 R=61 B=33 → R=187.4 G=187.4 B=66.5 (Δ=0.8506)
+[2026-07-08 17:06:13.734] [DEBUG  ] [operation_logger] [web] ptz: 调整 #25: step=1 R=60 B=33 → R=188.3 G=188.3 B=65.3 (Δ=0.8459)
+[2026-07-08 17:06:15.828] [DEBUG  ] [operation_logger] [web] ptz: 调整 #26: step=1 R=59 B=33 → R=189.6 G=189.6 B=65.9 (Δ=0.8249)
+[2026-07-08 17:06:17.943] [DEBUG  ] [operation_logger] [web] ptz: 调整 #27: step=1 R=58 B=33 → R=190.6 G=190.6 B=65.1 (Δ=0.8163)
+[2026-07-08 17:06:20.105] [DEBUG  ] [operation_logger] [web] ptz: 调整 #28: step=1 R=57 B=33 → R=191.6 G=191.6 B=64.2 (Δ=0.8063)
+[2026-07-08 17:06:22.215] [DEBUG  ] [operation_logger] [web] ptz: 调整 #29: step=1 R=56 B=33 → R=192.7 G=192.7 B=63.2 (Δ=0.7948)
+[2026-07-08 17:06:24.437] [DEBUG  ] [operation_logger] [web] ptz: 调整 #30: step=1 R=55 B=33 → R=193.6 G=193.6 B=62.2 (Δ=0.7855)
+[2026-07-08 17:06:26.538] [DEBUG  ] [operation_logger] [web] ptz: 调整 #31: step=1 R=54 B=33 → R=194.6 G=194.6 B=62 (Δ=0.7708)
+[2026-07-08 17:06:28.696] [DEBUG  ] [operation_logger] [web] ptz: 调整 #32: step=1 R=53 B=33 → R=195.5 G=195.5 B=60.6 (Δ=0.7644)
+[2026-07-08 17:06:30.816] [DEBUG  ] [operation_logger] [web] ptz: 调整 #33: step=1 R=52 B=33 → R=196.3 G=196.3 B=60.1 (Δ=0.7525)
+[2026-07-08 17:06:33.185] [DEBUG  ] [operation_logger] [web] ptz: 调整 #34: step=1 R=51 B=33 → R=196.9 G=196.9 B=58.5 (Δ=0.7502)
+[2026-07-08 17:06:35.310] [DEBUG  ] [operation_logger] [web] ptz: 调整 #35: step=1 R=50 B=33 → R=197.6 G=197.6 B=58 (Δ=0.7338)
+[2026-07-08 17:06:37.401] [DEBUG  ] [operation_logger] [web] ptz: 调整 #36: step=1 R=50 B=34 → R=198 G=198 B=57.4 (Δ=0.7217)
+[2026-07-08 17:06:39.494] [DEBUG  ] [operation_logger] [web] ptz: 调整 #37: step=1 R=49 B=34 → R=197.3 G=197.3 B=65.3 (Δ=0.684)
+[2026-07-08 17:06:41.578] [DEBUG  ] [operation_logger] [web] ptz: 调整 #38: step=1 R=49 B=35 → R=196.5 G=196.5 B=63.7 (Δ=0.6812)
+[2026-07-08 17:06:43.976] [DEBUG  ] [operation_logger] [web] ptz: 调整 #39: step=1 R=49 B=36 → R=195.2 G=195.2 B=69.1 (Δ=0.6608)
+[2026-07-08 17:06:46.120] [DEBUG  ] [operation_logger] [web] ptz: 调整 #40: step=1 R=49 B=37 → R=194.8 G=194.8 B=77.4 (Δ=0.6176)
+[2026-07-08 17:06:48.494] [DEBUG  ] [operation_logger] [web] ptz: 调整 #41: step=1 R=48 B=37 → R=194.2 G=194.2 B=83.6 (Δ=0.5889)
+[2026-07-08 17:06:50.586] [DEBUG  ] [operation_logger] [web] ptz: 调整 #42: step=1 R=48 B=38 → R=194.8 G=194.8 B=84.6 (Δ=0.5683)
+[2026-07-08 17:06:52.785] [DEBUG  ] [operation_logger] [web] ptz: 调整 #43: step=1 R=48 B=39 → R=195.1 G=195.1 B=92.9 (Δ=0.529)
+[2026-07-08 17:06:55.161] [DEBUG  ] [operation_logger] [web] ptz: 调整 #44: step=1 R=48 B=40 → R=194.5 G=194.5 B=98.8 (Δ=0.5038)
+[2026-07-08 17:06:57.268] [DEBUG  ] [operation_logger] [web] ptz: 调整 #45: step=1 R=48 B=41 → R=194.2 G=194.2 B=106.7 (Δ=0.4574)
+[2026-07-08 17:06:59.402] [DEBUG  ] [operation_logger] [web] ptz: 调整 #46: step=1 R=48 B=42 → R=194.4 G=194.4 B=113 (Δ=0.4253)
+[2026-07-08 17:07:01.475] [DEBUG  ] [operation_logger] [web] ptz: 调整 #47: step=1 R=48 B=43 → R=194.4 G=194.4 B=119.5 (Δ=0.3901)
+[2026-07-08 17:07:03.522] [DEBUG  ] [operation_logger] [web] ptz: 调整 #48: step=1 R=48 B=44 → R=194.5 G=194.5 B=126.7 (Δ=0.3521)
+[2026-07-08 17:07:05.620] [DEBUG  ] [operation_logger] [web] ptz: 调整 #49: step=1 R=48 B=45 → R=194.6 G=194.6 B=133.1 (Δ=0.3201)
+[2026-07-08 17:07:07.710] [DEBUG  ] [operation_logger] [web] ptz: 调整 #50: step=1 R=48 B=46 → R=194.4 G=194.4 B=137.6 (Δ=0.2954)
+[2026-07-08 17:07:09.832] [DEBUG  ] [operation_logger] [web] ptz: 调整 #51: step=1 R=48 B=47 → R=194.2 G=194.2 B=142.8 (Δ=0.2662)
+[2026-07-08 17:07:11.909] [DEBUG  ] [operation_logger] [web] ptz: 调整 #52: step=1 R=48 B=48 → R=194 G=194 B=148.3 (Δ=0.2376)
+[2026-07-08 17:07:13.988] [DEBUG  ] [operation_logger] [web] ptz: 调整 #53: step=1 R=48 B=49 → R=193.8 G=193.8 B=152.7 (Δ=0.2145)
+[2026-07-08 17:07:16.086] [DEBUG  ] [operation_logger] [web] ptz: 调整 #54: step=1 R=48 B=50 → R=193.7 G=193.7 B=157.6 (Δ=0.1942)
+[2026-07-08 17:07:18.176] [DEBUG  ] [operation_logger] [web] ptz: 调整 #55: step=1 R=48 B=51 → R=193.5 G=193.5 B=162.1 (Δ=0.17)
+[2026-07-08 17:07:20.536] [DEBUG  ] [operation_logger] [web] ptz: 调整 #56: step=1 R=48 B=52 → R=193.1 G=193.1 B=167.1 (Δ=0.1422)
+[2026-07-08 17:07:22.950] [DEBUG  ] [operation_logger] [web] ptz: 调整 #57: step=1 R=48 B=53 → R=193.1 G=193.1 B=172.7 (Δ=0.1181)
+[2026-07-08 17:07:25.058] [DEBUG  ] [operation_logger] [web] ptz: 调整 #58: step=1 R=48 B=54 → R=192.9 G=192.9 B=179.3 (Δ=0.0899)
+[2026-07-08 17:07:27.173] [DEBUG  ] [operation_logger] [web] ptz: 调整 #59: step=1 R=49 B=54 → R=192.4 G=192.4 B=184.4 (Δ=0.0623)
+[2026-07-08 17:07:29.530] [DEBUG  ] [operation_logger] [web] ptz: 调整 #60: step=1 R=49 B=55 → R=192 G=192 B=183.8 (Δ=0.0497)
+[2026-07-08 17:07:31.613] [DEBUG  ] [operation_logger] [web] ptz: 调整 #61: step=1 R=49 B=55 → R=191.5 G=191.5 B=189.1 (Δ=0.0264)
+[2026-07-08 17:07:33.875] [DEBUG  ] [operation_logger] [web] ptz: 调整 #62: step=1 R=49 B=56 → R=190.6 G=190.6 B=183.3 (Δ=0.0556)
+[2026-07-08 17:07:35.971] [DEBUG  ] [operation_logger] [web] ptz: 调整 #63: step=1 R=49 B=55 → R=190.7 G=190.7 B=192.5 (Δ=0.0235)
+[2026-07-08 17:07:38.060] [DEBUG  ] [operation_logger] [web] ptz: 调整 #64: step=1 R=49 B=55 → R=191.5 G=191.5 B=188.9 (Δ=0.0265)
+[2026-07-08 17:07:40.218] [DEBUG  ] [operation_logger] [web] ptz: 调整 #65: step=1 R=49 B=56 → R=190.4 G=190.4 B=182.9 (Δ=0.0584)
+[2026-07-08 17:07:42.335] [DEBUG  ] [operation_logger] [web] ptz: 调整 #66: step=1 R=49 B=56 → R=190.5 G=190.5 B=192.1 (Δ=0.0232)
+[2026-07-08 17:07:44.466] [DEBUG  ] [operation_logger] [web] ptz: 调整 #67: step=1 R=48 B=56 → R=190.1 G=190.1 B=187.2 (Δ=0.0313)
+[2026-07-08 17:07:46.589] [DEBUG  ] [operation_logger] [web] ptz: 调整 #68: step=1 R=49 B=56 → R=191.6 G=191.6 B=192.2 (Δ=0.0315)
+[2026-07-08 17:07:48.682] [DEBUG  ] [operation_logger] [web] ptz: 调整 #69: step=1 R=49 B=56 → R=190.9 G=190.9 B=192.5 (Δ=0.0217)
+[2026-07-08 17:07:51.023] [DEBUG  ] [operation_logger] [web] ptz: 调整 #70: step=1 R=49 B=57 → R=190.2 G=190.2 B=186.9 (Δ=0.0365)
+[2026-07-08 17:07:53.121] [DEBUG  ] [operation_logger] [web] ptz: 调整 #71: step=1 R=49 B=56 → R=190.3 G=190.3 B=195.9 (Δ=0.046)
+[2026-07-08 17:07:55.240] [DEBUG  ] [operation_logger] [web] ptz: 调整 #72: step=1 R=49 B=56 → R=190.8 G=190.8 B=192.2 (Δ=0.0208)
+[2026-07-08 17:07:57.401] [DEBUG  ] [operation_logger] [web] ptz: 调整 #73: step=1 R=48 B=56 → R=190.3 G=190.3 B=187.2 (Δ=0.0336)
+[2026-07-08 17:07:59.517] [DEBUG  ] [operation_logger] [web] ptz: 调整 #74: step=1 R=49 B=56 → R=191.6 G=191.6 B=192.1 (Δ=0.0297)
+[2026-07-08 17:08:01.590] [DEBUG  ] [operation_logger] [web] ptz: 调整 #75: done R=49 B=56 → R=190.9 G=190.9 B=192.4 (Δ=0.0208)
+[2026-07-08 17:08:04.391] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=49 B=56 (75步) ──
+[2026-07-08 17:08:04.416] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 17:08:17.818] [INFO   ] [operation_logger] [web] ptz: 最大增益: 37
+[2026-07-08 17:08:18.150] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": null, "gain_limit": 37}
+[2026-07-08 17:08:21.278] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 30}}
+[2026-07-08 17:08:21.290] [INFO   ] [operation_logger] [web] ptz: 亮度: 30
+[2026-07-08 17:08:23.007] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 17:08:23.016] [INFO   ] [operation_logger] [web] ptz: 曝光: 局部
+[2026-07-08 17:08:27.543] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-08 17:08:29.230] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1359~2352, Y=536~1626, 共1082370像素
+[2026-07-08 17:08:29.232] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=52.7 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-08 17:08:31.175] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=52.34 (0.2s) 采样(best=52.7,方向=近)
+[2026-07-08 17:08:33.144] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=50.65 (0.2s) 采样(best=52.7,方向=近)
+[2026-07-08 17:08:35.150] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=50.61 (0.2s) 样条峰值=52.7@pos=0.28,回退3步
+[2026-07-08 17:08:37.112] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=51.96 (0.2s) 逼近(剩余2步,峰值=52.7)
+[2026-07-08 17:08:39.076] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=53.03 (0.2s) 逼近(剩余1步,峰值=52.7)
+[2026-07-08 17:08:41.036] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=51.05 (0.1s) 粗逼近完成(best2=53.0),开始精逼近(0.1s)
+[2026-07-08 17:08:42.939] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: done stop 反差=58.11 (0s) 对焦成功(best3=58.1,best2=53.0,best1=52.7)
+[2026-07-08 17:08:43.185] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=58.35 (8步) ──
+[2026-07-08 17:08:43.191] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 17:08:53.314] [INFO   ] [operation_logger] [web] ptz: ── 亮度迭代开始 ──
+[2026-07-08 17:08:54.003] [INFO   ] [operation_logger] [web] ptz: 亮度开始, X=1179~2532, Y=363~1816, 共1965909像素
+[2026-07-08 17:08:54.006] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #1: 快门升档 1/3500 快门=1/3500 光圈=F9.6 增益=32 亮度=74.8/50
+[2026-07-08 17:08:56.114] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #2: 快门升档 1/6000 快门=1/6000 光圈=F9.6 增益=32 亮度=66.3/50
+[2026-07-08 17:08:58.278] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #3: 快门升档 1/10000 快门=1/10000 光圈=F9.6 增益=32 亮度=55.7/50
+[2026-07-08 17:09:00.431] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #4: 快门降档 1/6000 快门=1/6000 光圈=F9.6 增益=32 亮度=46.1/50
+[2026-07-08 17:09:02.545] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #5: 光圈收小 F11.0 快门=1/10000 光圈=F11.0 增益=32 亮度=57.1/50
+[2026-07-08 17:09:04.968] [DEBUG  ] [operation_logger] [web] ptz: 亮度 #6: 亮度达标 50.2≈50.0 快门=1/10000 光圈=F11.0 增益=32 亮度=50.2/50
+[2026-07-08 17:09:04.976] [INFO   ] [operation_logger] [web] ptz: ── 亮度完成: 亮度=50.2 快门=1/10000 光圈=F11.0 增益=32 (6步) ──
+[2026-07-08 17:09:04.979] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 17:12:39.770] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-08 17:12:41.420] [INFO   ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=97.72 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-08 17:12:43.422] [INFO   ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=69.15 (0.2s) 采样(best=97.7,方向=近)
+[2026-07-08 17:12:45.409] [INFO   ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=62.78 (0.2s) 采样(best=97.7,方向=近)
+[2026-07-08 17:12:47.416] [INFO   ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=50.64 (0.2s) 样条峰值=97.5@pos=0.01,回退3步
+[2026-07-08 17:12:49.411] [INFO   ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=59.17 (0.2s) 逼近(剩余2步,峰值=97.5)
+[2026-07-08 17:12:51.400] [INFO   ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=75.28 (0.2s) 逼近(剩余1步,峰值=97.5)
+[2026-07-08 17:12:53.365] [INFO   ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=65.81 (0.1s) 粗逼近完成(best2=97.5),开始精逼近(0.1s)
+[2026-07-08 17:12:55.241] [INFO   ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=67.45 (0.1s) 精逼近(步1/10,best3=97.5,best2=97.5)
+[2026-07-08 17:12:57.135] [INFO   ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=82.35 (0.1s) 精逼近(步2/10,best3=97.5,best2=97.5)
+[2026-07-08 17:12:59.038] [INFO   ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=82.25 (0.1s) 精逼近(步3/10,best3=97.5,best2=97.5)
+[2026-07-08 17:13:00.882] [INFO   ] [operation_logger] [web] ptz: 对焦 #11: fine focus_far 反差=76.55 (0.1s) 精逼近(步4/10,best3=97.5,best2=97.5)
+[2026-07-08 17:13:02.803] [INFO   ] [operation_logger] [web] ptz: 对焦 #12: fine focus_near 反差=85.29 (0.1s) 精逼近(步5/10,best3=97.5,best2=97.5)
+[2026-07-08 17:13:04.684] [INFO   ] [operation_logger] [web] ptz: 对焦 #13: fine focus_far 反差=96.48 (0.1s) 精逼近(步6/10,best3=97.5,best2=97.5)
+[2026-07-08 17:13:06.591] [INFO   ] [operation_logger] [web] ptz: 对焦 #14: fine focus_near 反差=76.52 (0.1s) 精逼近(步7/10,best3=97.5,best2=97.5)
+[2026-07-08 17:13:08.484] [INFO   ] [operation_logger] [web] ptz: 对焦 #15: fine focus_far 反差=91.54 (0.1s) 精逼近(步8/10,best3=97.5,best2=97.5)
+[2026-07-08 17:13:10.322] [INFO   ] [operation_logger] [web] ptz: 对焦 #16: fine focus_near 反差=93.91 (0.1s) 精逼近(步9/10,best3=97.5,best2=97.5)
+[2026-07-08 17:13:12.192] [INFO   ] [operation_logger] [web] ptz: 对焦 #17: scan focus_far 反差=95.25 (0.2s) 精逼近未达标(best3=0.0≤best2=0.0),全流程重启(尝试2/3)
+[2026-07-08 17:13:14.187] [INFO   ] [operation_logger] [web] ptz: 对焦 #18: scan focus_far 反差=105.57 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-08 17:13:16.151] [INFO   ] [operation_logger] [web] ptz: 对焦 #19: scan focus_far 反差=74.17 (0.2s) 采样(best=105.6,方向=远)
+[2026-07-08 17:13:18.146] [INFO   ] [operation_logger] [web] ptz: 对焦 #20: scan focus_far 反差=47.74 (0.2s) 采样(best=105.6,方向=远)
+[2026-07-08 17:13:20.152] [INFO   ] [operation_logger] [web] ptz: 对焦 #21: approach focus_near 反差=36.65 (0.2s) 样条峰值=105.4@pos=0.01,回退3步
+[2026-07-08 17:13:22.111] [INFO   ] [operation_logger] [web] ptz: 对焦 #22: approach focus_near 反差=42.46 (0.2s) 逼近(剩余2步,峰值=105.4)
+[2026-07-08 17:13:24.085] [INFO   ] [operation_logger] [web] ptz: 对焦 #23: approach focus_near 反差=61.77 (0.2s) 逼近(剩余1步,峰值=105.4)
+[2026-07-08 17:13:26.028] [INFO   ] [operation_logger] [web] ptz: 对焦 #24: fine focus_near 反差=71.22 (0.1s) 粗逼近完成(best2=105.4),开始精逼近(0.1s)
+[2026-07-08 17:13:27.924] [INFO   ] [operation_logger] [web] ptz: 对焦 #25: fine focus_far 反差=94.63 (0.1s) 精逼近(步1/10,best3=105.4,best2=105.4)
+[2026-07-08 17:13:29.783] [INFO   ] [operation_logger] [web] ptz: 对焦 #26: fine focus_near 反差=92.23 (0.1s) 精逼近(步2/10,best3=105.4,best2=105.4)
+[2026-07-08 17:13:31.629] [INFO   ] [operation_logger] [web] ptz: 对焦 #27: fine focus_far 反差=74.28 (0.1s) 精逼近(步3/10,best3=105.4,best2=105.4)
+[2026-07-08 17:13:33.501] [INFO   ] [operation_logger] [web] ptz: 对焦 #28: fine focus_near 反差=96.14 (0.1s) 精逼近(步4/10,best3=105.4,best2=105.4)
+[2026-07-08 17:13:35.345] [INFO   ] [operation_logger] [web] ptz: 对焦 #29: fine focus_far 反差=74.54 (0.1s) 精逼近(步5/10,best3=105.4,best2=105.4)
+[2026-07-08 17:13:37.220] [INFO   ] [operation_logger] [web] ptz: 对焦 #30: fine focus_near 反差=89.55 (0.1s) 精逼近(步6/10,best3=105.4,best2=105.4)
+[2026-07-08 17:13:39.112] [INFO   ] [operation_logger] [web] ptz: 对焦 #31: fine focus_far 反差=81.87 (0.1s) 精逼近(步7/10,best3=105.4,best2=105.4)
+[2026-07-08 17:13:41.017] [INFO   ] [operation_logger] [web] ptz: 对焦 #32: fine focus_near 反差=76.92 (0.1s) 精逼近(步8/10,best3=105.4,best2=105.4)
+[2026-07-08 17:13:42.936] [INFO   ] [operation_logger] [web] ptz: 对焦 #33: done stop 反差=109.7 (0s) 对焦成功(best3=109.7,best2=105.4,best1=105.6)
+[2026-07-08 17:13:43.108] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成 (33步) ──

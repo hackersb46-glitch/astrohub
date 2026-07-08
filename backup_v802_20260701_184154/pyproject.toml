@@ -1,0 +1,10 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+    "e2e: end-to-end tests (may require hardware)",
+    "integration: integration tests (require running servers)",
+    "slow: slow running tests (>10s)",
+    "ascom: ASCOM-specific tests (require Windows COM)",
+]
+asyncio_mode = "auto"

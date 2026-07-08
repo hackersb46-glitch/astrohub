@@ -1,0 +1,16 @@
+with open('astrohub/src/web/includes/console.html', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+print('restoreSettings函数定义:', 'function restoreSettings(' in content)
+print('restoreSettings调用:', 'restoreSettings(deviceIp)' in content)
+print('setExposureMode调用:', 'setExposureMode(s.' in content)
+print('setShutterSpeed调用:', 'setShutterSpeed(s.' in content)
+print('setIris调用:', 'setIris(s.' in content)
+print('setWhiteBalanceGain调用:', 'setWhiteBalanceGain(' in content)
+print('setNoiseReduce调用:', 'setNoiseReduce(' in content)
+print('setSharpness调用:', 'setSharpness(s.' in content)
+print('apiPut image/settings:', "apiPut('/api/v1/ptz/' + deviceIp + '/image/settings'" in content)
+print('typo存在:', "dnrTemporal');n" in content)
+print('updateShutterIrisState:', 'updateShutterIrisState()' in content)
+lines = content.count('\n')
+print(f'文件行数: {lines}')

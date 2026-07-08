@@ -1,0 +1,189 @@
+{
+  "generatedBy": "openclaw-plugin-model-catalog-v1",
+  "providers": {
+    "ollama-cloud": {
+      "baseUrl": "https://ollama.com",
+      "models": [
+        {
+          "id": "glm-5.1:cloud",
+          "name": "glm-5.1:cloud",
+          "api": "ollama",
+          "baseUrl": "https://ollama.com",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "compat": {
+            "supportsUsageInStreaming": true,
+            "supportsTools": true
+          }
+        },
+        {
+          "id": "kimi-k2.5:cloud",
+          "name": "kimi-k2.5:cloud",
+          "api": "ollama",
+          "baseUrl": "https://ollama.com",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "compat": {
+            "supportsUsageInStreaming": true,
+            "supportsTools": true
+          }
+        },
+        {
+          "id": "minimax-m2.7:cloud",
+          "name": "minimax-m2.7:cloud",
+          "api": "ollama",
+          "baseUrl": "https://ollama.com",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "compat": {
+            "supportsUsageInStreaming": true,
+            "supportsTools": true
+          }
+        }
+      ],
+      "api": "ollama",
+      "apiKey": "OLLAMA_API_KEY"
+    },
+    "ollama": {
+      "baseUrl": "http://127.0.0.1:11434",
+      "models": [
+        {
+          "id": "qwen-test:latest",
+          "name": "qwen-test:latest",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 262144,
+          "maxTokens": 8192,
+          "compat": {
+            "supportsTools": true,
+            "supportsUsageInStreaming": true
+          }
+        },
+        {
+          "id": "MFDoom/deepseek-r1-tool-calling:14b",
+          "name": "MFDoom/deepseek-r1-tool-calling:14b",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 131072,
+          "maxTokens": 8192,
+          "compat": {
+            "supportsTools": true,
+            "supportsUsageInStreaming": true
+          }
+        },
+        {
+          "id": "qwen3.5:latest",
+          "name": "qwen3.5:latest",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 262144,
+          "maxTokens": 8192,
+          "compat": {
+            "supportsTools": true,
+            "supportsUsageInStreaming": true
+          }
+        },
+        {
+          "id": "frob/qwen3.5-instruct:latest",
+          "name": "frob/qwen3.5-instruct:latest",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 262144,
+          "maxTokens": 8192,
+          "compat": {
+            "supportsTools": true,
+            "supportsUsageInStreaming": true
+          }
+        },
+        {
+          "id": "qwen3.5:9b",
+          "name": "qwen3.5:9b",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 262144,
+          "maxTokens": 8192,
+          "compat": {
+            "supportsTools": true,
+            "supportsUsageInStreaming": true
+          }
+        }
+      ],
+      "apiKey": "OLLAMA_API_KEY",
+      "api": "ollama"
+    }
+  }
+}

@@ -10,8 +10,8 @@ from enum import Enum
 from pathlib import Path
 
 # === 版本与作者 ===
-VERSION = "v7.40"
-VERSION_NUM = "7.17"
+VERSION = "v8.73"
+VERSION_NUM = "8.73"
 AUTHOR = "雅痞张@南方天文"
 PROJECT_NAME = "MAIN"
 

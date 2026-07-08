@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Runtime data
+data/
+log/
+logs/
+*.pid
+*.log
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+test_results/
+
+# Screenshots
+*.png
+*.jpg
+*.jpeg
+
+# Backup
+backup_*/
+*.bak
+
+# Temp
+*.tmp
+*.temp
+temp*/
+stack/
+
+# Config with sensitive data
+config/ptz_config.json
+config/registry.json

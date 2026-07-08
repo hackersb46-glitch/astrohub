@@ -4,6 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AstroHub</title>
+    <!-- JSPlugin URL 解析不支持 localhost,必须用 IP -->
+    <script>
+    (function(){
+        if (location.hostname === 'localhost') {
+            var port = location.port || (location.protocol === 'https:' ? '443' : '80');
+            var newHost = '127.0.0.1';
+            // 尝试获取本机 IP,失败则用 127.0.0.1
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/v1/localhost', false); // 同步请求
+            try {
+                xhr.send();
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data.success && data.data && data.data.local_ip) {
+                        newHost = data.data.local_ip;
+                    }
+                }
+            } catch(e) {}
+            location.replace(location.protocol + '//' + newHost + ':' + port + location.pathname + location.search + location.hash);
+        }
+    })();
+    </script>
+    <!-- WASM SDK: 严格复用官方 WebSDK_noPlugin 方式 -->
+    <script src="/static/websdk/jsPlugin/jquery.min.js"></script>
+    <script src="/static/websdk/encryption/crypto-3.1.2.min.js"></script>
+    <script src="/static/websdk/encryption/cryptico.min.js"></script>
+    <script src="/static/websdk/webVideoCtrl.js"></script>
+    <script src="/static/js/wasm-player.js"></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: -apple-system, 'Segoe UI', sans-serif; background:#0a0e17; color:#e0e6f0; min-height:100vh; }
@@ -17,6 +45,7 @@
         .status-dot.green { background:#3fb950; box-shadow:0 0 6px #3fb950; }
         .status-dot.yellow { background:#d29922; box-shadow:0 0 6px #d29922; }
         .status-dot.red { background:#f85149; box-shadow:0 0 6px #f85149; }
+        .status-dot.blue { background:#58a6ff; box-shadow:0 0 6px #58a6ff; }
         /* 开关样式 */
         .switch { position:relative; display:inline-block; width:36px; height:18px; }
         .switch input { opacity:0; width:0; height:0; }
@@ -44,8 +73,8 @@
         .obs-placeholder { color:#6e7681; font-size:13px; padding:20px 0; text-align:center; }
         .obs-actions { margin-top:16px; display:flex; gap:8px; justify-content:flex-end; }
         .main { padding:20px 24px; }
-        .page { display:none; }
-        .page.active { display:block; }
+        .page { position:absolute; top:0; left:0; width:100%; visibility:hidden; opacity:0; pointer-events:none; }
+        .page.active { position:relative; visibility:visible; opacity:1; pointer-events:auto; }
         .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:20px; }
         .card { background:#161b22; border:1px solid #21262d; border-radius:10px; padding:16px; transition:border-color 0.2s; }
         .card:hover { border-color:#30363d; }
@@ -60,12 +89,10 @@
         .badge { padding:2px 8px; border-radius:12px; font-size:12px; font-weight:500; }
         .badge.online { background:rgba(63,185,80,0.15); color:#3fb950; }
         .badge.offline { background:rgba(248,81,73,0.15); color:#f85149; }
-        .badge.sadp { background:rgba(88,166,255,0.15); color:#58a6ff; }
-        .badge.manual { background:rgba(240,136,62,0.15); color:#f0883e; }
         .badge.yes { background:rgba(63,185,80,0.15); color:#3fb950; }
         .badge.no { background:rgba(248,81,73,0.15); color:#f85149; }
-        .ptz-controls { display:grid; grid-template-columns:repeat(3, 80px); gap:8px; justify-content:center; margin:20px 0; }
-        .ptz-btn { width:80px; height:80px; border:1px solid #30363d; border-radius:10px; background:#161b22; color:#e0e6f0; font-size:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+        .ptz-controls { display:grid; grid-template-columns:repeat(3, 48px); gap:5px; justify-content:center; margin:6px 0; }
+        .ptz-btn { width:48px; height:48px; border:1px solid #30363d; border-radius:8px; background:#161b22; color:#e0e6f0; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
         .ptz-btn:hover { background:#238636; border-color:#238636; }
         .ptz-btn.center { background:#21262d; cursor:default; }
         .ptz-btn.center:hover { background:#21262d; transform:none; }
@@ -120,11 +147,16 @@
         .toast.info { background:#1a3a52; border:1px solid #58a6ff; color:#58a6ff; }
         .toast.warning { background:#4a3a1a; border:1px solid #d29922; color:#d29922; }
         @keyframes slideIn { from { transform:translateX(100%); opacity:0; } to { transform:translateX(0); opacity:1; } }
-        /* Modal */
-        .modal-backdrop { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9000; display:flex; align-items:center; justify-content:center; }
-        .modal { background:#161b22; border:1px solid #30363d; border-radius:12px; padding:24px; width:400px; max-width:90vw; }
-        .modal h3 { margin-bottom:16px; font-size:18px; }
-        .modal .btn-group { justify-content:flex-end; margin-top:20px; }
+        /* Unified Modal (v7.117) */
+        .astro-modal-backdrop { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.65); z-index:10000; display:flex; align-items:center; justify-content:center; }
+        .astro-modal { background:#1a1e2e; border:1px solid #30363d; border-radius:12px; padding:24px; min-width:320px; max-width:480px; box-shadow:0 8px 32px rgba(0,0,0,0.6); }
+        .astro-modal-title { margin:0 0 16px 0; font-size:18px; font-weight:600; }
+        .astro-modal-body { margin:0 0 20px 0; color:#e0e6f0; line-height:1.6; font-size:14px; }
+        .astro-modal-actions { display:flex; gap:12px; justify-content:flex-end; }
+        .astro-modal-field { margin-bottom:14px; }
+        .astro-modal-field label { display:block; margin-bottom:6px; color:#8b949e; font-size:13px; }
+        .astro-modal-field input { width:100%; padding:10px; background:#0d1117; border:1px solid #30363d; border-radius:6px; color:#e0e6f0; font-size:14px; box-sizing:border-box; }
+        .astro-modal-field input:focus { outline:none; border-color:#58a6ff; }
         /* Loading spinner */
         .spinner { display:inline-block; width:16px; height:16px; border:2px solid #30363d; border-top-color:#58a6ff; border-radius:50%; animation:spin 0.8s linear infinite; }
         @keyframes spin { to { transform:rotate(360deg); } }
@@ -143,9 +175,24 @@
         @media (max-width:768px) { .grid { grid-template-columns:1fr 1fr; } .header { flex-direction:column; gap:8px; } .nav { overflow-x:auto; } .console-layout { flex-direction:column !important; } .console-left, .console-center, .console-right { width:100% !important; } }
         /* Console page: left-right layout (SPEC: left=joystick, right=display) */
         .console-layout { display:flex; gap:20px; align-items:flex-start; }
-        .console-left { flex:0 0 320px; display:flex; flex-direction:column; }
+        .console-left { flex:0 0 320px; display:flex; flex-direction:column; min-width:0; overflow:hidden; }
         .console-center { flex:1; min-width:0; display:flex; flex-direction:column; }
         .console-right { flex:0 0 25%; max-width:300px; display:flex; flex-direction:column; }
+        /* WASM 播放器容器: 强制子元素填满, 保持 16:9 */
+        #divPlugin { width:100%; aspect-ratio:16/9; display:block; overflow:hidden; }
+        #divPlugin .parent-wnd { width:100% !important; height:100% !important; }
+        #divPlugin .parent-wnd > div { width:100% !important; height:100% !important; border:none !important; }
+        #divPlugin .video-container { width:100% !important; height:100% !important; }
+        #divPlugin canvas.play-window { width:100% !important; height:100% !important; }
+        /* 隐藏滚动条(鼠标滚轮仍可滚动) */
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        /* v8.43: 三段式开关 */
+        .triple-switch { display:flex; width:100%; border-radius:4px; overflow:hidden; }
+        .ts-btn { flex:1; padding:3px 0; background:#0d1117; border:1px solid #30363d; color:#8b949e; font-size:10px; cursor:pointer; transition:all 0.15s; text-align:center; }
+        .ts-btn:not(:last-child) { border-right:none; }
+        .ts-btn:hover { background:#161b22; color:#e0e6f0; }
+        .ts-btn.active { background:#238636; color:#fff; border-color:#238636; }
     </style>
 </head>
 <body>
@@ -153,7 +200,8 @@
         <div class="logo">Astro<span>Hub</span></div>
         <div class="status-bar">
             <div class="status-item"><span class="status-dot red" id="wsDot"></span><span id="wsStatus">ISAPI: 未连接</span></div>
-            <div class="status-item"><span class="status-dot red" id="wasmDot"></span><span id="wasmStatus">视频: 未连接</span></div>
+            <div class="status-item"><span class="status-dot red" id="mediaInputDot"></span><span id="mediaInputStatus">媒体输入: 等待连接</span></div>
+            <div class="status-item"><span class="status-dot" id="mediaOutputDot" style="background:#30363d;box-shadow:none"></span><span id="mediaOutputStatus">未录制</span></div>
             <div class="status-item" id="clock"></div>
             <!-- 快速连接开关 -->
             <div class="status-item">
@@ -165,7 +213,7 @@
             </div>
             <!-- 重启按钮 -->
             <button class="btn btn-secondary btn-sm" onclick="confirmRestart()" style="padding:2px 8px">重启</button>
-            <span class="version">v7.12</span>
+            <span class="version" id="version-display">...</span>
         </div>
     </div>
     <div class="nav">
@@ -176,6 +224,7 @@
         <!-- Advanced Features: 校准 功能测试 限位测试 速度测试 推流/存储 -->
         <button class="nav-btn" data-page="advanced">高级功能</button>
         <button class="nav-btn" data-page="replay">回放</button>
+        <button class="nav-btn" data-page="settings">设置</button>
     </div>
     <div class="main">
         <!-- ==================== 仪表盘 ==================== -->
@@ -187,30 +236,125 @@
         {% include "includes/observation.html" %}
         {% include "includes/advanced.html" %}
         {% include "includes/replay.html" %}
+        <!-- ==================== 设置 ==================== -->
+        <div class="page" id="page-settings">
+            <div style="max-width:900px;margin:0 auto;padding:20px">
+                <h2 style="color:#e0e6f0;margin-bottom:20px"></h2>
+                <div style="display:flex;gap:16px;flex-wrap:wrap">
+                    <!-- 存储路径 -->
+                    <div style="flex:1;min-width:380px">
+                        <div class="collapsible-section" id="storageSettingsSection" style="margin-bottom:16px">
+                            <div class="collapsible-header" onclick="toggleSection('storageSettingsSection')">
+                                <h3 style="font-size:15px;color:#58a6ff;margin:0">💾 存储路径</h3>
+                                <span class="collapse-icon">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div style="display:flex;flex-direction:column;gap:12px">
+                                    <div>
+                                        <label style="color:#8b949e;font-size:13px;display:block;margin-bottom:4px">录制存储路径(截图+录像统一)</label>
+                                        <div style="display:flex;gap:8px">
+                                            <input type="text" id="settingRecordPath" style="flex:1;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px" placeholder="data/records">
+                                            <button class="btn btn-primary btn-sm" onclick="selectFolder('settingRecordPath')">浏览</button>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top:8px">
+                                        <span id="settingsSaveStatus" style="font-size:13px;color:#3fb950"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 配置路径 -->
+                    <div style="flex:1;min-width:380px">
+                        <div class="collapsible-section" id="configPathSection" style="margin-bottom:16px">
+                            <div class="collapsible-header" onclick="toggleSection('configPathSection')">
+                                <h3 style="font-size:15px;color:#58a6ff;margin:0">📁 配置路径</h3>
+                                <span class="collapse-icon">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div style="display:flex;flex-direction:column;gap:8px">
+                                    <div>
+                                        <label style="color:#8b949e;font-size:13px;display:block;margin-bottom:4px">本机配置</label>
+                                        <div style="display:flex;gap:8px">
+                                            <input type="text" id="settingLocalConfig" style="flex:1;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px" readonly>
+                                            <button class="btn btn-primary btn-sm" onclick="selectFolder('settingLocalConfig')">浏览</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label style="color:#8b949e;font-size:13px;display:block;margin-bottom:4px">设备配置</label>
+                                        <div style="display:flex;gap:8px">
+                                            <input type="text" id="settingDeviceConfig" style="flex:1;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px" readonly>
+                                            <button class="btn btn-primary btn-sm" onclick="selectFolder('settingDeviceConfig')">浏览</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label style="color:#8b949e;font-size:13px;display:block;margin-bottom:4px">测试数据</label>
+                                        <div style="display:flex;gap:8px">
+                                            <input type="text" id="settingTestData" style="flex:1;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px" readonly>
+                                            <button class="btn btn-primary btn-sm" onclick="selectFolder('settingTestData')">浏览</button>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top:8px">
+                                        <span id="configSaveStatus" style="font-size:13px;color:#3fb950"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 扩展路径 -->
+                <div class="collapsible-section" id="extPathSection" style="margin-bottom:16px">
+                    <div class="collapsible-header" onclick="toggleSection('extPathSection')">
+                        <h3 style="font-size:15px;color:#58a6ff;margin:0">🔌 扩展路径</h3>
+                        <span class="collapse-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <div style="display:flex;gap:16px;flex-wrap:wrap">
+                            <div style="flex:1;min-width:380px">
+                                <div style="display:flex;flex-direction:column;gap:8px">
+                                    <div>
+                                        <label style="color:#8b949e;font-size:13px;display:block;margin-bottom:4px">SDK</label>
+                                        <div style="display:flex;gap:8px">
+                                            <input type="text" id="settingSdkPath" style="flex:1;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px" placeholder="ref/HIK SDK/...">
+                                            <button class="btn btn-primary btn-sm" onclick="selectFolder('settingSdkPath')">浏览</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label style="color:#8b949e;font-size:13px;display:block;margin-bottom:4px">ASTAP 天文解析</label>
+                                        <div style="display:flex;gap:8px">
+                                            <input type="text" id="settingAstapPath" style="flex:1;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px" placeholder="C:\Program Files\astap\astap.exe">
+                                            <button class="btn btn-primary btn-sm" onclick="selectFile('settingAstapPath')">浏览</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="flex:1;min-width:380px">
+                                <div style="display:flex;flex-direction:column;gap:8px">
+                                    <div>
+                                        <label style="color:#8b949e;font-size:13px;display:block;margin-bottom:4px">OBS Studio</label>
+                                        <div style="display:flex;gap:8px">
+                                            <input type="text" id="settingObsPath" style="flex:1;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px" placeholder="C:\Program Files\obs-studio\bin\64bit\obs64.exe">
+                                            <button class="btn btn-primary btn-sm" onclick="selectFile('settingObsPath')">浏览</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px">
+                            <span id="extSaveStatus" style="font-size:13px;color:#3fb950"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Toast 容器 -->
     <div class="toast-container" id="toastContainer"></div>
     <!-- Modal 容器 -->
     <div id="modalContainer"></div>
-    <!-- WASM SDK Plugin Container is in console.html -->
     <script>
         console.log("[MAIN SCRIPT] Starting script execution");
-        // WASM SDK global variables (before IIFE)
-        var g_szDeviceIdentify = '';
-        var g_bLoggedIn = false;
-        var g_bPlaying = false;
-        var g_iRtspPort = 554;
-var g_szDeviceIdentify2 = "";
-var g_bLoggedIn2 = false;
-var g_bPlaying2 = false;
-var g_iRtspPort2 = 554;
-var g_iWndIndex2 = 0;
-var g_iWebSocketPort = 7681;
-var g_iStreamType = 3;  // v7.34: 用户选择的码流类型，默认第三码流
-        var g_iWndIndex = 0;
-var g_iChannelList = [];
-var g_iChannelID = 1;
-        var g_iChannelID = 1;
+        var _loginInProgress = false;  // v7.69: 防止并发登录
 // Global functions
     (function() {
         'use strict';
@@ -245,14 +389,14 @@ var g_iChannelID = 1;
             initNav();
             initPtzSpeed();
             initMouseUp();
-            refreshDevices();
+            loadDevicesQuick();
             // v6.0: 从后端获取连接状态
             restoreConnectionState();
             addLog('info', 'AstroHub 已启动');
             connectWS();
             loadLocalhostInfo();
         }
-        
+
         // v7.15: 加载本机信息
         function loadLocalhostInfo() {
             apiGet('/api/v1/localhost').then(function(result) {
@@ -268,8 +412,8 @@ var g_iChannelID = 1;
                     document.getElementById('localhost-gateway').textContent = info.gateway || '-';
                     window.localhostGateway = info.gateway; // 保存网关供后续使用
                     document.getElementById('localhostCard').style.display = 'block';
-                    
-                    // v7.15: 首次运行，显示提示并重启
+
+                    // v7.15: 首次运行,显示提示并重启
                     if (result.first_run) {
                         showStartupProgress();
                     }
@@ -277,49 +421,96 @@ var g_iChannelID = 1;
             }).catch(function(e) { console.warn('加载本机信息失败:', e); });
         }
         // v7.15: 显示启动进度条
-        
-        // v7.15: 网页级别弹窗
-        window.showAlert = function(message, title) {
-            var alertHtml = '<div id="alertModal" class="modal-overlay" onclick="closeAlert()" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:10000">' +
-                '<div onclick="event.stopPropagation()" style="background:#1a1e2e;padding:24px;border-radius:12px;min-width:300px;max-width:500px;box-shadow:0 4px 20px rgba(0,0,0,0.5)">' +
-                '<h3 style="margin:0 0 16px 0;color:#f0883e">' + (title || '提示') + '</h3>' +
-                '<p style="margin:0 0 20px 0;color:#e0e6f0;line-height:1.6">' + message + '</p>' +
-                '<button class="btn btn-primary" onclick="closeAlert()" style="width:100%">确定</button></div></div>';
-            document.body.insertAdjacentHTML('beforeend', alertHtml);
-        };
-        window.closeAlert = function() {
-            var modal = document.getElementById('alertModal');
-            if (modal) modal.remove();
-        };
-        window.showConfirm = function(message, onConfirm, title) {
-            var confirmHtml = '<div id="confirmModal" class="modal-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:10000">' +
-                '<div onclick="event.stopPropagation()" style="background:#1a1e2e;padding:24px;border-radius:12px;min-width:300px;max-width:500px;box-shadow:0 4px 20px rgba(0,0,0,0.5)">' +
-                '<h3 style="margin:0 0 16px 0;color:#58a6ff">' + (title || '确认') + '</h3>' +
-                '<p style="margin:0 0 20px 0;color:#e0e6f0;line-height:1.6">' + message + '</p>' +
-                '<div style="display:flex;gap:12px;justify-content:flex-end">' +
-                '<button class="btn btn-secondary" onclick="closeConfirm(false)">取消</button>' +
-                '<button class="btn btn-primary" onclick="closeConfirm(true)">确定</button></div></div></div>';
-            window._confirmCallback = onConfirm;
-            document.body.insertAdjacentHTML('beforeend', confirmHtml);
-        };
-        window.closeConfirm = function(result) {
-            var modal = document.getElementById('confirmModal');
-            if (modal) modal.remove();
-            if (result && window._confirmCallback) {
-                window._confirmCallback();
-                window._confirmCallback = null;
+
+        // v7.117: 统一弹窗组件 - 替代所有旧弹窗
+        // options: { type:'alert'|'confirm'|'form', title, message, fields, onConfirm, onCancel }
+        window.showModal = function(options) {
+            closeModal();
+            var opts = options || {};
+            var type = opts.type || 'alert';
+            var title = opts.title || (type === 'confirm' ? '确认' : '提示');
+            var titleColor = type === 'confirm' ? '#58a6ff' : '#f0883e';
+            var bodyHtml = '';
+
+            if (type === 'form' && opts.fields) {
+                opts.fields.forEach(function(f) {
+                    bodyHtml += '<div class="astro-modal-field"><label>' + (f.label || '') + '</label>' +
+                        '<input type="' + (f.type || 'text') + '" id="astroModalField_' + (f.id || '') + '"' +
+                        ' value="' + (f.value || '') + '" placeholder="' + (f.placeholder || '') + '"' +
+                        (f.required ? ' required' : '') + '></div>';
+                });
+            } else if (opts.message) {
+                bodyHtml = '<p class="astro-modal-body">' + opts.message + '</p>';
+            }
+
+            var actionsHtml = '';
+            if (type === 'confirm' || type === 'form') {
+                actionsHtml = '<button class="btn btn-secondary" onclick="closeModal(false)">取消</button>' +
+                    '<button class="btn btn-primary" onclick="closeModal(true)">确定</button>';
+            } else {
+                actionsHtml = '<button class="btn btn-primary" onclick="closeModal(true)" style="width:100%">确定</button>';
+            }
+
+            var html = '<div id="astroModal" class="astro-modal-backdrop">' +
+                '<div class="astro-modal">' +
+                '<h3 class="astro-modal-title" style="color:' + titleColor + '">' + title + '</h3>' +
+                bodyHtml +
+                '<div class="astro-modal-actions">' + actionsHtml + '</div>' +
+                '</div></div>';
+            document.body.insertAdjacentHTML('beforeend', html);
+            window._modalCallback = opts.onConfirm || null;
+            window._modalType = type;
+
+            // ESC 关闭
+            window._modalEscHandler = function(e) { if (e.key === 'Escape') closeModal(false); };
+            document.addEventListener('keydown', window._modalEscHandler);
+
+            // 聚焦第一个输入框
+            if (type === 'form') {
+                setTimeout(function() {
+                    var firstInput = document.querySelector('#astroModal input');
+                    if (firstInput) firstInput.focus();
+                }, 100);
             }
         };
-        
+        window.closeModal = function(result) {
+            var modal = document.getElementById('astroModal');
+            if (modal) modal.remove();
+            if (window._modalEscHandler) {
+                document.removeEventListener('keydown', window._modalEscHandler);
+                window._modalEscHandler = null;
+            }
+            if (result && window._modalCallback) {
+                if (window._modalType === 'form') {
+                    var data = {};
+                    var inputs = document.querySelectorAll('#astroModal [id^="astroModalField_"]');
+                    inputs.forEach(function(el) {
+                        var key = el.id.replace('astroModalField_', '');
+                        data[key] = el.value;
+                    });
+                    window._modalCallback(data);
+                } else {
+                    window._modalCallback();
+                }
+            }
+            window._modalCallback = null;
+            window._modalType = null;
+        };
+        // 兼容旧接口
+        window.showAlert = function(message, title) { showModal({ type:'alert', title:title, message:message }); };
+        window.showConfirm = function(message, onConfirm, title) { showModal({ type:'confirm', title:title, message:message, onConfirm:onConfirm }); };
+        window.closeAlert = function() { closeModal(false); };
+        window.closeConfirm = function(result) { closeModal(result); };
+
 function showStartupProgress() {
             var progressHtml = '<div id="startupOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999">' +
                 '<div style="text-align:center;color:#e0e6f0">' +
-                '<div style="font-size:24px;margin-bottom:20px">🚀 首次运行，正在收集本机信息...</div>' +
+                '<div style="font-size:24px;margin-bottom:20px">🚀 首次运行,正在收集本机信息...</div>' +
                 '<div class="progress-bar" style="width:300px;height:6px;background:#30363d;border-radius:3px;overflow:hidden">' +
                 '<div id="startupProgress" style="width:0%;height:100%;background:linear-gradient(90deg,#58a6ff,#3fb950);transition:width 0.3s"></div></div>' +
                 '<div style="margin-top:16px;font-size:14px;color:#8b949e">完成后将自动重启</div></div></div>';
             document.body.insertAdjacentHTML('beforeend', progressHtml);
-            
+
             // 模拟进度
             var progress = 0;
             var interval = setInterval(function() {
@@ -327,7 +518,7 @@ function showStartupProgress() {
                 if (progress > 90) progress = 90;
                 document.getElementById('startupProgress').style.width = progress + '%';
             }, 200);
-            
+
             // 3秒后重启
             setTimeout(function() {
                 clearInterval(interval);
@@ -341,7 +532,7 @@ function showStartupProgress() {
                 }, 500);
             }, 3000);
         }
-        
+
         function refreshLocalhostInfo() {
             apiGet('/api/v1/localhost').then(function(result) {
                 if (result.success && result.data) {
@@ -360,35 +551,37 @@ function showStartupProgress() {
         }
         // v6.0: 从后端恢复连接状态
         function restoreConnectionState() {
-            // v7.12: 初始化 WASM 状态为"未连接"
-            if (window.updateWasmStatus) window.updateWasmStatus('disconnected');
             // v7.12: 初始状态禁用所有控件
             if (window.disableAllControls) window.disableAllControls('请连接设备');
 
             apiGet('/api/v1/ptz/connected').then(function(r) {
                 if (r && r.success && r.connected && r.device) {
                     // v7.12: 已连接状态
-                    window.connectedDevice = r.device;
-                    console.log('[v7.12] 已恢复连接:', r.device.ip);
+                    var device = r.device;
+                    window.connectedDevice = device;
+                    console.log('[v7.12] 已恢复连接:', device.ip);
 
                     // 启用所有控件
                     if (window.enableAllControls) window.enableAllControls();
 
                     // 更新状态显示
-                    if (window.updateDeviceStatus) window.updateDeviceStatus(r.device);
+                    if (window.updateDeviceStatus) window.updateDeviceStatus(device);
 
                     // 加载图像参数
                     if (window.loadDeviceImageParams) {
-                        setTimeout(function() { window.loadDeviceImageParams(r.device.ip); }, 300);
+                        setTimeout(function() { window.loadDeviceImageParams(device.ip); }, 300);
                     }
+
+                    // WASM SDK: 恢复连接时同步登录
+                    if (typeof onDeviceConnected === 'function') onDeviceConnected();
 
                 } else if (r && r.success && !r.connected && r.device) {
                     // v7.12: 未连接但有上次设备 → 自动连接
-                    console.log('[v7.12] 有上次连接设备，自动连接:', r.device.ip);
-                    
+                    console.log('[v7.12] 有上次连接设备,自动连接:', r.device.ip);
+
                     // 更新状态显示
                     if (window.updateDeviceStatus) window.updateDeviceStatus(r.device);
-                    
+
                     // 自动连接
                     if (window.connectDevice) {
                         window.connectDevice(r.device.ip);
@@ -397,10 +590,10 @@ function showStartupProgress() {
                 } else if (r && r.success && !r.connected && !r.device) {
                     // v7.12: 无上次连接设备
                     console.log('[v7.12] 无上次连接设备');
-                    
+
                     // 更新状态显示
                     if (window.updateDeviceStatus) window.updateDeviceStatus(null);
-                    
+
                     // 显示提示
                     setTimeout(function() {
                         showToast('info', '无上次连接设备,请执行发现流程');
@@ -425,24 +618,11 @@ function showStartupProgress() {
                     if (btn.getAttribute('data-page') === 'devices') { refreshDevices(); }
                     if (btn.getAttribute('data-page') === 'console') {
                         refreshPtzDeviceList();
-                        // v6.12: 预渲染 WASM(如果已连接)
-                        if (window.connectedDevice && window.connectedDevice.ip) {
-                            var container = document.getElementById('divPlugin');
-                            if (container && !container.innerHTML.trim()) {
-                                container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#6e7681;font-size:14px">正在加载画面...</div>';
-                            }
-                        }
-                        loadWasmDevices();
-                        // Resize WASM player when console becomes visible
-                        setTimeout(function() {
-                            var container = document.getElementById('divPlugin');
-                            if (container && window.WebVideoCtrl) {
-                                try { WebVideoCtrl.I_Resize(container.offsetWidth, container.offsetHeight); console.log('[WASM] Resized to', container.offsetWidth, container.offsetHeight); } catch(e) { console.warn('Resize error:', e); }
-                            }
-                        }, 100);
-                        // WASM login if already connected
-                        if (window.connectedDevice && window.clickLogin2) {
-                            window.clickLogin2();
+                        // 自动播放:已登录但未播放时开始预览
+                        if (WasmPlayer && WasmPlayer.loggedIn && !WasmPlayer.playing) {
+                            var ch = WasmPlayer.channel || 1;
+                            var st = window._currentStreamType || 3;
+                            wasmStartRealPlay(ch, st, true);
                         }
                     }
                     // v7.36: 高级功能复用主控台视频容器
@@ -453,6 +633,14 @@ function showStartupProgress() {
                         moveVideoToConsole();
                     }
                     if (btn.getAttribute('data-page')) refreshAdvancedDeviceSelectors();
+                    // 设置页面加载路径
+                    if (btn.getAttribute('data-page') === 'settings' && typeof loadStorageSettings === 'function') {
+                        loadStorageSettings();
+                    }
+                    // v7.110: 回放页面初始化
+                    if (btn.getAttribute('data-page') === 'replay' && typeof initReplayPage === 'function') {
+                        initReplayPage();
+                    }
                 });
             });
         }
@@ -467,12 +655,6 @@ function showStartupProgress() {
                 // 移动视频容器到高级功能
                 advVideoBox.appendChild(videoContainer);
                 console.log('[ADV] Video container moved to advanced page');
-                // Resize WASM
-                setTimeout(function() {
-                    if (window.WebVideoCtrl) {
-                        try { WebVideoCtrl.I_Resize(videoContainer.offsetWidth, videoContainer.offsetHeight); } catch(e) {}
-                    }
-                }, 100);
             }
         }
 
@@ -483,12 +665,6 @@ function showStartupProgress() {
                 // 移动视频容器回主控台
                 consoleVideoWrap.appendChild(videoContainer);
                 console.log('[CONSOLE] Video container moved back to console');
-                // Resize WASM
-                setTimeout(function() {
-                    if (window.WebVideoCtrl) {
-                        try { WebVideoCtrl.I_Resize(videoContainer.offsetWidth, videoContainer.offsetHeight); } catch(e) {}
-                    }
-                }, 100);
             }
         }
 
@@ -570,401 +746,7 @@ function showStartupProgress() {
         window.apiDelete = apiDelete;
         window.apiPut = apiPut;
         // ================================================================
-        //  Function Detection (P4.1-P4.21)
-        // ================================================================
-        function funcDetectRun() {
-            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
-            var deviceIp = window.connectedDevice.ip;
-            var device = window.connectedDevice;
-            var btn = document.getElementById('btnFuncRun');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 探测中...';
-            document.getElementById('funcProgress').style.display = 'block';
-            document.getElementById('funcResultArea').innerHTML = '';
-            addLog('info', '功能探测开始: ' + deviceIp);
-            apiPost('/api/v1/advanced/function/run', {
-                device_ip: deviceIp,
-                username: (device && device.username) || 'admin',
-                password: (device && device.password) || '',
-                port: (device && device.port) || 80
-            }).then(function(resp) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始探测';
-                document.getElementById('funcProgress').style.display = 'none';
-                if (resp && resp.success) {
-                    showToast('success', '功能探测完成');
-                    addLog('success', '功能探测完成: ' + (resp.message || ''));
-                    renderFuncResults(resp.results || {});
-                } else {
-                    showToast('error', resp ? resp.message : '探测失败');
-                    addLog('error', '功能探测失败: ' + (resp ? resp.message : '未知'));
-                }
-            }).catch(function(e) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始探测';
-                document.getElementById('funcProgress').style.display = 'none';
-                showToast('error', '探测异常: ' + e.message);
-            });
-            // Simulate progress (REMOVED - hardcoded fake progress)
-            // Progress bar now: 0% on start → "执行中..." → 100% on real API response
-        }
-        function funcDetectRestore() {
-            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
-            var deviceIp = window.connectedDevice.ip;
-            var btn = document.getElementById('btnFuncRestore');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 恢复中...';
-            apiPost('/api/v1/advanced/function/restore?device_ip=' + deviceIp + '&username=admin&password=&port=80', null).then(function(resp) {
-                btn.disabled = false;
-                btn.innerHTML = '⟳ 恢复默认值';
-                if (resp && resp.success) {
-                    showToast('success', '参数已恢复默认值');
-                } else {
-                    showToast('error', resp ? resp.message : '恢复失败');
-                }
-            }).catch(function(e) {
-                btn.disabled = false;
-                btn.innerHTML = '⟳ 恢复默认值';
-                showToast('error', '恢复异常: ' + e.message);
-            });
-        }
-        function renderFuncResults(results) {
-            var area = document.getElementById('funcResultArea');
-            var html = '<table class="result-table"><thead><tr><th>功能</th><th>支持</th><th>最小值</th><th>最大值</th><th>当前值</th><th>状态</th></tr></thead><tbody>';
-            var keys = Object.keys(results);
-            if (keys.length === 0) {
-                html += '<tr><td colspan="6" style="text-align:center;color:#6e7681">暂无结果</td></tr>';
-            } else {
-                keys.forEach(function(key) {
-                    var item = results[key];
-                    var supported = item.supported ? '<span class="badge yes">✅</span>' : '<span class="badge no">❌</span>';
-                    var status = item.status || '完成';
-                    html += '<tr>';
-                    html += '<td>' + key + '</td>';
-                    html += '<td>' + supported + '</td>';
-                    html += '<td>' + (item.min_value != null ? item.min_value : '--') + '</td>';
-                    html += '<td>' + (item.max_value != null ? item.max_value : '--') + '</td>';
-                    html += '<td>' + (item.current_value != null ? item.current_value : '--') + '</td>';
-                    html += '<td><span class="badge yes">' + status + '</span></td>';
-                    html += '</tr>';
-                });
-            }
-            html += '</tbody></table>';
-            area.innerHTML = html;
-        }
-        // ================================================================
-        //  Limit Test (P6.0-P6.4)
-        // ================================================================
-        function limitTestRun() {
-            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
-            var deviceIp = window.connectedDevice.ip;
-            var device = window.connectedDevice;
-            var btn = document.getElementById('btnLimitRun');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 测试中...';
-            document.getElementById('limitProgress').style.display = 'block';
-            document.getElementById('limitDirection').style.display = 'block';
-            document.getElementById('limitResultArea').innerHTML = '';
-            addLog('info', '限位测试开始: ' + deviceIp);
-            apiPost('/api/v1/advanced/limit/run', {
-                device_ip: deviceIp,
-                username: (device && device.username) || 'admin',
-                password: (device && device.password) || '',
-                port: (device && device.port) || 80
-            }).then(function(resp) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始测试';
-                document.getElementById('limitProgress').style.display = 'none';
-                document.getElementById('limitDirection').style.display = 'none';
-                if (resp && resp.success) {
-                    showToast('success', '限位测试完成');
-                    addLog('success', '限位测试完成: ' + (resp.message || ''));
-                    renderLimitResults(resp.results || {});
-                } else {
-                    showToast('error', resp ? resp.message : '测试失败');
-                    addLog('error', '限位测试失败: ' + (resp ? resp.message : '未知'));
-                }
-            }).catch(function(e) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始测试';
-                document.getElementById('limitProgress').style.display = 'none';
-                document.getElementById('limitDirection').style.display = 'none';
-                showToast('error', '测试异常: ' + e.message);
-            });
-            // Progress bar: real status (no hardcoded simulation)
-            var limitProgText = document.getElementById('limitProgressText');
-            var limitProgBar = document.getElementById('limitProgressBar');
-            var limitDirEl = document.getElementById('limitDirection');
-            if (limitProgText) limitProgText.textContent = '测试中... 等待设备响应';
-            if (limitProgBar) limitProgBar.style.width = '30%';
-            if (limitDirEl) { limitDirEl.textContent = '当前方向: 初始化...'; limitDirEl.style.display = 'block'; }
-            // simulateProgress/simulateDirections REMOVED - hardcoded fake progress
-        }
-        function renderLimitResults(results) {
-            var area = document.getElementById('limitResultArea');
-            if (!results || Object.keys(results).length === 0) {
-                area.innerHTML = '<div class="advanced-status-panel"><p style="color:#6e7681">暂无结果</p></div>';
-                return;
-            }
-            var html = '<div class="advanced-status-panel"><h4>限位测试结果</h4>';
-            // P axis
-            var pLimit = results.pan_range || results.p_limit || [0, 3600];
-            var tLimit = results.tilt_range || results.t_limit || [-200, 900];
-            html += '<div class="status-row"><span class="status-label">P轴限位</span><span class="status-value">' + pLimit[0] + ' ~ ' + pLimit[1] + '</span></div>';
-            html += '<div class="status-row"><span class="status-label">T轴限位</span><span class="status-value">' + tLimit[0] + ' ~ ' + tLimit[1] + '</span></div>';
-            html += '<div class="status-row"><span class="status-label">翻转</span><span class="status-value">' + (results.flip ? '有' : '无') + '</span></div>';
-            html += '<div class="status-row"><span class="status-label">稳定性</span><span class="status-value">' + (results.stable ? '<span class="badge yes">✅ 稳定</span>' : '<span class="badge no">❌ 不稳定</span>') + '</span></div>';
-            if (results.csv_path) {
-                html += '<div class="status-row"><span class="status-label">CSV 路径</span><span class="status-value">' + results.csv_path + '</span></div>';
-            }
-            html += '</div>';
-            area.innerHTML = html;
-        }
-        // ================================================================
-        //  Speed Test (P5.4 + M4 P3)
-        // ================================================================
-        function speedTestRun() {
-            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
-            var deviceIp = window.connectedDevice.ip;
-            var device = window.connectedDevice;
-            var btn = document.getElementById('btnSpeedRun');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 测试中...';
-            document.getElementById('speedProgress').style.display = 'block';
-            document.getElementById('speedResultArea').innerHTML = '';
-            addLog('info', '速度测试开始: ' + deviceIp);
-            apiPost('/api/v1/advanced/speed/run', {
-                device_ip: deviceIp,
-                username: (device && device.username) || 'admin',
-                password: (device && device.password) || '',
-                port: (device && device.port) || 80
-            }).then(function(resp) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始测试';
-                document.getElementById('speedProgress').style.display = 'none';
-                if (resp && resp.success) {
-                    showToast('success', '速度测试完成');
-                    addLog('success', '速度测试完成: ' + (resp.message || ''));
-                    renderSpeedResults(resp.results || {});
-                } else {
-                    showToast('error', resp ? resp.message : '测试失败');
-                    addLog('error', '速度测试失败: ' + (resp ? resp.message : '未知'));
-                }
-            }).catch(function(e) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始测试';
-                document.getElementById('speedProgress').style.display = 'none';
-                showToast('error', '测试异常: ' + e.message);
-            });
-            // Progress bar: real status (no hardcoded speed labels)
-            var speedProgText = document.getElementById('speedProgressText');
-            var speedProgBar = document.getElementById('speedProgressBar');
-            if (speedProgText) speedProgText.textContent = '测试中... 等待设备响应';
-            if (speedProgBar) speedProgBar.style.width = '30%';
-            // REMOVED simulateProgress (was hardcoded: '速度档位 1', '50', '100')
-            // Speed results now display actual values returned from backend
-        }
-        function renderSpeedResults(results) {
-            var area = document.getElementById('speedResultArea');
-            if (!results || Object.keys(results).length === 0) {
-                area.innerHTML = '<div class="advanced-status-panel"><p style="color:#6e7681">暂无结果</p></div>';
-                return;
-            }
-            var html = '<div class="advanced-status-panel"><h4>速度测试结果</h4>';
-            // Speed mapping table
-            var speedMap = results.speed_map || results.speed_mapping || {};
-            var mapKeys = Object.keys(speedMap);
-            if (mapKeys.length > 0) {
-                html += '<table class="result-table" style="margin:12px 0"><thead><tr><th>速度档位</th><th>实际速率 (°/s)</th></tr></thead><tbody>';
-                mapKeys.forEach(function(k) {
-                    html += '<tr><td>' + k + '</td><td>' + speedMap[k] + '</td></tr>';
-                });
-                html += '</tbody></table>';
-            }
-            html += '<div class="status-row"><span class="status-label">拟合曲线 R2</span><span class="status-value">' + (results.r_squared || results.r2 || '--') + '</span></div>';
-            html += '<div class="status-row"><span class="status-label">精度</span><span class="status-value">' + (results.accuracy || '--') + '</span></div>';
-            html += '<div class="status-row"><span class="status-label">通过</span><span class="status-value">' + (results.passed ? '<span class="badge yes">✅</span>' : '<span class="badge no">❌</span>') + '</span></div>';
-            html += '</div>';
-            area.innerHTML = html;
-        }
-        // ================================================================
-        //  Progress Simulation
-        // ================================================================
-        function simulateProgress(textId, barId, totalSteps, labels) {
-            var current = 0;
-            var interval = setInterval(function() {
-                current++;
-                if (current > totalSteps) { clearInterval(interval); return; }
-                var pct = Math.round((current / totalSteps) * 100);
-                var textEl = document.getElementById(textId);
-                var barEl = document.getElementById(barId);
-                if (textEl) textEl.textContent = labels ? labels[current-1] : '处理中... ' + current + '/' + totalSteps;
-                if (barEl) barEl.style.width = pct + '%';
-            }, 2000);
-        }
-        function simulateDirections() {
-            var dirs = ['P+ 移动中...', 'P- 移动中...', 'T+ 移动中...', 'T- 移动中...'];
-            var i = 0;
-            var interval = setInterval(function() {
-                var el = document.getElementById('limitDirection');
-                if (!el) { clearInterval(interval); return; }
-                if (i >= dirs.length) { clearInterval(interval); el.textContent = '测试完成 ✓'; el.style.color = '#3fb950'; return; }
-                el.textContent = '当前方向: ' + dirs[i];
-                i++;
-            }, 3000);
-        }
-        // ================================================================
-        //  Connect Device Page (高级功能 -> 连接设备)
-        // ================================================================
-        function onConnectDeviceChange() {
-            var ip = document.getElementById('advConnectDevice').value;
-            var noDevice = document.getElementById('connectNoDevice');
-            var controlArea = document.getElementById('connectControlArea');
-            var statusSpan = document.getElementById('connectDeviceStatus');
-            if (ip) {
-                var device = allDevices.find(function(d) { return d.ip === ip; });
-                noDevice.style.display = 'none';
-                controlArea.style.display = 'block';
-                statusSpan.textContent = device ? ('已连接: ' + ip) : ip;
-            } else {
-                noDevice.style.display = 'block';
-                controlArea.style.display = 'none';
-                statusSpan.textContent = '';
-            }
-        }
-        // 功能检测(连接设备页面版)
-        function connectFuncDetectRun() {
-            var deviceIp = document.getElementById('advConnectDevice').value;
-            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
-            var device = allDevices.find(function(d) { return d.ip === deviceIp; });
-            var btn = document.getElementById('btnConnectFuncRun');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 探测中...';
-            document.getElementById('connectFuncProgress').style.display = 'block';
-            document.getElementById('connectFuncResultMini').innerHTML = '';
-            addLog('info', '功能检测开始: ' + deviceIp);
-            apiPost('/api/v1/advanced/function/run', {
-                device_ip: deviceIp,
-                username: (device && device.username) || 'admin',
-                password: (device && device.password) || '',
-                port: (device && device.port) || 80
-            }).then(function(resp) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始检测';
-                document.getElementById('connectFuncProgress').style.display = 'none';
-                if (resp && resp.success) {
-                    showToast('success', '功能检测完成');
-                    addLog('success', '功能检测完成: ' + (resp.message || ''));
-                    renderConnectFuncResultMini(resp.results || {});
-                    renderConnectFullResults(resp.results || {}, 'function');
-                } else {
-                    showToast('error', resp ? resp.message : '探测失败');
-                    addLog('error', '功能检测失败: ' + (resp ? resp.message : '未知'));
-                    document.getElementById('connectFuncResultMini').innerHTML = '<span style="color:#f85149;font-size:12px">❌ ' + (resp ? resp.message : '探测失败') + '</span>';
-                }
-            }).catch(function(e) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始检测';
-                document.getElementById('connectFuncProgress').style.display = 'none';
-                showToast('error', '探测异常: ' + e.message);
-            });
-            // REMOVED simulateProgress for connectFuncDetectRun
-        }
-        function renderConnectFuncResultMini(results) {
-            var area = document.getElementById('connectFuncResultMini');
-            var keys = Object.keys(results);
-            var supported = 0, total = keys.length;
-            keys.forEach(function(k) { if (results[k] && results[k].supported) supported++; });
-            area.innerHTML = '<span style="font-size:12px;color:#3fb950">✅ 支持 ' + supported + '/' + total + ' 项功能</span>';
-        }
-        // 限位检测(连接设备页面版)
-        function connectLimitTestRun() {
-            var deviceIp = document.getElementById('advConnectDevice').value;
-            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
-            var device = allDevices.find(function(d) { return d.ip === deviceIp; });
-            var btn = document.getElementById('btnConnectLimitRun');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 测试中...';
-            document.getElementById('connectLimitProgress').style.display = 'block';
-            document.getElementById('connectLimitResultMini').innerHTML = '';
-            addLog('info', '限位检测开始: ' + deviceIp);
-            apiPost('/api/v1/advanced/limit/run', {
-                device_ip: deviceIp,
-                username: (device && device.username) || 'admin',
-                password: (device && device.password) || '',
-                port: (device && device.port) || 80
-            }).then(function(resp) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始检测';
-                document.getElementById('connectLimitProgress').style.display = 'none';
-                if (resp && resp.success) {
-                    showToast('success', '限位检测完成');
-                    addLog('success', '限位检测完成: ' + (resp.message || ''));
-                    renderConnectLimitResultMini(resp.results || {});
-                    renderConnectFullResults(resp.results || {}, 'limit');
-                } else {
-                    showToast('error', resp ? resp.message : '测试失败');
-                    addLog('error', '限位检测失败: ' + (resp ? resp.message : '未知'));
-                    document.getElementById('connectLimitResultMini').innerHTML = '<span style="color:#f85149;font-size:12px">❌ ' + (resp ? resp.message : '测试失败') + '</span>';
-                }
-            }).catch(function(e) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始检测';
-                document.getElementById('connectLimitProgress').style.display = 'none';
-                showToast('error', '测试异常: ' + e.message);
-            });
-            // REMOVED simulateProgress for connectLimitTestRun
-        }
-        function renderConnectLimitResultMini(results) {
-            var area = document.getElementById('connectLimitResultMini');
-            var pLimit = results.pan_range || results.p_limit || [0, 3600];
-            var tLimit = results.tilt_range || results.t_limit || [-200, 900];
-            area.innerHTML = '<span style="font-size:12px;color:#d29922">P: ' + pLimit[0] + '~' + pLimit[1] + ' | T: ' + tLimit[0] + '~' + tLimit[1] + '</span>';
-        }
-        // 速度检测(连接设备页面版)
-        function connectSpeedTestRun() {
-            var deviceIp = document.getElementById('advConnectDevice').value;
-            if (!deviceIp) { showToast('warning', '请先选择设备'); return; }
-            var device = allDevices.find(function(d) { return d.ip === deviceIp; });
-            var btn = document.getElementById('btnConnectSpeedRun');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner" style="display:inline-block"></span> 测试中...';
-            document.getElementById('connectSpeedProgress').style.display = 'block';
-            document.getElementById('connectSpeedResultMini').innerHTML = '';
-            addLog('info', '速度检测开始: ' + deviceIp);
-            apiPost('/api/v1/advanced/speed/run', {
-                device_ip: deviceIp,
-                username: (device && device.username) || 'admin',
-                password: (device && device.password) || '',
-                port: (device && device.port) || 80
-            }).then(function(resp) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始检测';
-                document.getElementById('connectSpeedProgress').style.display = 'none';
-                if (resp && resp.success) {
-                    showToast('success', '速度检测完成');
-                    addLog('success', '速度检测完成: ' + (resp.message || ''));
-                    renderConnectSpeedResultMini(resp.results || {});
-                    renderConnectFullResults(resp.results || {}, 'speed');
-                } else {
-                    showToast('error', resp ? resp.message : '测试失败');
-                    addLog('error', '速度检测失败: ' + (resp ? resp.message : '未知'));
-                    document.getElementById('connectSpeedResultMini').innerHTML = '<span style="color:#f85149;font-size:12px">❌ ' + (resp ? resp.message : '测试失败') + '</span>';
-                }
-            }).catch(function(e) {
-                btn.disabled = false;
-                btn.innerHTML = '▶ 开始检测';
-                document.getElementById('connectSpeedProgress').style.display = 'none';
-                showToast('error', '测试异常: ' + e.message);
-            });
-            // REMOVED simulateProgress for connectSpeedTestRun (was hardcoded: 速度档位 1, 50, 100)
-        }
-        function renderConnectSpeedResultMini(results) {
-            var area = document.getElementById('connectSpeedResultMini');
-            var speedMap = results.speed_map || results.speed_mapping || {};
-            var count = Object.keys(speedMap).length;
-            area.innerHTML = '<span style="font-size:12px;color:#f0883e">✅ 已测试 ' + count + ' 个速度档位</span>';
-        }
+
         // 一键检测(全部)
         var detectionState = { running: false, step: 0, totalSteps: 3, results: {} };
         function startDetection() {
@@ -1097,13 +879,15 @@ function showStartupProgress() {
             else html += '检测结果';
             html += '</h4>';
             if (type === 'function') {
+                var funcData = results.functions || results;
                 html += '<table class="result-table"><thead><tr><th>功能</th><th>支持</th><th>最小值</th><th>最大值</th><th>当前值</th><th>状态</th></tr></thead><tbody>';
-                var keys = Object.keys(results);
+                var keys = Object.keys(funcData);
                 if (keys.length === 0) {
                     html += '<tr><td colspan="6" style="text-align:center;color:#6e7681">暂无结果</td></tr>';
                 } else {
                     keys.forEach(function(key) {
-                        var item = results[key];
+                        var item = funcData[key];
+                        if (!item || typeof item !== 'object' || !item.hasOwnProperty('supported')) return;
                         var supported = item.supported ? '<span class="badge yes">✅</span>' : '<span class="badge no">❌</span>';
                         var status = item.status || '完成';
                         html += '<tr>';
@@ -1118,45 +902,85 @@ function showStartupProgress() {
                 }
                 html += '</tbody></table>';
             } else if (type === 'limit') {
-                var pLimit = results.pan_range || results.p_limit || [0, 3600];
-                var tLimit = results.tilt_range || results.t_limit || [-200, 900];
                 html += '<div class="advanced-status-panel">';
-                html += '<div class="status-row"><span class="status-label">P轴限位</span><span class="status-value">' + pLimit[0] + ' ~ ' + pLimit[1] + '</span></div>';
-                html += '<div class="status-row"><span class="status-label">T轴限位</span><span class="status-value">' + tLimit[0] + ' ~ ' + tLimit[1] + '</span></div>';
-                html += '<div class="status-row"><span class="status-label">翻转</span><span class="status-value">' + (results.flip ? '有' : '无') + '</span></div>';
-                html += '<div class="status-row"><span class="status-label">稳定性</span><span class="status-value">' + (results.stable ? '<span class="badge yes">✅ 稳定</span>' : '<span class="badge no">❌ 不稳定</span>') + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">P轴限位</span><span class="status-value">' + results.pan_min + ' ~ ' + results.pan_max + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">T轴限位</span><span class="status-value">' + results.tilt_min + ' ~ ' + results.tilt_max + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">Z轴限位</span><span class="status-value">' + results.zoom_min + ' ~ ' + results.zoom_max + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">翻转</span><span class="status-value">' + (results.has_flip ? '有' : '无') + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">稳定性</span><span class="status-value">' + (results.stability_check ? '<span class="badge yes">✅ 稳定</span>' : '<span class="badge no">❌ 不稳定</span>') + '</span></div>';
                 if (results.csv_path) html += '<div class="status-row"><span class="status-label">CSV 路径</span><span class="status-value">' + results.csv_path + '</span></div>';
                 html += '</div>';
             } else if (type === 'speed') {
-                var speedMap = results.speed_map || results.speed_mapping || {};
-                var mapKeys = Object.keys(speedMap);
-                if (mapKeys.length > 0) {
-                    html += '<table class="result-table" style="margin:12px 0"><thead><tr><th>速度档位</th><th>实际速率 (°/s)</th></tr></thead><tbody>';
-                    mapKeys.forEach(function(k) {
-                        html += '<tr><td>' + k + '</td><td>' + speedMap[k] + '</td></tr>';
-                    });
-                    html += '</tbody></table>';
+                var byZoom = results.by_zoom || {};
+                if (byZoom && Object.keys(byZoom).length > 0) {
+                    html += _renderSpeedByZoom(byZoom);
                 }
+                var speedMap = results.speed_map || results.speed_mapping || {};
+                html += _renderSpeedTable('📊 总体', speedMap);
+                var panMap = results.pan_speed || {};
+                html += _renderSpeedTable('🔵 Pan轴', panMap);
+                var tiltMap = results.tilt_speed || {};
+                html += _renderSpeedTable('🟠 Tilt轴', tiltMap);
                 html += '<div class="advanced-status-panel">';
-                html += '<div class="status-row"><span class="status-label">拟合曲线 R2</span><span class="status-value">' + (results.r_squared || results.r2 || '--') + '</span></div>';
-                html += '<div class="status-row"><span class="status-label">通过</span><span class="status-value">' + (results.passed ? '<span class="badge yes">✅</span>' : '<span class="badge no">❌</span>') + '</span></div>';
+                html += '<div class="status-row"><span class="status-label">测试总数</span><span class="status-value">' + (results.total_tests || '--') + '</span></div>';
                 html += '</div>';
             }
             html += '</div>';
             // Append rather than replace to show all test results
             area.innerHTML += html;
         }
-        // ================================================================
+        function _renderSpeedTable(title, speedMap) {
+            var keys = Object.keys(speedMap);
+            if (keys.length === 0) return '';
+            var h = '<div style="margin-bottom:12px"><strong style="color:#e0e6f0;font-size:13px">' + title + '</strong>';
+            h += '<table class="result-table" style="margin:6px 0"><thead><tr><th>速度档位</th><th>实际速率 (°/s)</th></tr></thead><tbody>';
+            keys.forEach(function(k) {
+                h += '<tr><td>' + k + '</td><td>' + speedMap[k] + '</td></tr>';
+            });
+            h += '</tbody></table></div>';
+            return h;
+        }
+        function _renderSpeedByZoom(byZoom) {
+            var zooms = Object.keys(byZoom).sort(function(a,b){return parseInt(a)-parseInt(b)});
+            if (zooms.length === 0) return '';
+            var allSpeeds = {};
+            zooms.forEach(function(z) {
+                var zd = byZoom[z];
+                ['pan','tilt'].forEach(function(ax) {
+                    var am = zd[ax] || {};
+                    Object.keys(am).forEach(function(s) { allSpeeds[s] = true; });
+                });
+            });
+            var speedLevels = Object.keys(allSpeeds).sort(function(a,b){return parseInt(a)-parseInt(b)});
+            if (speedLevels.length === 0) return '';
+            var h = '<div style="margin-bottom:12px"><strong style="color:#e0e6f0;font-size:13px">📐 按Zoom分组</strong>';
+            h += '<table class="result-table" style="margin:6px 0;font-size:11px"><thead><tr><th>档位</th>';
+            zooms.forEach(function(z) {
+                h += '<th style="text-align:center">Z=' + z + '<br>Pan</th><th style="text-align:center">Z=' + z + '<br>Tilt</th>';
+            });
+            h += '</tr></thead><tbody>';
+            speedLevels.forEach(function(sl) {
+                h += '<tr><td>' + sl + '</td>';
+                zooms.forEach(function(z) {
+                    var zd = byZoom[z];
+                    var pv = zd.pan && zd.pan[sl] != null ? zd.pan[sl] : '--';
+                    var tv = zd.tilt && zd.tilt[sl] != null ? zd.tilt[sl] : '--';
+                    h += '<td style="text-align:center">' + pv + '</td><td style="text-align:center">' + tv + '</td>';
+                });
+                h += '</tr>';
+            });
+            h += '</tbody></table></div>';
+            return h;
+        }
         // ================================================================
         //  预置点列表管理 (主控台版)
         // ================================================================
         function loadPresetList() {
             var dev = window.connectedDevice ? window.connectedDevice.ip : null;
             if (!dev) return;
-            var resultDiv = document.getElementById('ptzPresetResult');
             var sel = document.getElementById('ptzPresetSelect');
             if (!sel) return;  // Not on console page
-            if (resultDiv) resultDiv.textContent = '正在获取预置点列表...';
+            operationLog('正在获取预置点列表...', 'info');
             apiGet('/api/v1/ptz/' + dev + '/presets').then(function(resp) {
                 sel.innerHTML = '<option value="">选择预置点</option>';
                 if (resp && resp.success && resp.presets && resp.presets.length > 0) {
@@ -1166,12 +990,12 @@ function showStartupProgress() {
                         opt.textContent = p.name ? ('P' + p.id + ' - ' + p.name) : '预置点 ' + p.id;
                         sel.appendChild(opt);
                     });
-                    if (resultDiv) resultDiv.innerHTML = '<span style="color:#3fb950">已加载 ' + resp.presets.length + ' 个预置点</span>';
+                    operationLog('已加载 ' + resp.presets.length + ' 个预置点', 'success');
                 } else {
-                    if (resultDiv) resultDiv.innerHTML = '<span style="color:#d29922">未获取到预置点</span>';
+                    operationLog('未获取到预置点', 'warning');
                 }
             }).catch(function(e) {
-                if (resultDiv) resultDiv.innerHTML = '<span style="color:#f85149">获取失败: ' + e.message + '</span>';
+                operationLog('获取预置点列表失败: ' + e.message, 'error');
             });
         }
         function ptzGotoSelectedPreset() {
@@ -1180,35 +1004,49 @@ function showStartupProgress() {
             var presetId = parseInt(sel.value);
             if (!dev) { showToast('warning', '请先选择设备'); return; }
             if (!presetId) { showToast('warning', '请先选择预置点'); return; }
-            var resultDiv = document.getElementById('ptzPresetResult');
-            resultDiv.textContent = '跳转到预置点 ' + presetId + '...';
+            operationLog('预置点: 前往 #' + presetId + '...', 'info');
             apiPost('/api/v1/ptz/' + dev + '/preset/' + presetId, null).then(function(resp) {
                 if (resp && resp.success !== false) {
-                    resultDiv.innerHTML = '<span style="color:#3fb950">✅ 已前往预置点 ' + presetId + '</span>';
+                    operationLog('预置点: 已前往 #' + presetId, 'success');
                 } else {
-                    resultDiv.innerHTML = '<span style="color:#f85149">❌ 跳转失败: ' + (resp ? resp.message : '未知') + '</span>';
+                    operationLog('预置点: 前往失败 ' + (resp ? resp.message : '未知'), 'error');
                 }
             }).catch(function(e) {
-                resultDiv.innerHTML = '<span style="color:#f85149">❌ 异常: ' + e.message + '</span>';
+                operationLog('预置点: 异常 ' + e.message, 'error');
             });
         }
-        function ptzSetSelectedPreset() {
-            var dev = window.connectedDevice.ip;
-            var sel = document.getElementById('ptzPresetSelect');
-            var presetId = parseInt(sel.value);
-            if (!dev) { showToast('warning', '请先选择设备'); return; }
-            if (!presetId) { showToast('warning', '请先选择预置点编号'); return; }
-            var resultDiv = document.getElementById('ptzPresetResult');
-            resultDiv.textContent = '保存当前位置为预置点 ' + presetId + '...';
-            apiPost('/api/v1/ptz/' + dev + '/preset/' + presetId + '/set', null).then(function(resp) {
-                if (resp && resp.success) {
-                    resultDiv.innerHTML = '<span style="color:#3fb950">✅ 已保存预置点 ' + presetId + '</span>';
-                    loadPresetList(); // refresh
-                } else {
-                    resultDiv.innerHTML = '<span style="color:#f85149">❌ 保存失败: ' + (resp ? resp.message : '未知') + '</span>';
+        // v7.117: 写入预置点 - 弹窗输入编号+名称
+        function ptzWritePreset() {
+            var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+            if (!dev) { showToast('warning', '请先连接设备'); return; }
+            showModal({
+                type: 'form',
+                title: '写入预置点',
+                fields: [
+                    { id:'presetId', label:'预置点编号', value:'', placeholder:'1-300', required:true },
+                    { id:'presetName', label:'名称', value:'', placeholder:'选填' }
+                ],
+                onConfirm: function(data) {
+                    var presetId = parseInt(data.presetId);
+                    var presetName = (data.presetName || '').trim();
+                    if (!presetId || presetId < 1 || presetId > 300) {
+                        showToast('error', '预置点编号需在 1-300 之间');
+                        return;
+                    }
+                    operationLog('预置点: 写入 #' + presetId + (presetName ? ' ' + presetName : '') + '...', 'info');
+                    var url = '/api/v1/ptz/' + dev + '/preset/' + presetId + '/set';
+                    if (presetName) url += '?name=' + encodeURIComponent(presetName);
+                    apiPost(url, null).then(function(resp) {
+                        if (resp && resp.success) {
+                            operationLog('预置点: 已写入 #' + presetId + (presetName ? ' ' + presetName : ''), 'success');
+                            loadPresetList();
+                        } else {
+                            operationLog('预置点: 写入失败 ' + (resp ? resp.message : '未知'), 'error');
+                        }
+                    }).catch(function(e) {
+                        operationLog('预置点: 异常 ' + e.message, 'error');
+                    });
                 }
-            }).catch(function(e) {
-                resultDiv.innerHTML = '<span style="color:#f85149">❌ 异常: ' + e.message + '</span>';
             });
         }
         function findMacByIP(ip) {
@@ -1324,25 +1162,15 @@ function showStartupProgress() {
                 btn.disabled = false;
             });
         }
-        // Device List
-        var _sadpAutoRunning = false;
-        function autoSadpDiscover() {
-            if (_sadpAutoRunning) return;
-            _sadpAutoRunning = true;
-            apiGet('/api/v1/discovery/sadp').then(function(result) {
-                if (result && result.success) {
-                    addLog('info', 'SADP 发现 ' + (result.count || 0) + ' 台设备');
-                }
-                refreshDevices();  // 刷新设备列表(含网关信息)
-                _sadpAutoRunning = false;
-            }).catch(function(e) {
-                _sadpAutoRunning = false;
-            });
-        }
+
         function refreshDevices() {
             console.log('[REFRESH] refreshDevices called');
-            return apiGet('/api/v1/devices').then(function(result) {
+            var btn = document.getElementById('btnDiscover');
+            var spinner = document.getElementById('discoverSpinner');
+            if (spinner) spinner.style.display = 'inline-block';
+            return apiPost('/api/v1/devices/refresh', {}).then(function(result) {
                 console.log('[REFRESH] API response:', result);
+                if (spinner) spinner.style.display = 'none';
                 if (!result.success) {
                     allDevices = [];
                     renderDevices([]);
@@ -1351,7 +1179,7 @@ function showStartupProgress() {
                 allDevices = result.data || [];
                 renderDevices(allDevices);
                 // Update dashboard counters
-                var online = allDevices.filter(function(d) { return d.online; }).length;
+                var online = allDevices.filter(function(d) { return d.status === '在线' || d.status === '已连接'; }).length;
                 var countEl = document.getElementById('devCount');
                 if (countEl) countEl.textContent = allDevices.length;
                 var onlineEl = document.getElementById('devOnline');
@@ -1362,32 +1190,41 @@ function showStartupProgress() {
                 refreshPtzDeviceList();
                 refreshAdvancedDeviceSelectors();
             }).catch(function(e) {
+                if (spinner) spinner.style.display = 'none';
                 console.warn('Failed to refresh devices:', e);
+            });
+        }
+        function loadDevicesQuick() {
+            // 快速获取设备列表（无状态，不ping）
+            return apiGet('/api/v1/devices').then(function(result) {
+                if (result.success) {
+                    allDevices = result.data || [];
+                    renderDevices(allDevices);
+                }
             });
         }
         function renderDevices(devices) {
             var tb = document.getElementById('deviceTable');
             if (!tb) return;
             if (!devices.length) {
-                tb.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#6e7681">暂无设备</td></tr>';
+                tb.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#6e7681">暂无设备</td></tr>'; 
                 return;
             }
-            var html = devices.map(function(d) {
-                var sourceBadge = d.source === 'sadp'
-                    ? '<span class="badge sadp">SADP</span>'
-                    : '<span class="badge manual">手动</span>';
-                var onlineBadge = d.online
-                    ? '<span class="badge online">在线</span>'
-                    : '<span class="badge offline">离线</span>';
+            var html = devices.map(function(d, i) {
+                var statusBadge = d.status === '已连接'
+                    ? '<span class="badge online">已连接</span>'
+                    : (d.status === '在线'
+                        ? '<span class="badge online">在线</span>'
+                        : '<span class="badge offline">离线</span>');
                 var actions = buildDeviceActions(d);
                 return '<tr>'
-                    + '<td>' + sourceBadge + '</td>'
-                    + '<td>' + (d.mac || '--') + '</td>'
-                    + '<td>' + (d.ip || '--') + '</td>'
-                    + '<td>' + (d.gateway || '--') + '</td>'
-                    + '<td>' + (d.name || d.device_name || '--') + '</td>'
+                    + '<td>' + (i + 1) + '</td>'
                     + '<td>' + (d.model || '--') + '</td>'
-                    + '<td>' + onlineBadge + '</td>'
+                    + '<td>' + (d.name || d.device_name || '--') + '</td>'
+                    + '<td>' + (d.mac || '--') + '</td>'
+                    + '<td>' + (d.ip || '--') + '</td>' 
+                    + '<td>' + (d.gateway || '--') + '</td>' 
+                    + '<td>' + statusBadge + '</td>'
                     + '<td>' + actions + '</td>'
                     + '</tr>';
             }).join('');
@@ -1404,7 +1241,7 @@ function showStartupProgress() {
             btns.push('<button class="btn btn-secondary btn-sm" onclick="showDeviceInfoModal(\'' + d.ip + '\')">信息</button>');
             // Add modify IP button for all devices
             // v7.15: 添加/删除按钮交互式
-            var isAdded = d.source === 'manual' || d.has_credentials;
+            var isAdded = d.has_credentials;
             if (isAdded) {
                 btns.push('<button class="btn btn-danger btn-sm" onclick="deleteDevice(\'' + (d.mac || d.ip) + '\')">删除</button>');
             } else {
@@ -1429,50 +1266,41 @@ function showStartupProgress() {
         window.quickAddDevice = function(ip, gateway) {
             showQuickAddModal(ip, gateway);
         };
-        // v7.15: 显示快速添加设备模态框
+        // v7.117: 快速添加设备 - 使用统一弹窗
         window.showQuickAddModal = function(ip, gateway) {
             var localhostGateway = window.localhostGateway || gateway || '';
-            var modalHtml = '<div id="quickAddModal" class="modal-overlay" onclick="closeQuickAddModal(event)" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:10000">' +
-                '<div class="modal-content" onclick="event.stopPropagation()" style="background:#1a1e2e;padding:24px;border-radius:12px;min-width:360px;box-shadow:0 4px 20px rgba(0,0,0,0.5)">' +
-                '<h3 style="margin:0 0 20px 0;color:#58a6ff;font-size:18px">添加设备</h3>' +
-                '<div style="margin-bottom:16px"><label style="display:block;margin-bottom:6px;color:#8b949e;font-size:13px">IP 地址</label>' +
-                '<input type="text" id="quickAddIp" value="' + (ip || '') + '" style="width:100%;padding:10px;background:#0d1117;border:1px solid #30363d;color:#e0e6f0;border-radius:6px;font-size:14px"></div>' +
-                '<div style="margin-bottom:16px"><label style="display:block;margin-bottom:6px;color:#8b949e;font-size:13px">网关</label>' +
-                '<input type="text" id="quickAddGateway" value="' + localhostGateway + '" style="width:100%;padding:10px;background:#0d1117;border:1px solid #30363d;color:#e0e6f0;border-radius:6px;font-size:14px"></div>' +
-                '<div style="margin-bottom:16px"><label style="display:block;margin-bottom:6px;color:#8b949e;font-size:13px">用户名</label>' +
-                '<input type="text" id="quickAddUser" value="admin" style="width:100%;padding:10px;background:#0d1117;border:1px solid #30363d;color:#e0e6f0;border-radius:6px;font-size:14px"></div>' +
-                '<div style="margin-bottom:20px"><label style="display:block;margin-bottom:6px;color:#8b949e;font-size:13px">密码</label>' +
-                '<input type="password" id="quickAddPass" style="width:100%;padding:10px;background:#0d1117;border:1px solid #30363d;color:#e0e6f0;border-radius:6px;font-size:14px"></div>' +
-                '<div style="display:flex;gap:12px;justify-content:flex-end">' +
-                '<button class="btn btn-secondary" onclick="closeQuickAddModal()" style="padding:8px 16px">取消</button>' +
-                '<button class="btn btn-primary" onclick="submitQuickAdd()" style="padding:8px 16px">添加并连接</button></div></div></div>';
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            showModal({
+                type: 'form',
+                title: '添加设备',
+                fields: [
+                    { id:'quickAddIp', label:'IP 地址', value: ip || '', placeholder: '' },
+                    { id:'quickAddGateway', label:'网关', value: localhostGateway, placeholder: '' },
+                    { id:'quickAddUser', label:'用户名', value: 'admin', placeholder: '' },
+                    { id:'quickAddPass', label:'密码', type:'password', value: '', placeholder: '', required:true }
+                ],
+                onConfirm: function(data) {
+                    var ip = (data.quickAddIp || '').trim();
+                    var gateway = (data.quickAddGateway || '').trim();
+                    var username = (data.quickAddUser || '').trim();
+                    var password = data.quickAddPass;
+                    if (!ip) { addLog('error', '请输入 IP 地址'); return; }
+                    if (!password) { addLog('error', '请输入密码'); return; }
+                    apiPost('/api/v1/devices', {ip: ip, gateway: gateway, username: username, password: password})
+                        .then(function(result) {
+                            if (result.success) {
+                                addLog('done', '设备已添加: ' + ip);
+                                refreshDevices();
+                                setTimeout(function() { connectDevice(ip); }, 500);
+                            } else {
+                                addLog('error', result.message || '添加失败');
+                            }
+                        }).catch(function(e) { addLog('error', '添加设备失败: ' + e); });
+                }
+            });
         };
-        window.closeQuickAddModal = function(e) {
-            if (e && e.target !== e.currentTarget) return;
-            var modal = document.getElementById('quickAddModal');
-            if (modal) modal.remove();
-        };
-        window.submitQuickAdd = function() {
-            var ip = document.getElementById('quickAddIp').value.trim();
-            var gateway = document.getElementById('quickAddGateway').value.trim();
-            var username = document.getElementById('quickAddUser').value.trim();
-            var password = document.getElementById('quickAddPass').value;
-            if (!ip) { addLog('error', '请输入 IP 地址'); return; }
-            if (!password) { addLog('error', '请输入密码'); return; }
-            closeQuickAddModal();
-            apiPost('/api/v1/devices', {ip: ip, gateway: gateway, username: username, password: password})
-                .then(function(result) {
-                    if (result.success) {
-                        addLog('done', '设备已添加: ' + ip);
-                        refreshDevices();
-                        setTimeout(function() { connectDevice(ip); }, 500);
-                    } else {
-                        addLog('error', result.message || '添加失败');
-                    }
-                }).catch(function(e) { addLog('error', '添加设备失败: ' + e); });
-        };
-        // v7.15: 添加设备按钮（完整输入）
+        window.closeQuickAddModal = function() { closeModal(false); };
+        window.submitQuickAdd = function() { closeModal(true); };
+        // v7.15: 添加设备按钮(完整输入)
         window.showAddDeviceModal = function() {
             showQuickAddModal('', '');
         };
@@ -1521,6 +1349,7 @@ function showStartupProgress() {
                 // 再调用 connect API
                 apiPost('/api/v1/devices/' + ip + '/connect', { username: username, password: password, port: port }).then(function(result) {
                     if (result && result.success) {
+                        showToast('success', '设备已连接: ' + ip);
                         addLog('success', result.message || '连接成功');
                         // Set connectedDevice BEFORE refreshDevices
                         var dev = allDevices.find(function(d) { return d.ip === ip; }) || { ip: ip };
@@ -1532,6 +1361,8 @@ function showStartupProgress() {
                         if (window.updateDeviceStatus) window.updateDeviceStatus();
                         // v7.31: 连接成功后立即启用所有控件
                         if (window.enableAllControls) window.enableAllControls();
+                        // WASM SDK: 同步登录设备
+                        if (typeof onDeviceConnected === 'function') onDeviceConnected();
                         // 动态加载设备图像参数(白平衡、快门、光圈、降噪、锐度、OSD)
                         // v5.42: 增加延迟确保设备连接完成
                         setTimeout(function() {
@@ -1542,11 +1373,11 @@ function showStartupProgress() {
                             } else {
                                 console.error('[CONNECT] loadDeviceImageParams not found');
                             }
+                            // 加载对焦模式
+                            if (typeof loadFocusMode === 'function') {
+                                loadFocusMode();
+                            }
                         }, 500);
-                        // WASM SDK login (with loading indicator)
-                        showToast('info', '正在初始化视频流...');
-                        if (window.clickLogin2) { window.clickLogin2(); }
-
                         // v6.54: 等待视频播放后启用按钮
                         setTimeout(function() {
                             _connectionOperationInProgress = false;
@@ -1556,11 +1387,20 @@ function showStartupProgress() {
                         // credentials 错误,提示用户输入
                         _connectionOperationInProgress = false;
                         if (window.setConnectionButtonsEnabled) window.setConnectionButtonsEnabled(true);
-                        var username2 = prompt("请输入用户名:", "admin");
-                        if (!username2) return;
-                        var password2 = prompt("请输入密码:");
-                        if (!password2) return;
-                        connectDeviceWithCreds(ip, username2, password2, 80);
+                        showModal({
+                            type:'form',
+                            title:'输入凭证',
+                            fields:[
+                                {id:'credUser',label:'用户名',value:'admin'},
+                                {id:'credPass',label:'密码',type:'password',value:'',required:true}
+                            ],
+                            onConfirm:function(data){
+                                var u=(data.credUser||'').trim()||'admin';
+                                var p=data.credPass;
+                                if(!p)return;
+                                connectDeviceWithCreds(ip,u,p,80);
+                            }
+                        });
                     } else {
                         _connectionOperationInProgress = false;
                         if (window.setConnectionButtonsEnabled) window.setConnectionButtonsEnabled(true);
@@ -1587,10 +1427,10 @@ function showStartupProgress() {
                                 ip: dev.ip, model: dev.model || '', name: dev.name || '', device_name: dev.device_name || '',
                                 mac: dev.mac || '', username: 'admin', password: '', port: 80, online: true
                             };
-                            // v7.31: 连接成功后启用所有控件
+                            // v7.57: 连接成功后启用控件
                             if (window.enableAllControls) window.enableAllControls();
-                            if (window.clickLogin2) { window.clickLogin2(); }
-                              if (window.updateDeviceStatus) window.updateDeviceStatus();
+                            // WASM SDK: 同步登录设备
+                            if (typeof onDeviceConnected === 'function') onDeviceConnected();
                         }
                         _connectionOperationInProgress = false;
                         if (window.setConnectionButtonsEnabled) window.setConnectionButtonsEnabled(true);
@@ -1630,9 +1470,10 @@ function showStartupProgress() {
                                 loadDeviceImageParams(ip);
                             }
                         }, 500);
-                        // WASM SDK login - user clicked Connect
-                        if (window.clickLogin2) { window.clickLogin2(); }
-                              if (window.updateDeviceStatus) window.updateDeviceStatus();
+                        // v7.57: 连接成功后启用控件
+                        if (window.updateDeviceStatus) window.updateDeviceStatus();
+                        // WASM SDK: 同步登录设备
+                        if (typeof onDeviceConnected === 'function') onDeviceConnected();
                     }
                 } else {
                     showToast('error', result ? result.message : '连接失败');
@@ -1655,10 +1496,6 @@ function showStartupProgress() {
             showToast('info', '正在断开设备...');
             // --- Stop PTZ position polling ---
             if (window.stopPtzPositionPoll) window.stopPtzPositionPoll();
-            // --- Stop WASM video stream ---
-            if (window.wasmLogout) window.wasmLogout();
-            // v6.16: 清除 WASM 状态
-            if (window.updateWasmStatus) window.updateWasmStatus('disconnected');
 
             // v6.54: 禁用主控台和高级功能
             if (window.disableAllControls) window.disableAllControls('请先连接设备');
@@ -1670,6 +1507,8 @@ function showStartupProgress() {
                 if (window.connectedDevice && window.connectedDevice.ip === ip) {
                     window.connectedDevice = null;
                     addLog('info', '已清除连接设备状态');
+                    // WASM SDK: 同步登出设备
+                    if (typeof onDeviceDisconnected === 'function') onDeviceDisconnected();
                 }
                 if (window.updateDeviceStatus) window.updateDeviceStatus();
                 refreshDevices();
@@ -1687,15 +1526,21 @@ function showStartupProgress() {
             });
         }
         function deleteDevice(identifier) {
-            if (!confirm('确定删除设备 ' + identifier + '?')) return;
-            apiDelete('/api/v1/devices/' + identifier).then(function() {
-                showToast('success', '设备已删除');
-                addLog('info', '设备已删除: ' + identifier);
-                refreshDevices();
-                refreshPtzDeviceList();
-                refreshAdvancedDeviceSelectors();
-            }).catch(function(e) {
-                showToast('error', '删除异常: ' + e.message);
+            showModal({
+                type: 'confirm',
+                title: '删除设备',
+                message: '确定删除设备 ' + identifier + ' 吗?',
+                onConfirm: function() {
+                    apiDelete('/api/v1/devices/' + identifier).then(function() {
+                        showToast('success', '设备已删除');
+                        addLog('info', '设备已删除: ' + identifier);
+                        refreshDevices();
+                        refreshPtzDeviceList();
+                        refreshAdvancedDeviceSelectors();
+                    }).catch(function(e) {
+                        showToast('error', '删除异常: ' + e.message);
+                    });
+                }
             });
         }
         // Show modify IP modal for SADP device
@@ -1743,10 +1588,10 @@ function showStartupProgress() {
                 window._presetLoadedFor = ip;
             }
         }
-        // PTZ operation log display
-        function ptzLog(msg, type='info') {
-            const box = document.getElementById('ptzLogBox');
-            if (!box) { console.warn('[ptzLog] ptzLogBox not found'); return; }
+        // v7.59: Operation log display (user actions)
+        function operationLog(msg, type='info') {
+            const box = document.getElementById('operationLogBox');
+            if (!box) { console.warn('[operationLog] operationLogBox not found'); return; }
             const time = new Date().toLocaleTimeString();
             const colors = {
                 'info': '#8b949e',
@@ -1765,11 +1610,11 @@ function showStartupProgress() {
             const color = colors[type] || '#8b949e';
             const icon = icons[type] || '○';
             const entry = document.createElement('div');
-            entry.style.cssText = 'color:' + color + ';margin:2px 0;padding:2px 8px;font-size:13px;font-family:monospace';
+            entry.style.cssText = 'color:' + color + ';margin:1px 0;padding:1px 6px;font-size:11px;font-family:monospace;line-height:1.3';
             entry.textContent = '[' + time + '] ' + icon + ' ' + msg;
             box.insertBefore(entry, box.firstChild);
             if (box.children.length > 50) box.removeChild(box.lastChild);
-            console.log('[ptzLog]', msg, type);
+            console.log('[operationLog]', msg, type);
 
             // v6.40: 发送操作日志到后端
             if (typeof apiPost === 'function') {
@@ -1783,7 +1628,7 @@ function showStartupProgress() {
                 } catch(e) {}
             }
         }
-        window.ptzLog = ptzLog;
+        window.operationLog = operationLog;
         // PTZ Controls
         function ptzMove(dir) {
             var dev = window.connectedDevice.ip;
@@ -1806,6 +1651,7 @@ function showStartupProgress() {
             apiPost('/api/v1/ptz/' + dev + '/home', null).then(function(result) {
                 if (result && result.success) {
                     showToast('success', result.message || '归位成功');
+                    if (typeof operationLog === 'function') operationLog('归位', 'success');
                 } else if (result) {
                     showToast('error', result.message || '归位失败');
                 }
@@ -1894,10 +1740,7 @@ function showStartupProgress() {
         function resetStreamButtons() {
             document.getElementById('btnStreamStart').disabled = false;
             document.getElementById('btnStreamStop').disabled = true;
-            document.getElementById('btnRecordStart').disabled = false;
-            document.getElementById('btnRecordStop').disabled = true;
             document.getElementById('streamStatusInfo').textContent = '状态: 未启动';
-            document.getElementById('recordStatusInfo').textContent = '状态: 未录制';
         }
         function streamStart() {
             if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
@@ -1955,78 +1798,9 @@ function showStartupProgress() {
                 showToast('error', '推流异常: ' + e.message);
             });
         }
-        function recordStart() {
-            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
-            var deviceId = window.connectedDevice.ip;
-            var targetName = document.getElementById('recordTargetName').value.trim();
-            var body = targetName ? { target_name: targetName } : null;
-            document.getElementById('btnRecordStart').disabled = true;
-            document.getElementById('recordStatusInfo').textContent = '状态: 正在录制...';
-            apiPost('/api/v1/ptz/' + deviceId + '/record/start', body).then(function(result) {
-                if (result && result.success) {
-                    showToast('success', '录像已启动: ' + deviceId);
-                    addLog('success', result.message || '录像启动成功');
-                    document.getElementById('btnRecordStop').disabled = false;
-                    document.getElementById('recordStatusInfo').textContent = '状态: 录制中';
-                } else {
-                    showToast('error', result ? result.message : '录像启动失败');
-                    document.getElementById('btnRecordStart').disabled = false;
-                }
-            }).catch(function(e) {
-                showToast('error', '录像异常: ' + e.message);
-                document.getElementById('btnRecordStart').disabled = false;
-            });
-        }
-        function recordStop() {
-            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
-            var deviceId = window.connectedDevice.ip;
-            apiPost('/api/v1/ptz/' + deviceId + '/record/stop', null).then(function(result) {
-                if (result && result.success) {
-                    showToast('success', '录像已停止');
-                    addLog('info', '录像已停止: ' + (result.message || ''));
-                    document.getElementById('btnRecordStart').disabled = false;
-                    document.getElementById('btnRecordStop').disabled = true;
-                    document.getElementById('recordStatusInfo').textContent = '状态: 未录制';
-                } else {
-                    showToast('error', result ? result.message : '录像停止失败');
-                }
-            }).catch(function(e) {
-                showToast('error', '录像异常: ' + e.message);
-            });
-        }
-        function snapshotCapture() {
-            if (!window.connectedDevice || !window.connectedDevice.ip) { showToast('warning', '请先在「设备管理」中连接设备'); return; }
-            var deviceId = window.connectedDevice.ip;
-            var btn = document.getElementById('btnSnapshot');
-            btn.disabled = true;
-            btn.textContent = '抓取中...';
-            apiGet('/api/v1/streams/' + deviceId + '/snapshot').then(function(result) {
-                btn.disabled = false;
-                btn.textContent = '📸 抓取快照';
-                if (result && result.success) {
-                    showToast('success', '快照抓取成功');
-                    addLog('success', result.message || '快照抓取成功');
-                    // Try to show snapshot using the data URL or preview URL
-                    if (result.data && result.data.preview_url) {
-                        // Open in new tab or show in preview
-                        var preview = document.getElementById('snapshotPreview');
-                        var img = document.getElementById('snapshotImg');
-                        if (preview && img) {
-                            img.src = result.data.preview_url;
-                            preview.style.display = 'block';
-                        }
-                    }
-                } else {
-                    showToast('error', result ? result.message : '快照抓取失败');
-                }
-            }).catch(function(e) {
-                btn.disabled = false;
-                btn.textContent = '📸 抓取快照';
-                showToast('error', '快照异常: ' + e.message);
-            });
-        }
+
         // Auto refresh
-        setInterval(refreshDevices, 15000);
+        // setInterval(refreshDevices, 15000); // v7.117: 移除自动刷新，改为手动点击刷新
         // ================================================================
         //  主控台新增功能函数 (修复6)
         // ================================================================
@@ -2040,6 +1814,8 @@ function showStartupProgress() {
                 if(b) { b.className = 'btn btn-secondary'; b.style.opacity = '1'; }
             });
             apiPost('/api/v1/ascom/telescope/tracking?mode=' + mode, null).then(function(result) {
+                var trackLabels = {trackSidereal:'恒星跟踪',trackLunar:'月球跟踪',trackSolar:'太阳跟踪',trackOff:'关闭跟踪'};
+                if (typeof operationLog === 'function') operationLog('跟踪: ' + (trackLabels[mode] || mode), 'success');
                 if (result && result.success) {
                     showToast('success', result.message || '跟踪模式已设置');
                     // 高亮当前按钮
@@ -2060,62 +1836,117 @@ function showStartupProgress() {
                 if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
             });
         }
-        // 截图 (主控台版)
-        function consoleSnapshot() {
-            var dev = window.connectedDevice.ip;
-            if (!dev) { showToast('warning', '请先选择设备'); return; }
-            var btn = document.getElementById('btnConsoleSnapshot');
-            btn.disabled = true;
-            btn.textContent = '抓取中...';
-            apiPost('/api/v1/ptz/' + dev + '/capture', null).then(function(result) {
-                btn.disabled = false;
-                btn.textContent = '📸 截图';
+        // 截图函数已移至 console.html (v8.58)
+        // 录像 (主控台版) - v7.110: WASM录制 + 自动上传 + 30分钟分割
+        var _recordSegmentTimer = null;  // 30分钟分割定时器
+        var _recordSegmentAuto = false;  // 是否自动分割
+
+        function consoleRecordStart(autoRestart) {
+            if (!WasmPlayer || !WasmPlayer.playing) {
+                showToast('warning', '请先开始预览');
+                return;
+            }
+            var dev = window.connectedDevice;
+            var deviceName = (dev && (dev.name || dev.device_name || dev.ip) || 'device').replace(/[^a-zA-Z0-9\u4e00-\u9fa5_-]/g, '_');
+            var now = new Date();
+            var dateStr = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+            var timeStr = String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0') + String(now.getSeconds()).padStart(2,'0');
+            var baseFilename = deviceName + '_' + dateStr + '_' + timeStr;
+            // v7.113: 只在重名时加序号,新baseName自动重置为1
+            if (!window._recordSeq) window._recordSeq = {_lastBase: '', _counter: 0};
+            if (window._recordSeq._lastBase === baseFilename) {
+                window._recordSeq._counter += 1;
+            } else {
+                window._recordSeq._counter = 0;
+                window._recordSeq._lastBase = baseFilename;
+            }
+            var seq = window._recordSeq._counter;
+            var filename = seq > 0 ? baseFilename + '_' + seq : baseFilename;
+            window._currentRecordFile = filename + '.mp4';
+
+            wasmStartRecord(filename).then(function(result) {
+                // v7.111: 如果用户已点击停止,不再更新状态
+                if (!window._isRecording) return;
                 if (result && result.success) {
-                    showToast('success', '截图成功: ' + (result.data ? result.data.filename : ''));
-                    if (result.data && result.data.image_path) {
-                        var preview = document.getElementById('consoleSnapshotPreview');
-                        var img = document.getElementById('consoleSnapshotImg');
-                        if (preview && img) {
-                            img.alt = '截图: ' + result.data.filename;
-                            preview.style.display = 'block';
-                        }
-                    }
+                    var msg = autoRestart ? '录像段已启动' : '录像已启动';
+                    showToast('success', msg);
+                    if (typeof operationLog === 'function') operationLog(autoRestart ? '录像分段重启' : '录像开始', 'warning');
+                    if (typeof updateRecordToggleUI === 'function') updateRecordToggleUI(true);
+                    if (typeof updateMediaOutputStatus === 'function') updateMediaOutputStatus('recording');
+                    var statusEl = document.getElementById('consoleRecordStatus');
+                    if (statusEl) statusEl.textContent = '录像中';
+                    var ts = new Date().toLocaleTimeString('en-US', { hour12: false });
+                    if (typeof mediaLog === 'function') mediaLog(ts + ' ' + msg + '...', 'warning');
+                    // 30分钟分割定时器
+                    if (_recordSegmentTimer) clearTimeout(_recordSegmentTimer);
+                    _recordSegmentAuto = true;
+                    _recordSegmentTimer = setTimeout(function() {
+                        if (typeof mediaLog === 'function') mediaLog(new Date().toLocaleTimeString('en-US', { hour12: false }) + ' 30分钟分割...', 'info');
+                        _doRecordStopAndRestart();
+                    }, 30 * 60 * 1000);
                 } else {
-                    showToast('error', result ? result.message : '截图失败');
+                    showToast('error', '录像启动失败');
                 }
             }).catch(function(e) {
-                btn.disabled = false;
-                btn.textContent = '📸 截图';
-                showToast('error', '截图异常: ' + e.message);
+                showToast('error', '录像异常: ' + e.message);
             });
         }
-        // 录像 (主控台版)
-        function consoleRecordStart() {
-            var dev = window.connectedDevice.ip;
-            if (!dev) { showToast('warning', '请先选择设备'); return; }
-            apiPost('/api/v1/ptz/' + dev + '/record/start', null).then(function(result) {
-                if (result && result.success) {
-                    showToast('success', '录像已启动');
-                    document.getElementById('btnConsoleRecordStart').disabled = true;
-                    document.getElementById('btnConsoleRecordStop').disabled = false;
-                    document.getElementById('consoleRecordStatus').textContent = '录制中';
-                    document.getElementById('consoleRecordStatus').style.color = '#f85149';
-                } else {
-                    showToast('error', result ? result.message : '录像启动失败');
+
+        function _doRecordStopAndRestart() {
+            // 停止当前录制,上传,然后重启
+            var recordedFile = window._currentRecordFile;
+            wasmStopRecord().then(function(result) {
+                if (recordedFile) moveRecordedFile(recordedFile, (window.connectedDevice && window.connectedDevice.ip) || '');
+                // v7.113: 静默移动录像到配置路径
+                if (window._isRecording) {
+                    consoleRecordStart(true);
                 }
-            }).catch(function(e) { showToast('error', '录像异常: ' + e.message); });
+            }).catch(function(e) {
+                showToast('error', '分割停止异常: ' + e.message);
+            });
         }
+
         function consoleRecordStop() {
-            var dev = window.connectedDevice.ip;
-            if (!dev) { showToast('warning', '请先选择设备'); return; }
-            apiPost('/api/v1/ptz/' + dev + '/record/stop', null).then(function(result) {
-                showToast('info', '录像已停止');
-                document.getElementById('btnConsoleRecordStart').disabled = false;
-                document.getElementById('btnConsoleRecordStop').disabled = true;
-                document.getElementById('consoleRecordStatus').textContent = '未录制';
-                document.getElementById('consoleRecordStatus').style.color = '#8b949e';
+            // 清除分割定时器
+            if (_recordSegmentTimer) { clearTimeout(_recordSegmentTimer); _recordSegmentTimer = null; }
+            _recordSegmentAuto = false;
+            var recordedFile = window._currentRecordFile;
+            wasmStopRecord().then(function(result) {
+                showToast('success', '录像已停止');
+                if (typeof operationLog === 'function') operationLog('录像停止', 'info');
+                var ts = new Date().toLocaleTimeString('en-US', { hour12: false });
+                if (typeof mediaLog === 'function') mediaLog(ts + ' 停止录像', 'info');
+                if (recordedFile) moveRecordedFile(recordedFile, (window.connectedDevice && window.connectedDevice.ip) || '');
+                // v7.113: 静默移动录像到配置路径
+                if (typeof updateMediaOutputStatus === 'function') updateMediaOutputStatus('idle');
+                var statusEl = document.getElementById('consoleRecordStatus');
+                if (statusEl) statusEl.textContent = '未录像';
             }).catch(function(e) { showToast('error', '录像停止异常: ' + e.message); });
         }
+
+        // v7.113: 静默移动录像文件(替代弹窗上传方案)
+        // WASM SDK 录制存到浏览器下载目录,服务端 shutil.move 到配置路径
+        function moveRecordedFile(filename, deviceIp) {
+            if (!filename) return;
+            showToast('info', '正在转移录像...');
+            fetch('/api/v1/files/move-recording', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({filename: filename, device_ip: deviceIp || ''})
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    showToast('success', '录像已保存');
+                    if (typeof refreshFiles === 'function') refreshFiles();
+                } else {
+                    showToast('error', '转移失败: ' + (data.message || '未知错误'));
+                }
+            })
+            .catch(function(err) { showToast('error', '转移异常: ' + err.message); });
+        }
+
+
 
         // ============== Live Stack 实时叠加 ==============
         var liveStackMode = 'off';
@@ -2194,7 +2025,7 @@ function showStartupProgress() {
         function captureAndSendFrame() {
             if (!liveStackRunning) return;
 
-            // 从 WASM Canvas 截图
+            // 从 Canvas 截图
             var canvas = document.querySelector('#divPlugin canvas');
             if (!canvas) {
                 // 尝试其他方式
@@ -2292,6 +2123,7 @@ function showStartupProgress() {
             apiPut('/api/v1/ptz/' + dev + '/image/settings', body).then(function(result) {
                 if (result && result.success) {
                     showToast('success', label + '已设置为 ' + value);
+                    if (typeof operationLog === 'function') operationLog(label + ': ' + value, 'success');
                 } else {
                     showToast('error', result ? result.message : '设置失败');
                 }
@@ -2316,6 +2148,7 @@ function showStartupProgress() {
             apiPost('/api/v1/ptz/' + dev + '/osd/ptz', { enabled: enabled }).then(function(result) {
                 if (result && result.success) {
                     showToast('success', result.message || 'PTZ OSD: ' + (enabled ? '显示' : '关闭'));
+                    if (typeof operationLog === 'function') operationLog('PTZ OSD: ' + (enabled ? '显示' : '关闭'), 'success');
                 } else {
                     showToast('error', result ? result.message : 'PTZ OSD 切换失败');
                 }
@@ -2330,6 +2163,7 @@ function showStartupProgress() {
             apiPost('/api/v1/ptz/' + dev + '/osd/info', { enabled: enabled }).then(function(result) {
                 if (result && result.success) {
                     showToast('success', result.message || 'Info OSD: ' + (enabled ? '显示' : '关闭'));
+                    if (typeof operationLog === 'function') operationLog('Info OSD: ' + (enabled ? '显示' : '关闭'), 'success');
                 } else {
                     showToast('error', result ? result.message : 'OSD 切换失败');
                 }
@@ -2377,11 +2211,31 @@ function showStartupProgress() {
             apiPost('/api/v1/ptz/' + dev + '/focus/mode', { mode: mode }).then(function(result) {
                 if (result && result.success) {
                     showToast('success', '对焦模式: ' + mode);
+                    if (typeof operationLog === 'function') operationLog('对焦模式: ' + mode, 'success');
                 } else {
                     showToast('error', result ? result.message : '设置失败');
                 }
             }).catch(function(e) {
                 showToast('error', '设置异常: ' + e.message);
+            });
+        }
+        function loadFocusMode() {
+            var dev = window.connectedDevice ? window.connectedDevice.ip : null;
+            if (!dev) return;
+            apiGet('/api/v1/ptz/' + dev + '/focus/mode').then(function(result) {
+                if (result && result.success && result.mode) {
+                    var select = document.getElementById('focusMode');
+                    if (select) {
+                        // 映射旧模式到新选项
+                        var mode = result.mode;
+                        if (mode === 'semiauto') mode = 'auto';
+                        select.value = mode;
+                        // 触发 UI 显示/隐藏
+                        if (typeof onFocusModeChange === 'function') onFocusModeChange(mode);
+                    }
+                }
+            }).catch(function(e) {
+                console.error('获取对焦模式失败:', e);
             });
         }
         // ================================================================
@@ -2402,7 +2256,7 @@ function showStartupProgress() {
                 disableImageControls(reason);
             }
             // 禁用高级功能控件
-            var advButtons = ['btnConnectFuncRun', 'btnConnectLimitRun', 'btnConnectSpeedRun', 'btnStartDetection'];
+            var advButtons = ['btnConnectFuncRun', 'btnConnectSpeedRun', 'btnStartDetection'];
             advButtons.forEach(function(id) {
                 var btn = document.getElementById(id);
                 if (btn) {
@@ -2418,7 +2272,7 @@ function showStartupProgress() {
                 enableImageControls();
             }
             // 启用高级功能控件
-            var advButtons = ['btnConnectFuncRun', 'btnConnectLimitRun', 'btnConnectSpeedRun', 'btnStartDetection'];
+            var advButtons = ['btnConnectFuncRun', 'btnConnectSpeedRun', 'btnStartDetection'];
             advButtons.forEach(function(id) {
                 var btn = document.getElementById(id);
                 if (btn) {
@@ -2438,21 +2292,16 @@ function showStartupProgress() {
             connectDevice, disconnectDevice, deleteDevice,
             ptzMove, ptzHome, ptzStop, getPtzPosition, onPtzDeviceChange,
             calibrate, saveSettings,
-            funcDetectRun, funcDetectRestore,
-            limitTestRun, speedTestRun,
-            streamStart, streamStop, recordStart, recordStop, snapshotCapture,
+            streamStart, streamStop,
             onStreamDeviceChange, resetStreamButtons,
             presetGoto, presetSet, startDetection,
-            connectFuncDetectRun, connectLimitTestRun, connectSpeedTestRun,
             // 主控台新增 (修复6)
             setTracking, consoleSnapshot, consoleRecordStart, consoleRecordStop,
              adjustImage, adjustImageStep, togglePtzOsd, toggleInfoOsd,
             ptzZoom, ptzFocus, setFocusMode,
             // 预置点列表管理
-            loadPresetList, ptzGotoSelectedPreset, ptzSetSelectedPreset,
+            loadPresetList, ptzGotoSelectedPreset, ptzWritePreset,
             addDeviceInline, modifyIpPrompt, showDeviceInfoInline,
-            // WASM logout
-            wasmLogout,
             // 工具函数
             showToast, addLog,
             // Live Stack 实时叠加
@@ -2461,99 +2310,36 @@ function showStartupProgress() {
         _expose.forEach(function(fn) { window[fn.name] = fn; });
         // Go! - init() executes immediately for instant page interaction
         init();
-        function loadWasmDevices() {
-            var sel = document.getElementById('device-select');
-            if (!sel) return;
-            var currentVal = sel.value;
-            apiGet('/api/v1/devices').then(function(resp) {
-                var devices = resp && resp.success ? (resp.data || resp.devices || []) : [];
-                // v6.16: 不要覆盖 allDevices,只用于下拉列表
-                // allDevices = devices;  // 删除这行
-                var ptzDevices = devices.filter(function(d) { return d.online && (d.type === 'ptz' || d.ptz === true); });
-                sel.innerHTML = '<option value="">-- 选择 PTZ 设备 --</option>';
-                ptzDevices.forEach(function(d) {
-                    var opt = document.createElement('option');
-                    opt.value = d.ip;
-                    opt.textContent = ((d.model ? d.model + ' ' : '') + (d.name || d.device_name || d.ip)).trim() + ' (' + d.ip + ')';
-                    sel.appendChild(opt);
-                });
-                if (currentVal && sel.querySelector('option[value="' + currentVal + '"]')) {
-                    sel.value = currentVal;
-                }
-            }).catch(function(e) {
-                console.warn('[WASM] Failed to load devices:', e);
-                sel.innerHTML = '<option value="">-- 加载失败 --</option>';
-            });
-        }
-        function wasmLogout() {
-            // v7.01: 强制停止播放和登出,不依赖状态变量
-            try {
-                // v7.01: 强制停止播放,不管状态
-                try {
-                    WebVideoCtrl.I_Stop();
-                } catch(stopErr) {
-                    console.warn('[WASM] I_Stop error:', stopErr);
-                }
-
-                // 强制登出
-                if (g_szDeviceIdentify2) {
-                    try {
-                        WebVideoCtrl.I_Logout(g_szDeviceIdentify2);
-                    } catch(logoutErr) {
-                        console.warn('[WASM] I_Logout error:', logoutErr);
-                    }
-                }
-
-                // v7.01: 确保 WASM 容器存在并添加覆盖层
-                var container = document.getElementById('divPlugin');
-                if (container) {
-                    // 移除旧的覆盖层
-                    var oldOverlay = document.getElementById('wasm-disconnected-overlay');
-                    if (oldOverlay) oldOverlay.remove();
-
-                    // v7.01: 先确保容器可见
-                    container.style.display = 'block';
-                    container.style.position = 'relative';
-
-                    // 创建灰色覆盖层(使用更高的 z-index 覆盖 WASM 内容)
-                    var overlay = document.createElement('div');
-                    overlay.id = 'wasm-disconnected-overlay';
-                    overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:#0d1117;z-index:9999;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:14px';
-                    overlay.innerHTML = '设备已断开';
-                    container.appendChild(overlay);
-                    console.log('[WASM] Overlay created on disconnect');
-                } else {
-                    console.warn('[WASM] divPlugin container not found');
-                }
-            } catch(e) { console.warn('WASM logout error:', e); }
-
-            // v7.01: 强制重置状态
-            g_bLoggedIn2 = false;
-            g_szDeviceIdentify2 = '';
-            g_bPlaying2 = false;
-            setLoginStatus('已登出', '#8b949e');
-            var loginBtn = document.getElementById('login-btn');
-            if (loginBtn) loginBtn.textContent = '登录';
-
-            // v6.12: 更新 WASM 状态
-            if (window.updateWasmStatus) window.updateWasmStatus('disconnected');
-        }
         // Inline helpers (no modal)
         function addDeviceInline() {
-            var ip = prompt("\u8bbe\u5907 IP:");
-            if (!ip) return;
-            apiPost("/api/v1/devices", { ip: ip }).then(function(r) {
-                if (r && r.success) { showToast("success", "\u5df2\u6dfb\u52a0"); refreshDevices(); }
-                else showToast("error", r ? r.message : "\u5931\u8d25");
-            }).catch(function(e) { showToast("error", e.message); });
+            showModal({
+                type:'form',
+                title:'添加设备',
+                fields:[{id:'devIp',label:'设备 IP',value:'',placeholder:'',required:true}],
+                onConfirm:function(data){
+                    var ip=(data.devIp||'').trim();
+                    if(!ip)return;
+                    apiPost("/api/v1/devices",{ip:ip}).then(function(r){
+                        if(r&&r.success){showToast("success","已添加");refreshDevices()}
+                        else showToast("error",r?r.message:"失败");
+                    }).catch(function(e){showToast("error",e.message)});
+                }
+            });
         }
         function modifyIpPrompt(mac, oldIp) {
-            var newIp = prompt("IP (MAC: " + mac + ")", oldIp);
-            if (!newIp || newIp === oldIp) return;
-            apiPost("/api/v1/devices/" + oldIp, { ip: newIp, mac: mac }).then(function(r) {
-                if (r && r.success) { showToast("success", "IP \u5df2\u4fee\u6539"); refreshDevices(); }
-                else showToast("error", r ? r.message : "\u5931\u8d25");
-            }).catch(function(e) { showToast("error", e.message); });
+            showModal({
+                type:'form',
+                title:'修改 IP',
+                fields:[{id:'newIp',label:'新 IP (MAC: '+mac+')',value:oldIp,placeholder:'',required:true}],
+                onConfirm:function(data){
+                    var newIp=(data.newIp||'').trim();
+                    if(!newIp||newIp===oldIp)return;
+                    apiPost("/api/v1/devices/"+oldIp,{ip:newIp,mac:mac}).then(function(r){
+                        if(r&&r.success){showToast("success","IP 已修改");refreshDevices()}
+                        else showToast("error",r?r.message:"失败");
+                    }).catch(function(e){showToast("error",e.message)});
+                }
+            });
         }
         function showDeviceInfoInline(ip) {
             var el = document.getElementById("deviceInfoPanel");
@@ -2569,357 +2355,26 @@ function showStartupProgress() {
         }
     })();
 </script>
-    <!-- WASM SDK Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-<script>
-// MD5 shim for WASM SDK (after CryptoJS loaded)
-window.MD5 = function(str) { return CryptoJS.MD5(str).toString(); };
-console.log('[WASM] MD5 shim installed');
-</script>
-    <script src="static/websdk/wasm/jquery.min.js"></script>
-    <script src="static/websdk/wasm/webVideoCtrl.js"></script>
-    <script src="static/websdk/wasm/jsPlugin-3.0.0.min.js"></script>
+
+
     <script>
-    // WASM SDK Initialization (GLOBAL scope)
-    (function() {
-        function initWasm() {
-            var iRet = window.WebVideoCtrl.I_SupportNoPlugin();
-            console.log('[WASM] I_SupportNoPlugin:', iRet);
-            if (!iRet) {
-                console.error('[WASM] Browser does not support noPlugin mode');
-                return;
-            }
-            WebVideoCtrl.I_InitPlugin("100%", "100%", {
-                szId: "divPlugin",
-                szBasePath: "/static/websdk/wasm",
-                bWndFull: true,
-                iPackageType: 2,
-                iWndowType: 1,
-                bNoPlugin: true,
-                proxyAddress: {
-                    ip: window.location.hostname,
-                    port: parseInt(window.location.port) || 80
-                },
-                cbEvent: function(iEventType, iParam1, iParam2) {
-                    console.log("[WASM] Event:", iEventType, iParam1, iParam2);
-                },
-                cbDoubleClickWnd: function(iWndIndex, bFullScreen) {
-                    WebVideoCtrl.I_Stop();
-                },
-                cbSelWnd: function(xmlDoc) {
-                    g_iWndIndex = parseInt($(xmlDoc).find("SelectWnd").eq(0).text(), 10);
-                },
-                cbInitPluginComplete: function() {
-                    console.log('[WASM] cbInitPluginComplete - inserting plugin');
-                    WebVideoCtrl.I_InsertOBJECTPlugin("divPlugin");
-                    
-                    // v7.30: 以 ISAPI 连接状态为准，不创建覆盖层
-                    // WASM SDK 会自动处理连接状态
-                    // 覆盖层由 restoreConnectionState 和 disconnect 事件管理
-
-                    // Patch: fix oStreamClient.openStream URL parsing
-                    // SDK adds ?deviceIdentify=... to WS URL, but openStream's
-                    // parser can't handle query params in the path segment
-                    var _origOpenStream = null;
-                    try {
-                        var ds = WebVideoCtrl.w_deviceSet;
-                        if (ds && ds.length > 0) {
-                            // Will be patched after login when oStreamClient is available
-                        }
-                    } catch(e) {}
-
-                    // WASM SDK ready - trigger login if device already connected
-                    if (window.connectedDevice && window.connectedDevice.ip && window.clickLogin2) {
-                        console.log('[WASM] Device already connected, triggering login');
-                        window.clickLogin2();
-                    }
-                    // Update device status display
-                    if (window.updateDeviceStatus) window.updateDeviceStatus();
-                },
-                cbPluginErrorHandler: function(iWndIndex, iErrorCode, oError) {
-                    console.error('[WASM] Plugin error:', iWndIndex, iErrorCode);
-                },
-                cbPerformanceLack: function() {
-                    console.error('[WASM] Performance issue');
-                }
-            });
-            console.log('[WASM] I_InitPlugin called');
-        }
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initWasm);
-        } else {
-            initWasm();
-        }
-
-        // 页面关闭/刷新时释放 WASM 和 ISAPI
-        window.addEventListener('beforeunload', function(e) {
-            if (window.wasmLogout) window.wasmLogout();
-            if (window.connectedDevice && window.connectedDevice.ip) {
-                // 同步断开 ISAPI 连接(使用 navigator.sendBeacon)
-                var url = '/api/v1/devices/' + window.connectedDevice.ip + '/disconnect';
-                navigator.sendBeacon(url);
-            }
-        });
-    })();
-</script>
+    // PTZ position polling - version fetch
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/v1/version')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var el = document.getElementById('version-display');
+                if (el) el.textContent = data.version;
+            })
+            .catch(function(err) { console.error('Version fetch failed:', err); });
+    });
+    </script>
     <script>
-// WASM SDK global variables
-var g_szDeviceIdentify = '';
-var g_bLoggedIn = false;
-var g_bPlaying = false;
-var g_iRtspPort = 554;
-var g_szDeviceIdentify2 = "";
-var g_bLoggedIn2 = false;
-var g_bPlaying2 = false;
-var g_iRtspPort2 = 554;
-var g_iWndIndex2 = 0;
-var g_iWebSocketPort = 7681;
-var g_iWndIndex = 0;
-var g_iChannelList = [];
-var g_iChannelID = 1;
-var g_iChannelID = 1;
-// var connectedDevice = null; // Removed: conflicts with window.connectedDevice
-// WASM SDK global functions (simple version)
-function setLoginStatus(msg, color) {
-    var el = document.getElementById('login-status');
-    if (el) {
-        el.textContent = msg;
-        if (color) el.style.color = color;
-    }
-    console.log('[WASM] Status: ' + msg);
-}
-function clickLogin2() {
-    console.log('[CLICKLOGIN2] Called');
-    if (typeof ptzLog === 'function') ptzLog('WASM SDK 登录开始...', 'debug');
+    // Global functions ready
+    // PTZ position polling functions
 
-    // v6.43: 检查是否已播放成功,避免重复设置 connecting
-    if (g_bPlaying2) {
-        console.log('[CLICKLOGIN2] Already playing, skip');
-        return;
-    }
-
-    // 更新 WASM 状态为连接中
-    if (window.updateWasmStatus) window.updateWasmStatus('connecting');
-
-    if (!window.connectedDevice || !window.connectedDevice.ip) {
-        console.log('[WASM SDK] No device connected');
-        if (typeof ptzLog === 'function') ptzLog('未连接设备,无法登录', 'warning');
-        if (window.updateWasmStatus) window.updateWasmStatus('disconnected');
-        return;
-    }
-    console.log('[CLICKLOGIN2] Device IP: ' + window.connectedDevice.ip);
-    if (typeof ptzLog === 'function') ptzLog('连接设备: ' + window.connectedDevice.ip, 'info');
-    var szIP = window.connectedDevice.ip;
-    var szPort = window.connectedDevice.port || 80;
-    var szUsername = window.connectedDevice.username || 'admin';
-    var szPassword = window.connectedDevice.password || '';
-    g_szDeviceIdentify2 = szIP + '_' + szPort;
-    console.log('[WASM SDK] Login: ' + szIP + ':' + szPort);
-
-    // 博客方案:I_Login
-    WebVideoCtrl.I_Login(szIP, 1, szPort, szUsername, szPassword, {
-        success: function(xmlDoc) {
-            g_bLoggedIn2 = true;
-            g_szDeviceIdentify2 = szIP + '_' + szPort;
-            console.log('[WASM SDK] Login success: ' + g_szDeviceIdentify2);
-            if (typeof ptzLog === 'function') ptzLog(szIP + ' 登录成功!', 'success');
-            if (window.showToast) window.showToast('success', '设备已连接: ' + szIP);
-
-            // v7.0: 移除灰色覆盖层
-            var overlay = document.getElementById('wasm-disconnected-overlay');
-            if (overlay) overlay.remove();
-
-            // 更新 WASM 状态为已连接
-            if (window.updateWasmStatus) window.updateWasmStatus('connected');
-
-            // 博客方案:延迟500ms后执行 getDevicePort + getChannelInfo
-            setTimeout(() => {
-                // Step 1: getDevicePort
-                var oPort = WebVideoCtrl.I_GetDevicePort(g_szDeviceIdentify2);
-                console.log('[WASM SDK] GetDevicePort:', oPort);
-                if (oPort) {
-                    g_iRtspPort2 = oPort.iRtspPort || 554;
-                    g_iWebSocketPort = oPort.iWebSocketPort || 7681;
-                    if (typeof ptzLog === 'function') ptzLog('WebSocket端口: ' + g_iWebSocketPort, 'info');
-                    document.cookie = 'webVideoCtrlProxyWs=' + szIP + ':' + g_iWebSocketPort + '; path=/';
-                    document.cookie = 'webVideoCtrlProxyWsChannel=101; path=/';
-                }
-
-                // Step 1.5: 异步获取 token 修复 szAuth(同步XHR被弃用)
-                var deviceSet = WebVideoCtrl.w_deviceSet;
-                var device = deviceSet && deviceSet.length > 0 ? deviceSet[0] : null;
-                var tokenPromise = Promise.resolve();
-                if (device && !device.szAuth) {
-                    console.log('[WASM SDK] szAuth empty, fetching token async...');
-                    tokenPromise = fetch('/ISAPI/Security/token?format=json', {credentials:'include'})
-                        .then(function(r) { return r.json(); })
-                        .then(function(data) {
-                            if (data && data.Token && data.Token.value) {
-                                device.szAuth = data.Token.value;
-                                console.log('[WASM SDK] szAuth set async:', device.szAuth.substring(0,16) + '...');
-                                if (typeof ptzLog === 'function') ptzLog('Token获取成功', 'success');
-                            }
-                        })
-                        .catch(function(e) { console.log('[WASM SDK] Token fetch failed:', e); });
-                }
-
-                tokenPromise.then(function() {
-                getChannelInfo().then(function() {
-                    console.log('[WASM SDK] 获取通道结束');
-                    // v7.0: 默认使用第三码流
-                    clickStartRealPlay({ iStreamType: g_iStreamType });
-                }).catch(function(err) {
-                    console.log('[WASM SDK] 获取通道失败: ' + err);
-                    g_iChannelID = 1;
-                    // v7.0: 默认使用第三码流
-                    clickStartRealPlay({ iStreamType: g_iStreamType });
-                });
-                }); // end tokenPromise.then
-            }, 500);
-        },
-        error: function(status, xmlDoc) {
-            console.error('[WASM SDK] Login failed:', status);
-            g_bLoggedIn2 = false;
-            if (typeof ptzLog === 'function') ptzLog('登录失败: ' + status, 'error');
-
-            // 更新 WASM 状态为未连接
-            if (window.updateWasmStatus) window.updateWasmStatus('disconnected');
-        }
-    });
-}
-
-// 博客方案:getChannelInfo 返回 Promise
-function getChannelInfo() {
-    var szDeviceIdentify = g_szDeviceIdentify2;
-    console.log('[WASM SDK] getChannelInfo', szDeviceIdentify);
-
-    var promise1 = new Promise((resolve) => {
-        WebVideoCtrl.I_GetAnalogChannelInfo(szDeviceIdentify, {
-            async: true,
-            success: function(xmlDoc) {
-                console.log('[WASM SDK] 获取模拟通道成功');
-                if (typeof ptzLog === 'function') ptzLog(szDeviceIdentify + ' 获取模拟通道成功!', 'info');
-                var channels = [];
-                var nodeList = xmlDoc.getElementsByTagName('VideoInputChannel');
-                for (var i = 0; i < nodeList.length; i++) {
-                    var id = nodeList[i].getElementsByTagName('id')[0]?.textContent || (i + 1);
-                    var name = nodeList[i].getElementsByTagName('name')[0]?.textContent || ('通道' + id);
-                    channels.push({ id: parseInt(id), name: name });
-                }
-                g_iChannelList = channels;
-                g_iChannelID = channels.length > 0 ? channels[0].id : 1;
-                console.log('[WASM SDK] Channels:', channels, 'Using ID:', g_iChannelID);
-                resolve();
-            },
-            error: function(status, xmlDoc) {
-                console.log('[WASM SDK] 获取模拟通道失败:', status);
-                if (typeof ptzLog === 'function') ptzLog(szDeviceIdentify + ' 获取模拟通道失败!', 'warning');
-                g_iChannelID = 1;
-                resolve();
-            }
-        });
-    });
-
-    var promise2 = new Promise((resolve) => {
-        WebVideoCtrl.I_GetDigitalChannelInfo(szDeviceIdentify, {
-            async: true,
-            success: function(xmlDoc) {
-                console.log('[WASM SDK] 获取数字通道成功');
-                if (typeof ptzLog === 'function') ptzLog(szDeviceIdentify + ' 获取数字通道成功!', 'info');
-                resolve();
-            },
-            error: function(status, xmlDoc) {
-                console.log('[WASM SDK] 获取数字通道失败:', status);
-                resolve();
-            }
-        });
-    });
-
-    var promise3 = new Promise((resolve) => {
-        WebVideoCtrl.I_GetZeroChannelInfo(szDeviceIdentify, {
-            async: true,
-            success: function(xmlDoc) {
-                console.log('[WASM SDK] 获取零通道成功');
-                resolve();
-            },
-            error: function(status, xmlDoc) {
-                console.log('[WASM SDK] 获取零通道失败:', status);
-                resolve();
-            }
-        });
-    });
-
-    return Promise.all([promise1, promise2, promise3]);
-}
-
-// 切换码流
-function changeStreamType(streamType) {
-    console.log('[changeStreamType] streamType=' + streamType);
-    var parsedType = parseInt(streamType, 10);
-    g_iStreamType = parsedType;  // v7.34: 保存用户选择的码流
-
-    // 先停止当前播放
-    if (g_bPlaying2 && g_szDeviceIdentify2) {
-        try {
-            WebVideoCtrl.I_Stop({
-                iWndIndex: 0,
-                success: function() {
-                    console.log('[changeStreamType] stopped, starting new stream');
-                    g_bPlaying2 = false;
-                    clickStartRealPlay({ iStreamType: parsedType });
-                },
-                error: function() {
-                    console.warn('[changeStreamType] stop failed, try play anyway');
-                    g_bPlaying2 = false;
-                    clickStartRealPlay({ iStreamType: parsedType });
-                }
-            });
-        } catch(e) {
-            console.warn('[changeStreamType] I_Stop exception:', e);
-            g_bPlaying2 = false;
-            clickStartRealPlay({ iStreamType: parsedType });
-        }
-    } else {
-        clickStartRealPlay({ iStreamType: parsedType });
-    }
-}
-window.changeStreamType = changeStreamType;
-
-// 博客方案:clickStartRealPlay
-function clickStartRealPlay(options) {
-    console.log('[WASM SDK] clickStartRealPlay', options);
-    var iStreamType = options.iStreamType || 2;
-    var iChannelID = g_iChannelID || 1;
-
-    if (typeof ptzLog === 'function') ptzLog('开始播放: 码流=' + iStreamType + ', 通道=' + iChannelID, 'info');
-
-    // v7.0: 移除灰色覆盖层
-    var overlay = document.getElementById('wasm-disconnected-overlay');
-    if (overlay) overlay.remove();
-
-    WebVideoCtrl.I_StartRealPlay(g_szDeviceIdentify2, {
-        iStreamType: iStreamType,
-        iChannelID: iChannelID,
-        bZeroChannel: false,
-        success: function() {
-            g_bPlaying2 = true;
-            console.log('[WASM SDK] 播放成功');
-            if (typeof ptzLog === 'function') ptzLog('视频播放中', 'success');
-            // v6.45: 播放成功,显示"播放中"
-            if (window.updateWasmStatus) window.updateWasmStatus('playing');
-            // 启动 PTZ 位置自动刷新
-            if (window.startPtzPositionPoll) window.startPtzPositionPoll();
-        },
-        error: function(status, xmlDoc) {
-            console.error('[WASM SDK] 播放失败:', status);
-            if (typeof ptzLog === 'function') ptzLog('播放失败: ' + status, 'error');
-        }
-    });
-}
-
-window.clickLogin2 = clickLogin2;
-window.getChannelInfo = getChannelInfo;
-window.clickStartRealPlay = clickStartRealPlay;
+// v7.96: changeStreamType 只更新码流类型,不自动播放
+    // PTZ position polling
 
 // PTZ 位置自动刷新
 var _ptzPosTimer = null;
@@ -2951,8 +2406,6 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
         var status = document.getElementById('deviceStatus');
         var wsDot = document.getElementById('wsDot');
         var wsStatus = document.getElementById('wsStatus');
-        var wasmDot = document.getElementById('wasmDot');
-        var wasmStatus = document.getElementById('wasmStatus');
         var quickSwitch = document.getElementById('quickConnectSwitch');
 
         var connected = window.connectedDevice;
@@ -2980,9 +2433,9 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
         if (wsDot && wsStatus) {
             if (connected) {
                 wsDot.className = 'status-dot green';
-                // v6.14: 显示用户自定义名称(name),其次 device_name,最后 IP
+        // v6.14: 显示设备名称
                 var displayName = connected.name || connected.device_name || connected.ip;
-                wsStatus.textContent = 'ISAPI: ' + displayName;
+                wsStatus.textContent = displayName + ': ISAPI已连接';
             } else {
                 wsDot.className = 'status-dot red';
                 wsStatus.textContent = 'ISAPI: 未连接';
@@ -3002,28 +2455,7 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
         console.log('[UI] Status updated:', connected ? getDisplayName(connected) : 'none');
     };
 
-    // WASM 状态更新函数 (v6.45: 四种状态)
-    window.updateWasmStatus = function(state) {
-        var wasmDot = document.getElementById('wasmDot');
-        var wasmStatus = document.getElementById('wasmStatus');
-        if (!wasmDot || !wasmStatus) return;
-
-        if (state === 'connecting') {
-            wasmDot.className = 'status-dot yellow';
-            wasmStatus.textContent = '视频: 连接中';
-        } else if (state === 'connected') {
-            // v6.45: 已连接但未播放,显示"等待渲染"
-            wasmDot.className = 'status-dot yellow';
-            wasmStatus.textContent = '视频: 等待渲染';
-        } else if (state === 'playing') {
-            // v6.45: 播放成功
-            wasmDot.className = 'status-dot green';
-            wasmStatus.textContent = '视频: 播放中';
-        } else if (state === 'disconnected') {
-            wasmDot.className = 'status-dot red';
-            wasmStatus.textContent = '视频: 未连接';
-        }
-    };
+    // Device status updated
 
     // v6.18: 简化快速连接 - 直接从后端获取上次设备
     var _quickConnectSkipNext = false;
@@ -3061,28 +2493,26 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
         }
     };
 
-    // 确认重启
+    // 确认重启 - v7.98: 智能检测进程状态
     window.confirmRestart = function() {
-        if (!confirm('确定要重启 AstroHub 吗?\n重启期间服务将暂时不可用。')) return;
-
-        showToast('info', '正在重启 AstroHub...');
-
-        // 调用重启 API
-        apiPost('/api/v1/system/restart', null).then(function(r) {
-            if (r && r.success) {
-                showToast('success', '重启中,10秒后自动刷新页面...');
-                setTimeout(function() {
-                    location.reload();
-                }, 10000);
-            } else {
-                showToast('error', r ? r.message : '重启失败');
+        showModal({
+            type: 'confirm',
+            title: '重启',
+            message: '确定要重启 AstroHub 吗?<br>重启期间服务将暂时不可用。',
+            onConfirm: function() {
+                showToast('info', '正在重启...');
+                apiPost('/api/v1/system/restart', null).then(function(r) {
+                    if (r && r.success) {
+                        showToast('success', '重启中,10秒后自动刷新页面...');
+                        setTimeout(function() { location.reload(); }, 10000);
+                    } else {
+                        showToast('error', r ? r.message : '重启失败');
+                    }
+                }).catch(function(e) {
+                    showToast('warning', '重启中,10秒后自动刷新页面...');
+                    setTimeout(function() { location.reload(); }, 10000);
+                });
             }
-        }).catch(function(e) {
-            // 即使请求失败,也假设重启成功(服务已停止)
-            showToast('warning', '重启中,10秒后自动刷新页面...');
-            setTimeout(function() {
-                location.reload();
-            }, 10000);
         });
     };
 
@@ -3092,12 +2522,611 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
         document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
         document.querySelector('[data-page="' + page + '"]').classList.add('active');
         document.getElementById('page-' + page).classList.add('active');
+
+        // 切换到主控台时,如果已登录但未播放,开始预览(渲染)
+        if (page === 'console' && WasmPlayer && WasmPlayer.loggedIn && !WasmPlayer.playing) {
+            var channel = WasmPlayer.channel || 1;
+            var streamType = window._currentStreamType || 3;
+            wasmStartRealPlay(channel, streamType, true);
+        }
+        // 切换到设置页时加载路径配置
+        if (page === 'settings' && typeof loadStorageSettings === 'function') {
+            loadStorageSettings();
+        }
+        // 切换到设备页时刷新状态
+        if (page === 'devices') {
+            refreshDevices();
+        }
     };
 
     console.log('[GLOBAL v5.27] Functions ready');
+
+    // ================================================================
+    // WASM 播放器集成 - 使用 wasm-player.js 模块
+    // ================================================================
+
+    // 页面加载时初始化 WASM SDK
+    window.addEventListener('load', function() {
+        if (typeof wasmInit === 'function') {
+            wasmInit();
+            console.log('[MAIN] WASM SDK init triggered');
+        }
+    });
+
+    // WASM SDK 就绪后,监听容器尺寸变化
+    window.addEventListener('wasm:ready', function() {
+        console.log('[MAIN] WASM SDK ready, attaching ResizeObserver');
+        wasmObserveResize('divPlugin');
+        if (typeof updateMediaInputStatus === 'function') updateMediaInputStatus('connecting');
+
+        // 自动登录:如果设备已连接(ISAPI 已完成登录),WASM 自动登录
+        if (window.connectedDevice && window.connectedDevice.ip) {
+            console.log('[WASM] Device already connected, auto-login...');
+            var ip = window.connectedDevice.ip;
+            var port = window.connectedDevice.port || 80;
+            var username = window.connectedDevice.username || 'admin';
+            var password = window.connectedDevice.password || '';
+
+            wasmLogin(ip, port, username, password).then(function(result) {
+                console.log('[WASM] Auto-login result:', result);
+            }).catch(function(err) {
+                console.error('[WASM] Auto-login failed:', err);
+            });
+        }
+    });
+
+    // WASM 登录事件 → 更新媒体输入状态 + 操作日志
+    window.addEventListener('wasm:login', function(e) {
+        if (typeof updateMediaInputStatus === 'function') updateMediaInputStatus('connecting');
+        if (typeof operationLog === 'function') {
+            var dev = window.connectedDevice;
+            var name = dev ? (dev.name || dev.device_name || dev.ip) : (e.detail ? e.detail.ip : '设备');
+            operationLog(name + ': ISAPI已连接', 'success');
+        }
+    });
+
+    // WASM 播放开始 → 更新媒体输入为已连接
+    window.addEventListener('wasm:playing', function(e) {
+        if (typeof updateStreamButtons === 'function') updateStreamButtons();
+        if (typeof updateMediaInputStatus === 'function') updateMediaInputStatus('playing');
+        var timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
+        if (typeof mediaLog === 'function') mediaLog(timeStr + ' 开始播放', 'success');
+    });
+
+    // WASM 登出 → 更新状态
+    window.addEventListener('wasm:logout', function() {
+        if (typeof updateMediaInputStatus === 'function') updateMediaInputStatus('idle');
+    });
+
+    // 设备连接后 - WASM 同步登录(仅当 SDK 已就绪时)
+    function onDeviceConnected() {
+        if (!window.connectedDevice || !window.connectedDevice.ip) {
+            console.log('[WASM] No device info, skip WASM login');
+            return;
+        }
+
+        // 如果 SDK 已就绪,立即登录
+        if (WasmPlayer && WasmPlayer.sdkReady) {
+            var ip = window.connectedDevice.ip;
+            var port = window.connectedDevice.port || 80;
+            var username = window.connectedDevice.username || 'admin';
+            var password = window.connectedDevice.password || '';
+
+            wasmLogin(ip, port, username, password).then(function(result) {
+                console.log('[WASM] Login result:', result);
+                // v7.111: 登录后自动播放(如果在主控台页面)
+                var activePage = document.querySelector('.page.active');
+                if (activePage && activePage.id === 'page-console') {
+                    var channel = WasmPlayer.channel || 1;
+                    var streamType = window._currentStreamType || 3;
+                    wasmStartRealPlay(channel, streamType, true);
+                }
+            }).catch(function(err) {
+                console.error('[WASM] Login failed:', err);
+            });
+        }
+        // 如果 SDK 未就绪,等待 wasm:ready 事件触发自动登录
+    }
+
+    // 设备断开后 - WASM 同步登出
+    function onDeviceDisconnected() {
+        if (typeof wasmStopRealPlay === 'function') wasmStopRealPlay();
+        if (typeof wasmLogout === 'function') wasmLogout();
+        // v7.111: 断开后重置码流按钮状态
+        setTimeout(updateStreamButtons, 500);
+    }
+
+    // 主控台按钮接口 - 开始预览
+    function doStartRealPlay() {
+        var channel = WasmPlayer.channel || 1;
+        var streamType = window._currentStreamType || 2;
+        wasmStartRealPlay(channel, streamType, true);
+    }
+
+    // 主控台按钮接口 - 停止预览
+    function doStopPreview() {
+        wasmStopRealPlay();
+        setTimeout(updateStreamButtons, 500);  // 等待状态更新
+    }
+
+    // 码流切换+预览(运动控制区码流按钮)
+    window._currentStreamType = 3;  // 默认第三码流
+    window._isRecording = false;
+
+    function switchAndPlay(streamType) {
+        window._currentStreamType = streamType;
+        updateStreamButtons();
+        var channel = WasmPlayer.channel || 1;
+        wasmStartRealPlay(channel, streamType, true).then(function() {
+            var streamNames = {1: '主码流', 2: '子码流', 3: '第三码流'};
+            var timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
+            if (typeof mediaLog === 'function') mediaLog(timeStr + ' 切换' + (streamNames[streamType] || '码流'), 'info');
+            if (typeof updateMediaInputStatus === 'function') updateMediaInputStatus('playing');
+        }).catch(function(e) {
+            console.error('[SWITCH] Failed:', e);
+        });
+    }
+
+    // 更新码流按钮状态:播放中=对应码流亮,停止=停止亮
+    function updateStreamButtons() {
+        var isPlaying = WasmPlayer && WasmPlayer.playing;
+        ['btnStreamMain','btnStreamSub','btnStreamThird','btnStreamStop'].forEach(function(id) {
+            var b = document.getElementById(id);
+            if (b) { b.classList.remove('btn-success'); b.classList.add('btn-primary'); }
+        });
+        if (isPlaying) {
+            var st = window._currentStreamType;
+            var activeId = st === 1 ? 'btnStreamMain' : st === 2 ? 'btnStreamSub' : 'btnStreamThird';
+            var activeBtn = document.getElementById(activeId);
+            if (activeBtn) { activeBtn.classList.remove('btn-primary'); activeBtn.classList.add('btn-success'); }
+        } else {
+            var stopBtn = document.getElementById('btnStreamStop');
+            if (stopBtn) { stopBtn.classList.remove('btn-primary'); stopBtn.classList.add('btn-success'); }
+        }
+    }
+
+    // 录像开关式按钮
+    function toggleRecord() {
+        if (!window._isRecording) {
+            // 立即更新状态,防止重复点击
+            updateRecordToggleUI(true);
+            var statusEl = document.getElementById('consoleRecordStatus');
+            if (statusEl) statusEl.textContent = '录像中';
+            consoleRecordStart();
+        } else {
+            // v7.111: 立即重置UI状态,不等WASM回调
+            updateRecordToggleUI(false);
+            if (typeof updateMediaOutputStatus === 'function') updateMediaOutputStatus('idle');
+            var statusEl = document.getElementById('consoleRecordStatus');
+            if (statusEl) statusEl.textContent = '未录像';
+            consoleRecordStop();
+        }
+    }
+
+    // 录像状态更新(由 consoleRecordStart/Stop 调用)
+    function updateRecordToggleUI(isRecording) {
+        window._isRecording = isRecording;
+        var btn = document.getElementById('btnConsoleRecord');
+        if (btn) {
+            btn.textContent = isRecording ? '⏹ 停止' : '⏺ 录像';
+            btn.className = isRecording ? 'btn btn-danger btn-sm' : 'btn btn-warning btn-sm';
+        }
+    }
+
+    // 媒体信息日志(输出到左侧 mediaLogBox)
+    function mediaLog(msg, type) {
+        var colors = { 'info': '#8b949e', 'success': '#3fb950', 'error': '#f85149', 'warning': '#d29922' };
+        var color = colors[type] || '#8b949e';
+        var box = document.getElementById('mediaLogBox');
+        if (!box) return;
+        var entry = document.createElement('div');
+        entry.style.cssText = 'color:' + color + ';font-size:11px;font-family:monospace;line-height:1.4;margin-bottom:2px';
+        entry.textContent = msg;
+        box.insertBefore(entry, box.firstChild);
+        while (box.children.length > 100) box.removeChild(box.lastChild);
+    }
+
+    // 媒体输入状态更新
+    function updateMediaInputStatus(state) {
+        var dot = document.getElementById('mediaInputDot');
+        var status = document.getElementById('mediaInputStatus');
+        if (!dot || !status) return;
+        if (state === 'playing') {
+            dot.className = 'status-dot green';
+            status.textContent = '媒体输入: 已连接';
+        } else if (state === 'connecting') {
+            dot.className = 'status-dot yellow';
+            status.textContent = '媒体输入: 连接中';
+        } else {
+            dot.className = 'status-dot red';
+            status.textContent = '媒体输入: 等待连接';
+        }
+    }
+
+    // 媒体输出状态更新
+    function updateMediaOutputStatus(state) {
+        var dot = document.getElementById('mediaOutputDot');
+        var status = document.getElementById('mediaOutputStatus');
+        if (!dot || !status) return;
+        // Clear all inline styles first
+        dot.style.background = '';
+        dot.style.boxShadow = '';
+        if (state === 'recording') {
+            dot.className = 'status-dot green';
+            status.textContent = '录制';
+        } else if (state === 'streaming') {
+            dot.className = 'status-dot blue';
+            status.textContent = '推流';
+        } else {
+            dot.className = 'status-dot';
+            dot.style.background = '#30363d';
+            dot.style.boxShadow = 'none';
+            status.textContent = '未录制';
+        }
+    }
+
+    // 存储设置 - 选择文件夹后自动保存
+    function selectFolder(inputId) {
+        apiGet('/api/v1/settings/folder-picker').then(function(result) {
+            if (result && result.success && result.path) {
+                document.getElementById(inputId).value = result.path;
+                autoSavePath(inputId, result.path);
+            }
+        }).catch(function(e) {
+            showToast('error', '文件夹选择失败: ' + e.message);
+        });
+    }
+
+    function selectFile(inputId) {
+        apiGet('/api/v1/settings/file-picker').then(function(result) {
+            if (result && result.success && result.path) {
+                document.getElementById(inputId).value = result.path;
+                autoSavePath(inputId, result.path);
+            }
+        }).catch(function(e) {
+            showToast('error', '文件选择失败: ' + e.message);
+        });
+    }
+
+    // 根据 inputId 自动路由到对应保存接口
+    function autoSavePath(inputId, value) {
+        var payload = {};
+        var url = '/api/v1/settings/paths';
+        var statusId = '';
+
+        if (inputId === 'settingRecordPath') {
+            url = '/api/v1/settings/storage';
+            payload.record_path = document.getElementById('settingRecordPath').value;
+            statusId = 'settingsSaveStatus';
+        } else if (inputId === 'settingLocalConfig' || inputId === 'settingDeviceConfig' || inputId === 'settingTestData') {
+            payload.category = 'config';
+            payload.local_config = document.getElementById('settingLocalConfig').value;
+            payload.device_config = document.getElementById('settingDeviceConfig').value;
+            payload.test_data = document.getElementById('settingTestData').value;
+            statusId = 'configSaveStatus';
+        } else {
+            payload.category = 'ext';
+            payload.sdk_path = document.getElementById('settingSdkPath').value;
+            payload.astap_path = document.getElementById('settingAstapPath').value;
+            payload.obs_path = document.getElementById('settingObsPath').value;
+            statusId = 'extSaveStatus';
+        }
+
+        apiPost(url, payload).then(function(result) {
+            var status = document.getElementById(statusId);
+            if (result && result.success) {
+                status.textContent = '✅ 已保存';
+                status.style.color = '#3fb950';
+            } else {
+                status.textContent = '❌ 失败';
+                status.style.color = '#f85149';
+            }
+            setTimeout(function() { status.textContent = ''; }, 3000);
+        });
+    }
+
+    function loadStorageSettings() {
+        apiGet('/api/v1/settings/storage').then(function(result) {
+            if (result && result.success && result.data) {
+                var recInput = document.getElementById('settingRecordPath');
+                if (recInput) recInput.value = result.data.record_path || '';
+            }
+        });
+        apiGet('/api/v1/settings/paths').then(function(result) {
+            if (result && result.success && result.data) {
+                var d = result.data;
+                var e;
+                if (d.local_config && (e = document.getElementById('settingLocalConfig'))) e.value = d.local_config;
+                if (d.device_config && (e = document.getElementById('settingDeviceConfig'))) e.value = d.device_config;
+                if (d.test_data && (e = document.getElementById('settingTestData'))) e.value = d.test_data;
+                if (d.sdk_path && (e = document.getElementById('settingSdkPath'))) e.value = d.sdk_path;
+                if (d.astap_path && (e = document.getElementById('settingAstapPath'))) e.value = d.astap_path;
+                if (d.obs_path && (e = document.getElementById('settingObsPath'))) e.value = d.obs_path;
+            }
+        });
+    }
+
+    // v8.10: 框选分析
+    var _regionMode = null;
+    var _regionStartX = 0, _regionStartY = 0;
+
+    function toggleRegionMode(mode) {
+        // 新的按钮 ID（在白平衡/对焦局部控制中）
+        var btnWB = document.getElementById('btnWbRegionSelect');
+        var btnAF = document.getElementById('btnFocusRegionSelect');
+        var btnBright = document.getElementById('btnBrightRegionSelect');
+        var overlay = document.getElementById('regionOverlay');
+        var box = document.getElementById('regionBox');
+        if (_regionMode === mode) {
+            _regionMode = null;
+            if (btnWB) btnWB.className = 'btn btn-secondary btn-sm';
+            if (btnAF) btnAF.className = 'btn btn-secondary btn-sm';
+            if (btnBright) btnBright.className = 'btn btn-secondary btn-sm';
+            overlay.style.display = 'none';
+            box.style.display = 'none';
+            return;
+        }
+        if (!window.connectedDevice || !window.connectedDevice.ip) {
+            showToast('warning', '请先连接设备');
+            return;
+        }
+        
+        // v8.72: 检查是否有搜索器在执行，如果有则禁用框选
+        apiGet('/api/v1/vision/search-status').then(function(r) {
+            if (r && r.success && r.active) {
+                var activeLabel = r.active === 'wb' ? '白平衡' : r.active === 'focus' ? '对焦' : '亮度';
+                showToast('warning', activeLabel + '搜索中，请等待完成');
+                return;
+            }
+            
+            // v8.72: 移除自动切换逻辑，避免重复弹出提示
+            // 用户需要手动切换到手动模式
+            _regionMode = mode;
+            if (btnWB) btnWB.className = mode === 'whitebalance' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+            if (btnAF) btnAF.className = mode === 'focus' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+            if (btnBright) btnBright.className = mode === 'brightness' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+            overlay.style.display = 'block';
+            box.style.display = 'none';
+        }).catch(function(e) {
+            // API 调用失败时继续执行
+            _regionMode = mode;
+            if (btnWB) btnWB.className = mode === 'whitebalance' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+            if (btnAF) btnAF.className = mode === 'focus' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+            if (btnBright) btnBright.className = mode === 'brightness' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+            overlay.style.display = 'block';
+            box.style.display = 'none';
+        });
+    }
+
+    function _getOverlayPos(e) {
+        var overlay = document.getElementById('regionOverlay');
+        var rect = overlay.getBoundingClientRect();
+        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+
+    // v8.11: 统一 ISAPI 截图 → 后端裁剪 → 迭代搜索 → 操作日志
+    function _finishRegion() {
+        var overlay = document.getElementById('regionOverlay');
+        var box = document.getElementById('regionBox');
+        var dev = window.connectedDevice;
+        if (!dev || !dev.ip) { showToast('error', '未连接设备'); _resetRegionUI(); return; }
+
+        var ow = overlay.offsetWidth, oh = overlay.offsetHeight;
+        var sx = parseInt(box.style.left) / ow;
+        var sy = parseInt(box.style.top) / oh;
+        var sw = parseInt(box.style.width) / ow;
+        var sh = parseInt(box.style.height) / oh;
+        if (sw < 0.01 || sh < 0.01) { showToast('warning', '框选区域太小'); _resetRegionUI(); return; }
+
+        var mode = _regionMode;
+        
+        // v8.39: 保存选区到 localStorage（白平衡和对焦分别保存）
+        var regionKey = 'region_' + mode;
+        localStorage.setItem(regionKey, JSON.stringify({ x: sx, y: sy, w: sw, h: sh }));
+        
+        var endpoint = mode === 'whitebalance' ? '/api/v1/vision/whitebalance-search'
+                       : mode === 'brightness' ? '/api/v1/vision/brightness-search'
+                       : '/api/v1/vision/focus-search';
+        var label = mode === 'whitebalance' ? '白平衡' : mode === 'brightness' ? '亮度' : '对焦';
+
+        _resetRegionUI();
+        showToast('info', label + '迭代中...');
+        operationLog('── ' + label + '迭代开始 ──', 'info');
+        
+        // v8.66: 流程开始，暂停主控台轮询
+        pausePtzPolling();
+
+        // v8.41: 搜索启动时启用停止按钮
+        var stopBtnId = mode === 'whitebalance' ? 'btnWbLocalStop'
+                       : mode === 'brightness' ? 'btnBrightnessLocalStop'
+                       : 'btnFocusLocalStop';
+        var stopBtn = document.getElementById(stopBtnId);
+        if (stopBtn) { stopBtn.disabled = false; stopBtn.style.opacity = '1'; }
+
+        // SSE 流式调用
+        var body;
+        if (mode === 'brightness') {
+            var target = window.localBrightnessTarget || 50;
+            var shutterValues = (deviceFunctionData && deviceFunctionData.functions && deviceFunctionData.functions.shutter) ? deviceFunctionData.functions.shutter.opt_values : [];
+            var irisValues = (deviceFunctionData && deviceFunctionData.functions && deviceFunctionData.functions.iris) ? deviceFunctionData.functions.iris.opt_values : [];
+            var shutterIdx = 0;
+            if (deviceImageParams.shutter && deviceImageParams.shutter.current_level) {
+                shutterIdx = shutterValues.indexOf(String(deviceImageParams.shutter.current_level));
+                if (shutterIdx < 0) shutterIdx = 0;
+            }
+            var irisIdx = 0;
+            if (deviceImageParams.iris && deviceImageParams.iris.current_level) {
+                irisIdx = irisValues.indexOf(String(deviceImageParams.iris.current_level));
+                if (irisIdx < 0) irisIdx = 0;
+            }
+            var gainVal = (deviceImageParams.gain && deviceImageParams.gain.current_level) || 0;
+            body = JSON.stringify({
+                x: sx, y: sy, w: sw, h: sh,
+                target: target,
+                shutter_idx: shutterIdx,
+                iris_idx: irisIdx,
+                gain: gainVal,
+                shutter_values: shutterValues,
+                iris_values: irisValues,
+                gain_min: 0,
+                gain_max: (deviceImageParams.gain && deviceImageParams.gain.limit) || 100
+            });
+        } else {
+            body = JSON.stringify({ x: sx, y: sy, w: sw, h: sh });
+        }
+        fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body })
+            .then(function(resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                var reader = resp.body.getReader();
+                var decoder = new TextDecoder();
+                var buf = '';
+                function pump() {
+                    return reader.read().then(function(r) {
+                        if (r.done) return;
+                        buf += decoder.decode(r.value, { stream: true });
+                        // 按 \n\n 分割事件
+                        var parts = buf.split('\n\n');
+                        buf = parts.pop();  // 最后一段可能不完整
+                        for (var i = 0; i < parts.length; i++) {
+                            var line = parts[i];
+                            if (!line.startsWith('data: ')) continue;
+                            try {
+                                var ev = JSON.parse(line.slice(6));
+                                if (ev.type === 'start') {
+                                    operationLog(label + '开始, ' + ev.crop, 'info');
+                                } else if (ev.type === 'wb') {
+                                    operationLog('调整 #' + ev.step + ': ' + ev.stage
+                                        + ' R=' + ev.red_gain + ' B=' + ev.blue_gain
+                                        + ' → R=' + ev.r_avg + ' G=' + ev.g_avg + ' B=' + ev.b_avg
+                                        + ' (Δ=' + ev.delta + ')', 'debug');
+                                } else if (ev.type === 'focus') {
+                                    operationLog('对焦 #' + ev.step + ': ' + ev.stage
+                                        + ' ' + ev.action + ' 反差=' + ev.contrast
+                                        + ' (' + ev.duration + 's) ' + ev.message, 'debug');
+                                } else if (ev.type === 'brightness') {
+                                    operationLog('亮度 #' + ev.step + ': ' + ev.message
+                                        + ' 快门=' + ev.shutter + ' 光圈=' + ev.iris
+                                        + ' 增益=' + ev.gain + ' 亮度=' + ev.brightness
+                                        + '/' + ev.target, 'debug');
+                                } else if (ev.type === 'done') {
+                                    if (ev.final_red !== undefined) {
+                                        showToast('success', label + '完成 R=' + ev.final_red + ' B=' + ev.final_blue);
+                                        operationLog('── ' + label + '完成: R=' + ev.final_red + ' B=' + ev.final_blue + ' (' + ev.total_steps + '步) ──', 'success');
+                                        // 刷新主控台白平衡滑动条
+                                        var wbRed = document.getElementById('wbRed');
+                                        var wbBlue = document.getElementById('wbBlue');
+                                        var wbRedVal = document.getElementById('wbRedVal');
+                                        var wbBlueVal = document.getElementById('wbBlueVal');
+                                        if (wbRed) { wbRed.value = ev.final_red; if (wbRedVal) wbRedVal.textContent = ev.final_red; }
+                                        if (wbBlue) { wbBlue.value = ev.final_blue; if (wbBlueVal) wbBlueVal.textContent = ev.final_blue; }
+                                    } else if (ev.final_brightness !== undefined) {
+                                        showToast('success', label + '完成 亮度=' + ev.final_brightness + ' 快门=' + ev.shutter + ' 光圈=' + ev.iris + ' 增益=' + ev.gain + ' (' + ev.total_steps + '步)');
+                                        operationLog('── ' + label + '完成: 亮度=' + ev.final_brightness + ' 快门=' + ev.shutter + ' 光圈=' + ev.iris + ' 增益=' + ev.gain + ' (' + ev.total_steps + '步) ──', 'success');
+                                    } else {
+                                        var rollMsg = ev.rollback_steps ? ' (回滚' + ev.rollback_steps + '步)' : '';
+                                        showToast('success', label + '完成 反差=' + ev.final_contrast + rollMsg);
+                                        operationLog('── ' + label + '完成: 反差=' + ev.final_contrast + rollMsg + ' (' + ev.total_steps + '步) ──', 'success');
+                                    }
+                                    // v8.41: 搜索完成后恢复停止按钮为灰色
+                                    if (stopBtn) { stopBtn.disabled = true; stopBtn.style.opacity = '0.5'; }
+                                    var toggleId = mode === 'whitebalance' ? 'wbTimerToggle' : mode === 'brightness' ? 'brightnessTimerToggle' : 'focusTimerToggle'; var toggleEl = document.getElementById(toggleId); if (toggleEl) { toggleEl.checked = false; }
+                                } else if (ev.type === 'cleanup') {
+                                    operationLog('清理完成', 'info');
+                                } else if (ev.type === 'error') {
+                                    operationLog(label + '失败: ' + ev.message, 'error');
+                                    showToast('error', label + '失败');
+                                    // v8.41: 搜索失败后恢复停止按钮为灰色
+                                    if (stopBtn) { stopBtn.disabled = true; stopBtn.style.opacity = '0.5'; }
+                                    var toggleId = mode === 'whitebalance' ? 'wbTimerToggle' : mode === 'brightness' ? 'brightnessTimerToggle' : 'focusTimerToggle'; var toggleEl = document.getElementById(toggleId); if (toggleEl) { toggleEl.checked = false; }
+                                } else if (ev.type === 'interrupt') {
+                                    // v8.41: 用户停止
+                                    operationLog(label + ': ' + ev.message, 'warning');
+                                    showToast('warning', label + '已停止');
+                                    if (ev.final_red !== undefined) {
+                                        var wbRed2 = document.getElementById('wbRed');
+                                        var wbBlue2 = document.getElementById('wbBlue');
+                                        var wbRedVal2 = document.getElementById('wbRedVal');
+                                        var wbBlueVal2 = document.getElementById('wbBlueVal');
+                                        if (wbRed2) { wbRed2.value = ev.final_red; if (wbRedVal2) wbRedVal2.textContent = ev.final_red; }
+                                        if (wbBlue2) { wbBlue2.value = ev.final_blue; if (wbBlueVal2) wbBlueVal2.textContent = ev.final_blue; }
+                                    }
+                                    // 恢复停止按钮为灰色
+                                    if (stopBtn) { stopBtn.disabled = true; stopBtn.style.opacity = '0.5'; }
+                                    var toggleId = mode === 'whitebalance' ? 'wbTimerToggle' : mode === 'brightness' ? 'brightnessTimerToggle' : 'focusTimerToggle'; var toggleEl = document.getElementById(toggleId); if (toggleEl) { toggleEl.checked = false; }
+                                }
+                            } catch(e) { /* 跳过损坏的 JSON */ }
+                        }
+                        return pump();
+                    });
+                }
+                return pump();
+            })
+            .catch(function(e) {
+                operationLog(label + '异常: ' + e.message, 'error');
+                showToast('error', '异常: ' + e.message);
+                // v8.41: 恢复停止按钮为灰色
+                if (stopBtn) { stopBtn.disabled = true; stopBtn.style.opacity = '0.5'; }
+                var toggleId = mode === 'whitebalance' ? 'wbTimerToggle' : mode === 'brightness' ? 'brightnessTimerToggle' : 'focusTimerToggle'; var toggleEl = document.getElementById(toggleId); if (toggleEl) { toggleEl.checked = false; }
+            })
+            .finally(function() {
+                // v8.66: 流程结束，统一恢复主控台轮询
+                resumePtzPolling();
+            });
+    }
+
+    function _resetRegionUI() {
+        _regionMode = null;
+        var btnWB = document.getElementById('btnWbRegionSelect');
+        var btnAF = document.getElementById('btnFocusRegionSelect');
+        var btnBright = document.getElementById('btnBrightRegionSelect');
+        var overlay = document.getElementById('regionOverlay');
+        var box = document.getElementById('regionBox');
+        if (btnWB) btnWB.className = 'btn btn-secondary btn-sm';
+        if (btnAF) btnAF.className = 'btn btn-secondary btn-sm';
+        if (btnBright) btnBright.className = 'btn btn-secondary btn-sm';
+        if (overlay) overlay.style.display = 'none';
+        if (box) box.style.display = 'none';
+    }
+
+    (function() {
+        var overlay = document.getElementById('regionOverlay');
+        if (!overlay) return;
+        var box = document.getElementById('regionBox');
+        var isDragging = false;
+        overlay.addEventListener('mousedown', function(e) {
+            if (!_regionMode) return;
+            var pos = _getOverlayPos(e);
+            _regionStartX = pos.x; _regionStartY = pos.y;
+            box.style.left = pos.x + 'px'; box.style.top = pos.y + 'px';
+            box.style.width = '0px'; box.style.height = '0px';
+            box.style.display = 'block';
+            isDragging = true;
+            e.preventDefault();
+        });
+        overlay.addEventListener('mousemove', function(e) {
+            if (!isDragging || !_regionMode) return;
+            var pos = _getOverlayPos(e);
+            var x = Math.min(_regionStartX, pos.x);
+            var y = Math.min(_regionStartY, pos.y);
+            var w = Math.abs(pos.x - _regionStartX);
+            var h = Math.abs(pos.y - _regionStartY);
+            box.style.left = x + 'px'; box.style.top = y + 'px';
+            box.style.width = w + 'px'; box.style.height = h + 'px';
+        });
+        overlay.addEventListener('mouseup', function(e) {
+            if (!isDragging || !_regionMode) return;
+            isDragging = false;
+            _finishRegion();
+        });
+        overlay.addEventListener('mouseleave', function() {
+            if (isDragging) { isDragging = false; _finishRegion(); }
+        });
+    })();
+
     </script>
 </body>
 </html>
+
 
 
 

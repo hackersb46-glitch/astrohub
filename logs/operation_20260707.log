@@ -1,0 +1,1693 @@
+[2026-07-07 02:42:25.108] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 02:42:25.793] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 02:42:25.921] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 02:45:27.429] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 02:45:27.451] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 02:45:33.102] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 02:45:33.308] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 02:45:36.742] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 02:45:36.916] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 02:45:39.041] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 02:45:42.381] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1491~2053, Y=787~1562, 共435550像素
+[2026-07-07 02:45:42.384] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=114.96 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 02:45:44.072] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=112.66 (0.2s) 采样(best=115.0,方向=近)
+[2026-07-07 02:45:45.891] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=116.91 (0.2s) 采样(best=116.9,方向=近)
+[2026-07-07 02:45:47.878] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: scan focus_near 反差=114.48 (0.2s) 采样(best=116.9,方向=近)
+[2026-07-07 02:45:49.696] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: scan focus_near 反差=114.98 (0.2s) 采样(best=116.9,方向=近)
+[2026-07-07 02:45:51.389] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=114.25 (0.582s) 样条峰值=117.0@pos=2.09,移动2.91步
+[2026-07-07 02:45:53.444] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: done stop 反差=111.41 (0s) 对焦成功(峰值=117.0)
+[2026-07-07 02:45:54.280] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=113.21 (7步) ──
+[2026-07-07 02:45:54.288] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 03:02:07.576] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 03:02:08.595] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 03:02:08.930] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 03:02:28.063] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 03:02:28.990] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 03:02:29.272] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 03:04:30.530] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 03:04:31.659] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 03:04:32.039] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 03:55:13.285] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 03:55:14.143] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 03:55:14.313] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 03:55:20.634] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 03:55:20.659] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 03:55:26.962] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 03:55:27.126] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 03:55:31.513] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 03:55:31.680] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 03:55:32.277] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 03:55:35.365] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1417~2050, Y=739~1465, 共459558像素
+[2026-07-07 03:55:35.366] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=104.47 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 03:55:37.144] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=93.19 (0.2s) 采样(best=104.5,方向=近)
+[2026-07-07 03:55:38.939] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=86.81 (0.2s) 采样(best=104.5,方向=近)
+[2026-07-07 03:55:40.939] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=86.6 (0.2s) 样条峰值=104.4@pos=0.01,回退3步
+[2026-07-07 03:55:42.946] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=86.53 (0.2s) 逼近(剩余2步,峰值=104.4)
+[2026-07-07 03:55:44.765] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=90.87 (0.2s) 逼近(剩余1步,峰值=104.4)
+[2026-07-07 03:55:46.576] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: done stop 反差=133.56 (0s) 对焦成功(峰值=104.4)
+[2026-07-07 03:55:47.380] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=139.23 (7步) ──
+[2026-07-07 03:55:47.388] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 03:56:06.453] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 03:56:06.671] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 03:56:07.829] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 03:56:11.192] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=343~967, Y=1144~1623, 共298896像素
+[2026-07-07 03:56:11.193] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=77.71 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 03:56:12.880] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=70.04 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:14.567] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=68.65 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:16.253] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: scan focus_near 反差=70.2 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:17.893] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: scan focus_near 反差=66.91 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:19.584] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: scan focus_near 反差=67.13 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:21.271] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: scan focus_near 反差=65.36 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:23.079] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: scan focus_near 反差=71.85 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:24.767] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: scan focus_near 反差=73.6 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:26.605] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: scan focus_near 反差=74.69 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:28.433] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: scan focus_near 反差=72.83 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:30.252] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: scan focus_near 反差=75.37 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:31.921] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: scan focus_near 反差=73.53 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:33.585] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: scan focus_near 反差=71.89 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:35.285] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: scan focus_near 反差=74.46 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:37.116] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: scan focus_near 反差=73.47 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:38.910] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: scan focus_near 反差=72.11 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:40.595] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: scan focus_near 反差=74.76 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:42.285] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: scan focus_near 反差=73.41 (0.2s) 采样(best=77.7,方向=近)
+[2026-07-07 03:56:44.106] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: scan focus_far 反差=72.33 (0.2s) 平坦区(0步),反向
+[2026-07-07 03:56:45.766] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: scan focus_far 反差=73.85 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-07 03:56:47.585] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: scan focus_far 反差=76.07 (0.2s) 采样(best=76.1,方向=远)
+[2026-07-07 03:56:49.368] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: scan focus_far 反差=79.37 (0.2s) 采样(best=79.4,方向=远)
+[2026-07-07 03:56:51.115] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: scan focus_far 反差=85.06 (0.2s) 采样(best=85.1,方向=远)
+[2026-07-07 03:56:53.096] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: scan focus_far 反差=101.66 (0.2s) 采样(best=101.7,方向=远)
+[2026-07-07 03:56:54.934] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: scan focus_far 反差=206.43 (0.2s) 采样(best=206.4,方向=远)
+[2026-07-07 03:56:56.578] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: scan focus_far 反差=95.31 (0.2s) 采样(best=206.4,方向=远)
+[2026-07-07 03:56:58.288] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: scan focus_far 反差=80.03 (0.2s) 采样(best=206.4,方向=远)
+[2026-07-07 03:57:00.152] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: done stop 反差=206.43 (0s) 对焦成功(R²=0.35<0.6,使用best=206.4)
+[2026-07-07 03:57:01.069] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=85.52 (29步) ──
+[2026-07-07 03:57:01.084] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 03:58:48.594] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 03:58:48.734] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 03:58:50.857] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 03:58:53.445] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=520~629, Y=1125~1350, 共24525像素
+[2026-07-07 03:58:53.446] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=79.97 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 03:58:55.145] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=87.71 (0.2s) 采样(best=87.7,方向=近)
+[2026-07-07 03:58:57.086] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=97.49 (0.2s) 采样(best=97.5,方向=近)
+[2026-07-07 03:58:58.909] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: scan focus_near 反差=160 (0.2s) 采样(best=160.0,方向=近)
+[2026-07-07 03:59:00.656] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: scan focus_near 反差=329.41 (0.2s) 采样(best=329.4,方向=近)
+[2026-07-07 03:59:02.365] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: scan focus_near 反差=120.7 (0.2s) 采样(best=329.4,方向=近)
+[2026-07-07 03:59:04.138] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: scan focus_near 反差=94.01 (0.2s) 采样(best=329.4,方向=近)
+[2026-07-07 03:59:05.898] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: done stop 反差=329.41 (0s) 对焦成功(R²=0.51<0.6,使用best=329.4)
+[2026-07-07 03:59:06.710] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=98.34 (8步) ──
+[2026-07-07 03:59:06.715] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 04:33:45.319] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "night", "irCut": ""}
+[2026-07-07 04:33:45.325] [INFO   ] [operation_logger] [web] ptz: 日夜模式: night
+[2026-07-07 04:34:43.065] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 04:34:43.627] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 04:34:43.632] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 04:34:44.975] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 04:34:45.000] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 04:34:50.162] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 04:34:50.466] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 04:34:52.858] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 04:34:55.925] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=2223~3020, Y=752~1613, 共686217像素
+[2026-07-07 04:34:55.925] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=44.13 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 04:34:57.645] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=44.07 (0.2s) 采样(best=44.1,方向=近)
+[2026-07-07 04:34:59.331] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=42.46 (0.2s) 采样(best=44.1,方向=近)
+[2026-07-07 04:35:01.032] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: scan focus_near 反差=42.79 (0.2s) 采样(best=44.1,方向=近)
+[2026-07-07 04:35:02.831] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: scan focus_near 反差=42.31 (0.2s) 采样(best=44.1,方向=近)
+[2026-07-07 04:35:04.487] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: scan focus_near 反差=42.04 (0.2s) 采样(best=44.1,方向=近)
+[2026-07-07 04:35:06.237] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: scan focus_near 反差=42.02 (0.2s) 采样(best=44.1,方向=近)
+[2026-07-07 04:35:08.004] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: scan focus_near 反差=42.5 (0.2s) 采样(best=44.1,方向=近)
+[2026-07-07 04:35:09.876] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: scan focus_near 反差=42.38 (0.2s) 采样(best=44.1,方向=近)
+[2026-07-07 04:35:11.643] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: scan focus_far 反差=42.63 (0.2s) 平坦区(0步),反向
+[2026-07-07 04:35:13.332] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: scan focus_far 反差=42.56 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-07 04:35:15.010] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: scan focus_far 反差=41.63 (0.2s) 采样(best=42.6,方向=远)
+[2026-07-07 04:35:16.860] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: scan focus_far 反差=41.18 (0.2s) 采样(best=42.6,方向=远)
+[2026-07-07 04:35:18.641] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: scan focus_far 反差=41.5 (0.2s) 采样(best=42.6,方向=远)
+[2026-07-07 04:35:20.287] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: scan focus_far 反差=41.15 (0.2s) 采样(best=42.6,方向=远)
+[2026-07-07 04:35:21.971] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: scan focus_far 反差=41.75 (0.2s) 采样(best=42.6,方向=远)
+[2026-07-07 04:35:23.635] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: scan focus_far 反差=43.03 (0.2s) 采样(best=43.0,方向=远)
+[2026-07-07 04:35:25.311] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: scan focus_far 反差=44.17 (0.2s) 采样(best=44.2,方向=远)
+[2026-07-07 04:35:27.291] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: scan focus_far 反差=42.26 (0.2s) 采样(best=44.2,方向=远)
+[2026-07-07 04:35:29.008] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: scan focus_far 反差=41.25 (0.5s) 平坦区持续,加速(10步,best=44.2)
+[2026-07-07 04:35:30.955] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: scan focus_far 反差=84.76 (0.2s) 采样(best=84.8,方向=远)
+[2026-07-07 04:35:32.871] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: scan focus_far 反差=84.24 (0.2s) 采样(best=84.8,方向=远)
+[2026-07-07 04:35:34.655] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: scan focus_far 反差=84.82 (0.2s) 采样(best=84.8,方向=远)
+[2026-07-07 04:35:36.312] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: scan focus_far 反差=83.42 (0.2s) 采样(best=84.8,方向=远)
+[2026-07-07 04:35:38.011] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: scan focus_far 反差=83.09 (0.5s) 平坦区持续,加速(15步,best=84.8)
+[2026-07-07 04:35:40.044] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: approach focus_near 反差=82.43 (0.2s) 样条峰值=84.9@pos=12.16,回退3步
+[2026-07-07 04:35:41.827] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: approach focus_near 反差=82.81 (0.2s) 逼近(剩余2步,峰值=84.9)
+[2026-07-07 04:35:43.824] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: approach focus_near 反差=82.98 (0.2s) 逼近(剩余1步,峰值=84.9)
+[2026-07-07 04:35:45.500] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: fine focus_near 反差=83.43 (0.1s) 粗逼近完成(best2=83.4),开始精逼近(0.1s)
+[2026-07-07 04:35:47.233] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: fine focus_far 反差=81.87 (0.1s) 精逼近(步1/10,best3=83.4,best2=83.4)
+[2026-07-07 04:35:48.860] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: fine focus_near 反差=83.02 (0.1s) 精逼近(步2/10,best3=83.4,best2=83.4)
+[2026-07-07 04:35:50.434] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: done stop 反差=83.44 (0s) 对焦成功(best3=83.4>best2=83.4)
+[2026-07-07 04:35:51.272] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=82.45 (32步) ──
+[2026-07-07 04:35:51.287] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 04:55:33.002] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 04:55:33.557] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 04:55:33.562] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 04:55:33.948] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 04:55:33.972] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 04:55:38.789] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 04:55:39.111] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 04:55:41.541] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 04:55:41.690] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 04:55:41.823] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 04:55:44.487] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=2384~2888, Y=485~1157, 共338688像素
+[2026-07-07 04:55:44.488] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=44.54 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 04:55:46.280] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=42.8 (0.2s) 采样(best=44.5,方向=近)
+[2026-07-07 04:55:47.928] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=42.51 (0.2s) 采样(best=44.5,方向=近)
+[2026-07-07 04:55:49.643] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: scan focus_near 反差=41.27 (0.2s) 采样(best=44.5,方向=近)
+[2026-07-07 04:55:51.319] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: scan focus_near 反差=38.7 (0.2s) 采样(best=44.5,方向=近)
+[2026-07-07 04:55:52.960] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: scan focus_far 反差=30.33 (0.2s) 反向(方向=远,尝试2/3)
+[2026-07-07 04:55:54.586] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: scan focus_far 反差=32.97 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-07 04:55:56.201] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: scan focus_far 反差=39.07 (0.2s) 采样(best=39.1,方向=远)
+[2026-07-07 04:55:57.896] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: scan focus_far 反差=39.97 (0.2s) 采样(best=40.0,方向=远)
+[2026-07-07 04:55:59.619] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: scan focus_far 反差=41.33 (0.2s) 采样(best=41.3,方向=远)
+[2026-07-07 04:56:01.275] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: scan focus_far 反差=41.14 (0.2s) 采样(best=41.3,方向=远)
+[2026-07-07 04:56:02.952] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: scan focus_far 反差=42.39 (0.2s) 采样(best=42.4,方向=远)
+[2026-07-07 04:56:04.594] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: scan focus_far 反差=43.58 (0.2s) 采样(best=43.6,方向=远)
+[2026-07-07 04:56:06.426] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: scan focus_far 反差=41.86 (0.2s) 采样(best=43.6,方向=远)
+[2026-07-07 04:56:08.215] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: scan focus_far 反差=39.31 (0.2s) 采样(best=43.6,方向=远)
+[2026-07-07 04:56:09.872] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: scan focus_near 反差=38.05 (0.2s) 峰值过低,反向(尝试3/3)
+[2026-07-07 04:56:11.543] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: scan focus_near 反差=37.54 (0.2s) 开始对焦(方向=近,尝试3/3)
+[2026-07-07 04:56:13.191] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: scan focus_near 反差=39.67 (0.2s) 采样(best=39.7,方向=近)
+[2026-07-07 04:56:14.863] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: scan focus_near 反差=41.29 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:16.586] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: scan focus_near 反差=40.86 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:18.251] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: scan focus_near 反差=38.2 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:19.862] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: scan focus_near 反差=39.64 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:21.577] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: scan focus_near 反差=35.98 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:23.227] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: scan focus_near 反差=37.61 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:24.898] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: scan focus_near 反差=33.72 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:26.623] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: scan focus_near 反差=28.28 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:28.238] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: scan focus_near 反差=25.18 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:29.885] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: scan focus_near 反差=24.32 (0.2s) 采样(best=41.3,方向=近)
+[2026-07-07 04:56:31.864] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: error stop 反差=22.19 (0s) 对焦失败(3次重试耗尽)
+[2026-07-07 04:56:32.658] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=22.51 (29步) ──
+[2026-07-07 04:56:32.691] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 04:58:59.706] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-07 04:58:59.947] [INFO   ] [operation_logger] [web] ptz: 对焦模式: auto
+[2026-07-07 04:59:31.325] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "auto", "irCut": ""}
+[2026-07-07 04:59:31.330] [INFO   ] [operation_logger] [web] ptz: 日夜模式: auto
+[2026-07-07 04:59:37.299] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "day", "irCut": ""}
+[2026-07-07 04:59:37.304] [INFO   ] [operation_logger] [web] ptz: 日夜模式: day
+[2026-07-07 05:24:21.843] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 05:24:22.409] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 05:24:22.413] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 05:24:22.906] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 05:24:22.931] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 05:24:31.623] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 05:24:31.837] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 05:24:31.968] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 05:24:35.565] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1513~2130, Y=559~1382, 共507791像素
+[2026-07-07 05:24:35.566] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=227.28 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 05:24:38.190] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=56.48 (0.2s) 采样(best=227.3,方向=近)
+[2026-07-07 05:24:40.891] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=43.82 (0.2s) 采样(best=227.3,方向=近)
+[2026-07-07 05:24:43.566] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=38.97 (0.2s) 样条峰值=226.0@pos=0.01,回退3步
+[2026-07-07 05:24:46.215] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=43.47 (0.2s) 逼近(剩余2步,峰值=226.0)
+[2026-07-07 05:24:48.968] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=54.19 (0.2s) 逼近(剩余1步,峰值=226.0)
+[2026-07-07 05:24:51.657] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=246.86 (0.1s) 粗逼近完成(best2=246.9),开始精逼近(0.1s)
+[2026-07-07 05:24:54.235] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=198.57 (0.1s) 精逼近(步1/10,best3=246.9,best2=246.9)
+[2026-07-07 05:24:56.882] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=222.89 (0.1s) 精逼近(步2/10,best3=246.9,best2=246.9)
+[2026-07-07 05:24:59.406] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=231.8 (0.1s) 精逼近(步3/10,best3=246.9,best2=246.9)
+[2026-07-07 05:25:04.930] [ERROR  ] [operation_logger] [web] ptz: 对焦失败: 截图失败
+[2026-07-07 05:25:04.935] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 05:42:57.102] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 05:42:57.324] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 05:42:57.519] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 05:43:01.089] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1574~2050, Y=440~1333, 共425068像素
+[2026-07-07 05:43:01.089] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=202.6 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 05:43:03.747] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=54.19 (0.2s) 采样(best=202.6,方向=近)
+[2026-07-07 05:43:06.469] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=40.72 (0.2s) 采样(best=202.6,方向=近)
+[2026-07-07 05:43:09.041] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=33.03 (0.2s) 样条峰值=201.5@pos=0.01,回退3步
+[2026-07-07 05:43:11.755] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=44.2 (0.2s) 逼近(剩余2步,峰值=201.5)
+[2026-07-07 05:43:14.411] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=111.58 (0.2s) 逼近(剩余1步,峰值=201.5)
+[2026-07-07 05:43:17.054] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=351.79 (0.1s) 粗逼近完成(best2=351.8),开始精逼近(0.1s)
+[2026-07-07 05:43:19.681] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=263.72 (0.1s) 精逼近(步1/10,best3=351.8,best2=351.8)
+[2026-07-07 05:43:22.256] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=318.94 (0.1s) 精逼近(步2/10,best3=351.8,best2=351.8)
+[2026-07-07 05:43:24.846] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=188.69 (0.1s) 精逼近(步3/10,best3=351.8,best2=351.8)
+[2026-07-07 05:43:27.445] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: done stop 反差=357.57 (0s) 对焦成功(best3=357.6>best2=351.8)
+[2026-07-07 05:43:28.724] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=345.88 (11步) ──
+[2026-07-07 05:43:28.731] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 05:44:13.044] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 05:44:13.237] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 05:44:18.628] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 05:44:19.318] [INFO   ] [operation_logger] [web] ptz: 用户停止
+[2026-07-07 05:44:22.295] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1680~2387, Y=318~1375, 共747299像素
+[2026-07-07 05:44:22.313] [INFO   ] [operation_logger] [web] ptz: 对焦: 用户停止
+[2026-07-07 05:44:22.313] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 06:14:30.654] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 06:14:30.825] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 06:14:32.348] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 06:14:35.326] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1670~2259, Y=424~1404, 共577220像素
+[2026-07-07 06:14:35.327] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=329.25 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 06:14:38.211] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=66.53 (0.2s) 采样(best=329.3,方向=近)
+[2026-07-07 06:14:40.877] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=42.6 (0.2s) 采样(best=329.3,方向=近)
+[2026-07-07 06:14:43.524] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=31.25 (0.2s) 样条峰值=327.2@pos=0.01,回退3步
+[2026-07-07 06:14:46.166] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=37.86 (0.2s) 逼近(剩余2步,峰值=327.2)
+[2026-07-07 06:14:48.915] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=155.79 (0.2s) 逼近(剩余1步,峰值=327.2)
+[2026-07-07 06:14:51.609] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=291.7 (0.1s) 粗逼近完成(best2=327.2),开始精逼近(0.1s)
+[2026-07-07 06:14:54.164] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=153.87 (0.1s) 精逼近(步1/10,best3=327.2,best2=327.2)
+[2026-07-07 06:14:56.765] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=208.95 (0.1s) 精逼近(步2/10,best3=327.2,best2=327.2)
+[2026-07-07 06:14:59.471] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=288.3 (0.1s) 精逼近(步3/10,best3=327.2,best2=327.2)
+[2026-07-07 06:15:04.899] [ERROR  ] [operation_logger] [web] ptz: 对焦失败: 截图失败
+[2026-07-07 06:15:04.904] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 06:15:51.705] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 06:15:52.267] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 06:15:52.273] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 06:15:52.655] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 06:15:52.682] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 06:15:57.211] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 06:15:57.557] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 06:15:59.890] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 06:16:00.045] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 06:16:00.943] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 06:16:03.753] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1754~2326, Y=414~1449, 共592020像素
+[2026-07-07 06:16:03.753] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=296.1 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 06:16:05.220] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=75.91 (0.2s) 采样(best=296.1,方向=近)
+[2026-07-07 06:16:06.779] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=31.47 (0.2s) 采样(best=296.1,方向=近)
+[2026-07-07 06:16:08.303] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=22.1 (0.2s) 样条峰值=294.5@pos=0.01,回退3步
+[2026-07-07 06:16:09.784] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=25.91 (0.2s) 逼近(剩余2步,峰值=294.5)
+[2026-07-07 06:16:11.259] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=34.39 (0.2s) 逼近(剩余1步,峰值=294.5)
+[2026-07-07 06:16:12.778] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=60.22 (0.1s) 粗逼近完成(best2=294.5),开始精逼近(0.1s)
+[2026-07-07 06:16:14.216] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=159.94 (0.1s) 精逼近(步1/10,best3=294.5,best2=294.5)
+[2026-07-07 06:16:15.696] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=72.35 (0.1s) 精逼近(步2/10,best3=294.5,best2=294.5)
+[2026-07-07 06:16:17.098] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=170.75 (0.1s) 精逼近(步3/10,best3=294.5,best2=294.5)
+[2026-07-07 06:16:18.568] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: fine focus_far 反差=90.84 (0.1s) 精逼近(步4/10,best3=294.5,best2=294.5)
+[2026-07-07 06:16:19.958] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: fine focus_near 反差=287.13 (0.1s) 精逼近(步5/10,best3=294.5,best2=294.5)
+[2026-07-07 06:16:21.330] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: fine focus_far 反差=198.91 (0.1s) 精逼近(步6/10,best3=294.5,best2=294.5)
+[2026-07-07 06:16:22.782] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: done stop 反差=340.42 (0s) 对焦成功(best3=340.4>best2=294.5)
+[2026-07-07 06:16:24.048] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=326.25 (14步) ──
+[2026-07-07 06:16:24.055] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 06:59:18.242] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 06:59:18.825] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 06:59:18.829] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 06:59:19.229] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 06:59:19.263] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 06:59:22.105] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 200, "blue": 51}
+[2026-07-07 06:59:22.215] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-07 06:59:25.548] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-07 06:59:25.558] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 06:59:31.438] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 06:59:31.588] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 06:59:34.217] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 06:59:38.177] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1600~2091, Y=755~1497, 共364322像素
+[2026-07-07 06:59:38.179] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=143.27 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 06:59:40.214] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=30.6 (0.2s) 采样(best=143.3,方向=近)
+[2026-07-07 06:59:42.190] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=19.69 (0.2s) 采样(best=143.3,方向=近)
+[2026-07-07 06:59:44.205] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=11.7 (0.2s) 样条峰值=142.4@pos=0.01,回退3步
+[2026-07-07 06:59:46.219] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=16.89 (0.2s) 逼近(剩余2步,峰值=142.4)
+[2026-07-07 06:59:48.219] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=27.23 (0.2s) 逼近(剩余1步,峰值=142.4)
+[2026-07-07 06:59:50.193] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=40.3 (0.1s) 粗逼近完成(best2=142.4),开始精逼近(0.1s)
+[2026-07-07 06:59:52.093] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=65.66 (0.1s) 精逼近(步1/10,best3=142.4,best2=142.4)
+[2026-07-07 06:59:54.030] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=48.58 (0.1s) 精逼近(步2/10,best3=142.4,best2=142.4)
+[2026-07-07 06:59:56.018] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: done stop 反差=189.15 (0s) 对焦成功(best3=189.1>best2=142.4)
+[2026-07-07 06:59:57.731] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=214.81 (10步) ──
+[2026-07-07 06:59:57.737] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 07:00:21.963] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 07:00:22.080] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 07:00:22.175] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 07:00:26.369] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=2297~3489, Y=247~1240, 共1183656像素
+[2026-07-07 07:00:26.370] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=158.22 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 07:00:28.402] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=117.64 (0.2s) 采样(best=158.2,方向=近)
+[2026-07-07 07:00:30.420] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=18.15 (0.2s) 采样(best=158.2,方向=近)
+[2026-07-07 07:00:32.418] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=13.96 (0.2s) 样条峰值=158.1@pos=0.01,回退3步
+[2026-07-07 07:00:34.416] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=23.62 (0.2s) 逼近(剩余2步,峰值=158.1)
+[2026-07-07 07:00:36.434] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=137.69 (0.2s) 逼近(剩余1步,峰值=158.1)
+[2026-07-07 07:00:38.461] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=160.02 (0.1s) 粗逼近完成(best2=160.0),开始精逼近(0.1s)
+[2026-07-07 07:00:40.392] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=75.24 (0.1s) 精逼近(步1/10,best3=160.0,best2=160.0)
+[2026-07-07 07:00:42.352] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=115.69 (0.1s) 精逼近(步2/10,best3=160.0,best2=160.0)
+[2026-07-07 07:00:44.229] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=42.86 (0.1s) 精逼近(步3/10,best3=160.0,best2=160.0)
+[2026-07-07 07:00:46.172] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: fine focus_far 反差=143.7 (0.1s) 精逼近(步4/10,best3=160.0,best2=160.0)
+[2026-07-07 07:00:48.227] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: fine focus_near 反差=124.5 (0.1s) 精逼近(步5/10,best3=160.0,best2=160.0)
+[2026-07-07 07:00:50.138] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: done stop 反差=194.85 (0s) 对焦成功(best3=194.8>best2=160.0)
+[2026-07-07 07:00:52.074] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=193.67 (13步) ──
+[2026-07-07 07:00:52.081] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 07:01:10.445] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 07:01:10.574] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 07:01:11.039] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 07:01:14.430] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=661~1841, Y=376~1555, 共1391220像素
+[2026-07-07 07:01:14.430] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=2.48 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 07:01:16.427] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=2.46 (0.2s) 采样(best=2.5,方向=近)
+[2026-07-07 07:01:18.458] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=2.34 (0.2s) 采样(best=2.5,方向=近)
+[2026-07-07 07:01:20.439] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: scan focus_near 反差=2.49 (0.2s) 采样(best=2.5,方向=近)
+[2026-07-07 07:01:22.454] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: scan focus_near 反差=2.45 (0.2s) 采样(best=2.5,方向=近)
+[2026-07-07 07:01:24.439] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: scan focus_near 反差=2.47 (0.2s) 采样(best=2.5,方向=近)
+[2026-07-07 07:01:26.445] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: scan focus_near 反差=2.57 (0.2s) 采样(best=2.6,方向=近)
+[2026-07-07 07:01:28.423] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: scan focus_near 反差=2.62 (0.2s) 采样(best=2.6,方向=近)
+[2026-07-07 07:01:30.424] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: scan focus_near 反差=2.6 (0.2s) 采样(best=2.6,方向=近)
+[2026-07-07 07:01:32.526] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: scan focus_far 反差=2.73 (0.2s) 平坦区(0步),反向
+[2026-07-07 07:01:34.482] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: scan focus_far 反差=2.7 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-07 07:01:36.486] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: scan focus_far 反差=2.59 (0.2s) 采样(best=2.7,方向=远)
+[2026-07-07 07:01:38.452] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: scan focus_far 反差=2.44 (0.2s) 采样(best=2.7,方向=远)
+[2026-07-07 07:01:40.436] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: scan focus_far 反差=2.5 (0.2s) 采样(best=2.7,方向=远)
+[2026-07-07 07:01:42.440] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: scan focus_far 反差=2.35 (0.2s) 采样(best=2.7,方向=远)
+[2026-07-07 07:01:44.402] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: scan focus_far 反差=2.36 (0.2s) 采样(best=2.7,方向=远)
+[2026-07-07 07:01:46.373] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: scan focus_far 反差=2.39 (0.2s) 采样(best=2.7,方向=远)
+[2026-07-07 07:01:48.358] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: scan focus_far 反差=2.33 (0.2s) 采样(best=2.7,方向=远)
+[2026-07-07 07:01:50.351] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: scan focus_near 反差=2.27 (0.2s) 趋势恶化(8步无新best),反向(方向=近,尝试3/3)
+[2026-07-07 07:01:52.320] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: scan focus_near 反差=2.54 (0.2s) 开始对焦(方向=近,尝试3/3)
+[2026-07-07 07:01:54.325] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: scan focus_near 反差=2.49 (0.2s) 采样(best=2.5,方向=近)
+[2026-07-07 07:01:56.324] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: scan focus_near 反差=2.44 (0.2s) 采样(best=2.5,方向=近)
+[2026-07-07 07:01:58.278] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: scan focus_near 反差=2.46 (0.2s) 采样(best=2.5,方向=近)
+[2026-07-07 07:02:00.257] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: scan focus_near 反差=2.72 (0.2s) 采样(best=2.7,方向=近)
+[2026-07-07 07:02:02.241] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: scan focus_near 反差=2.64 (0.2s) 采样(best=2.7,方向=近)
+[2026-07-07 07:02:04.242] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: scan focus_near 反差=2.45 (0.2s) 采样(best=2.7,方向=近)
+[2026-07-07 07:02:06.247] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: scan focus_near 反差=2.76 (0.2s) 采样(best=2.8,方向=近)
+[2026-07-07 07:02:08.236] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: scan focus_near 反差=2.95 (0.2s) 采样(best=3.0,方向=近)
+[2026-07-07 07:02:10.360] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: scan focus_near 反差=3.06 (0.2s) 采样(best=3.1,方向=近)
+[2026-07-07 07:02:12.395] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: scan focus_near 反差=3.3 (0.2s) 采样(best=3.3,方向=近)
+[2026-07-07 07:02:14.398] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: scan focus_near 反差=3.66 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-07 07:02:16.363] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: scan focus_near 反差=4.8 (0.2s) 采样(best=4.8,方向=近)
+[2026-07-07 07:02:18.342] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: scan focus_near 反差=5.24 (0.2s) 采样(best=5.2,方向=近)
+[2026-07-07 07:02:20.312] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: scan focus_near 反差=5.55 (0.2s) 采样(best=5.5,方向=近)
+[2026-07-07 07:02:22.317] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: scan focus_near 反差=5.03 (0.2s) 采样(best=5.5,方向=近)
+[2026-07-07 07:02:24.347] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #36: scan focus_near 反差=6.75 (0.2s) 采样(best=6.8,方向=近)
+[2026-07-07 07:02:26.339] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #37: scan focus_near 反差=6.73 (0.2s) 采样(best=6.8,方向=近)
+[2026-07-07 07:02:28.324] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #38: scan focus_near 反差=8.9 (0.2s) 采样(best=8.9,方向=近)
+[2026-07-07 07:02:30.333] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #39: scan focus_near 反差=14.58 (0.2s) 采样(best=14.6,方向=近)
+[2026-07-07 07:02:32.407] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #40: scan focus_near 反差=29.29 (0.2s) 采样(best=29.3,方向=近)
+[2026-07-07 07:02:34.399] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #41: scan focus_near 反差=69.4 (0.2s) 采样(best=69.4,方向=近)
+[2026-07-07 07:02:36.407] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #42: scan focus_near 反差=72.7 (0.2s) 采样(best=72.7,方向=近)
+[2026-07-07 07:02:38.454] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #43: scan focus_near 反差=29.44 (0.2s) 采样(best=72.7,方向=近)
+[2026-07-07 07:02:40.466] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #44: scan focus_near 反差=12.16 (0.2s) 采样(best=72.7,方向=近)
+[2026-07-07 07:02:42.468] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #45: approach focus_far 反差=8.63 (0.2s) 样条峰值=78.8@pos=21.57,回退3步
+[2026-07-07 07:02:44.453] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #46: approach focus_far 反差=12.44 (0.2s) 逼近(剩余2步,峰值=78.8)
+[2026-07-07 07:02:46.465] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #47: approach focus_far 反差=19.64 (0.2s) 逼近(剩余1步,峰值=78.8)
+[2026-07-07 07:02:48.463] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #48: fine focus_far 反差=47.15 (0.1s) 粗逼近完成(best2=78.8),开始精逼近(0.1s)
+[2026-07-07 07:02:50.392] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #49: done stop 反差=85.58 (0s) 对焦成功(best3=85.6>best2=78.8)
+[2026-07-07 07:02:52.151] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=83.62 (49步) ──
+[2026-07-07 07:02:52.171] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 07:03:10.187] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 07:03:10.445] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 07:03:11.797] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 07:03:15.442] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1375~2400, Y=395~1234, 共859975像素
+[2026-07-07 07:03:15.443] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=80.5 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 07:03:17.423] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=23.63 (0.2s) 采样(best=80.5,方向=近)
+[2026-07-07 07:03:19.385] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=10.75 (0.2s) 采样(best=80.5,方向=近)
+[2026-07-07 07:03:21.397] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=5.84 (0.2s) 样条峰值=80.1@pos=0.01,回退3步
+[2026-07-07 07:03:23.413] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=8.46 (0.2s) 逼近(剩余2步,峰值=80.1)
+[2026-07-07 07:03:25.411] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=15.15 (0.2s) 逼近(剩余1步,峰值=80.1)
+[2026-07-07 07:03:27.420] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=30.77 (0.1s) 粗逼近完成(best2=80.1),开始精逼近(0.1s)
+[2026-07-07 07:03:29.388] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=57.74 (0.1s) 精逼近(步1/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:31.295] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=27.12 (0.1s) 精逼近(步2/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:33.172] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=49.77 (0.1s) 精逼近(步3/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:35.055] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: fine focus_far 反差=26.07 (0.1s) 精逼近(步4/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:37.032] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: fine focus_near 反差=47.57 (0.1s) 精逼近(步5/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:39.056] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: fine focus_far 反差=20.31 (0.1s) 精逼近(步6/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:41.005] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: fine focus_near 反差=35.8 (0.1s) 精逼近(步7/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:42.847] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: fine focus_far 反差=19.34 (0.1s) 精逼近(步8/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:44.799] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: fine focus_near 反差=65.83 (0.1s) 精逼近(步9/10,best3=80.1,best2=80.1)
+[2026-07-07 07:03:46.851] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: done stop 反差=12.1 (0s) 对焦完成(精逼近10步,best3=80.1,best2=80.1,未达标)
+[2026-07-07 07:03:48.576] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=10.64 (17步) ──
+[2026-07-07 07:03:48.583] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 07:03:54.483] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 07:03:54.750] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 07:03:54.872] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 07:03:58.535] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1471~2403, Y=369~1227, 共799656像素
+[2026-07-07 07:03:58.535] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=88.85 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 07:04:00.480] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=32.53 (0.2s) 采样(best=88.8,方向=近)
+[2026-07-07 07:04:02.485] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=14.64 (0.2s) 采样(best=88.8,方向=近)
+[2026-07-07 07:04:04.509] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=9.62 (0.2s) 样条峰值=88.4@pos=0.01,回退3步
+[2026-07-07 07:04:06.503] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=9.62 (0.2s) 逼近(剩余2步,峰值=88.4)
+[2026-07-07 07:04:08.472] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=20.01 (0.2s) 逼近(剩余1步,峰值=88.4)
+[2026-07-07 07:04:10.551] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=84.37 (0.1s) 粗逼近完成(best2=88.4),开始精逼近(0.1s)
+[2026-07-07 07:04:12.393] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: done stop 反差=92.47 (0s) 对焦成功(best3=92.5>best2=88.4)
+[2026-07-07 07:04:14.106] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=103.08 (8步) ──
+[2026-07-07 07:04:14.113] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 07:04:47.078] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 200, "blue": 51}
+[2026-07-07 07:04:47.244] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-07 07:04:48.048] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 200, "blue": 51}
+[2026-07-07 07:04:48.228] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-07 07:04:50.426] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-07 07:04:52.737] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1487~2448, Y=417~1282, 共831265像素
+[2026-07-07 07:04:52.740] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: coarse R=195 B=46 → R=191.5 G=0.5 B=62.6 (Δ=538.8828)
+[2026-07-07 07:04:56.750] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: coarse R=190 B=41 → R=187.7 G=0.4 B=56.2 (Δ=569.7133)
+[2026-07-07 07:05:00.758] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: coarse R=185 B=36 → R=184.1 G=0.4 B=44.6 (Δ=570.5898)
+[2026-07-07 07:05:04.687] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: coarse R=180 B=31 → R=180.3 G=0.4 B=35.9 (Δ=540.9508)
+[2026-07-07 07:05:08.741] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: coarse R=175 B=26 → R=178.2 G=0.4 B=26.5 (Δ=556.1548)
+[2026-07-07 07:05:12.743] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: medium R=175 B=26 → R=176.1 G=0.4 B=18.9 (Δ=549.6922)
+[2026-07-07 07:05:16.867] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: medium R=173 B=24 → R=179 G=0.4 B=18.2 (Δ=454.0249)
+[2026-07-07 07:05:20.722] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: medium R=171 B=22 → R=175.9 G=0.4 B=15.7 (Δ=536.7203)
+[2026-07-07 07:05:24.815] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: fine R=171 B=22 → R=177.6 G=0.3 B=12.9 (Δ=658.8055)
+[2026-07-07 07:05:28.762] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: fine R=170 B=22 → R=178.3 G=0.3 B=12.6 (Δ=621.4819)
+[2026-07-07 07:05:32.760] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: fine R=169 B=22 → R=171.6 G=0.4 B=12.5 (Δ=490.5001)
+[2026-07-07 07:05:36.733] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: fine R=168 B=22 → R=177.1 G=0.4 B=14.7 (Δ=519.8053)
+[2026-07-07 07:05:40.718] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: fine R=167 B=22 → R=177.6 G=0.4 B=14.6 (Δ=515.0324)
+[2026-07-07 07:05:44.744] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: done R=167 B=22 → R=176.6 G=0.4 B=14.7 (Δ=490.2988)
+[2026-07-07 07:05:49.391] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=167 B=22 (14步) ──
+[2026-07-07 07:05:49.397] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 07:09:55.778] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 167, "blue": 22}
+[2026-07-07 07:10:16.960] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 07:34:23.680] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 07:34:26.569] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:28.513] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:30.519] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:32.501] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:34.468] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:36.434] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:38.413] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:40.270] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:42.114] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:44.003] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:45.964] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:47.823] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:49.660] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:51.517] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:53.396] [INFO   ] [operation_logger] [web] ptz: 调整 #15: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:55.320] [INFO   ] [operation_logger] [web] ptz: 调整 #16: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:57.305] [INFO   ] [operation_logger] [web] ptz: 调整 #17: done R=undefined B=undefined Δ=undefined
+[2026-07-07 07:34:59.015] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (17步) ──
+[2026-07-07 08:04:58.751] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 08:05:01.730] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:03.765] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:05.800] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:07.772] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:09.750] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:11.734] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:13.728] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:15.700] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:17.640] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:19.534] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:21.398] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:23.282] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:25.120] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:26.997] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:28.991] [INFO   ] [operation_logger] [web] ptz: 调整 #15: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:31.031] [INFO   ] [operation_logger] [web] ptz: 调整 #16: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:33.002] [INFO   ] [operation_logger] [web] ptz: 调整 #17: done R=undefined B=undefined Δ=undefined
+[2026-07-07 08:05:34.711] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (17步) ──
+[2026-07-07 08:35:34.685] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 08:35:37.973] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:39.970] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:41.965] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:43.945] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:45.945] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:47.989] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:49.963] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:51.970] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:53.999] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:55.976] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:58.001] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:35:59.971] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:36:01.971] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:36:03.963] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 08:36:06.028] [INFO   ] [operation_logger] [web] ptz: 调整 #15: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 08:36:08.004] [INFO   ] [operation_logger] [web] ptz: 调整 #16: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 08:36:09.947] [INFO   ] [operation_logger] [web] ptz: 调整 #17: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 08:36:11.974] [INFO   ] [operation_logger] [web] ptz: 调整 #18: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 08:36:13.988] [INFO   ] [operation_logger] [web] ptz: 调整 #19: done R=undefined B=undefined Δ=undefined
+[2026-07-07 08:36:15.685] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (19步) ──
+[2026-07-07 09:06:15.614] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 09:06:19.281] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:21.219] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:23.205] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:25.179] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:27.147] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:29.101] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:31.054] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:33.015] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:34.971] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:36.918] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:38.880] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:40.892] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:42.859] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:44.842] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:46.880] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:48.888] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:50.958] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:52.934] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:54.888] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:56.866] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:06:58.866] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:07:00.853] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:07:02.850] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:07:04.882] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:07:06.869] [INFO   ] [operation_logger] [web] ptz: 调整 #25: error R=undefined B=undefined Δ=undefined
+[2026-07-07 09:07:08.562] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (25步) ──
+[2026-07-07 09:37:08.788] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 09:37:11.915] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:14.056] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:16.074] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:18.078] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:20.204] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:22.171] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:24.117] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:26.089] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:28.090] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:30.098] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:32.090] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:34.064] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:36.060] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:38.104] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:40.092] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:42.135] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:44.107] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:46.078] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:48.066] [INFO   ] [operation_logger] [web] ptz: 调整 #19: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:50.083] [INFO   ] [operation_logger] [web] ptz: 调整 #20: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:52.092] [INFO   ] [operation_logger] [web] ptz: 调整 #21: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:54.090] [INFO   ] [operation_logger] [web] ptz: 调整 #22: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:56.029] [INFO   ] [operation_logger] [web] ptz: 调整 #23: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:57.912] [INFO   ] [operation_logger] [web] ptz: 调整 #24: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 09:37:59.990] [INFO   ] [operation_logger] [web] ptz: 调整 #25: done R=undefined B=undefined Δ=undefined
+[2026-07-07 09:38:01.659] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (25步) ──
+[2026-07-07 10:08:01.408] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 10:08:04.566] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:06.527] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:08.551] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:10.506] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:12.586] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:14.512] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:16.506] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:18.478] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:20.355] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:22.194] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:24.055] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:25.910] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:27.814] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:29.813] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:31.619] [INFO   ] [operation_logger] [web] ptz: 调整 #15: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:33.589] [INFO   ] [operation_logger] [web] ptz: 调整 #16: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:35.530] [INFO   ] [operation_logger] [web] ptz: 调整 #17: done R=undefined B=undefined Δ=undefined
+[2026-07-07 10:08:37.256] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (17步) ──
+[2026-07-07 10:38:37.418] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 10:38:40.361] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 10:38:42.327] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 10:38:44.321] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 10:38:46.281] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 10:38:48.233] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 10:38:50.193] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 10:38:52.166] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 10:38:54.008] [INFO   ] [operation_logger] [web] ptz: 调整 #8: done R=undefined B=undefined Δ=undefined
+[2026-07-07 10:38:55.706] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (8步) ──
+[2026-07-07 11:08:55.435] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 11:08:58.671] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:00.670] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:02.694] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:04.704] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:06.677] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:08.688] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:10.679] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:12.683] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:14.654] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:16.516] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:18.461] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:20.384] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:22.334] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:24.212] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:26.077] [INFO   ] [operation_logger] [web] ptz: 调整 #15: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:27.934] [INFO   ] [operation_logger] [web] ptz: 调整 #16: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:29.807] [INFO   ] [operation_logger] [web] ptz: 调整 #17: done R=undefined B=undefined Δ=undefined
+[2026-07-07 11:09:31.673] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (17步) ──
+[2026-07-07 11:39:31.610] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 11:39:34.612] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:36.683] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:38.665] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:40.613] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:42.593] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:44.606] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:46.577] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:48.631] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:50.602] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:52.606] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:54.662] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:56.604] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:39:58.677] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:00.641] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:02.636] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:04.598] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:06.618] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:08.601] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:10.620] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:12.614] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:14.628] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:16.600] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:18.606] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:20.705] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:22.654] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:24.627] [INFO   ] [operation_logger] [web] ptz: 调整 #26: error R=undefined B=undefined Δ=undefined
+[2026-07-07 11:40:26.332] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (26步) ──
+[2026-07-07 12:10:26.315] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 12:10:29.727] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:31.688] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:33.618] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:35.584] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:37.573] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:39.549] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:41.568] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:43.584] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:45.578] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:47.550] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:49.641] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:51.625] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:53.574] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:55.588] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:57.589] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:10:59.598] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:01.566] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:03.595] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:05.573] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:07.579] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:09.571] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:11.571] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:13.548] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:15.560] [INFO   ] [operation_logger] [web] ptz: 调整 #24: error R=undefined B=undefined Δ=undefined
+[2026-07-07 12:11:17.283] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (24步) ──
+[2026-07-07 12:41:17.238] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 12:41:20.242] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:41:22.254] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:41:24.242] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:41:26.250] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:41:28.206] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:41:30.237] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 12:41:35.164] [ERROR  ] [operation_logger] [web] ptz: 对焦错误: 截图失败
+[2026-07-07 13:11:35.157] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 13:11:38.537] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:40.507] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:42.491] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:44.501] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:46.504] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:48.508] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:50.497] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:52.495] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:54.483] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:56.495] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:11:58.522] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:00.598] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:02.566] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:04.536] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:06.494] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:08.492] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:10.510] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:12.493] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:14.472] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:16.484] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:18.503] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:20.483] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:22.541] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:24.523] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:26.498] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:28.517] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:30.525] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:32.514] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:34.474] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:36.472] [INFO   ] [operation_logger] [web] ptz: 调整 #30: error R=undefined B=undefined Δ=undefined
+[2026-07-07 13:12:38.190] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (30步) ──
+[2026-07-07 13:42:38.128] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 13:42:41.184] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:43.152] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:45.117] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:47.083] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:49.093] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:51.132] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:53.136] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:55.218] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:57.174] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:42:59.143] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:01.147] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:03.221] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:05.371] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:07.409] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:09.411] [INFO   ] [operation_logger] [web] ptz: 调整 #15: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:11.393] [INFO   ] [operation_logger] [web] ptz: 调整 #16: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:13.440] [INFO   ] [operation_logger] [web] ptz: 调整 #17: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:15.441] [INFO   ] [operation_logger] [web] ptz: 调整 #18: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:17.366] [INFO   ] [operation_logger] [web] ptz: 调整 #19: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:19.380] [INFO   ] [operation_logger] [web] ptz: 调整 #20: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:21.419] [INFO   ] [operation_logger] [web] ptz: 调整 #21: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:23.437] [INFO   ] [operation_logger] [web] ptz: 调整 #22: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:25.399] [INFO   ] [operation_logger] [web] ptz: 调整 #23: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:27.354] [INFO   ] [operation_logger] [web] ptz: 调整 #24: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:29.349] [INFO   ] [operation_logger] [web] ptz: 调整 #25: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:31.197] [INFO   ] [operation_logger] [web] ptz: 调整 #26: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:33.129] [INFO   ] [operation_logger] [web] ptz: 调整 #27: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:35.124] [INFO   ] [operation_logger] [web] ptz: 调整 #28: done R=undefined B=undefined Δ=undefined
+[2026-07-07 13:43:36.846] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (28步) ──
+[2026-07-07 14:13:36.822] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 14:13:39.666] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:41.621] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:43.601] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:45.580] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:47.546] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:49.498] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:51.454] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:53.455] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:55.417] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:57.390] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:13:59.396] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:01.394] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:03.378] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:05.337] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:07.341] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:09.366] [INFO   ] [operation_logger] [web] ptz: 调整 #16: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:11.357] [INFO   ] [operation_logger] [web] ptz: 调整 #17: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:13.339] [INFO   ] [operation_logger] [web] ptz: 调整 #18: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:15.409] [INFO   ] [operation_logger] [web] ptz: 调整 #19: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:17.352] [INFO   ] [operation_logger] [web] ptz: 调整 #20: done R=undefined B=undefined Δ=undefined
+[2026-07-07 14:14:19.059] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (20步) ──
+[2026-07-07 14:44:19.018] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 14:44:22.429] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:44:24.379] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:44:26.339] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 14:44:28.300] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 14:44:30.284] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 14:44:35.278] [ERROR  ] [operation_logger] [web] ptz: 对焦错误: 截图失败
+[2026-07-07 15:14:35.324] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 15:14:38.291] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:40.316] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:42.405] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:44.379] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:46.350] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:48.319] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:50.324] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:52.300] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:54.315] [INFO   ] [operation_logger] [web] ptz: 调整 #9: done R=undefined B=undefined Δ=undefined
+[2026-07-07 15:14:56.044] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (9步) ──
+[2026-07-07 15:44:55.945] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 15:44:58.924] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:00.970] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:02.966] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:04.916] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:06.976] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:08.957] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:10.961] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:12.916] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:14.886] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:16.765] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:18.609] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:20.474] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:22.353] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:24.324] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:26.209] [INFO   ] [operation_logger] [web] ptz: 调整 #15: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:28.214] [INFO   ] [operation_logger] [web] ptz: 调整 #16: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:30.206] [INFO   ] [operation_logger] [web] ptz: 调整 #17: done R=undefined B=undefined Δ=undefined
+[2026-07-07 15:45:31.921] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (17步) ──
+[2026-07-07 16:15:31.954] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 16:15:35.220] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:37.228] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:39.265] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:41.245] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:43.245] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:45.245] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:47.292] [INFO   ] [operation_logger] [web] ptz: 调整 #7: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:49.294] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:51.215] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:53.243] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:55.222] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:57.067] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:15:59.063] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:16:01.034] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:16:03.028] [INFO   ] [operation_logger] [web] ptz: 调整 #15: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:16:04.968] [INFO   ] [operation_logger] [web] ptz: 调整 #16: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:16:06.951] [INFO   ] [operation_logger] [web] ptz: 调整 #17: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:16:08.912] [INFO   ] [operation_logger] [web] ptz: 调整 #18: done R=undefined B=undefined Δ=undefined
+[2026-07-07 16:16:10.630] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (18步) ──
+[2026-07-07 16:28:17.917] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 167, "blue": 22}
+[2026-07-07 16:28:17.925] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-07 16:28:22.557] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 167, "blue": 22}
+[2026-07-07 16:28:22.565] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 16:46:10.512] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 16:46:13.450] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:15.448] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:17.428] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:19.385] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:21.360] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:23.324] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:25.307] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:27.251] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:29.161] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:31.066] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:33.090] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:35.076] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:37.442] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:39.318] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:41.156] [INFO   ] [operation_logger] [web] ptz: 调整 #15: done R=undefined B=undefined Δ=undefined
+[2026-07-07 16:46:42.917] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (15步) ──
+[2026-07-07 17:15:40.195] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 17:15:40.779] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 167, "blue": 22}
+[2026-07-07 17:15:40.783] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 17:15:41.134] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 17:15:41.137] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 20:51:25.252] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-07 20:51:26.023] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 167, "blue": 22}
+[2026-07-07 20:51:26.171] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 20:51:27.656] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-07 20:51:27.676] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 20:51:32.360] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 167, "blue": 22}
+[2026-07-07 20:51:32.498] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-07 20:51:38.080] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 167, "blue": 22}
+[2026-07-07 20:51:38.210] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-07 20:51:41.885] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-07 20:51:44.180] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1179~3046, Y=427~1899, 共2748224像素
+[2026-07-07 20:51:44.181] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: medium R=167 B=22 → R=168.9 G=14.3 B=47.7 (Δ=13.0932)
+[2026-07-07 20:51:48.260] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: medium R=165 B=20 → R=169.1 G=14.5 B=48.3 (Δ=12.9689)
+[2026-07-07 20:51:52.415] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: medium R=163 B=18 → R=165.9 G=14.8 B=41.5 (Δ=12.0319)
+[2026-07-07 20:51:56.160] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: medium R=161 B=16 → R=161.6 G=14.1 B=36 (Δ=11.9637)
+[2026-07-07 20:52:00.100] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: medium R=159 B=14 → R=161.3 G=14.2 B=33.8 (Δ=11.7577)
+[2026-07-07 20:52:04.119] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: medium R=157 B=12 → R=160.7 G=15.2 B=31 (Δ=10.5824)
+[2026-07-07 20:52:08.113] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: medium R=155 B=10 → R=159.7 G=15.6 B=29.4 (Δ=10.0903)
+[2026-07-07 20:52:12.110] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: fine R=155 B=10 → R=159.1 G=15.9 B=27.2 (Δ=9.7337)
+[2026-07-07 20:52:15.689] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: fine R=155 B=9 → R=161.8 G=16.3 B=29 (Δ=9.6793)
+[2026-07-07 20:52:19.426] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: fine R=155 B=8 → R=158.5 G=15.9 B=26 (Δ=9.6007)
+[2026-07-07 20:52:23.449] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: fine R=155 B=7 → R=158.7 G=15.9 B=25.8 (Δ=9.6094)
+[2026-07-07 20:52:27.201] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: fine R=155 B=6 → R=159 G=16.4 B=23.6 (Δ=9.1221)
+[2026-07-07 20:52:31.122] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: fine R=155 B=5 → R=159.6 G=16.4 B=23 (Δ=9.1301)
+[2026-07-07 20:52:35.345] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: fine R=155 B=4 → R=159.9 G=16.4 B=23 (Δ=9.1734)
+[2026-07-07 20:52:39.136] [DEBUG  ] [operation_logger] [web] ptz: 调整 #15: fine R=155 B=3 → R=158.4 G=15.7 B=22.2 (Δ=9.4898)
+[2026-07-07 20:52:43.103] [DEBUG  ] [operation_logger] [web] ptz: 调整 #16: fine R=155 B=2 → R=159 G=15.9 B=22.4 (Δ=9.4418)
+[2026-07-07 20:52:47.136] [DEBUG  ] [operation_logger] [web] ptz: 调整 #17: fine R=154 B=2 → R=159 G=15.8 B=21.6 (Δ=9.444)
+[2026-07-07 20:52:50.845] [DEBUG  ] [operation_logger] [web] ptz: 调整 #18: fine R=153 B=2 → R=158.4 G=16 B=21.2 (Δ=9.1999)
+[2026-07-07 20:52:54.835] [DEBUG  ] [operation_logger] [web] ptz: 调整 #19: fine R=152 B=2 → R=162.6 G=17.1 B=22.5 (Δ=8.8489)
+[2026-07-07 20:52:58.835] [DEBUG  ] [operation_logger] [web] ptz: 调整 #20: fine R=151 B=2 → R=162.2 G=17.2 B=22.1 (Δ=8.737)
+[2026-07-07 20:53:05.647] [ERROR  ] [operation_logger] [web] ptz: 白平衡失败: 截图失败
+[2026-07-07 20:53:05.655] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 20:54:59.461] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 151, "blue": 2}
+[2026-07-07 20:54:59.471] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-07 20:55:06.437] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "area"}
+[2026-07-07 20:55:06.613] [INFO   ] [operation_logger] [web] ptz: 对焦模式: area
+[2026-07-07 20:55:07.316] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 20:55:10.605] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1352~2663, Y=498~1700, 共1575822像素
+[2026-07-07 20:55:10.607] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: scan focus_near 反差=95.53 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 20:55:12.683] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: scan focus_near 反差=86.04 (0.2s) 采样(best=95.5,方向=近)
+[2026-07-07 20:55:15.102] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: scan focus_near 反差=77.26 (0.2s) 采样(best=95.5,方向=近)
+[2026-07-07 20:55:17.187] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: approach focus_far 反差=76.43 (0.2s) 样条峰值=95.5@pos=0.01,回退3步
+[2026-07-07 20:55:19.224] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=75.86 (0.2s) 逼近(剩余2步,峰值=95.5)
+[2026-07-07 20:55:21.302] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=77.5 (0.2s) 逼近(剩余1步,峰值=95.5)
+[2026-07-07 20:55:23.350] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: fine focus_far 反差=79.57 (0.1s) 粗逼近完成(best2=95.5),开始精逼近(0.1s)
+[2026-07-07 20:55:25.352] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: fine focus_near 反差=81.78 (0.1s) 精逼近(步1/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:27.345] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: fine focus_far 反差=77.57 (0.1s) 精逼近(步2/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:29.329] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: fine focus_near 反差=79.01 (0.1s) 精逼近(步3/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:31.287] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: fine focus_far 反差=76.12 (0.1s) 精逼近(步4/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:33.222] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: fine focus_near 反差=77.6 (0.1s) 精逼近(步5/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:35.185] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: fine focus_far 反差=76.56 (0.1s) 精逼近(步6/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:37.125] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: fine focus_near 反差=77.89 (0.1s) 精逼近(步7/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:39.105] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: fine focus_far 反差=76.61 (0.1s) 精逼近(步8/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:41.123] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: fine focus_near 反差=65.93 (0.1s) 精逼近(步9/10,best3=95.5,best2=95.5)
+[2026-07-07 20:55:43.102] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: scan focus_far 反差=78.6 (0.2s) 精逼近未达标(best3=0.0≤best2=0.0),全流程重启(尝试2/3)
+[2026-07-07 20:55:45.181] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: scan focus_far 反差=83.93 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-07 20:55:47.254] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: scan focus_far 反差=94.22 (0.2s) 采样(best=94.2,方向=远)
+[2026-07-07 20:55:49.299] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: scan focus_far 反差=90.46 (0.2s) 采样(best=94.2,方向=远)
+[2026-07-07 20:55:51.354] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: scan focus_far 反差=80.55 (0.2s) 采样(best=94.2,方向=远)
+[2026-07-07 20:55:53.407] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: approach focus_near 反差=77.08 (0.2s) 样条峰值=94.6@pos=1.22,回退3步
+[2026-07-07 20:55:55.477] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: approach focus_near 反差=79.83 (0.2s) 逼近(剩余2步,峰值=94.6)
+[2026-07-07 20:55:57.640] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: approach focus_near 反差=85.69 (0.2s) 逼近(剩余1步,峰值=94.6)
+[2026-07-07 20:55:59.834] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: fine focus_near 反差=95.62 (0.1s) 粗逼近完成(best2=95.6),开始精逼近(0.1s)
+[2026-07-07 20:56:01.891] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: done stop 反差=87.05 (0s) 对焦成功(best3=95.6,best2=95.6,best1=94.2)
+[2026-07-07 20:56:03.765] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=87.19 (26步) ──
+[2026-07-07 20:56:03.777] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-07 21:01:33.499] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:01:37.013] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:39.013] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:41.018] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:43.089] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:45.092] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:47.116] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:49.130] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:51.190] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:53.212] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:55.225] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:57.362] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:01:59.365] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:01.362] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:03.559] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:05.685] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:07.862] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:10.007] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:12.077] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:14.113] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:16.231] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:18.275] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:20.328] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:22.435] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:24.453] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:26.554] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:28.869] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:30.906] [INFO   ] [operation_logger] [web] ptz: 调整 #27: error R=undefined B=undefined Δ=undefined
+[2026-07-07 21:02:32.690] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (27步) ──
+[2026-07-07 21:07:32.916] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:07:36.167] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:38.260] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:40.292] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:42.331] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:44.482] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:46.606] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:48.651] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:50.906] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:52.957] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:54.943] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:57.041] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:07:59.138] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:01.166] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:03.196] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:05.238] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:07.232] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:09.251] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:11.259] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:13.268] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:15.307] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:17.893] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:20.185] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:22.203] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:24.276] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:26.313] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:28.300] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:30.408] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:32.377] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:34.418] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:36.880] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:38.956] [INFO   ] [operation_logger] [web] ptz: 调整 #31: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:40.977] [INFO   ] [operation_logger] [web] ptz: 调整 #32: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:43.032] [INFO   ] [operation_logger] [web] ptz: 调整 #33: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:45.053] [INFO   ] [operation_logger] [web] ptz: 调整 #34: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:47.369] [INFO   ] [operation_logger] [web] ptz: 调整 #35: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:49.683] [INFO   ] [operation_logger] [web] ptz: 调整 #36: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:52.033] [INFO   ] [operation_logger] [web] ptz: 调整 #37: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:54.359] [INFO   ] [operation_logger] [web] ptz: 调整 #38: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:56.681] [INFO   ] [operation_logger] [web] ptz: 调整 #39: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:08:59.023] [INFO   ] [operation_logger] [web] ptz: 调整 #40: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:09:01.358] [INFO   ] [operation_logger] [web] ptz: 调整 #41: error R=undefined B=undefined Δ=undefined
+[2026-07-07 21:09:03.073] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (41步) ──
+[2026-07-07 21:14:03.064] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:14:06.278] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:08.275] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:10.296] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:12.329] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:14.341] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:16.348] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:18.367] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:20.384] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:22.422] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:24.887] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:26.919] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:28.913] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:30.928] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:32.957] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:35.018] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:37.062] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:39.097] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:41.249] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:43.293] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:45.325] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:47.396] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:49.575] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:51.612] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:53.648] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:55.905] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:14:57.948] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:15:00.149] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:15:02.165] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:15:04.227] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:15:06.238] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:15:08.604] [INFO   ] [operation_logger] [web] ptz: 调整 #31: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:15:10.923] [INFO   ] [operation_logger] [web] ptz: 调整 #32: error R=undefined B=undefined Δ=undefined
+[2026-07-07 21:15:12.886] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (32步) ──
+[2026-07-07 21:20:12.903] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:20:16.188] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:18.215] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:20.254] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:22.324] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:24.383] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:26.415] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:28.519] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:30.622] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:32.847] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:34.993] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:36.984] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:38.990] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:41.045] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:43.053] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:45.087] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:47.087] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:49.166] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:51.206] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:53.208] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:55.243] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:57.288] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:20:59.298] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:01.320] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:03.414] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:05.518] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:07.635] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:09.815] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:11.894] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:13.955] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:16.128] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:18.620] [INFO   ] [operation_logger] [web] ptz: 调整 #31: error R=undefined B=undefined Δ=undefined
+[2026-07-07 21:21:20.381] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (31步) ──
+[2026-07-07 21:26:20.395] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:26:23.637] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:25.835] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:27.898] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:29.963] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:31.991] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:34.010] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:36.016] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:38.036] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:40.049] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:42.095] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:44.184] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:46.242] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:48.286] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:50.315] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:52.376] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:54.353] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:56.398] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:26:58.835] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:00.899] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:02.953] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:04.983] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:07.022] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:09.041] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:11.090] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:13.124] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:15.185] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:17.172] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:19.197] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:21.261] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:23.314] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:25.836] [INFO   ] [operation_logger] [web] ptz: 调整 #31: error R=undefined B=undefined Δ=undefined
+[2026-07-07 21:27:27.573] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (31步) ──
+[2026-07-07 21:32:27.483] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:32:30.961] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:33.006] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:35.016] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:37.048] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:39.086] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:41.118] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:43.158] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:45.154] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:47.287] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:49.321] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:51.474] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:53.718] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:55.740] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:57.790] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:32:59.885] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:01.893] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:03.865] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:05.863] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:07.909] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:09.946] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:11.988] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:14.064] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:16.077] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:18.094] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:20.120] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:22.083] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:24.096] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:26.103] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:28.241] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:30.522] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:33:35.420] [ERROR  ] [operation_logger] [web] ptz: 对焦错误: 截图失败
+[2026-07-07 21:38:35.441] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:38:38.950] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:40.998] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:43.031] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:45.026] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:47.174] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:49.215] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:51.224] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:53.214] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:55.219] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:57.211] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:38:59.244] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:01.209] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:03.237] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:05.277] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:07.299] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:09.449] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:11.539] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:13.718] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:15.759] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:17.779] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:19.801] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:21.948] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:23.987] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:26.012] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:28.042] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:30.043] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:32.050] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:34.036] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:36.088] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:38.133] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:40.157] [INFO   ] [operation_logger] [web] ptz: 调整 #31: error R=undefined B=undefined Δ=undefined
+[2026-07-07 21:39:41.884] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (31步) ──
+[2026-07-07 21:44:41.883] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:44:45.438] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:44:47.480] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:44:49.511] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:44:51.676] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:44:53.720] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:44:55.794] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:44:57.806] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:44:59.943] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:01.919] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:03.924] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:05.946] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:07.983] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:09.987] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:11.987] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:14.065] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:16.087] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:18.129] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:20.185] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:22.200] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:24.257] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:26.291] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:28.412] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:30.496] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:45:35.421] [ERROR  ] [operation_logger] [web] ptz: 对焦错误: 截图失败
+[2026-07-07 21:50:35.439] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:50:38.861] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:40.956] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:42.955] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:44.953] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:47.084] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:49.112] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:51.117] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:53.115] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:55.104] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:57.090] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:50:59.075] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:01.096] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:03.075] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:05.079] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:07.094] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:09.197] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:11.255] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:13.293] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:15.380] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:17.499] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:19.684] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:21.732] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:23.824] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:25.840] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:27.838] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:29.879] [INFO   ] [operation_logger] [web] ptz: 调整 #26: error R=undefined B=undefined Δ=undefined
+[2026-07-07 21:51:31.724] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (26步) ──
+[2026-07-07 21:56:31.734] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 21:56:35.266] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:37.281] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:39.410] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:41.449] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:43.503] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:45.504] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:47.497] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:49.680] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:51.688] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:53.720] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:55.745] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:57.775] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:56:59.799] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:01.833] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:03.811] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:05.923] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:07.957] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:09.956] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:11.977] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:14.024] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:16.080] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:18.117] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:20.188] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:22.187] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:24.196] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:26.237] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:28.262] [INFO   ] [operation_logger] [web] ptz: 调整 #27: error R=undefined B=undefined Δ=undefined
+[2026-07-07 21:57:30.028] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (27步) ──
+[2026-07-07 22:02:30.172] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:02:33.882] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:35.897] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:37.914] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:39.964] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:41.975] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:44.079] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:46.100] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:48.135] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:50.234] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:52.246] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:54.231] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:56.233] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:02:58.284] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:00.306] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:02.323] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:04.364] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:06.359] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:08.383] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:10.399] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:12.579] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:14.592] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:16.640] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:18.814] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:20.885] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:22.909] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:24.930] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:26.973] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:28.976] [INFO   ] [operation_logger] [web] ptz: 调整 #28: error R=undefined B=undefined Δ=undefined
+[2026-07-07 22:03:30.809] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (28步) ──
+[2026-07-07 22:08:30.833] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:08:34.092] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:36.183] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:38.189] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:40.201] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:42.245] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:44.291] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:46.293] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:48.331] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:50.322] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:52.377] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:54.441] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:56.640] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:08:58.819] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:00.852] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:02.939] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:04.989] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:06.993] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:09.120] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:11.155] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:13.167] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:15.184] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:17.231] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:19.280] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:21.277] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:23.342] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:25.371] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:27.389] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:29.423] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:31.572] [INFO   ] [operation_logger] [web] ptz: 调整 #29: error R=undefined B=undefined Δ=undefined
+[2026-07-07 22:09:33.602] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (29步) ──
+[2026-07-07 22:14:33.510] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:14:37.244] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:39.253] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:41.248] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:43.246] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:45.267] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:47.284] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:49.359] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:51.446] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:53.495] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:55.673] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:57.717] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:14:59.778] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:01.767] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:03.804] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:05.910] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:07.919] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:09.914] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:11.976] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:14.030] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:16.033] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:18.474] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:20.491] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:22.523] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:24.749] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:26.805] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:28.816] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:30.851] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:32.942] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:34.981] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:37.529] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:39.717] [INFO   ] [operation_logger] [web] ptz: 调整 #31: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:41.751] [INFO   ] [operation_logger] [web] ptz: 调整 #32: error R=undefined B=undefined Δ=undefined
+[2026-07-07 22:15:43.495] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (32步) ──
+[2026-07-07 22:20:43.518] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:20:47.472] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:20:49.467] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:20:51.473] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:20:53.500] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:20:55.514] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:20:57.499] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:20:59.758] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:01.746] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:03.769] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:05.895] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:07.907] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:09.949] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:11.961] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:13.987] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:16.035] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:18.042] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:20.095] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:22.100] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:24.133] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:26.139] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:28.171] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:30.195] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:32.222] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:34.396] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:36.488] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:38.491] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:40.753] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:42.781] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:44.802] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:46.968] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:48.983] [INFO   ] [operation_logger] [web] ptz: 调整 #31: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:51.026] [INFO   ] [operation_logger] [web] ptz: 调整 #32: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:53.115] [INFO   ] [operation_logger] [web] ptz: 调整 #33: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:55.136] [INFO   ] [operation_logger] [web] ptz: 调整 #34: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:57.163] [INFO   ] [operation_logger] [web] ptz: 调整 #35: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:21:59.160] [INFO   ] [operation_logger] [web] ptz: 调整 #36: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:01.525] [INFO   ] [operation_logger] [web] ptz: 调整 #37: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:03.901] [INFO   ] [operation_logger] [web] ptz: 调整 #38: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:06.232] [INFO   ] [operation_logger] [web] ptz: 调整 #39: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:08.703] [INFO   ] [operation_logger] [web] ptz: 调整 #40: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:11.004] [INFO   ] [operation_logger] [web] ptz: 调整 #41: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:13.450] [INFO   ] [operation_logger] [web] ptz: 调整 #42: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:15.510] [INFO   ] [operation_logger] [web] ptz: 调整 #43: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:17.687] [INFO   ] [operation_logger] [web] ptz: 调整 #44: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:19.750] [INFO   ] [operation_logger] [web] ptz: 调整 #45: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:21.790] [INFO   ] [operation_logger] [web] ptz: 调整 #46: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:23.823] [INFO   ] [operation_logger] [web] ptz: 调整 #47: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:25.889] [INFO   ] [operation_logger] [web] ptz: 调整 #48: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:27.913] [INFO   ] [operation_logger] [web] ptz: 调整 #49: done R=undefined B=undefined Δ=undefined
+[2026-07-07 22:22:29.728] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (49步) ──
+[2026-07-07 22:27:29.751] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:27:33.812] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:27:35.870] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:27:37.890] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:27:39.945] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:27:42.012] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:27:44.064] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:27:46.080] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:27:48.036] [INFO   ] [operation_logger] [web] ptz: 调整 #8: done R=undefined B=undefined Δ=undefined
+[2026-07-07 22:27:49.873] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (8步) ──
+[2026-07-07 22:32:49.848] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:32:53.197] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:32:55.229] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:32:57.247] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:32:59.676] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:01.690] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:03.747] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:05.858] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:07.899] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:09.892] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:12.038] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:14.038] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:16.052] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:18.099] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:20.158] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:22.190] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:24.242] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:26.306] [INFO   ] [operation_logger] [web] ptz: 调整 #17: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:28.451] [INFO   ] [operation_logger] [web] ptz: 调整 #18: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:30.491] [INFO   ] [operation_logger] [web] ptz: 调整 #19: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:32.721] [INFO   ] [operation_logger] [web] ptz: 调整 #20: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:34.703] [INFO   ] [operation_logger] [web] ptz: 调整 #21: done R=undefined B=undefined Δ=undefined
+[2026-07-07 22:33:36.472] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (21步) ──
+[2026-07-07 22:38:36.487] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:38:40.243] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:42.491] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:44.664] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:46.727] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:48.752] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:50.787] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:52.837] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:54.787] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:56.726] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:38:58.713] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:39:00.684] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:39:05.483] [ERROR  ] [operation_logger] [web] ptz: 对焦错误: 截图失败
+[2026-07-07 22:44:05.840] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:44:09.438] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:11.479] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:13.500] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:15.516] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:17.687] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:19.729] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:21.951] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:23.916] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:25.971] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:28.080] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:30.128] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:32.183] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:34.229] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:36.280] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:38.319] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:40.358] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:42.399] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:44.471] [INFO   ] [operation_logger] [web] ptz: 调整 #18: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:46.495] [INFO   ] [operation_logger] [web] ptz: 调整 #19: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:48.544] [INFO   ] [operation_logger] [web] ptz: 调整 #20: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:50.709] [INFO   ] [operation_logger] [web] ptz: 调整 #21: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:52.720] [INFO   ] [operation_logger] [web] ptz: 调整 #22: done R=undefined B=undefined Δ=undefined
+[2026-07-07 22:44:54.497] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (22步) ──
+[2026-07-07 22:49:54.519] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:49:57.978] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:00.110] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:02.132] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:04.134] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:06.151] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:08.138] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:10.178] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:12.214] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:14.251] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:16.285] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:18.282] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:20.294] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:22.339] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:24.355] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:26.410] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:28.564] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:30.734] [INFO   ] [operation_logger] [web] ptz: 调整 #17: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:32.899] [INFO   ] [operation_logger] [web] ptz: 调整 #18: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:34.993] [INFO   ] [operation_logger] [web] ptz: 调整 #19: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:37.060] [INFO   ] [operation_logger] [web] ptz: 调整 #20: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:38.993] [INFO   ] [operation_logger] [web] ptz: 调整 #21: done R=undefined B=undefined Δ=undefined
+[2026-07-07 22:50:40.750] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (21步) ──
+[2026-07-07 22:55:40.922] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 22:55:44.337] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:55:46.333] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:55:48.388] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:55:50.431] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:55:52.455] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:55:54.501] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 22:55:56.538] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:55:58.467] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:00.408] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:02.384] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:04.319] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:06.302] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:08.245] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:10.204] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:12.139] [INFO   ] [operation_logger] [web] ptz: 调整 #15: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:14.082] [INFO   ] [operation_logger] [web] ptz: 调整 #16: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:16.051] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:18.137] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:20.177] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:22.314] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:24.348] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:26.366] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:28.504] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:30.549] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:32.704] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:34.954] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:37.000] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:39.046] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:41.147] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:43.183] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:45.236] [INFO   ] [operation_logger] [web] ptz: 调整 #31: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:47.312] [INFO   ] [operation_logger] [web] ptz: 调整 #32: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:49.384] [INFO   ] [operation_logger] [web] ptz: 调整 #33: error R=undefined B=undefined Δ=undefined
+[2026-07-07 22:56:51.132] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (33步) ──
+[2026-07-07 23:01:50.891] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 23:01:54.091] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:01:56.137] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:01:58.175] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:00.219] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:02.251] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:04.409] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:06.412] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:08.430] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:10.447] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:12.693] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:14.749] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:16.784] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:18.940] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:20.970] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:22.950] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:25.113] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:27.082] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:29.100] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:31.129] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:33.154] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:35.640] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:37.971] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:40.005] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:42.017] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:44.140] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:46.142] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:48.202] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:50.283] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:52.466] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:54.675] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:56.839] [INFO   ] [operation_logger] [web] ptz: 调整 #31: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:02:58.900] [INFO   ] [operation_logger] [web] ptz: 调整 #32: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:01.263] [INFO   ] [operation_logger] [web] ptz: 调整 #33: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:03.640] [INFO   ] [operation_logger] [web] ptz: 调整 #34: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:05.965] [INFO   ] [operation_logger] [web] ptz: 调整 #35: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:08.334] [INFO   ] [operation_logger] [web] ptz: 调整 #36: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:10.714] [INFO   ] [operation_logger] [web] ptz: 调整 #37: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:13.011] [INFO   ] [operation_logger] [web] ptz: 调整 #38: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:15.420] [INFO   ] [operation_logger] [web] ptz: 调整 #39: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:17.751] [INFO   ] [operation_logger] [web] ptz: 调整 #40: error R=undefined B=undefined Δ=undefined
+[2026-07-07 23:03:19.656] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (40步) ──
+[2026-07-07 23:08:19.673] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 23:08:23.167] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:25.247] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:27.362] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:29.653] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:31.715] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:33.765] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:35.845] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:37.921] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:39.983] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:41.985] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:44.099] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:46.138] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:48.220] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:50.375] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:52.429] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:54.426] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:56.458] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:08:58.676] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:00.711] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:02.771] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:04.813] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:06.850] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:08.884] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:10.889] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:12.884] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:14.883] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:16.895] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:18.990] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:21.055] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:23.484] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:25.655] [INFO   ] [operation_logger] [web] ptz: 调整 #31: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:27.730] [INFO   ] [operation_logger] [web] ptz: 调整 #32: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:29.754] [INFO   ] [operation_logger] [web] ptz: 调整 #33: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:31.777] [INFO   ] [operation_logger] [web] ptz: 调整 #34: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:33.791] [INFO   ] [operation_logger] [web] ptz: 调整 #35: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:35.813] [INFO   ] [operation_logger] [web] ptz: 调整 #36: error R=undefined B=undefined Δ=undefined
+[2026-07-07 23:09:37.711] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (36步) ──
+[2026-07-07 23:14:37.708] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 23:14:41.241] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:43.238] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:45.323] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:47.447] [INFO   ] [operation_logger] [web] ptz: 调整 #4: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:49.691] [INFO   ] [operation_logger] [web] ptz: 调整 #5: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:51.765] [INFO   ] [operation_logger] [web] ptz: 调整 #6: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:53.806] [INFO   ] [operation_logger] [web] ptz: 调整 #7: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:55.862] [INFO   ] [operation_logger] [web] ptz: 调整 #8: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:57.936] [INFO   ] [operation_logger] [web] ptz: 调整 #9: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:14:59.999] [INFO   ] [operation_logger] [web] ptz: 调整 #10: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:02.025] [INFO   ] [operation_logger] [web] ptz: 调整 #11: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:04.026] [INFO   ] [operation_logger] [web] ptz: 调整 #12: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:06.123] [INFO   ] [operation_logger] [web] ptz: 调整 #13: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:08.153] [INFO   ] [operation_logger] [web] ptz: 调整 #14: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:10.220] [INFO   ] [operation_logger] [web] ptz: 调整 #15: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:12.349] [INFO   ] [operation_logger] [web] ptz: 调整 #16: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:14.415] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:16.434] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:18.751] [INFO   ] [operation_logger] [web] ptz: 调整 #19: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:20.796] [INFO   ] [operation_logger] [web] ptz: 调整 #20: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:22.844] [INFO   ] [operation_logger] [web] ptz: 调整 #21: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:25.043] [INFO   ] [operation_logger] [web] ptz: 调整 #22: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:26.987] [INFO   ] [operation_logger] [web] ptz: 调整 #23: done R=undefined B=undefined Δ=undefined
+[2026-07-07 23:15:28.746] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (23步) ──
+[2026-07-07 23:20:28.759] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 23:20:32.251] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:34.669] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:36.766] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:38.808] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:40.963] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:42.978] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:45.016] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:47.026] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:48.980] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:50.889] [INFO   ] [operation_logger] [web] ptz: 调整 #10: done R=undefined B=undefined Δ=undefined
+[2026-07-07 23:20:52.696] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (10步) ──
+[2026-07-07 23:25:52.705] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 23:25:56.179] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:25:58.267] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:26:00.410] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:26:02.711] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:26:04.765] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:26:06.821] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:26:08.852] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:26:10.777] [INFO   ] [operation_logger] [web] ptz: 调整 #8: done R=undefined B=undefined Δ=undefined
+[2026-07-07 23:26:12.654] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (8步) ──
+[2026-07-07 23:31:12.598] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 23:31:15.632] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:31:17.695] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:31:19.734] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:31:21.893] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:31:23.925] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:31:25.970] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:31:28.080] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:31:30.028] [INFO   ] [operation_logger] [web] ptz: 调整 #8: done R=undefined B=undefined Δ=undefined
+[2026-07-07 23:31:31.787] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (8步) ──
+[2026-07-07 23:36:31.800] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 23:36:34.728] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:36.743] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:38.804] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:40.861] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:42.940] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:45.005] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:47.113] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:49.039] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:50.960] [INFO   ] [operation_logger] [web] ptz: 调整 #9: done R=undefined B=undefined Δ=undefined
+[2026-07-07 23:36:52.715] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (9步) ──
+[2026-07-07 23:41:52.730] [INFO   ] [operation_logger] [web] ptz: ── 对焦定时执行 ──
+[2026-07-07 23:41:55.535] [INFO   ] [operation_logger] [web] ptz: 调整 #1: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:41:57.615] [INFO   ] [operation_logger] [web] ptz: 调整 #2: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:41:59.764] [INFO   ] [operation_logger] [web] ptz: 调整 #3: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:01.799] [INFO   ] [operation_logger] [web] ptz: 调整 #4: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:03.836] [INFO   ] [operation_logger] [web] ptz: 调整 #5: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:05.959] [INFO   ] [operation_logger] [web] ptz: 调整 #6: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:07.991] [INFO   ] [operation_logger] [web] ptz: 调整 #7: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:09.953] [INFO   ] [operation_logger] [web] ptz: 调整 #8: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:11.887] [INFO   ] [operation_logger] [web] ptz: 调整 #9: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:13.869] [INFO   ] [operation_logger] [web] ptz: 调整 #10: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:15.833] [INFO   ] [operation_logger] [web] ptz: 调整 #11: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:17.796] [INFO   ] [operation_logger] [web] ptz: 调整 #12: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:19.770] [INFO   ] [operation_logger] [web] ptz: 调整 #13: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:21.839] [INFO   ] [operation_logger] [web] ptz: 调整 #14: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:23.793] [INFO   ] [operation_logger] [web] ptz: 调整 #15: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:25.743] [INFO   ] [operation_logger] [web] ptz: 调整 #16: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:27.684] [INFO   ] [operation_logger] [web] ptz: 调整 #17: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:29.764] [INFO   ] [operation_logger] [web] ptz: 调整 #18: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:31.815] [INFO   ] [operation_logger] [web] ptz: 调整 #19: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:33.873] [INFO   ] [operation_logger] [web] ptz: 调整 #20: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:35.936] [INFO   ] [operation_logger] [web] ptz: 调整 #21: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:38.014] [INFO   ] [operation_logger] [web] ptz: 调整 #22: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:40.042] [INFO   ] [operation_logger] [web] ptz: 调整 #23: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:42.092] [INFO   ] [operation_logger] [web] ptz: 调整 #24: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:44.123] [INFO   ] [operation_logger] [web] ptz: 调整 #25: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:46.176] [INFO   ] [operation_logger] [web] ptz: 调整 #26: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:48.298] [INFO   ] [operation_logger] [web] ptz: 调整 #27: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:50.366] [INFO   ] [operation_logger] [web] ptz: 调整 #28: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:52.395] [INFO   ] [operation_logger] [web] ptz: 调整 #29: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:54.594] [INFO   ] [operation_logger] [web] ptz: 调整 #30: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:56.784] [INFO   ] [operation_logger] [web] ptz: 调整 #31: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:42:58.756] [INFO   ] [operation_logger] [web] ptz: 调整 #32: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:00.797] [INFO   ] [operation_logger] [web] ptz: 调整 #33: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:03.005] [INFO   ] [operation_logger] [web] ptz: 调整 #34: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:05.040] [INFO   ] [operation_logger] [web] ptz: 调整 #35: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:07.101] [INFO   ] [operation_logger] [web] ptz: 调整 #36: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:09.239] [INFO   ] [operation_logger] [web] ptz: 调整 #37: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:11.543] [INFO   ] [operation_logger] [web] ptz: 调整 #38: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:13.580] [INFO   ] [operation_logger] [web] ptz: 调整 #39: scan R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:15.625] [INFO   ] [operation_logger] [web] ptz: 调整 #40: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:17.676] [INFO   ] [operation_logger] [web] ptz: 调整 #41: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:19.749] [INFO   ] [operation_logger] [web] ptz: 调整 #42: approach R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:21.866] [INFO   ] [operation_logger] [web] ptz: 调整 #43: fine R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:23.797] [INFO   ] [operation_logger] [web] ptz: 调整 #44: done R=undefined B=undefined Δ=undefined
+[2026-07-07 23:43:25.648] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: R=undefined B=undefined (44步) ──
+[2026-07-08 01:04:00.862] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 0}}
+[2026-07-08 01:04:00.870] [INFO   ] [operation_logger] [web] ptz: 亮度: 0
+[2026-07-08 01:04:06.612] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 43}}
+[2026-07-08 01:04:06.782] [INFO   ] [operation_logger] [web] ptz: 亮度: 43
+[2026-07-08 01:04:09.236] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 97}}
+[2026-07-08 01:04:09.246] [INFO   ] [operation_logger] [web] ptz: 亮度: 97
+[2026-07-08 01:04:10.586] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 0}}
+[2026-07-08 01:04:10.742] [INFO   ] [operation_logger] [web] ptz: 亮度: 0
+[2026-07-08 01:04:13.065] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 47}}
+[2026-07-08 01:04:13.075] [INFO   ] [operation_logger] [web] ptz: 亮度: 47

@@ -1,0 +1,69 @@
+{
+  "version": "v8.01",
+  "timestamp": "2026-07-01T11:49:58.922191",
+  "total": 12,
+  "passed": 8,
+  "failed": 4,
+  "results": [
+    {
+      "test": "首页加载",
+      "passed": true,
+      "detail": "URL=http://127.0.0.1:10280"
+    },
+    {
+      "test": "页面标题",
+      "passed": true,
+      "detail": "title=AstroHub"
+    },
+    {
+      "test": "控制台页面",
+      "passed": false,
+      "detail": "导航失败: Locator.count: Unexpected token \"=\" while parsing css selector \"button:has-text(\"控制台\"), [data-page=\"console\"], text=\"控制台\", text=\"实时\", text=\"播放\", text=\"监控\"\". Did you mean to CSS.escape it?"
+    },
+    {
+      "test": "高级功能页面",
+      "passed": false,
+      "detail": "导航失败: Locator.count: Unexpected token \"=\" while parsing css selector \"button:has-text(\"高级\"), [data-page=\"advanced\"], text=\"高级\", text=\"测试\"\". Did you mean to CSS.escape it?"
+    },
+    {
+      "test": "ISAPI 控制台",
+      "passed": false,
+      "detail": "导航失败"
+    },
+    {
+      "test": "回放页面",
+      "passed": false,
+      "detail": "导航失败: Locator.count: Unexpected token \"=\" while parsing css selector \"button:has-text(\"回放\"), [data-page=\"replay\"], text=\"回放\", text=\"录像回放\"\". Did you mean to CSS.escape it?"
+    },
+    {
+      "test": "API: 设备列表",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API: PTZ 位置",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API: 图像-光圈",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API: 图像-快门",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API: 图像-白平衡",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API: 图像-降噪",
+      "passed": true,
+      "detail": "status=200"
+    }
+  ]
+}

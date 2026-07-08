@@ -1,0 +1,7 @@
+[2026-06-26 04:57:24.463] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-26 07:04:41.171] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-26 07:12:02.974] [INFO   ] [operation_logger] [ptz] preset_goto: {"device": "192.168.5.72", "preset_id": 10}
+[2026-06-26 07:12:02.980] [INFO   ] [operation_logger] [web] ptz: 预置点: 前往 #10
+[2026-06-26 07:12:07.854] [INFO   ] [operation_logger] [ptz] preset_goto: {"device": "192.168.5.72", "preset_id": 10}
+[2026-06-26 07:12:07.932] [INFO   ] [operation_logger] [web] ptz: 预置点: 前往 #10
+[2026-06-26 10:13:59.727] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接

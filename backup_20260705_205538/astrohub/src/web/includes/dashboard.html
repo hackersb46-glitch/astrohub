@@ -1,0 +1,32 @@
+        <div class="page active" id="page-dashboard">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">PTZ 设备</div>
+                    <div class="card-value" id="devCount">0</div>
+                    <div class="card-sub"><span id="devOnline" style="font-size:16px;color:#3fb950">0</span> 在线 / <span id="devTotal" style="font-size:16px">0</span> 总计</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">视频流</div>
+                    <div class="card-value" id="streamCount">0</div>
+                    <div class="card-sub" id="streamStatus">无活跃流</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">校准状态</div>
+                    <div class="card-value green" id="calStatus">就绪</div>
+                    <div class="card-sub" id="calDetail">上次校准: --</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">ASCOM</div>
+                    <div class="card-value" id="ascomStatus">未连接</div>
+                    <div class="card-sub" id="ascomDetail">0 个设备</div>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="card"><div class="card-title">CPU 使用率</div><div class="progress-bar"><div class="progress-fill green" id="cpuBar" style="width:0%"></div></div><div class="card-sub" id="cpuVal">0%</div></div>
+                <div class="card"><div class="card-title">内存使用率</div><div class="progress-bar"><div class="progress-fill green" id="memBar" style="width:0%"></div></div><div class="card-sub" id="memVal">0%</div></div>
+                <div class="card"><div class="card-title">磁盘使用率</div><div class="progress-bar"><div class="progress-fill green" id="diskBar" style="width:0%"></div></div><div class="card-sub" id="diskVal">0%</div></div>
+            </div>
+            <div style="font-size:18px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #21262d">系统日志</div>
+            <div id="logContainer" style="max-height:200px;overflow-y:auto"><div class="log-entry info">系统已就绪</div></div>
+        </div>
+        <!-- ==================== 设备管理 ==================== -->

@@ -1,7 +1,7 @@
 <!-- 高级功能页面 - v5.31 左中右布局 -->
 <div class="page" id="page-advanced">
     <div class="adv-layout">
-        <!-- 左侧：测试项目 (25%) -->
+        <!-- 左侧:测试项目 (25%) -->
         <div class="adv-left">
             <div class="adv-section-title">测试项目</div>
             <div class="adv-menu">
@@ -16,6 +16,11 @@
                 <button class="adv-menu-item" data-test="speed" onclick="selectAdvTest('speed')">
                     <span class="menu-icon">⚡</span>
                     <span>速度测试</span>
+                    <span class="speed-profile-btns" style="margin-left:8px;font-size:11px">
+                        <label style="margin-right:4px;cursor:pointer"><input type="radio" name="speedProfile" value="lite" checked style="margin-right:1px">lite</label>
+                        <label style="margin-right:4px;cursor:pointer"><input type="radio" name="speedProfile" value="medium" style="margin-right:1px">mid</label>
+                        <label style="cursor:pointer"><input type="radio" name="speedProfile" value="full" style="margin-right:1px">full</label>
+                    </span>
                 </button>
                 <button class="adv-menu-item" data-test="stream" onclick="selectAdvTest('stream')">
                     <span class="menu-icon">📡</span>
@@ -33,7 +38,7 @@
             </div>
         </div>
 
-        <!-- 中间：实时画面 (55%) -->
+        <!-- 中间:实时画面 (55%) -->
         <div class="adv-center">
             <div class="adv-section-title">实时画面</div>
             <div class="adv-video-box" id="advVideoBox">
@@ -46,9 +51,9 @@
             </div>
         </div>
 
-        <!-- 右侧：测试输出 (20%) -->
+        <!-- 右侧:测试输出 (20%) -->
         <div class="adv-right">
-            <div class="adv-section-title">测试输出</div>
+            <div class="adv-section-title">测试输出 <span id="advProgress" style="float:right;font-size:12px;color:#58a6ff"></span></div>
             <div class="adv-output" id="advOutput">
                 <div class="output-line info">系统就绪</div>
             </div>
@@ -148,14 +153,16 @@
 }
 
 .adv-video-box {
-    flex: 1;
     background: #161b22;
     border-radius: 8px;
     border: 1px solid #21262d;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
+    /* v7.102: 固定16:9比例,使用max-width确保不超过容器 */
+    aspect-ratio: 16/9;
+    width: 100%;
+    max-width: 100%;
 }
 
 .adv-output {
@@ -168,7 +175,11 @@
     max-height: 300px;
     font-family: 'Consolas', monospace;
     font-size: 12px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+
+.adv-output::-webkit-scrollbar { display: none; }
 
 .output-line {
     padding: 2px 0;
@@ -189,7 +200,12 @@
     padding: 12px;
     overflow-y: auto;
     font-size: 12px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+
+.adv-result::-webkit-scrollbar { display: none; }
+
 </style>
 
 <script>
@@ -200,7 +216,7 @@ function selectAdvTest(test) {
     currentAdvTest = test;
     document.querySelectorAll('.adv-menu-item').forEach(el => el.classList.remove('active'));
     document.querySelector(`[data-test="${test}"]`).classList.add('active');
-    addAdvOutput('info', '选择测试: ' + test);
+    // v7.53: 删除"选择测试"输出,用户切换测试项目不需要额外提示
 }
 
 function addAdvOutput(type, text) {
@@ -239,58 +255,78 @@ function runAdvTest() {
     btnRun.disabled = true;
     btnStop.disabled = false;
 
-    addAdvOutput('info', '开始测试: ' + currentAdvTest);
-    addAdvOutput('info', '设备: ' + deviceIp);
+    // v7.54: 禁用其他页面标签
+    document.querySelectorAll('.nav-btn[data-page]').forEach(function(btn) {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+    });
 
-    const apiMap = {
-        'function': '/api/v1/advanced/function/run',
-        'limit': '/api/v1/advanced/limit/run',
-        'speed': '/api/v1/advanced/speed/run',
-        'astrocal': '/api/v1/calibrate/start'
-    };
+    // v7.52: 显示进度
+    var progressEl = document.getElementById('advProgress');
+    if (progressEl) progressEl.textContent = currentAdvTest + '...\u8fd0\u884c\u4e2d';
+
+    addAdvOutput('info', '开始测试: ' + currentAdvTest);
+    // v7.52: 显示设备名称而非IP
+    var deviceName = window.connectedDevice.name || window.connectedDevice.device_name || deviceIp;
+    addAdvOutput('info', '设备: ' + deviceName);
 
     if (currentAdvTest === 'stream') {
-        addAdvOutput('info', '推流控制，请使用主控台');
+        addAdvOutput('info', '推流控制,请使用主控台');
         btnRun.disabled = false;
         btnStop.disabled = true;
         return;
     }
 
     if (currentAdvTest === 'astrocal') {
-        // 天文校准 - 跳转到校准页面
         startAstroCalibration(deviceIp, username, password);
         btnRun.disabled = false;
         btnStop.disabled = true;
         return;
     }
 
-    const apiUrl = apiMap[currentAdvTest];
-    if (!apiUrl) {
-        addAdvOutput('error', '未知测试类型');
-        btnRun.disabled = false;
-        btnStop.disabled = true;
-        return;
+    // v7.120: 统一使用异步检测API
+    var detectApiUrl = '/api/v1/advanced/detect/start';
+    var detectItems = [currentAdvTest];
+
+    // v7.52: 速度测试读取档位参数
+    var requestBody = {
+        device_ip: deviceIp,
+        username: username,
+        password: password
+    };
+    if (currentAdvTest === 'speed') {
+        var speedRadio = document.querySelector('input[name="speedProfile"]:checked');
+        if (speedRadio) {
+            requestBody.speed_profile = speedRadio.value;
+            addAdvOutput('info', '档位: ' + speedRadio.value);
+        }
     }
 
-    fetch(apiUrl, {
+    // v8.66: 暂停主控台轮询
+    pausePtzPolling();
+
+    fetch(detectApiUrl, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             device_ip: deviceIp,
             username: username,
-            password: password
+            password: password,
+            items: detectItems,
+            speed_profile: requestBody.speed_profile || 'lite'
         })
     })
     .then(r => r.json())
     .then(data => {
-        btnRun.disabled = false;
-        btnStop.disabled = true;
-
-        if (data.success || data.status) {
-            addAdvOutput('success', '测试完成');
-            renderAdvResult(data);
+        if (data.success && data.task_id) {
+            addAdvOutput('info', '任务已启动: ' + data.task_id.substring(0,8));
+            pollAdvProgress(data.task_id);
         } else {
-            addAdvOutput('error', data.message || '测试失败');
+            btnRun.disabled = false;
+            btnStop.disabled = true;
+            addAdvOutput('error', data.message || '启动失败');
+            if (progressEl) progressEl.textContent = currentAdvTest + ' 失败';
         }
     })
     .catch(e => {
@@ -302,13 +338,33 @@ function runAdvTest() {
 
 function stopAdvTest() {
     addAdvOutput('warn', '停止测试');
+    // v7.112: 清除轮询 + 调后端取消
+    if (advPollInterval) { clearInterval(advPollInterval); advPollInterval = null; }
+    // v8.66: 恢复主控台轮询
+    if (window.resumePtzPolling) resumePtzPolling();
+    if (advTaskId) {
+        fetch('/api/v1/advanced/detect/cancel/' + advTaskId, { method: 'POST' })
+        .then(r => r.json())
+        .then(d => { if (d.success) addAdvOutput('warn', '任务已取消: ' + advTaskId.substring(0,8)); })
+        .catch(function () {});
+        advTaskId = null;
+    }
+    var progressEl = document.getElementById('advProgress');
+    if (progressEl) progressEl.textContent = '';
     document.getElementById('btnAdvRun').disabled = false;
     document.getElementById('btnAdvStop').disabled = true;
+    // v7.54: 恢复其他页面标签
+    document.querySelectorAll('.nav-btn[data-page]').forEach(function(btn) {
+        btn.disabled = false;
+        btn.style.opacity = '';
+        btn.style.cursor = '';
+    });
 }
 
 function renderAdvResult(data) {
     const resultEl = document.getElementById('advResult');
-    const results = data.results || data;
+    // v7.52: 修复字段名不匹配:后端返回 functions(不是 results)
+    const results = data.functions || data.results || data;
 
     // 检测结果类型
     if (results.pan_min !== undefined || results.tilt_min !== undefined) {
@@ -328,22 +384,73 @@ function renderAdvResult(data) {
 
         html += '</table>';
 
-        // 翻转状态
-        if (results.has_flip !== undefined) {
+        // v7.54: P轴限位状态 + T轴翻转状态
+        if (results.pan_has_limit !== undefined || results.has_flip !== undefined) {
             html += '<div style="margin-top:8px;padding:8px;background:#161b22;border-radius:4px">';
-            html += '<span style="color:#8b949e">翻转支持:</span> ';
-            html += results.has_flip ? '<span style="color:#3fb950">✓ 是</span>' : '<span style="color:#f85149">✗ 否</span>';
+            if (results.pan_has_limit !== undefined) {
+                html += '<div>';
+                html += '<span style="color:#8b949e">P轴(水平)限位:</span> ';
+                html += results.pan_has_limit ? '<span style="color:#3fb950">✓ 是</span>' : '<span style="color:#f85149">✗ 否</span>';
+                html += '</div>';
+            }
+            if (results.has_flip !== undefined) {
+                html += '<div style="margin-top:4px">';
+                html += '<span style="color:#8b949e">T轴(垂直)自动翻转:</span> ';
+                html += results.has_flip ? '<span style="color:#3fb950">✓ 是</span>' : '<span style="color:#f85149">✗ 否</span>';
+                html += '</div>';
+            }
             html += '</div>';
         }
 
-        // 稳定性验证
-        if (results.stability_check !== undefined) {
-            html += '<div style="margin-top:4px;padding:8px;background:#161b22;border-radius:4px">';
-            html += '<span style="color:#8b949e">稳定性:</span> ';
-            html += results.stability_check ? '<span style="color:#3fb950">✓ 通过</span>' : '<span style="color:#f85149">✗ 失败</span>';
-            html += '</div>';
-        }
+        resultEl.innerHTML = html;
+    } else if (results.speed_map !== undefined || results.pan_speed !== undefined) {
+        // 速度测试结果
+        let html = '<div style="font-size:12px">';
+        html += '<div style="margin-bottom:8px;font-weight:600;color:#58a6ff">⚡ 速度测试结果</div>';
+        html += '<div style="margin-bottom:8px;color:#8b949e">';
+        html += '档位: <b>' + (results.speed_profile || '-') + '</b> | ';
+        html += '测试数: <b>' + (results.total_tests || 0) + '</b>';
+        html += '</div>';
 
+        // Speed table
+        if (results.pan_speed || results.tilt_speed) {
+            html += '<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:8px">';
+            html += '<tr style="border-bottom:1px solid #30363d"><th style="text-align:left;padding:4px">速度档位</th><th style="text-align:center;padding:4px">Pan (°/s)</th><th style="text-align:right;padding:4px">Tilt (°/s)</th></tr>';
+            
+            const panSpeed = results.pan_speed || {};
+            const tiltSpeed = results.tilt_speed || {};
+            const allLevels = new Set([...Object.keys(panSpeed), ...Object.keys(tiltSpeed)]);
+            
+            for (const level of Array.from(allLevels).sort((a,b) => a - b)) {
+                html += '<tr style="border-bottom:1px solid #21262d">';
+                html += '<td style="padding:4px">' + level + '</td>';
+                html += '<td style="text-align:center;padding:4px">' + (panSpeed[level] || '-') + '</td>'; 
+                html += '<td style="text-align:right;padding:4px">' + (tiltSpeed[level] || '-') + '</td>'; 
+                html += '</tr>'; 
+            }
+            html += '</table>'; 
+        }
+        // ZOOM分组表格
+        if (results.by_zoom) {
+            html += '<div style="margin-top:12px;font-weight:600;color:#58a6ff">🔍 ZOOM分组速度</div>'; 
+            html += '<table style="width:100%;font-size:11px;border-collapse:collapse;margin-top:8px">';
+            html += '<tr style="border-bottom:1px solid #30363d"><th style="text-align:left;padding:4px">Zoom</th><th style="text-align:center;padding:4px">档位</th><th style="text-align:center;padding:4px">Pan (°/s)</th><th style="text-align:right;padding:4px">Tilt (°/s)</th></tr>'; 
+            for (const [zoomVal, axisData] of Object.entries(results.by_zoom).sort((a,b) => a - b)) {
+                const panData = axisData.pan || {}; 
+                const tiltData = axisData.tilt || {}; 
+                const levels = new Set([...Object.keys(panData), ...Object.keys(tiltData)]);
+                for (const level of Array.from(levels).sort((a,b) => a - b)) {
+                    html += '<tr style="border-bottom:1px solid #21262d">'; 
+                    html += '<td style="padding:4px">' + zoomVal + '</td>'; 
+                    html += '<td style="text-align:center;padding:4px">' + level + '</td>'; 
+                    html += '<td style="text-align:center;padding:4px">' + (panData[level] || '-') + '</td>'; 
+                    html += '<td style="text-align:right;padding:4px">' + (tiltData[level] || '-') + '</td>'; 
+                    html += '</tr>'; 
+                }
+            }
+            html += '</table>'; 
+        }
+        html += '</div>'; 
         resultEl.innerHTML = html;
     } else {
         // 功能测试结果
@@ -354,7 +461,8 @@ function renderAdvResult(data) {
             if (typeof val === 'object' && val !== null) {
                 const label = val.label || key;
                 const supported = val.supported ? 'Y' : 'N';
-                const range = (val.min_val || '-') + '~' + (val.max_val || '-');
+                // v7.52: 兼容两种字段名:min/min_val, max/max_val
+                const range = (val.min || val.min_val || '-') + '~' + (val.max || val.max_val || '-');
                 html += '<tr style="border-bottom:1px solid #21262d"><td style="padding:4px">' + label + '</td><td style="text-align:center;padding:4px">' + supported + '</td><td style="text-align:right;padding:4px">' + range + '</td></tr>';
             }
         }
@@ -368,7 +476,7 @@ function renderAdvResult(data) {
 function updateAdvVideoStatus() {
     const statusEl = document.getElementById('advVideoStatus');
     if (window.connectedDevice && window.connectedDevice.ip) {
-        if (statusEl) statusEl.textContent = '已连接: ' + window.connectedDevice.ip;
+        if (statusEl) statusEl.textContent = '\u5df2\u8fde\u63a5: ' + (window.connectedDevice.name || window.connectedDevice.device_name || window.connectedDevice.ip);
     } else {
         if (statusEl) statusEl.textContent = '连接设备后显示实时画面';
     }
@@ -380,11 +488,11 @@ let astroCalMethod = 'manual'; // 'manual' or 'auto'
 
 function startAstroCalibration(deviceIp, username, password) {
     addAdvOutput('info', '启动天文校准...');
-    
-    // 获取观测站位置（从配置或默认值）
+
+    // 获取观测站位置(从配置或默认值)
     const obsLat = window.astroCalConfig?.obs_lat || 29.45;
     const obsLon = window.astroCalConfig?.obs_lon || 100.33;
-    
+
     fetch('/api/v1/calibrate/start', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -400,13 +508,13 @@ function startAstroCalibration(deviceIp, username, password) {
         if (data.success) {
             astroCalSession = deviceIp;
             addAdvOutput('success', '校准会话已创建');
-            
+
             if (astroCalMethod === 'manual' && data.recommended_stars) {
                 showAstroCalStars(data.recommended_stars);
             } else {
                 addAdvOutput('info', '请拍摄天空进行星图解析');
             }
-            
+
             renderAstroCalPanel();
         } else {
             addAdvOutput('error', data.message || '启动失败');
@@ -426,16 +534,16 @@ function showAstroCalStars(stars) {
 
 function renderAstroCalPanel() {
     const resultEl = document.getElementById('advResult');
-    
+
     let html = '<div style="font-size:12px">';
     html += '<div style="margin-bottom:8px;font-weight:600;color:#58a6ff">🌟 天文校准</div>';
-    
+
     // 校准方法选择
     html += '<div style="margin-bottom:12px">';
     html += '<label style="color:#8b949e;margin-right:12px"><input type="radio" name="calMethod" value="manual" ' + (astroCalMethod === 'manual' ? 'checked' : '') + ' onchange="setAstroCalMethod(\'manual\')"> 手动对准</label>';
     html += '<label style="color:#8b949e"><input type="radio" name="calMethod" value="auto" ' + (astroCalMethod === 'auto' ? 'checked' : '') + ' onchange="setAstroCalMethod(\'auto\')"> 自动解析</label>';
     html += '</div>';
-    
+
     // 操作区域
     if (astroCalMethod === 'manual') {
         html += '<div style="margin-bottom:8px">';
@@ -447,21 +555,21 @@ function renderAstroCalPanel() {
     } else {
         html += '<button class="btn btn-primary btn-sm" style="width:100%;margin-bottom:8px" onclick="captureAndSolve()">📷 拍摄并解析</button>';
     }
-    
+
     // 状态显示
     html += '<div id="astroCalStatus" style="margin-top:12px;padding:8px;background:#0d1117;border-radius:4px;color:#8b949e">';
     html += '等待操作...';
     html += '</div>';
-    
+
     // 计算按钮
     html += '<div style="margin-top:12px;display:flex;gap:8px">';
     html += '<button class="btn btn-warning btn-sm" style="flex:1" onclick="computeAstroCal()">计算参数</button>';
     html += '<button class="btn btn-secondary btn-sm" style="flex:1" onclick="saveAstroCal()">保存</button>';
     html += '</div>';
-    
+
     html += '</div>';
     resultEl.innerHTML = html;
-    
+
     // 加载推荐星
     if (astroCalMethod === 'manual') {
         loadAstroCalStars();
@@ -475,10 +583,10 @@ function setAstroCalMethod(method) {
 
 function loadAstroCalStars() {
     if (!window.connectedDevice) return;
-    
+
     const obsLat = window.astroCalConfig?.obs_lat || 29.45;
     const obsLon = window.astroCalConfig?.obs_lon || 100.33;
-    
+
     fetch('/api/v1/calibrate/stars/recommended?lat=' + obsLat + '&lon=' + obsLon + '&count=5')
     .then(r => r.json())
     .then(data => {
@@ -499,15 +607,15 @@ function recordAstroCalPoint() {
         addAdvOutput('error', '请先启动校准');
         return;
     }
-    
+
     const starSelect = document.getElementById('astroCalStar');
     const starName = starSelect ? starSelect.value : '';
-    
+
     if (!starName) {
         addAdvOutput('warn', '请先选择恒星');
         return;
     }
-    
+
     // 先选择恒星
     fetch('/api/v1/calibrate/select_star', {
         method: 'POST',
@@ -523,11 +631,11 @@ function recordAstroCalPoint() {
             addAdvOutput('error', data.message || '选择失败');
             return;
         }
-        
+
         // 获取当前PTZ位置并记录
         const pan = window.connectedDevice.lastPan || 0;
         const tilt = window.connectedDevice.lastTilt || 0;
-        
+
         return fetch('/api/v1/calibrate/record', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -555,12 +663,12 @@ function captureAndSolve() {
         addAdvOutput('error', '请先启动校准');
         return;
     }
-    
+
     addAdvOutput('info', '拍摄并解析中...');
-    
+
     const pan = window.connectedDevice?.lastPan || 0;
     const tilt = window.connectedDevice?.lastTilt || 0;
-    
+
     fetch('/api/v1/calibrate/capture', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -585,17 +693,17 @@ function captureAndSolve() {
 function updateAstroCalStatus(coverage) {
     const statusEl = document.getElementById('astroCalStatus');
     if (!statusEl || !coverage) return;
-    
+
     let html = '校准点: ' + (coverage.total_points || 0) + ' | ';
     html += 'Az覆盖: ' + coverage.az_spread.toFixed(0) + '° | ';
     html += 'Alt覆盖: ' + coverage.alt_spread.toFixed(0) + '°';
-    
+
     if (coverage.needs_more) {
         html += '<br><span style="color:#d29922">需要更多校准点</span>';
     } else {
         html += '<br><span style="color:#3fb950">可以计算参数</span>';
     }
-    
+
     statusEl.innerHTML = html;
 }
 
@@ -604,9 +712,9 @@ function computeAstroCal() {
         addAdvOutput('error', '请先启动校准');
         return;
     }
-    
+
     addAdvOutput('info', '计算校准参数...');
-    
+
     fetch('/api/v1/calibrate/compute', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -634,7 +742,7 @@ function saveAstroCal() {
         addAdvOutput('error', '请先完成校准计算');
         return;
     }
-    
+
     fetch('/api/v1/calibrate/save', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -649,5 +757,133 @@ function saveAstroCal() {
         }
     })
     .catch(e => addAdvOutput('error', '请求异常: ' + e.message));
+}
+
+
+// v7.52: 轮询进度函数
+var advPollInterval = null;
+var advTaskId = null;
+
+function pollAdvProgress(taskId) {
+    advTaskId = taskId;
+    var progressEl = document.getElementById('advProgress');
+    var pollUrl = '/api/v1/advanced/detect/status/' + taskId;
+
+    // 清除之前的轮询
+    if (advPollInterval) clearInterval(advPollInterval);
+
+    // v7.53: 添加去重逻辑,避免重复输出
+    var lastStep = '';
+
+    advPollInterval = setInterval(function() {
+        fetch(pollUrl)
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                // v7.52: 后端返回的字段直接在根级别(没有task包裹)
+                var progress = data.progress || 0;
+                var step = data.current_step || 'running';
+                var status = data.status || 'running';
+
+                // v7.52: 更新进度显示(N/M格式)
+                var completedItems = data.completed_items || 0;
+                var totalItems = data.total_items || 0;
+                if (progressEl) {
+                    if (totalItems > 0) {
+                        progressEl.textContent = currentAdvTest + ' (' + completedItems + '/' + totalItems + ')';
+                    } else {
+                        progressEl.textContent = currentAdvTest + ' ' + progress.toFixed(0) + '%';
+                    }
+                }
+
+                // v7.53: 实时输出当前检测端点(去重:只在步骤变化时输出)
+                if (step && step !== 'running' && step !== 'completed' && step !== lastStep) {
+                    var lastResult = data.last_result || '';
+                    addAdvOutput(lastResult === 'pass' ? 'success' : (lastResult === 'failed' ? 'error' : 'info'),
+                        '检测端点: ' + step + '...' + (lastResult || ''));
+                    lastStep = step;
+                }
+
+                // v7.53: 检查是否完成(使用getElementById获取按钮,因为是局部变量)
+                if (status === 'completed') {
+                    clearInterval(advPollInterval);
+                    advTaskId = null;
+                    // v8.66: 恢复主控台轮询
+                    if (window.resumePtzPolling) resumePtzPolling();
+                    addAdvOutput('success', '测试完成');
+                    document.getElementById('btnAdvRun').disabled = false;
+                    document.getElementById('btnAdvStop').disabled = true;
+                    // v7.54: 恢复其他页面标签
+                    document.querySelectorAll('.nav-btn[data-page]').forEach(function(btn) {
+                        btn.disabled = false;
+                        btn.style.opacity = '';
+                        btn.style.cursor = '';
+                    });
+                    // 获取最终结果
+                    fetchResult(taskId);
+                } else if (status === 'failed') {
+                    clearInterval(advPollInterval);
+                    advTaskId = null;
+                    // v8.66: 恢复主控台轮询
+                    if (window.resumePtzPolling) resumePtzPolling();
+                    addAdvOutput('error', '测试失败: ' + step);
+                    document.getElementById('btnAdvRun').disabled = false;
+                    document.getElementById('btnAdvStop').disabled = true;
+                    // v7.54: 恢复其他页面标签
+                    document.querySelectorAll('.nav-btn[data-page]').forEach(function(btn) {
+                        btn.disabled = false;
+                        btn.style.opacity = '';
+                        btn.style.cursor = '';
+                    });
+                    if (progressEl) progressEl.textContent = currentAdvTest + ' 失败';
+                } else if (status === 'cancelled') {
+                    clearInterval(advPollInterval);
+                    advTaskId = null;
+                    // v8.66: 恢复主控台轮询
+                    if (window.resumePtzPolling) resumePtzPolling();
+                    addAdvOutput('warn', '测试已取消');
+                    document.getElementById('btnAdvRun').disabled = false;
+                    document.getElementById('btnAdvStop').disabled = true;
+                    document.querySelectorAll('.nav-btn[data-page]').forEach(function(btn) {
+                        btn.disabled = false;
+                        btn.style.opacity = '';
+                        btn.style.cursor = '';
+                    });
+                    if (progressEl) progressEl.textContent = '';
+                }
+            }
+        })
+        .catch(e => {
+            console.error('Poll error:', e);
+        });
+    }, 1000); // 每1秒轮询一次
+}
+
+function fetchResult(taskId) {
+    var resultUrl = '/api/v1/advanced/detect/result/' + taskId;
+    fetch(resultUrl)
+    .then(r => r.json())
+    .then(data => {
+        if (data.success && data.results) {
+            // v7.52: 从总结果中取当前测试类型的结果
+            var testResult = data.results[currentAdvTest] || data.results;
+            renderAdvResult(testResult);
+            // 更新进度显示完成数量
+            var progressEl = document.getElementById('advProgress');
+            if (progressEl) {
+                var count;
+                if (testResult && testResult.total_tests != null) {
+                    count = testResult.total_tests;
+                } else {
+                    var funcs = testResult.functions || testResult;
+                    count = typeof funcs === 'object' && funcs ? Object.keys(funcs).length : 0;
+                }
+                progressEl.textContent = currentAdvTest + ' 完成(' + count + ')';
+            }
+        }
+    })
+    .catch(e => {
+        addAdvOutput('error', '获取结果失败: ' + e.message);
+    });
 }
 </script>

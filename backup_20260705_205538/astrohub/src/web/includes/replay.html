@@ -1,0 +1,238 @@
+        <!-- ==================== 回放页面 v7.105 ==================== -->
+        <div class="page" id="page-replay">
+            <div class="replay-layout">
+                <div class="replay-sidebar">
+                    <div class="sidebar-header">
+                        <span>媒体库</span>
+                        <button class="sidebar-btn" onclick="openRecordFolder()" title="打开目录">📂</button>
+                        <button class="sidebar-btn" onclick="refreshFiles()" title="刷新">🔄</button>
+                    </div>
+                    <div class="sidebar-tree" id="replay-tree">
+                        <div class="tree-node">
+                            <div class="tree-label active" onclick="toggleAll()">
+                                <span class="tree-arrow open" id="arrow-all">▼</span>
+                                <span>全部文件</span>
+                            </div>
+                            <div class="tree-children" id="children-all" style="display:block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="replay-main">
+                    <div class="replay-header">
+                        <span id="replay-title">全部文件</span>
+                        <span id="replay-count" class="replay-count-badge">0</span>
+                        <div class="header-spacer"></div>
+                        <button class="header-btn" onclick="toggleSelectMode()" id="btn-select">多选</button>
+                        <button class="header-btn" onclick="filterFiles()" id="btn-filter">筛选</button>
+                        <button class="header-btn" onclick="sortFiles()" id="btn-sort">排序</button>
+                        <button class="header-btn danger" onclick="deleteSelected()" id="btn-delete">删除</button>
+                    </div>
+                    <div class="replay-grid" id="replay-grid">
+                        <div class="replay-empty"><div class="replay-empty-icon">📂</div><div>点击刷新加载文件</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+        .replay-layout{display:flex;min-height:600px}
+        .replay-sidebar{width:200px;background:#161b22;border-right:1px solid #21262d;flex-shrink:0;overflow-y:auto}
+        .sidebar-header{font-size:14px;padding:8px 12px;color:#58a6ff;border-bottom:1px solid #21262d;font-weight:600;display:flex;align-items:center;gap:8px}
+        .sidebar-btn{background:#21262d;border:none;color:#8b949e;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px}
+        .sidebar-btn:hover{background:#30363d;color:#e0e6f0}
+        .sidebar-tree{padding:4px 0}
+        .tree-label{padding:10px 12px;color:#8b949e;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px}
+        .tree-label:hover{background:#21262d;color:#e0e6f0}
+        .tree-label.active{background:#238636;color:#fff}
+        .tree-arrow{font-size:10px;width:14px;text-align:center}
+        .tree-children{}
+        .tree-date{padding:8px 12px 8px 26px;color:#8b949e;cursor:pointer;font-size:12px;display:flex;justify-content:space-between}
+        .tree-date:hover{background:#21262d;color:#e0e6f0}
+        .tree-date.active{background:#30363d;color:#58a6ff}
+        .replay-main{flex:1;min-width:0;padding:16px;overflow-y:auto;background:#0d1117}
+        .replay-header{display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid #21262d;margin-bottom:16px}
+        #replay-title{font-size:16px;color:#e0e6f0}
+        .replay-count-badge{font-size:11px;color:#8b949e;background:#21262d;padding:2px 8px;border-radius:10px}
+        .header-spacer{flex:1}
+        .header-btn{background:#21262d;border:none;color:#8b949e;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:12px}
+        .header-btn:hover{background:#30363d;color:#e0e6f0}
+        .header-btn.danger{color:#f85149}
+        .header-btn.danger:hover{background:#f8514922}
+        .replay-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+        .replay-item{background:#161b22;border:1px solid #21262d;border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .2s;position:relative}
+        .replay-item:hover{border-color:#58a6ff}
+        .replay-item.selected{border-color:#238636;background:#23863622}
+        .replay-item-checkbox{position:absolute;top:8px;left:8px;width:20px;height:20px;background:#0d1117;border:1px solid #30363d;border-radius:4px;cursor:pointer;display:none;z-index:10}
+        .replay-item-checkbox.visible{display:block}
+        .replay-item-checkbox.checked{background:#238636;border-color:#238636}
+        .replay-thumb{width:100%;height:100px;object-fit:cover;display:block;background:#21262d}
+        .replay-thumb-video{width:100%;height:100px;background:#21262d;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:32px;position:relative}
+        .replay-info-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:24px 6px 4px;display:flex;align-items:center;gap:4px;pointer-events:none}
+        .replay-info-icon{font-size:14px}
+        .replay-info-text{font-size:10px;color:#fff}
+        .replay-item-info{padding:6px 8px}
+        .replay-item-name{font-size:11px;color:#e0e6f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .replay-item-time{font-size:10px;color:#6e7681;margin-top:2px}
+        .replay-empty{text-align:center;padding:60px 20px;color:#6e7681}
+        .replay-empty-icon{font-size:48px;margin-bottom:12px}
+        .replay-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:9999;display:none;align-items:center;justify-content:center}
+        .replay-modal.active{display:flex}
+        .replay-modal-img{max-width:90vw;max-height:90vh;object-fit:contain}
+        .replay-modal-video{max-width:90vw;max-height:90vh}
+        .replay-modal-close{position:absolute;top:16px;right:16px;background:#21262d;border:none;color:#e0e6f0;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:18px;z-index:10000}
+        </style>
+        
+        <script>
+        (function(){
+            var allData=[],currentDate='',selectMode=false,selectedFiles={},sortDesc=true;
+            
+            window.initReplayPage=function(){refreshFiles()};
+            
+            window.openRecordFolder=function(){
+                fetch('/api/v1/files/open-folder',{method:'POST'}).then(function(r){return r.json()});
+            };
+            
+            window.refreshFiles=function(){
+                fetch('/api/v1/files/list').then(function(r){return r.json()}).then(function(result){
+                    if(result.success){allData=result.data.groups||[];updateDateTree();showThumbnails('')}
+                });
+            };
+            
+            window.toggleAll=function(){
+                var c=document.getElementById('children-all'),a=document.getElementById('arrow-all');
+                c.style.display=c.style.display==='block'?'none':'block';
+                a.classList.toggle('open');
+            };
+            
+            window.selectDate=function(date){
+                currentDate=date;
+                document.querySelectorAll('.tree-date').forEach(function(e){e.classList.remove('active')});
+                var d=document.querySelector('.tree-date[data-date="'+date+'"]');
+                if(d)d.classList.add('active');
+                document.getElementById('replay-title').textContent=date||'全部文件';
+                showThumbnails(date);
+            };
+            
+            window.toggleSelectMode=function(){
+                selectMode=!selectMode;
+                document.getElementById('btn-select').textContent=selectMode?'取消':'多选';
+                document.getElementById('btn-delete').style.display=selectMode?'inline-block':'none';
+                document.querySelectorAll('.replay-item-checkbox').forEach(function(e){e.classList.toggle('visible',selectMode)});
+                if(!selectMode)selectedFiles={};
+            };
+            
+            window.toggleSelect=function(file,el){
+                if(selectedFiles[file]){delete selectedFiles[file];el.classList.remove('checked')}
+                else{selectedFiles[file]=true;el.classList.add('checked')}
+                var item=el.closest('.replay-item');
+                item.classList.toggle('selected',!!selectedFiles[file]);
+            };
+            
+            window.deleteSelected=function(){
+                var files=Object.keys(selectedFiles);
+                if(files.length===0)return;
+                showModal({
+                    type:'confirm',
+                    title:'删除文件',
+                    message:'确定删除 '+files.length+' 个文件吗？',
+                    onConfirm:function(){
+                        fetch('/api/v1/files/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({files:files})})
+                        .then(function(r){return r.json()}).then(function(result){
+                            if(result.success){selectedFiles={};refreshFiles()}
+                        });
+                    }
+                });
+            };
+            
+            window.sortFiles=function(){
+                sortDesc=!sortDesc;
+                document.getElementById('btn-sort').textContent=sortDesc?'倒序':'正序';
+                showThumbnails(currentDate);
+            };
+            
+            window.filterFiles=function(){
+                showModal({
+                    type:'form',
+                    title:'筛选文件',
+                    fields:[{id:'filterType',label:'类型 (image / video / all)',value:'all',placeholder:'image / video / all'}],
+                    onConfirm:function(data){
+                        var type=(data.filterType||'').trim();
+                        if(!type)return;
+                        showThumbnails(currentDate,type);
+                    }
+                });
+            };
+            
+            function updateDateTree(){
+                var c=document.getElementById('children-all');
+                if(!allData.length){c.innerHTML='<div style="padding:8px 12px 8px 26px;color:#6e7681;font-size:12px">暂无文件</div>';return}
+                c.innerHTML=allData.map(function(g){
+                    return'<div class="tree-date" data-date="'+g.date+'" onclick="selectDate(\''+g.date+'\')"><span>'+g.date+'</span><span>'+(g.items?g.items.length:0)+'</span></div>'
+                }).join('');
+            }
+            
+            function showThumbnails(date,filterType){
+                var items=[];
+                if(date){var g=allData.find(function(x){return x.date===date});if(g)items=g.items||[]}
+                else{allData.forEach(function(g){if(g.items)items=items.concat(g.items)})}
+                if(filterType&&filterType!=='all')items=items.filter(function(i){return i.type===filterType});
+                items.sort(function(a,b){return sortDesc?(b.date||'').localeCompare(a.date||''):(a.date||'').localeCompare(b.date||'')});
+                document.getElementById('replay-count').textContent=items.length;
+                var c=document.getElementById('replay-grid');
+                if(!items.length){c.innerHTML='<div class="replay-empty"><div class="replay-empty-icon">📂</div><div>暂无文件</div></div>';return}
+                c.innerHTML=items.map(function(item){
+                    var url='/api/v1/files/serve/'+encodeURIComponent(item.file);
+                    var thumb=item.type==='video'?('/api/v1/files/thumb/'+encodeURIComponent(item.file)):url;
+                    var name=item.file.split('/')[1]||item.file;
+                    var time=(item.date||'').substring(11);
+                    var icon=item.type==='image'?'🖼️':'🎬';
+                    if(item.type==='image'){
+                        return'<div class="replay-item" data-file="'+item.file+'">'+
+                        '<div class="replay-item-checkbox'+(selectMode?' visible':'')+(selectedFiles[item.file]?' checked':'')+'" onclick="toggleSelect(\''+item.file+'\',this)"></div>'+
+                        '<div style="position:relative">'+
+                        '<img class="replay-thumb" src="'+thumb+'" loading="lazy" onclick="showPreview(\''+url+'\',\'image\')">'+
+                        '<div class="replay-info-overlay"><span class="replay-info-icon">'+icon+'</span></div></div>'+
+                        '<div class="replay-item-info"><div class="replay-item-name">'+name+'</div><div class="replay-item-time">'+time+'</div></div></div>'
+                    }else{
+                        return'<div class="replay-item" data-file="'+item.file+'">'+
+                        '<div class="replay-item-checkbox'+(selectMode?' visible':'')+(selectedFiles[item.file]?' checked':'')+'" onclick="toggleSelect(\''+item.file+'\',this)"></div>'+
+                        '<div style="position:relative">'+
+                        '<img class="replay-thumb" src="'+thumb+'" loading="lazy" onclick="showPreview(\''+url+'\',\'video\')">'+
+                        '<div class="replay-info-overlay"><span class="replay-info-icon">'+icon+'</span><span class="replay-info-text" id="dur-'+item.file.replace(/[^a-zA-Z0-9]/g,'x')+'"></span></div></div>'+
+                        '<div class="replay-item-info"><div class="replay-item-name">'+name+'</div><div class="replay-item-time">'+time+'</div></div></div>'
+                    }
+                }).join('');
+                // Load video durations
+                items.forEach(function(item){
+                    if(item.type==='video'){
+                        var id='dur-'+item.file.replace(/[^a-zA-Z0-9]/g,'x');
+                        fetch('/api/v1/files/info/'+encodeURIComponent(item.file)).then(function(r){return r.json()}).then(function(info){
+                            if(info.success&&info.data.duration){
+                                var el=document.getElementById(id);
+                                if(el)el.textContent=info.data.duration;
+                            }
+                        });
+                    }
+                });
+            }
+            
+            window.showPreview=function(url,type){
+                if(selectMode)return;
+                var m=document.getElementById('replay-modal');
+                if(!m){m=document.createElement('div');m.id='replay-modal';m.className='replay-modal';m.onclick=function(e){if(e.target===m)closeReplayModal()};document.body.appendChild(m)}
+                m.innerHTML=type==='image'
+                    ?'<button class="replay-modal-close" onclick="closeReplayModal()">×</button><img class="replay-modal-img" src="'+url+'">'
+                    :'<button class="replay-modal-close" onclick="closeReplayModal()">×</button><video class="replay-modal-video" controls autoplay src="'+url+'"></video>';
+                m.classList.add('active');
+            };
+            
+            window.closeReplayModal=function(){
+                var m=document.getElementById('replay-modal');
+                if(m){var v=m.querySelector('video');if(v){v.pause();v.src=''}m.classList.remove('active')}
+            };
+            
+            document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReplayModal()});
+        })();
+        </script>
+        <!-- ==================== 首次连接引导向导 ==================== -->
+    </div>

@@ -42,7 +42,6 @@
 ### 读取 CSV 原文规则
 - **任何测试逻辑必须先完整读取 CSV 原文**（列 D 方法 + 列 E 标准）
 - **不得自己推断、创造或修改测试标准**
-- CSV 原文在 `D:\astro_py\astro_hub\doc\review\M1_method.csv` 和 `M1_speed_method.csv`
 - 老板指出错误后，必须重新读取 CSV 确认
 
 ### E2E 测试规则

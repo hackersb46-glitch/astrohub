@@ -1,0 +1,872 @@
+[2026-07-06 00:55:36.350] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/600"}
+[2026-07-06 00:55:36.526] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/250"}
+[2026-07-06 01:57:05.201] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-06 01:57:05.204] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-06 01:57:05.502] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 01:57:06.440] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 01:57:06.867] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 01:57:07.177] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 200, "blue": 51}
+[2026-07-06 01:57:07.482] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/250"}
+[2026-07-06 01:57:59.751] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 01:57:59.754] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 01:58:08.577] [INFO   ] [operation_logger] [image] reset: {"device": "192.168.5.72"}
+[2026-07-06 01:58:08.793] [INFO   ] [operation_logger] [web] ptz: 画面重置
+[2026-07-06 01:58:57.609] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 34}
+[2026-07-06 01:58:57.614] [INFO   ] [operation_logger] [web] ptz: 增益: 34
+[2026-07-06 01:59:12.251] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 01:59:12.359] [INFO   ] [operation_logger] [web] ptz: 光圈: F1.6
+[2026-07-06 01:59:20.350] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 1600}
+[2026-07-06 01:59:20.534] [INFO   ] [operation_logger] [web] ptz: 光圈: F16.0
+[2026-07-06 01:59:25.390] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 01:59:25.574] [INFO   ] [operation_logger] [web] ptz: 光圈: F1.6
+[2026-07-06 01:59:37.864] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/25"}
+[2026-07-06 01:59:37.881] [INFO   ] [operation_logger] [web] ptz: 快门: 1/25
+[2026-07-06 02:00:10.740] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 02:00:10.933] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 02:00:11.993] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 02:00:12.239] [INFO   ] [operation_logger] [web] ptz: 对焦模式: auto
+[2026-07-06 03:00:58.060] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 03:00:58.477] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:00:58.757] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/25"}
+[2026-07-06 03:00:59.059] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 03:00:59.374] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:00:59.600] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 03:00:59.636] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 03:05:43.183] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 03:05:43.614] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:05:44.110] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/25"}
+[2026-07-06 03:05:44.296] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 03:05:44.625] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:06:35.495] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 03:06:36.091] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:06:36.560] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/25"}
+[2026-07-06 03:06:36.736] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 03:06:37.047] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:06:40.013] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 03:06:40.172] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 03:08:12.225] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/2500"}
+[2026-07-06 03:08:12.244] [INFO   ] [operation_logger] [web] ptz: 快门: 1/2500
+[2026-07-06 03:08:22.025] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/300"}
+[2026-07-06 03:08:22.032] [INFO   ] [operation_logger] [web] ptz: 快门: 1/300
+[2026-07-06 03:08:28.610] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": true}
+[2026-07-06 03:08:28.777] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": true}
+[2026-07-06 03:08:28.837] [INFO   ] [operation_logger] [web] ptz: Info OSD: 显示
+[2026-07-06 03:08:28.895] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 显示
+[2026-07-06 03:08:33.065] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": false}
+[2026-07-06 03:08:33.403] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": false}
+[2026-07-06 03:08:33.404] [INFO   ] [operation_logger] [web] ptz: Info OSD: 关闭
+[2026-07-06 03:08:33.436] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 关闭
+[2026-07-06 03:08:35.004] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 20}
+[2026-07-06 03:08:35.041] [INFO   ] [operation_logger] [web] ptz: 增益: 20
+[2026-07-06 03:08:38.726] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 50, "temporal": 0}
+[2026-07-06 03:08:38.839] [INFO   ] [operation_logger] [web] ptz: 时域降噪: 0
+[2026-07-06 03:08:40.193] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 100, "temporal": 0}
+[2026-07-06 03:08:40.210] [INFO   ] [operation_logger] [web] ptz: 空域降噪: 100
+[2026-07-06 03:08:47.719] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 03:08:47.816] [INFO   ] [operation_logger] [web] ptz: 快门: 1/200
+[2026-07-06 03:08:56.226] [INFO   ] [operation_logger] [ptz] home: {"device": "192.168.5.72"}
+[2026-07-06 03:08:56.230] [INFO   ] [operation_logger] [web] ptz: 归位
+[2026-07-06 03:11:28.036] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 03:11:28.775] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:11:29.081] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 03:11:29.269] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 03:11:29.448] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:14:57.150] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 03:14:57.921] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:14:58.570] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 03:14:58.765] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 03:14:59.002] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 03:14:59.902] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 03:15:00.058] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 03:16:17.541] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 32}
+[2026-07-06 03:16:17.689] [INFO   ] [operation_logger] [web] ptz: 增益: 32
+[2026-07-06 03:16:23.366] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 41}
+[2026-07-06 03:16:23.374] [INFO   ] [operation_logger] [web] ptz: 增益: 41
+[2026-07-06 03:16:26.243] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 03:16:26.256] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-06 03:44:44.442] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 03:44:46.405] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 03:44:46.406] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 03:44:46.605] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 03:44:47.225] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-06 03:44:50.888] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1384~1584, Y=1436~1710, 共54800像素
+[2026-07-06 03:44:50.889] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=14.91 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-06 03:44:52.653] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=15.72 (0.2s) 采样(best=15.7,方向=近)
+[2026-07-06 03:44:54.449] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=24.36 (0.2s) 采样(best=24.4,方向=近)
+[2026-07-06 03:44:56.135] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=31.85 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:44:57.787] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=16.15 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:44:59.459] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=14.36 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:01.254] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_near 反差=13.57 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:03.049] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: coarse focus_near 反差=13.74 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:04.726] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: coarse focus_near 反差=12.93 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:06.719] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: coarse focus_near 反差=12.98 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:08.654] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: coarse focus_near 反差=12.99 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:10.659] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: coarse focus_near 反差=13.29 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:12.455] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: coarse focus_near 反差=12.74 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:14.452] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: coarse focus_near 反差=13.17 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:16.176] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: coarse focus_near 反差=13.63 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:18.041] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: coarse focus_near 反差=12.96 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:19.719] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: coarse focus_near 反差=13.19 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:21.439] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: coarse focus_near 反差=12.2 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:23.162] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: coarse focus_near 反差=12.89 (0.2s) 采样(best=31.8,方向=近)
+[2026-07-06 03:45:24.856] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: coarse focus_far 反差=13.3 (0.2s) 平坦区(0步),反向(方向=远)
+[2026-07-06 03:45:26.668] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: coarse focus_far 反差=12.88 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-06 03:45:28.395] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: coarse focus_far 反差=13.68 (0.2s) 采样(best=13.7,方向=远)
+[2026-07-06 03:45:30.237] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: coarse focus_far 反差=15.14 (0.2s) 采样(best=15.1,方向=远)
+[2026-07-06 03:45:32.110] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: coarse focus_far 反差=22.99 (0.2s) 采样(best=23.0,方向=远)
+[2026-07-06 03:45:33.776] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: coarse focus_far 反差=34.13 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:35.463] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: coarse focus_far 反差=16.79 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:37.170] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: coarse focus_far 反差=14.84 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:38.871] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: coarse focus_far 反差=13.81 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:40.657] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: coarse focus_far 反差=14.01 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:42.366] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: coarse focus_far 反差=13.68 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:44.061] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: coarse focus_far 反差=13.63 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:45.774] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: coarse focus_far 反差=13.74 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:47.585] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: coarse focus_far 反差=14.53 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:49.353] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: coarse focus_far 反差=14.28 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:51.081] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: coarse focus_far 反差=14.23 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:52.733] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #36: coarse focus_far 反差=15.03 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:54.559] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #37: coarse focus_far 反差=14.32 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:56.332] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #38: coarse focus_far 反差=13.86 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:57.993] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #39: coarse focus_far 反差=14.11 (0.2s) 采样(best=34.1,方向=远)
+[2026-07-06 03:45:59.687] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #40: coarse focus_far 反差=14.43 (0.5s) 平坦区持续,加速(20步,best=34.1)
+[2026-07-06 03:46:01.719] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #41: coarse focus_far 反差=14.45 (0.5s) 平坦区持续,加速(21步,best=34.1)
+[2026-07-06 03:46:03.828] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #42: coarse focus_far 反差=14.9 (0.5s) 平坦区持续,加速(22步,best=34.1)
+[2026-07-06 03:46:05.905] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #43: coarse focus_far 反差=14.59 (0.5s) 平坦区持续,加速(23步,best=34.1)
+[2026-07-06 03:46:07.948] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #44: coarse focus_far 反差=14.52 (0.5s) 平坦区持续,加速(24步,best=34.1)
+[2026-07-06 03:46:10.147] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #45: coarse focus_far 反差=14.44 (0.5s) 平坦区持续,加速(25步,best=34.1)
+[2026-07-06 03:46:12.111] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #46: coarse focus_far 反差=14.31 (0.5s) 平坦区持续,加速(26步,best=34.1)
+[2026-07-06 03:46:14.102] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #47: coarse focus_near 反差=14.22 (0.2s) 反向(方向=近,尝试3/3)
+[2026-07-06 03:46:15.945] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #48: coarse focus_near 反差=15.59 (0.2s) 开始对焦(方向=近,尝试3/3)
+[2026-07-06 03:46:17.659] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #49: coarse focus_near 反差=37.37 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:19.643] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #50: coarse focus_near 反差=19.01 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:21.347] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #51: coarse focus_near 反差=15.4 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:23.017] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #52: coarse focus_near 反差=13.68 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:24.754] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #53: coarse focus_near 反差=13.94 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:26.577] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #54: coarse focus_near 反差=13.42 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:28.327] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #55: coarse focus_near 反差=13.19 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:29.977] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #56: coarse focus_near 反差=13.1 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:31.667] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #57: coarse focus_near 反差=13.21 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:33.326] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #58: coarse focus_near 反差=13.18 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:35.039] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #59: coarse focus_near 反差=13.06 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:36.745] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #60: coarse focus_near 反差=13.39 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:38.640] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #61: coarse focus_near 反差=13.74 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:40.570] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #62: coarse focus_near 反差=13.34 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:42.529] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #63: coarse focus_near 反差=13.65 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:44.205] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #64: coarse focus_near 反差=13.27 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:45.972] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #65: coarse focus_near 反差=13.34 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:47.623] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #66: coarse focus_near 反差=13.05 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:46:49.360] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #67: coarse focus_near 反差=12.89 (0.5s) 平坦区持续,加速(20步,best=37.4)
+[2026-07-06 03:46:51.378] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #68: coarse focus_near 反差=13.54 (0.5s) 平坦区持续,加速(21步,best=37.4)
+[2026-07-06 03:46:53.585] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #69: coarse focus_near 反差=13.67 (0.5s) 平坦区持续,加速(22步,best=37.4)
+[2026-07-06 03:46:55.599] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #70: coarse focus_near 反差=13.36 (0.5s) 平坦区持续,加速(23步,best=37.4)
+[2026-07-06 03:46:57.734] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #71: coarse focus_near 反差=13.27 (0.5s) 平坦区持续,加速(24步,best=37.4)
+[2026-07-06 03:46:59.712] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #72: coarse focus_near 反差=13.22 (0.5s) 平坦区持续,加速(25步,best=37.4)
+[2026-07-06 03:47:01.878] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #73: coarse focus_near 反差=13.59 (0.5s) 平坦区持续,加速(26步,best=37.4)
+[2026-07-06 03:47:04.035] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #74: coarse focus_near 反差=13.17 (0.5s) 平坦区持续,加速(27步,best=37.4)
+[2026-07-06 03:47:06.014] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #75: coarse focus_near 反差=13 (0.5s) 平坦区持续,加速(28步,best=37.4)
+[2026-07-06 03:47:08.000] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #76: coarse focus_near 反差=13.28 (0.5s) 平坦区持续,加速(29步,best=37.4)
+[2026-07-06 03:47:10.046] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #77: coarse focus_near 反差=13.18 (0.5s) 平坦区持续,加速(30步,best=37.4)
+[2026-07-06 03:47:12.009] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #78: coarse focus_near 反差=13.7 (0.5s) 平坦区持续,加速(31步,best=37.4)
+[2026-07-06 03:47:13.993] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #79: coarse focus_near 反差=13.01 (0.5s) 平坦区持续,加速(32步,best=37.4)
+[2026-07-06 03:47:16.201] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #80: coarse focus_near 反差=13.46 (0.5s) 平坦区持续,加速(33步,best=37.4)
+[2026-07-06 03:47:18.187] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #81: coarse focus_near 反差=16.21 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:47:20.074] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #82: coarse focus_near 反差=15.33 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:47:21.759] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #83: coarse focus_near 反差=15.6 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:47:23.540] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #84: coarse focus_near 反差=15.73 (0.2s) 采样(best=37.4,方向=近)
+[2026-07-06 03:47:25.180] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #85: coarse focus_near 反差=15.9 (0.5s) 平坦区持续,加速(38步,best=37.4)
+[2026-07-06 03:47:27.156] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #86: coarse focus_near 反差=16.52 (0.5s) 平坦区持续,加速(39步,best=37.4)
+[2026-07-06 03:47:29.161] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #87: coarse focus_near 反差=15.41 (0.5s) 平坦区持续,加速(40步,best=37.4)
+[2026-07-06 03:47:33.974] [ERROR  ] [operation_logger] [web] ptz: 对焦失败: 截图失败
+[2026-07-06 03:47:34.000] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-06 03:53:51.849] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 03:53:52.033] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 03:53:54.618] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-06 03:53:57.712] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1854~2027, Y=1420~1620, 共34600像素
+[2026-07-06 03:53:57.712] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=13.21 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-06 03:53:59.659] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=13.29 (0.2s) 采样(best=13.3,方向=近)
+[2026-07-06 03:54:01.346] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=13.42 (0.2s) 采样(best=13.4,方向=近)
+[2026-07-06 03:54:03.020] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=13.56 (0.2s) 采样(best=13.6,方向=近)
+[2026-07-06 03:54:04.668] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=13.05 (0.2s) 采样(best=13.6,方向=近)
+[2026-07-06 03:54:06.387] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=12.98 (0.2s) 采样(best=13.6,方向=近)
+[2026-07-06 03:54:08.146] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_near 反差=12.94 (0.2s) 采样(best=13.6,方向=近)
+[2026-07-06 03:54:09.941] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: coarse focus_near 反差=13.04 (0.2s) 采样(best=13.6,方向=近)
+[2026-07-06 03:54:11.671] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: coarse focus_near 反差=13.13 (0.2s) 采样(best=13.6,方向=近)
+[2026-07-06 03:54:13.347] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: coarse focus_near 反差=12.9 (0.2s) 采样(best=13.6,方向=近)
+[2026-07-06 03:54:14.984] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: coarse focus_near 反差=13.52 (0.2s) 采样(best=13.6,方向=近)
+[2026-07-06 03:54:16.753] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: coarse focus_near 反差=13.65 (0.2s) 采样(best=13.7,方向=近)
+[2026-07-06 03:54:18.673] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: coarse focus_near 反差=12.7 (0.2s) 采样(best=13.7,方向=近)
+[2026-07-06 03:54:20.343] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: coarse focus_near 反差=12.94 (0.2s) 采样(best=13.7,方向=近)
+[2026-07-06 03:54:22.023] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: coarse focus_near 反差=13.73 (0.2s) 采样(best=13.7,方向=近)
+[2026-07-06 03:54:23.705] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: coarse focus_near 反差=12.88 (0.2s) 采样(best=13.7,方向=近)
+[2026-07-06 03:54:25.374] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: coarse focus_near 反差=13.16 (0.2s) 采样(best=13.7,方向=近)
+[2026-07-06 03:54:27.013] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: coarse focus_near 反差=12.95 (0.2s) 采样(best=13.7,方向=近)
+[2026-07-06 03:54:28.718] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: coarse focus_near 反差=12.63 (0.2s) 采样(best=13.7,方向=近)
+[2026-07-06 03:54:30.563] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: coarse focus_far 反差=13.21 (0.2s) 平坦区(0步),反向(方向=远)
+[2026-07-06 03:54:32.324] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: coarse focus_far 反差=12.96 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-06 03:54:34.009] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: coarse focus_far 反差=13.13 (0.2s) 采样(best=13.1,方向=远)
+[2026-07-06 03:54:35.722] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: coarse focus_far 反差=13.41 (0.2s) 采样(best=13.4,方向=远)
+[2026-07-06 03:54:37.429] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: coarse focus_far 反差=14.51 (0.2s) 采样(best=14.5,方向=远)
+[2026-07-06 03:54:39.327] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: coarse focus_far 反差=19.39 (0.2s) 采样(best=19.4,方向=远)
+[2026-07-06 03:54:41.048] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: coarse focus_far 反差=16.36 (0.2s) 采样(best=19.4,方向=远)
+[2026-07-06 03:54:42.709] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: coarse focus_far 反差=14.93 (0.2s) 采样(best=19.4,方向=远)
+[2026-07-06 03:54:44.382] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: coarse focus_far 反差=13.82 (0.2s) 采样(best=19.4,方向=远)
+[2026-07-06 03:54:46.024] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: coarse focus_far 反差=13.8 (0.2s) 采样(best=19.4,方向=远)
+[2026-07-06 03:54:47.668] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: coarse focus_near 反差=13.41 (0.2s) 反向(方向=近,尝试3/3)
+[2026-07-06 03:54:49.363] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: coarse focus_near 反差=15.29 (0.2s) 开始对焦(方向=近,尝试3/3)
+[2026-07-06 03:54:51.083] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: coarse focus_near 反差=15.91 (0.2s) 采样(best=15.9,方向=近)
+[2026-07-06 03:54:52.728] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: coarse focus_near 反差=17.86 (0.2s) 采样(best=17.9,方向=近)
+[2026-07-06 03:54:54.393] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: coarse focus_near 反差=19.55 (0.2s) 采样(best=19.6,方向=近)
+[2026-07-06 03:54:56.352] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: coarse focus_near 反差=14.3 (0.2s) 采样(best=19.6,方向=近)
+[2026-07-06 03:54:58.163] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #36: coarse focus_near 反差=13.33 (0.2s) 采样(best=19.6,方向=近)
+[2026-07-06 03:54:59.939] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #37: coarse focus_near 反差=13.11 (0.2s) 采样(best=19.6,方向=近)
+[2026-07-06 03:55:00.653] [INFO   ] [operation_logger] [web] ptz: 用户停止
+[2026-07-06 03:55:01.695] [INFO   ] [operation_logger] [web] ptz: 对焦: 用户停止
+[2026-07-06 03:55:01.706] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-06 03:55:21.261] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 100, "temporal": 30}
+[2026-07-06 03:55:21.269] [INFO   ] [operation_logger] [web] ptz: 时域降噪: 30
+[2026-07-06 03:55:25.598] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.25"}
+[2026-07-06 03:55:25.724] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *1.25
+[2026-07-06 03:55:31.734] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*2"}
+[2026-07-06 03:55:31.906] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *2
+[2026-07-06 03:55:35.730] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*4"}
+[2026-07-06 03:55:35.899] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *4
+[2026-07-06 03:55:43.361] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 03:55:43.594] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 03:55:44.269] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-06 03:55:46.761] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1613~2397, Y=1366~1938, 共448448像素
+[2026-07-06 03:55:46.761] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=69.16 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-06 03:55:48.564] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=69.26 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:55:50.652] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=65.09 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:55:52.343] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=64.63 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:55:54.031] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=65.55 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:55:55.731] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=66.69 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:55:57.370] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_near 反差=66.26 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:55:59.247] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: coarse focus_near 反差=67.58 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:01.008] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: coarse focus_near 反差=65.35 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:02.683] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: coarse focus_near 反差=66.22 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:04.599] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: coarse focus_near 反差=64.15 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:06.623] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: coarse focus_near 反差=65.66 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:08.384] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: coarse focus_near 反差=65.45 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:10.203] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: coarse focus_near 反差=65.74 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:11.967] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: coarse focus_near 反差=64.15 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:13.645] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: coarse focus_near 反差=66.07 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:15.373] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: coarse focus_near 反差=67.09 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:17.081] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: coarse focus_near 反差=64.47 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:18.777] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: coarse focus_near 反差=67.18 (0.2s) 采样(best=69.3,方向=近)
+[2026-07-06 03:56:20.563] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: coarse focus_far 反差=66.66 (0.2s) 平坦区(0步),反向(方向=远)
+[2026-07-06 03:56:22.394] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: coarse focus_far 反差=64.06 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-06 03:56:24.191] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: coarse focus_far 反差=64.42 (0.2s) 采样(best=64.4,方向=远)
+[2026-07-06 03:56:26.014] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: coarse focus_far 反差=64.35 (0.2s) 采样(best=64.4,方向=远)
+[2026-07-06 03:56:27.703] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: coarse focus_far 反差=69.35 (0.2s) 采样(best=69.3,方向=远)
+[2026-07-06 03:56:29.558] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: coarse focus_far 反差=104.79 (0.2s) 采样(best=104.8,方向=远)
+[2026-07-06 03:56:31.370] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: coarse focus_far 反差=81.02 (0.2s) 采样(best=104.8,方向=远)
+[2026-07-06 03:56:33.043] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: coarse focus_far 反差=86.29 (0.2s) 采样(best=104.8,方向=远)
+[2026-07-06 03:56:34.690] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: coarse focus_far 反差=103.82 (0.2s) 找到峰值(best1=104.8),回退3步
+[2026-07-06 03:56:36.526] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: approach focus_near 反差=72.9 (0.05s) 回退完成(反差=72.9,目标=104.8),进入精调
+[2026-07-06 03:56:38.001] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: approach focus_near 反差=103.41 (0.05s) 逼近(步1,best2=103.4,目标=104.8)
+[2026-07-06 03:56:39.716] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: approach focus_far 反差=99.15 (0.05s) 越过best反向(步2,best2=103.4,目标=104.8)
+[2026-07-06 03:56:41.549] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: approach focus_near 反差=103.28 (0.05s) 越过best反向(步3,best2=103.4,目标=104.8)
+[2026-07-06 03:56:43.121] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: approach focus_far 反差=94.5 (0.05s) 越过best反向(步4,best2=103.4,目标=104.8)
+[2026-07-06 03:56:44.738] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: approach focus_far 反差=103.42 (0.05s) 逼近(步5,best2=103.4,目标=104.8)
+[2026-07-06 03:56:46.383] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: done stop 反差=130.01 (0s) 对焦成功(best2=130.0>=best1=104.8)
+[2026-07-06 03:56:47.159] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=128.71 (35步) ──
+[2026-07-06 03:56:47.172] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-06 04:06:15.224] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 04:06:16.298] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:06:16.565] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 04:06:16.918] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 04:06:17.574] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 04:06:18.190] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 04:06:18.978] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:06:18.980] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 04:06:19.153] [INFO   ] [operation_logger] [web] ptz: 快门: 1/200
+[2026-07-06 04:06:19.154] [INFO   ] [operation_logger] [web] ptz: 光圈: F1.6
+[2026-07-06 04:06:19.244] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 04:06:21.323] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.5"}
+[2026-07-06 04:06:21.505] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *1.5
+[2026-07-06 04:06:25.960] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*4"}
+[2026-07-06 04:06:26.102] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *4
+[2026-07-06 04:06:48.883] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 04:06:49.549] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:06:50.024] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 04:06:50.490] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 04:06:50.835] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 04:06:51.205] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:13:06.829] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 04:13:06.852] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 04:13:52.089] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*3"}
+[2026-07-06 04:13:52.099] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *3
+[2026-07-06 04:34:49.621] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 04:34:50.192] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:34:50.534] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 04:34:50.882] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 04:34:51.208] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 04:34:51.554] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:34:51.913] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 04:34:52.066] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 04:34:59.812] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.25"}
+[2026-07-06 04:34:59.816] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *1.25
+[2026-07-06 04:35:05.421] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*4"}
+[2026-07-06 04:35:05.426] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *4
+[2026-07-06 04:37:49.549] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 04:37:50.642] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:37:51.309] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 04:37:51.922] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 04:37:52.751] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 04:37:53.385] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:37:53.927] [INFO   ] [operation_logger] [web] ptz: 快门: 1/200
+[2026-07-06 04:37:54.153] [INFO   ] [operation_logger] [web] ptz: 光圈: F1.6
+[2026-07-06 04:37:54.167] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 04:37:58.018] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 04:37:58.194] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 04:38:08.707] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 04:38:12.517] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 04:38:12.518] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 04:38:12.769] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 04:38:16.458] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-06 04:38:21.613] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1863~1931, Y=900~1526, 共42568像素
+[2026-07-06 04:38:21.613] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=100.34 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-06 04:38:23.446] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=109.16 (0.2s) 采样(best=109.2,方向=近)
+[2026-07-06 04:38:25.443] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=122.93 (0.2s) 采样(best=122.9,方向=近)
+[2026-07-06 04:38:27.278] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=83.17 (0.2s) 采样(best=122.9,方向=近)
+[2026-07-06 04:38:29.248] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=77.76 (0.2s) 采样(best=122.9,方向=近)
+[2026-07-06 04:38:30.991] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=75.68 (0.2s) 找到峰值(best1=122.9),回退3步
+[2026-07-06 04:38:32.610] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: approach focus_far 反差=66.52 (0.05s) 回退完成(反差=66.5,目标=122.9),进入精调
+[2026-07-06 04:38:34.279] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: approach focus_far 反差=76.03 (0.05s) 逼近(步1,best2=76.0,目标=122.9)
+[2026-07-06 04:38:35.962] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: approach focus_near 反差=70.46 (0.05s) 越过best反向(步2,best2=76.0,目标=122.9)
+[2026-07-06 04:38:37.460] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: approach focus_far 反差=71.8 (0.05s) 越过best反向(步3,best2=76.0,目标=122.9)
+[2026-07-06 04:38:38.989] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: approach focus_near 反差=70.21 (0.05s) 越过best反向(步4,best2=76.0,目标=122.9)
+[2026-07-06 04:38:40.532] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: approach focus_far 反差=71.77 (0.05s) 越过best反向(步5,best2=76.0,目标=122.9)
+[2026-07-06 04:38:42.038] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: approach focus_near 反差=68.88 (0.05s) 越过best反向(步6,best2=76.0,目标=122.9)
+[2026-07-06 04:38:43.634] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: approach focus_far 反差=68.9 (0.05s) 越过best反向(步7,best2=76.0,目标=122.9)
+[2026-07-06 04:38:45.265] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: approach focus_near 反差=73.05 (0.05s) 越过best反向(步8,best2=76.0,目标=122.9)
+[2026-07-06 04:38:46.858] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: approach focus_far 反差=73.08 (0.05s) 越过best反向(步9,best2=76.0,目标=122.9)
+[2026-07-06 04:38:48.546] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: approach focus_near 反差=71.78 (0.05s) 越过best反向(步10,best2=76.0,目标=122.9)
+[2026-07-06 04:38:50.062] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: approach focus_far 反差=67.02 (0.05s) 越过best反向(步11,best2=76.0,目标=122.9)
+[2026-07-06 04:38:51.624] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: approach focus_near 反差=67.86 (0.05s) 越过best反向(步12,best2=76.0,目标=122.9)
+[2026-07-06 04:38:53.224] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: approach focus_far 反差=70.75 (0.05s) 越过best反向(步13,best2=76.0,目标=122.9)
+[2026-07-06 04:38:54.871] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: approach focus_near 反差=71.92 (0.05s) 越过best反向(步14,best2=76.0,目标=122.9)
+[2026-07-06 04:38:56.466] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: approach focus_far 反差=69.42 (0.05s) 越过best反向(步15,best2=76.0,目标=122.9)
+[2026-07-06 04:38:57.980] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: approach focus_near 反差=74.4 (0.05s) 越过best反向(步16,best2=76.0,目标=122.9)
+[2026-07-06 04:38:59.511] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: approach focus_far 反差=72.53 (0.05s) 越过best反向(步17,best2=76.0,目标=122.9)
+[2026-07-06 04:39:00.992] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: approach focus_near 反差=66.87 (0.05s) 越过best反向(步18,best2=76.0,目标=122.9)
+[2026-07-06 04:39:02.664] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: approach focus_far 反差=68.13 (0.05s) 越过best反向(步19,best2=76.0,目标=122.9)
+[2026-07-06 04:39:04.252] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: approach focus_near 反差=67.96 (0.05s) 越过best反向(步20,best2=76.0,目标=122.9)
+[2026-07-06 04:39:05.878] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: approach focus_far 反差=73.28 (0.05s) 越过best反向(步21,best2=76.0,目标=122.9)
+[2026-07-06 04:39:07.450] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: approach focus_near 反差=67.56 (0.05s) 越过best反向(步22,best2=76.0,目标=122.9)
+[2026-07-06 04:39:09.013] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: approach focus_far 反差=70.86 (0.05s) 越过best反向(步23,best2=76.0,目标=122.9)
+[2026-07-06 04:39:10.516] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: approach focus_near 反差=69.91 (0.05s) 越过best反向(步24,best2=76.0,目标=122.9)
+[2026-07-06 04:39:12.135] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: approach focus_far 反差=70.79 (0.05s) 越过best反向(步25,best2=76.0,目标=122.9)
+[2026-07-06 04:39:13.615] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: approach focus_near 反差=69.99 (0.05s) 越过best反向(步26,best2=76.0,目标=122.9)
+[2026-07-06 04:39:15.438] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: approach focus_far 反差=72.27 (0.05s) 越过best反向(步27,best2=76.0,目标=122.9)
+[2026-07-06 04:39:16.927] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: approach focus_near 反差=71.98 (0.05s) 越过best反向(步28,best2=76.0,目标=122.9)
+[2026-07-06 04:39:18.573] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #36: approach focus_far 反差=69.72 (0.05s) 越过best反向(步29,best2=76.0,目标=122.9)
+[2026-07-06 04:39:20.058] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #37: approach focus_near 反差=68.73 (0.05s) 越过best反向(步30,best2=76.0,目标=122.9)
+[2026-07-06 04:39:21.790] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #38: approach focus_far 反差=67.36 (0.05s) 越过best反向(步31,best2=76.0,目标=122.9)
+[2026-07-06 04:39:23.467] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #39: approach focus_near 反差=70.45 (0.05s) 越过best反向(步32,best2=76.0,目标=122.9)
+[2026-07-06 04:39:24.966] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #40: approach focus_far 反差=67.23 (0.05s) 越过best反向(步33,best2=76.0,目标=122.9)
+[2026-07-06 04:39:26.478] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #41: approach focus_near 反差=65.68 (0.05s) 越过best反向(步34,best2=76.0,目标=122.9)
+[2026-07-06 04:39:28.011] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #42: approach focus_far 反差=65.95 (0.05s) 越过best反向(步35,best2=76.0,目标=122.9)
+[2026-07-06 04:39:29.510] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #43: approach focus_near 反差=64.41 (0.05s) 越过best反向(步36,best2=76.0,目标=122.9)
+[2026-07-06 04:39:31.093] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #44: approach focus_far 反差=62.5 (0.05s) 越过best反向(步37,best2=76.0,目标=122.9)
+[2026-07-06 04:39:32.648] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #45: approach focus_near 反差=66.35 (0.05s) 越过best反向(步38,best2=76.0,目标=122.9)
+[2026-07-06 04:39:34.425] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #46: approach focus_far 反差=68.92 (0.05s) 越过best反向(步39,best2=76.0,目标=122.9)
+[2026-07-06 04:39:35.923] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #47: approach focus_near 反差=65.35 (0.05s) 越过best反向(步40,best2=76.0,目标=122.9)
+[2026-07-06 04:39:37.608] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #48: approach focus_far 反差=66.88 (0.05s) 越过best反向(步41,best2=76.0,目标=122.9)
+[2026-07-06 04:39:39.205] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #49: approach focus_near 反差=64.13 (0.05s) 越过best反向(步42,best2=76.0,目标=122.9)
+[2026-07-06 04:39:40.845] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #50: approach focus_far 反差=65.55 (0.05s) 越过best反向(步43,best2=76.0,目标=122.9)
+[2026-07-06 04:39:42.466] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #51: approach focus_near 反差=66.95 (0.05s) 越过best反向(步44,best2=76.0,目标=122.9)
+[2026-07-06 04:39:43.964] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #52: approach focus_far 反差=65.87 (0.05s) 越过best反向(步45,best2=76.0,目标=122.9)
+[2026-07-06 04:39:45.523] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #53: approach focus_near 反差=66.52 (0.05s) 越过best反向(步46,best2=76.0,目标=122.9)
+[2026-07-06 04:39:47.102] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #54: approach focus_far 反差=64.39 (0.05s) 越过best反向(步47,best2=76.0,目标=122.9)
+[2026-07-06 04:39:48.595] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #55: approach focus_near 反差=57.91 (0.05s) 越过best反向(步48,best2=76.0,目标=122.9)
+[2026-07-06 04:39:50.235] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #56: approach focus_far 反差=65.96 (0.05s) 越过best反向(步49,best2=76.0,目标=122.9)
+[2026-07-06 04:39:51.887] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #57: approach focus_near 反差=62.84 (0.05s) 越过best反向(步50,best2=76.0,目标=122.9)
+[2026-07-06 04:39:53.460] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #58: approach focus_far 反差=66.43 (0.05s) 越过best反向(步51,best2=76.0,目标=122.9)
+[2026-07-06 04:39:54.954] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #59: approach focus_near 反差=66.9 (0.05s) 越过best反向(步52,best2=76.0,目标=122.9)
+[2026-07-06 04:39:56.613] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #60: approach focus_far 反差=63.6 (0.05s) 越过best反向(步53,best2=76.0,目标=122.9)
+[2026-07-06 04:39:58.235] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #61: approach focus_near 反差=63.77 (0.05s) 越过best反向(步54,best2=76.0,目标=122.9)
+[2026-07-06 04:39:59.871] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #62: approach focus_far 反差=65.51 (0.05s) 越过best反向(步55,best2=76.0,目标=122.9)
+[2026-07-06 04:40:01.436] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #63: approach focus_near 反差=65.5 (0.05s) 越过best反向(步56,best2=76.0,目标=122.9)
+[2026-07-06 04:40:02.947] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #64: approach focus_far 反差=67.86 (0.05s) 越过best反向(步57,best2=76.0,目标=122.9)
+[2026-07-06 04:40:04.493] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #65: approach focus_near 反差=64.62 (0.05s) 越过best反向(步58,best2=76.0,目标=122.9)
+[2026-07-06 04:40:06.095] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #66: approach focus_far 反差=64.14 (0.05s) 越过best反向(步59,best2=76.0,目标=122.9)
+[2026-07-06 04:40:07.620] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #67: approach focus_near 反差=63.74 (0.05s) 越过best反向(步60,best2=76.0,目标=122.9)
+[2026-07-06 04:40:09.266] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #68: approach focus_far 反差=66.12 (0.05s) 越过best反向(步61,best2=76.0,目标=122.9)
+[2026-07-06 04:40:10.894] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #69: approach focus_near 反差=64.05 (0.05s) 越过best反向(步62,best2=76.0,目标=122.9)
+[2026-07-06 04:40:12.511] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #70: approach focus_far 反差=65.85 (0.05s) 越过best反向(步63,best2=76.0,目标=122.9)
+[2026-07-06 04:40:14.011] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #71: approach focus_near 反差=62.22 (0.05s) 越过best反向(步64,best2=76.0,目标=122.9)
+[2026-07-06 04:40:15.636] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #72: approach focus_far 反差=62.53 (0.05s) 越过best反向(步65,best2=76.0,目标=122.9)
+[2026-07-06 04:40:17.232] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #73: approach focus_near 反差=66.14 (0.05s) 越过best反向(步66,best2=76.0,目标=122.9)
+[2026-07-06 04:40:18.897] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #74: approach focus_far 反差=62.89 (0.05s) 越过best反向(步67,best2=76.0,目标=122.9)
+[2026-07-06 04:40:20.477] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #75: approach focus_near 反差=66.17 (0.05s) 越过best反向(步68,best2=76.0,目标=122.9)
+[2026-07-06 04:40:21.988] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #76: approach focus_far 反差=66.49 (0.05s) 越过best反向(步69,best2=76.0,目标=122.9)
+[2026-07-06 04:40:23.568] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #77: approach focus_near 反差=62.99 (0.05s) 越过best反向(步70,best2=76.0,目标=122.9)
+[2026-07-06 04:40:25.211] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #78: approach focus_far 反差=65.92 (0.05s) 越过best反向(步71,best2=76.0,目标=122.9)
+[2026-07-06 04:40:26.814] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #79: approach focus_near 反差=60.97 (0.05s) 越过best反向(步72,best2=76.0,目标=122.9)
+[2026-07-06 04:40:28.439] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #80: approach focus_far 反差=56.68 (0.05s) 越过best反向(步73,best2=76.0,目标=122.9)
+[2026-07-06 04:40:29.926] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #81: approach focus_near 反差=58.32 (0.05s) 越过best反向(步74,best2=76.0,目标=122.9)
+[2026-07-06 04:40:31.567] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #82: approach focus_far 反差=60.61 (0.05s) 越过best反向(步75,best2=76.0,目标=122.9)
+[2026-07-06 04:40:33.167] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #83: approach focus_near 反差=54.11 (0.05s) 越过best反向(步76,best2=76.0,目标=122.9)
+[2026-07-06 04:40:34.801] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #84: approach focus_far 反差=54.16 (0.05s) 越过best反向(步77,best2=76.0,目标=122.9)
+[2026-07-06 04:40:36.453] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #85: approach focus_near 反差=57.85 (0.05s) 越过best反向(步78,best2=76.0,目标=122.9)
+[2026-07-06 04:40:37.960] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #86: approach focus_far 反差=58.68 (0.05s) 越过best反向(步79,best2=76.0,目标=122.9)
+[2026-07-06 04:40:39.493] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #87: approach focus_near 反差=57.43 (0.05s) 越过best反向(步80,best2=76.0,目标=122.9)
+[2026-07-06 04:40:41.008] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #88: approach focus_far 反差=57.55 (0.05s) 越过best反向(步81,best2=76.0,目标=122.9)
+[2026-07-06 04:40:42.504] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #89: approach focus_near 反差=57.39 (0.05s) 越过best反向(步82,best2=76.0,目标=122.9)
+[2026-07-06 04:40:44.101] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #90: approach focus_far 反差=61.46 (0.05s) 越过best反向(步83,best2=76.0,目标=122.9)
+[2026-07-06 04:40:45.596] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #91: approach focus_near 反差=60.5 (0.05s) 越过best反向(步84,best2=76.0,目标=122.9)
+[2026-07-06 04:40:47.466] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #92: approach focus_far 反差=59.73 (0.05s) 越过best反向(步85,best2=76.0,目标=122.9)
+[2026-07-06 04:40:48.946] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #93: approach focus_near 反差=62.6 (0.05s) 越过best反向(步86,best2=76.0,目标=122.9)
+[2026-07-06 04:40:50.542] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #94: approach focus_far 反差=60.87 (0.05s) 越过best反向(步87,best2=76.0,目标=122.9)
+[2026-07-06 04:40:52.076] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #95: approach focus_near 反差=57.52 (0.05s) 越过best反向(步88,best2=76.0,目标=122.9)
+[2026-07-06 04:40:53.710] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #96: approach focus_far 反差=55.89 (0.05s) 越过best反向(步89,best2=76.0,目标=122.9)
+[2026-07-06 04:40:55.219] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #97: approach focus_near 反差=57.82 (0.05s) 越过best反向(步90,best2=76.0,目标=122.9)
+[2026-07-06 04:40:56.871] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #98: approach focus_far 反差=55.31 (0.05s) 越过best反向(步91,best2=76.0,目标=122.9)
+[2026-07-06 04:40:58.470] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #99: approach focus_near 反差=58.7 (0.05s) 越过best反向(步92,best2=76.0,目标=122.9)
+[2026-07-06 04:41:00.008] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #100: approach focus_far 反差=55.26 (0.05s) 越过best反向(步93,best2=76.0,目标=122.9)
+[2026-07-06 04:41:01.497] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #101: approach focus_near 反差=56.29 (0.05s) 越过best反向(步94,best2=76.0,目标=122.9)
+[2026-07-06 04:41:03.208] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #102: approach focus_far 反差=56.78 (0.05s) 越过best反向(步95,best2=76.0,目标=122.9)
+[2026-07-06 04:41:04.805] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #103: approach focus_near 反差=54.59 (0.05s) 越过best反向(步96,best2=76.0,目标=122.9)
+[2026-07-06 04:41:06.462] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #104: approach focus_far 反差=55.95 (0.05s) 越过best反向(步97,best2=76.0,目标=122.9)
+[2026-07-06 04:41:07.984] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #105: approach focus_near 反差=54.21 (0.05s) 越过best反向(步98,best2=76.0,目标=122.9)
+[2026-07-06 04:41:09.582] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #106: approach focus_far 反差=58.81 (0.05s) 越过best反向(步99,best2=76.0,目标=122.9)
+[2026-07-06 04:41:11.264] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #107: approach focus_near 反差=54.97 (0.05s) 越过best反向(步100,best2=76.0,目标=122.9)
+[2026-07-06 04:41:11.690] [INFO   ] [operation_logger] [web] ptz: 用户停止
+[2026-07-06 04:41:12.879] [INFO   ] [operation_logger] [web] ptz: 对焦: 用户停止
+[2026-07-06 04:41:12.910] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-06 04:42:31.036] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 04:42:32.156] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:42:33.035] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 04:42:33.373] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 04:42:33.987] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 04:42:34.626] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 04:42:35.188] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-06 04:42:35.340] [INFO   ] [operation_logger] [web] ptz: 快门: 1/200
+[2026-07-06 04:42:35.340] [INFO   ] [operation_logger] [web] ptz: 光圈: F1.6
+[2026-07-06 04:42:35.473] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 05:01:36.980] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 05:01:37.604] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 05:01:38.073] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 05:01:38.421] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 05:01:38.764] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 05:01:39.119] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 05:01:40.241] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 05:01:40.264] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 05:05:17.256] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 05:05:18.122] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 05:05:19.198] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 05:05:19.812] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 05:05:19.870] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 05:05:19.961] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 05:31:37.088] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 05:31:37.216] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 05:31:39.376] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 05:31:39.569] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 05:31:40.736] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-06 05:31:42.469] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=2001~2291, Y=1266~1571, 共88450像素
+[2026-07-06 05:31:42.470] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=3.32 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-06 05:31:44.453] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=3.3 (0.2s) 采样(best=3.3,方向=近)
+[2026-07-06 05:31:46.714] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=3.25 (0.2s) 采样(best=3.3,方向=近)
+[2026-07-06 05:31:48.480] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=3.27 (0.2s) 采样(best=3.3,方向=近)
+[2026-07-06 05:31:50.146] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=3.09 (0.2s) 采样(best=3.3,方向=近)
+[2026-07-06 05:31:51.786] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=3.27 (0.2s) 采样(best=3.3,方向=近)
+[2026-07-06 05:31:53.444] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_near 反差=3.32 (0.2s) 采样(best=3.3,方向=近)
+[2026-07-06 05:31:55.056] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: coarse focus_near 反差=3.31 (0.2s) 采样(best=3.3,方向=近)
+[2026-07-06 05:31:56.677] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: coarse focus_near 反差=3.42 (0.2s) 采样(best=3.4,方向=近)
+[2026-07-06 05:31:58.397] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: coarse focus_near 反差=3.12 (0.2s) 采样(best=3.4,方向=近)
+[2026-07-06 05:31:59.979] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: coarse focus_near 反差=3.7 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:01.651] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: coarse focus_near 反差=3.38 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:03.396] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: coarse focus_near 反差=3.4 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:05.017] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: coarse focus_near 反差=3.34 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:06.704] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: coarse focus_near 反差=3.42 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:08.391] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: coarse focus_near 反差=3.43 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:10.214] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: coarse focus_near 反差=3.26 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:11.867] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: coarse focus_near 反差=3.35 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:13.643] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: coarse focus_near 反差=3.62 (0.2s) 采样(best=3.7,方向=近)
+[2026-07-06 05:32:15.295] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: coarse focus_far 反差=3.51 (0.2s) 平坦区(0步),反向(方向=远)
+[2026-07-06 05:32:17.050] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: coarse focus_far 反差=3.93 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-06 05:32:18.798] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: coarse focus_far 反差=5.71 (0.2s) 采样(best=5.7,方向=远)
+[2026-07-06 05:32:20.507] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: coarse focus_far 反差=9.66 (0.2s) 采样(best=9.7,方向=远)
+[2026-07-06 05:32:22.186] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: coarse focus_far 反差=16.14 (0.2s) 采样(best=16.1,方向=远)
+[2026-07-06 05:32:23.844] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: coarse focus_far 反差=36.97 (0.2s) 采样(best=37.0,方向=远)
+[2026-07-06 05:32:25.581] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: coarse focus_far 反差=552.79 (0.2s) 采样(best=552.8,方向=远)
+[2026-07-06 05:32:27.356] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: coarse focus_far 反差=152.36 (0.2s) 采样(best=552.8,方向=远)
+[2026-07-06 05:32:29.168] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: coarse focus_far 反差=1390.44 (0.2s) 采样(best=1390.4,方向=远)
+[2026-07-06 05:32:30.797] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: coarse focus_far 反差=450.59 (0.2s) 采样(best=1390.4,方向=远)
+[2026-07-06 05:32:32.539] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: coarse focus_far 反差=442.84 (0.2s) 采样(best=1390.4,方向=远)
+[2026-07-06 05:32:34.333] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: coarse focus_far 反差=461.14 (0.2s) 找到峰值(best1=1390.4),回退3步
+[2026-07-06 05:32:36.068] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: approach focus_near 反差=452.22 (0.05s) 回退完成(反差=452.2,目标=1390.4),进入精调
+[2026-07-06 05:32:37.787] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: approach focus_near 反差=1057.55 (0.05s) 逼近(步1,best2=1057.5,目标=1390.4)
+[2026-07-06 05:32:39.283] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: approach focus_near 反差=1318.12 (0.05s) 逼近(步2,best2=1318.1,目标=1390.4)
+[2026-07-06 05:32:40.818] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: done stop 反差=1444.08 (0s) 对焦成功(best2=1444.1>=best1=1390.4)
+[2026-07-06 05:32:41.763] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=1430.89 (35步) ──
+[2026-07-06 05:32:41.777] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-06 05:42:13.237] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*8"}
+[2026-07-06 05:42:15.107] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*8"}
+[2026-07-06 05:42:15.739] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*4"}
+[2026-07-06 05:42:16.369] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*4"}
+[2026-07-06 05:42:16.946] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*8"}
+[2026-07-06 05:42:17.512] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*4"}
+[2026-07-06 06:04:32.416] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 06:04:33.013] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 06:04:33.343] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 06:04:33.663] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/200"}
+[2026-07-06 06:04:34.023] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 160}
+[2026-07-06 06:04:34.473] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 06:04:34.751] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 06:04:34.923] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 06:04:45.417] [ERROR  ] [operation_logger] [web] ptz: 慢快门设置失败: 设置失败: HTTP 400
+[2026-07-06 06:04:50.815] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.5"}
+[2026-07-06 06:04:50.819] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *1.5
+[2026-07-06 06:04:55.186] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*8"}
+[2026-07-06 06:04:55.200] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *8
+[2026-07-06 06:05:00.820] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 06:05:00.859] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-07-06 06:05:04.225] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/30000"}
+[2026-07-06 06:05:04.341] [INFO   ] [operation_logger] [web] ptz: 快门: 1/30000
+[2026-07-06 06:05:07.957] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 06:05:07.962] [INFO   ] [operation_logger] [web] ptz: 快门: 1/50
+[2026-07-06 06:05:10.377] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 06:05:10.381] [INFO   ] [operation_logger] [web] ptz: 光圈: F22.0
+[2026-07-06 06:05:11.170] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 0}
+[2026-07-06 06:05:11.284] [INFO   ] [operation_logger] [web] ptz: 增益: 0
+[2026-07-06 06:05:19.852] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.25"}
+[2026-07-06 06:05:19.856] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *1.25
+[2026-07-06 06:06:10.098] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*4"}
+[2026-07-06 06:06:10.117] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *4
+[2026-07-06 06:06:20.163] [ERROR  ] [operation_logger] [web] ptz: 慢快门设置失败: 设置失败: HTTP 400
+[2026-07-06 06:09:12.199] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "auto"}
+[2026-07-06 06:09:12.202] [INFO   ] [operation_logger] [web] ptz: IR滤镜: auto
+[2026-07-06 06:46:11.684] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.25"}
+[2026-07-06 06:46:11.688] [INFO   ] [operation_logger] [web] ptz: 慢快门: 慢快门: *1.25
+[2026-07-06 06:46:13.146] [ERROR  ] [operation_logger] [web] ptz: 慢快门设置失败: 设置失败: HTTP 400
+[2026-07-06 07:10:32.183] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 07:10:32.522] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:10:32.750] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:10:32.784] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 07:10:32.839] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 07:10:32.894] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:10:34.363] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 07:10:34.367] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 07:10:40.670] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-06 07:10:44.401] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.25"}
+[2026-07-06 07:10:52.264] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "off"}
+[2026-07-06 07:10:52.268] [INFO   ] [operation_logger] [web] ptz: IR滤镜: off
+[2026-07-06 07:10:53.122] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 07:10:53.125] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 07:10:56.142] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "auto"}
+[2026-07-06 07:10:56.145] [INFO   ] [operation_logger] [web] ptz: IR滤镜: auto
+[2026-07-06 07:11:00.684] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "night", "irCut": ""}
+[2026-07-06 07:11:00.686] [INFO   ] [operation_logger] [web] ptz: 日夜模式: night
+[2026-07-06 07:11:07.421] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "auto", "irCut": ""}
+[2026-07-06 07:11:07.425] [INFO   ] [operation_logger] [web] ptz: 日夜模式: auto
+[2026-07-06 07:11:11.323] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "off"}
+[2026-07-06 07:11:11.327] [INFO   ] [operation_logger] [web] ptz: IR滤镜: off
+[2026-07-06 07:11:13.263] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "night", "irCut": ""}
+[2026-07-06 07:11:13.265] [INFO   ] [operation_logger] [web] ptz: 日夜模式: night
+[2026-07-06 07:11:33.076] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-06 07:12:08.080] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "day", "irCut": ""}
+[2026-07-06 07:12:08.083] [INFO   ] [operation_logger] [web] ptz: 日夜模式: day
+[2026-07-06 07:15:14.095] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-07-06 07:15:14.267] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-07-06 07:15:14.594] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 07:15:15.965] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:15:16.243] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-06 07:15:16.611] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:15:16.991] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:15:17.364] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 07:15:17.693] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 07:15:18.057] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:15:18.203] [INFO   ] [operation_logger] [web] ptz: 快门: 1/50
+[2026-07-06 07:15:18.250] [INFO   ] [operation_logger] [web] ptz: 光圈: F22.0
+[2026-07-06 07:15:18.251] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 07:25:25.568] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 07:25:25.573] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 07:25:46.087] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*2"}
+[2026-07-06 07:26:00.418] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置失败: HTTP 0
+[2026-07-06 07:26:28.946] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 07:26:28.951] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 07:26:33.483] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "off"}
+[2026-07-06 07:26:33.486] [INFO   ] [operation_logger] [web] ptz: IR滤镜: off
+[2026-07-06 07:26:36.910] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "auto"}
+[2026-07-06 07:26:36.914] [INFO   ] [operation_logger] [web] ptz: IR滤镜: auto
+[2026-07-06 07:50:23.184] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 07:50:23.899] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:50:24.237] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:50:24.441] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 07:50:24.610] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 07:50:24.926] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:51:18.112] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 07:51:18.744] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:51:19.064] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:51:19.439] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 07:51:19.783] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 07:51:20.012] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:52:56.034] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 07:52:56.613] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:52:56.937] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:52:57.128] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 07:52:57.455] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 07:52:57.797] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:53:17.933] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置失败: HTTP 0
+[2026-07-06 07:53:20.900] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置失败: HTTP 0
+[2026-07-06 07:53:22.725] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 07:53:22.757] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 07:53:23.930] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置失败: HTTP 0
+[2026-07-06 07:53:25.501] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "off"}
+[2026-07-06 07:53:25.505] [INFO   ] [operation_logger] [web] ptz: IR滤镜: off
+[2026-07-06 07:53:28.488] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "auto"}
+[2026-07-06 07:53:28.492] [INFO   ] [operation_logger] [web] ptz: IR滤镜: auto
+[2026-07-06 07:55:09.940] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 07:55:10.220] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:55:10.481] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:55:10.519] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 07:55:10.541] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 07:55:10.616] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:55:22.758] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*2"}
+[2026-07-06 07:55:27.754] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-06 07:58:17.915] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 07:58:18.153] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:58:18.464] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:58:18.494] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 07:58:18.543] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 07:58:18.579] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:58:18.960] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 07:58:18.989] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 07:58:37.301] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "off"}
+[2026-07-06 07:58:37.304] [INFO   ] [operation_logger] [web] ptz: IR滤镜: off
+[2026-07-06 07:58:41.474] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "day", "irCut": ""}
+[2026-07-06 07:58:41.480] [INFO   ] [operation_logger] [web] ptz: 日夜模式: day
+[2026-07-06 07:58:59.060] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.25"}
+[2026-07-06 07:59:01.254] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 07:59:01.864] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:59:02.465] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 07:59:02.770] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/50"}
+[2026-07-06 07:59:02.823] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 2200}
+[2026-07-06 07:59:03.421] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 07:59:23.955] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置失败: HTTP 0
+[2026-07-06 07:59:26.945] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置失败: HTTP 0
+[2026-07-06 07:59:29.798] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置失败: HTTP 0
+[2026-07-06 07:59:32.475] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 07:59:32.479] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 07:59:34.965] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "off"}
+[2026-07-06 07:59:34.969] [INFO   ] [operation_logger] [web] ptz: IR滤镜: off
+[2026-07-06 07:59:37.770] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "auto"}
+[2026-07-06 08:37:16.329] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 08:37:16.681] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 08:37:16.686] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 08:37:27.324] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 500
+[2026-07-06 08:37:31.321] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 500
+[2026-07-06 08:37:34.856] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 08:37:34.863] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 08:37:38.879] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "auto"}
+[2026-07-06 08:37:38.883] [INFO   ] [operation_logger] [web] ptz: IR滤镜: auto
+[2026-07-06 08:37:41.356] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*2"}
+[2026-07-06 08:37:51.744] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 08:37:51.948] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 08:37:51.952] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 08:44:34.824] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 08:44:35.116] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 08:44:35.120] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 08:44:46.056] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*2"}
+[2026-07-06 08:44:51.203] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-06 08:45:01.110] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 08:45:06.094] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 08:45:10.125] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 08:45:10.128] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 08:45:16.069] [ERROR  ] [operation_logger] [web] ptz: IR滤镜请求异常: Failed to fetch
+[2026-07-06 08:45:16.491] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 08:45:17.409] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 08:45:17.535] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 08:46:17.932] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "day", "irCut": ""}
+[2026-07-06 08:47:18.695] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 08:47:19.145] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 08:47:19.149] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 08:47:33.812] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "day", "irCut": ""}
+[2026-07-06 08:47:33.816] [INFO   ] [operation_logger] [web] ptz: 日夜模式: day
+[2026-07-06 08:47:38.777] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 08:47:38.782] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 08:47:46.285] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*2"}
+[2026-07-06 08:47:52.131] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-06 08:47:58.352] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 08:47:58.914] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 08:47:58.918] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 08:55:12.951] [INFO   ] [operation_logger] [image] filter_get: {"ns": "http://www.hikvision.com/ver20/XMLSchema", "no_day_night": true}
+[2026-07-06 08:57:31.595] [INFO   ] [operation_logger] [image] filter_get: {"ns": "http://www.hikvision.com/ver20/XMLSchema", "no_day_night": true}
+[2026-07-06 08:57:31.699] [INFO   ] [operation_logger] [image] filter_get: {"ns": "http://www.hikvision.com/ver20/XMLSchema", "no_day_night": true}
+[2026-07-06 09:02:16.639] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 09:02:17.260] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 09:02:17.369] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 09:02:28.272] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*2"}
+[2026-07-06 09:02:34.115] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-06 09:02:44.966] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 09:02:52.992] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 09:03:00.825] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 09:03:00.829] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 09:03:04.506] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "auto"}
+[2026-07-06 09:03:04.511] [INFO   ] [operation_logger] [web] ptz: IR滤镜: auto
+[2026-07-06 09:03:12.411] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 09:03:12.674] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 09:03:12.678] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 09:20:33.817] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 09:20:34.140] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 09:20:34.143] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 09:20:45.810] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 09:20:45.837] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 09:21:19.103] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 09:21:19.317] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-06 09:21:22.459] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 09:21:22.489] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-07-06 09:21:30.063] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.25"}
+[2026-07-06 09:21:33.016] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-06 09:21:41.120] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 09:21:48.871] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 09:21:54.982] [ERROR  ] [operation_logger] [web] ptz: IR滤镜设置失败: 设置IR滤镜失败: HTTP 0
+[2026-07-06 09:22:00.183] [ERROR  ] [operation_logger] [web] ptz: IR滤镜设置失败: 设置IR滤镜失败: HTTP 0
+[2026-07-06 09:22:05.789] [ERROR  ] [operation_logger] [web] ptz: IR滤镜设置失败: 设置IR滤镜失败: HTTP 0
+[2026-07-06 09:22:31.056] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 09:22:31.433] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 09:22:31.436] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 09:22:34.173] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 09:22:34.195] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 09:22:47.918] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 09:22:48.448] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 09:25:02.982] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 17}
+[2026-07-06 09:25:03.107] [INFO   ] [operation_logger] [web] ptz: 增益: 17
+[2026-07-06 09:25:05.550] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 2}
+[2026-07-06 09:25:05.559] [INFO   ] [operation_logger] [web] ptz: 增益: 2
+[2026-07-06 09:25:12.415] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": true}
+[2026-07-06 09:25:12.618] [INFO   ] [operation_logger] [web] ptz: Info OSD: 显示
+[2026-07-06 09:25:13.158] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": true}
+[2026-07-06 09:25:13.163] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 显示
+[2026-07-06 09:25:17.999] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": false}
+[2026-07-06 09:25:18.251] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": false}
+[2026-07-06 09:25:18.416] [INFO   ] [operation_logger] [web] ptz: Info OSD: 关闭
+[2026-07-06 09:25:18.576] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 关闭
+[2026-07-06 09:25:24.126] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260706_092524_0001.jpg"}
+[2026-07-06 09:25:24.133] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-07-06 09:26:17.894] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-07-06 09:26:22.227] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-07-06 09:31:02.006] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 09:37:12.084] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 09:37:15.721] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "off"}
+[2026-07-06 09:37:17.395] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 09:37:17.896] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 09:37:17.906] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 09:37:34.811] [ERROR  ] [operation_logger] [web] ptz: 日夜模式设置失败: 设置日夜模式失败: HTTP 0
+[2026-07-06 09:37:38.905] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "", "irCut": "on"}
+[2026-07-06 09:37:38.909] [INFO   ] [operation_logger] [web] ptz: IR滤镜: on
+[2026-07-06 17:14:05.323] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 17:14:06.317] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 17:14:06.637] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 17:14:33.158] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 17:14:33.572] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 17:19:12.498] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 17:19:13.399] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 17:19:13.499] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 17:19:27.106] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 17:19:27.283] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 19:20:16.231] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 19:20:16.238] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 19:20:30.439] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 19:20:30.442] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 19:40:29.378] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 19:40:29.962] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 19:40:30.239] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 19:40:43.984] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 19:40:44.020] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 21:25:20.768] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 21:25:21.091] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 21:25:21.095] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 21:25:25.312] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 21:25:25.503] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 21:33:36.518] [INFO   ] [operation_logger] [image] filter: {"device": "240f9b764193", "dayNight": "day", "irCut": ""}
+[2026-07-06 21:39:09.889] [INFO   ] [operation_logger] [image] filter: {"device": "240f9b764193", "dayNight": "day", "irCut": ""}
+[2026-07-06 21:39:11.188] [INFO   ] [operation_logger] [image] filter: {"device": "240f9b764193", "dayNight": "day", "irCut": ""}
+[2026-07-06 21:39:12.831] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 21:39:13.429] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 21:39:13.672] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 21:39:17.735] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 21:39:17.737] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 21:53:10.956] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 21:53:11.564] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 21:53:11.886] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 21:53:15.865] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 21:53:15.889] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 21:53:28.746] [INFO   ] [operation_logger] [ptz] record_start: {"device": "240f9b764193", "target": "memory_test"}
+[2026-07-06 21:53:40.361] [INFO   ] [operation_logger] [ptz] record_stop: {"device": "240f9b764193"}
+[2026-07-06 22:42:49.811] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 22:42:50.581] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 22:42:50.709] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 22:42:51.741] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 22:42:51.743] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-06 22:42:57.036] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-07-06 22:42:59.887] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-07-06 23:17:11.296] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "night", "irCut": ""}
+[2026-07-06 23:17:11.300] [INFO   ] [operation_logger] [web] ptz: 日夜模式: night
+[2026-07-06 23:17:14.033] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "auto", "irCut": ""}
+[2026-07-06 23:17:14.037] [INFO   ] [operation_logger] [web] ptz: 日夜模式: auto
+[2026-07-06 23:17:17.255] [INFO   ] [operation_logger] [image] filter: {"device": "192.168.5.72", "dayNight": "day", "irCut": ""}
+[2026-07-06 23:17:17.258] [INFO   ] [operation_logger] [web] ptz: 日夜模式: day
+[2026-07-06 23:40:43.667] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 23:40:43.819] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-06 23:40:57.391] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-06 23:40:57.514] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-07-06 23:41:03.639] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-06 23:41:03.765] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-06 23:43:30.474] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-06 23:43:31.275] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 200, "blue": 51}
+[2026-07-06 23:43:31.372] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-06 23:43:31.859] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-06 23:43:31.883] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-07 00:18:53.407] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 00:18:53.526] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-07-07 00:18:55.718] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 280}
+[2026-07-07 00:18:55.857] [INFO   ] [operation_logger] [web] ptz: 光圈: F2.8
+[2026-07-07 00:19:00.353] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/75"}
+[2026-07-07 00:19:00.515] [INFO   ] [operation_logger] [web] ptz: 快门: 1/75
+[2026-07-07 00:19:03.494] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/25"}
+[2026-07-07 00:19:03.633] [INFO   ] [operation_logger] [web] ptz: 快门: 1/25
+[2026-07-07 00:19:07.962] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 200}
+[2026-07-07 00:19:07.970] [INFO   ] [operation_logger] [web] ptz: 光圈: F2.0
+[2026-07-07 00:19:13.384] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-07 00:19:13.515] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-07 00:19:27.435] [INFO   ] [operation_logger] [ptz] home: {"device": "192.168.5.72"}
+[2026-07-07 00:19:27.439] [INFO   ] [operation_logger] [web] ptz: 归位
+[2026-07-07 00:19:41.643] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": true}
+[2026-07-07 00:19:41.648] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 显示
+[2026-07-07 00:19:43.638] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": false}
+[2026-07-07 00:19:43.643] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 关闭
+[2026-07-07 00:19:48.530] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": true}
+[2026-07-07 00:19:48.726] [INFO   ] [operation_logger] [web] ptz: Info OSD: 显示
+[2026-07-07 00:19:53.131] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": false}
+[2026-07-07 00:19:53.326] [INFO   ] [operation_logger] [web] ptz: Info OSD: 关闭
+[2026-07-07 00:25:18.394] [INFO   ] [operation_logger] [ptz] home: {"device": "192.168.5.72"}
+[2026-07-07 00:25:18.397] [INFO   ] [operation_logger] [web] ptz: 归位
+[2026-07-07 00:31:06.214] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*1.5"}
+[2026-07-07 00:31:23.426] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-07 00:31:38.883] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "*8"}
+[2026-07-07 00:31:55.733] [INFO   ] [operation_logger] [image] dss: {"device": "192.168.5.72", "level": "off"}
+[2026-07-07 01:53:24.360] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": true}
+[2026-07-07 01:53:24.366] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 显示
+[2026-07-07 01:53:28.604] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": true}
+[2026-07-07 01:53:29.119] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": false}
+[2026-07-07 01:53:29.120] [INFO   ] [operation_logger] [web] ptz: Info OSD: 显示
+[2026-07-07 01:53:29.427] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 关闭
+[2026-07-07 01:53:42.615] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 01:53:42.861] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 01:53:52.279] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-07 01:53:52.479] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-07 01:53:54.297] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-07 01:53:57.448] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1471~2034, Y=758~1337, 共325977像素
+[2026-07-07 01:53:57.452] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=122.58 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-07 01:53:59.169] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=125.22 (0.2s) 采样(best=125.2,方向=近)
+[2026-07-07 01:54:00.847] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=122.33 (0.2s) 采样(best=125.2,方向=近)
+[2026-07-07 01:54:02.584] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=121.1 (0.2s) 采样(best=125.2,方向=近)
+[2026-07-07 01:54:04.312] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=123.95 (0.2s) 找到峰值(best1=125.2),回退3步
+[2026-07-07 01:54:06.056] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=126.3 (0.05s) 回退完成(反差=126.3,目标=125.2),进入精调
+[2026-07-07 01:54:07.644] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: done stop 反差=126.3 (0s) 对焦成功(best2=126.3>=best1=125.2)
+[2026-07-07 01:54:08.492] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=126.79 (7步) ──
+[2026-07-07 01:54:08.498] [INFO   ] [operation_logger] [web] ptz: 清理完成

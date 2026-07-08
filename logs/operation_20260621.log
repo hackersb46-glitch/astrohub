@@ -1,0 +1,18 @@
+[2026-06-21 01:13:16.865] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-21 01:13:16.868] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-21 01:13:17.398] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-21 01:13:17.444] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-21 01:39:30.580] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-21 01:39:30.670] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-21 02:34:38.714] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-21 02:34:38.719] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-21 02:34:41.321] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-21 02:34:41.409] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-21 03:56:46.862] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-21 03:56:46.958] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-21 07:10:01.839] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-21 07:10:01.917] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-21 20:11:34.376] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-21 20:11:34.524] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-21 23:18:58.959] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-21 23:18:58.961] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 

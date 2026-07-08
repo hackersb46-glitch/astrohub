@@ -1,0 +1,44 @@
+[2026-06-30 01:21:22.961] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-30 01:21:30.251] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-06-30 01:21:30.255] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-06-30 01:21:42.801] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-30 01:21:42.805] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-30 01:21:44.288] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-30 01:21:44.290] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-30 01:21:44.644] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-30 01:22:08.553] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": false}
+[2026-06-30 01:22:08.940] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": false}
+[2026-06-30 01:22:08.941] [INFO   ] [operation_logger] [web] ptz: Info OSD: 关闭
+[2026-06-30 01:22:09.185] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 关闭
+[2026-06-30 01:22:10.852] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "IrisFirst"}
+[2026-06-30 01:22:11.051] [INFO   ] [operation_logger] [web] ptz: 曝光: 光圈优先
+[2026-06-30 01:22:13.035] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 100, "temporal": 50}
+[2026-06-30 01:22:13.042] [INFO   ] [operation_logger] [web] ptz: 空域降噪: 100
+[2026-06-30 01:22:16.723] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 39, "temporal": 50}
+[2026-06-30 01:22:16.837] [INFO   ] [operation_logger] [web] ptz: 空域降噪: 39
+[2026-06-30 01:22:18.816] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 960}
+[2026-06-30 01:22:18.822] [INFO   ] [operation_logger] [web] ptz: 光圈: F9.6
+[2026-06-30 01:22:21.345] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 19}
+[2026-06-30 01:22:21.505] [INFO   ] [operation_logger] [web] ptz: 增益: 19
+[2026-06-30 01:22:25.301] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-06-30 01:22:25.481] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-06-30 01:22:30.666] [INFO   ] [operation_logger] [image] reset: {"device": "192.168.5.72"}
+[2026-06-30 01:22:30.842] [INFO   ] [operation_logger] [web] ptz: 画面重置
+[2026-06-30 01:22:32.722] [INFO   ] [operation_logger] [ptz] capture: {"device": "192.168.5.72", "filename": "4k_32X_DC_20260630_012232_0001.jpg"}
+[2026-06-30 01:22:32.725] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-06-30 01:22:34.089] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-06-30 01:22:36.229] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-06-30 01:24:57.569] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-06-30 01:25:02.844] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-06-30 18:05:35.104] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-30 18:05:35.222] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-30 18:05:35.572] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-30 18:05:36.423] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-06-30 18:05:36.426] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-06-30 18:06:58.498] [INFO   ] [operation_logger] [ptz] preset_goto: {"device": "192.168.5.72", "preset_id": 10}
+[2026-06-30 18:06:58.500] [INFO   ] [operation_logger] [web] ptz: 预置点: 前往 #10...
+[2026-06-30 18:06:58.502] [INFO   ] [operation_logger] [web] ptz: 预置点: 已前往 #10
+[2026-06-30 18:07:06.254] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": true}
+[2026-06-30 18:07:06.607] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": true}
+[2026-06-30 18:07:06.613] [INFO   ] [operation_logger] [web] ptz: Info OSD: 显示
+[2026-06-30 18:07:06.908] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 显示

@@ -1,0 +1,97 @@
+[2026-06-23 00:58:57.140] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 00:58:57.258] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 00:58:57.702] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 00:59:03.929] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-23 00:59:03.933] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 01:06:15.231] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 01:06:15.320] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 01:06:15.773] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 01:06:21.988] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-23 01:06:21.991] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 01:16:04.138] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 01:16:04.185] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 01:16:04.615] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 02:58:29.895] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 02:58:30.005] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 02:58:30.436] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 02:58:37.956] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 02:58:45.188] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 03:46:45.433] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 03:46:45.516] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 03:59:15.438] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 03:59:15.541] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 04:00:47.432] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 04:00:47.527] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 04:37:16.832] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 04:55:31.458] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 04:55:40.513] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 04:56:24.365] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-23 04:56:24.369] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 04:56:25.384] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 04:56:25.386] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 04:56:25.924] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 04:56:29.154] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 04:56:29.156] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 04:56:45.918] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:02:35.956] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:03:45.555] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:04:39.534] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:07:37.179] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:08:13.233] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:09:37.717] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:10:38.941] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:20:16.693] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:23:13.221] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:26:20.961] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:38:32.860] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:43:49.266] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:44:30.563] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:51:39.265] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 05:57:29.274] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 06:00:11.817] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 06:09:41.047] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 06:18:52.714] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 06:29:46.028] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 06:30:00.663] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 06:31:33.445] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 06:43:27.445] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 06:43:54.453] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 07:49:34.625] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 07:56:14.913] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 08:22:01.418] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 08:31:03.914] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 08:31:04.027] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 08:31:04.379] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 08:31:11.970] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-06-23 08:31:11.984] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-06-23 08:31:20.951] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-06-23 08:31:20.954] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 08:31:25.714] [INFO   ] [operation_logger] [api] connect: {"mac": "192.168.5.72"}
+[2026-06-23 08:31:25.757] [INFO   ] [operation_logger] [connect] {'mac': '192.168.5.72', 'ip': '192.168.5.72', 'status': 'success'}: 
+[2026-06-23 08:31:26.099] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 08:31:32.497] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-06-23 08:31:36.470] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-06-23 08:31:39.687] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-06-23 08:31:41.745] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-06-23 08:31:43.410] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-06-23 08:31:45.139] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-06-23 08:31:47.727] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-06-23 21:09:42.458] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 21:13:09.036] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 21:15:48.388] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 21:17:07.388] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 21:17:49.017] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 22:42:11.877] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 22:42:20.825] [INFO   ] [operation_logger] [web] ptz: 录像开始
+[2026-06-23 22:42:23.315] [INFO   ] [operation_logger] [web] ptz: 录像停止
+[2026-06-23 22:48:50.637] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-06-23 22:48:51.583] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-06-23 22:48:52.509] [INFO   ] [operation_logger] [web] ptz: 截图
+[2026-06-23 22:48:57.117] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 23:02:16.824] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 23:05:51.503] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 23:31:47.996] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 23:32:51.753] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 23:42:51.449] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 23:53:42.764] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-06-23 23:56:48.929] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接

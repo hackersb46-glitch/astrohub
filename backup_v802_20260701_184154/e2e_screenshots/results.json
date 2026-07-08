@@ -1,0 +1,118 @@
+{
+  "version": "v8.01",
+  "time": "2026-07-01T08:07:55.577563",
+  "passed": 16,
+  "failed": 6,
+  "results": [
+    {
+      "test": "\u9996\u9875\u52a0\u8f7d",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "\u9875\u9762\u6807\u9898",
+      "passed": true,
+      "detail": "AstroHub"
+    },
+    {
+      "test": "\u8bbe\u5907\u9875\u9762",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "\u8bbe\u5907\u5217\u8868",
+      "passed": true,
+      "detail": "1 \u4e2a\u8bbe\u5907"
+    },
+    {
+      "test": "\u8bbe\u5907\u8fde\u63a5",
+      "passed": false,
+      "detail": "\u672a\u627e\u5230\u8fde\u63a5\u6309\u94ae"
+    },
+    {
+      "test": "\u63a7\u5236\u53f0\u9875\u9762",
+      "passed": false,
+      "detail": "Locator.click: Timeout 5000ms exceeded.\nCall log:\n"
+    },
+    {
+      "test": "\u9ad8\u7ea7\u9875\u9762",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Function\u6d4b\u8bd5",
+      "passed": true,
+      "detail": "\u5df2\u6267\u884c"
+    },
+    {
+      "test": "Speed\u6d4b\u8bd5",
+      "passed": true,
+      "detail": "\u5df2\u6267\u884c"
+    },
+    {
+      "test": "Limit\u6d4b\u8bd5",
+      "passed": true,
+      "detail": "\u5df2\u6267\u884c"
+    },
+    {
+      "test": "\u624b\u52a8\u6a21\u5f0f",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "test": "\u5149\u5708\u8c03\u6574",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "test": "\u5feb\u95e8\u8c03\u6574",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "test": "\u6062\u590d\u9ed8\u8ba4",
+      "passed": false,
+      "detail": ""
+    },
+    {
+      "test": "\u56de\u653e\u9875\u9762",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "\u5f55\u50cf\u6587\u4ef6",
+      "passed": true,
+      "detail": "3 \u4e2a"
+    },
+    {
+      "test": "API:\u8bbe\u5907\u5217\u8868",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API:PTZ\u4f4d\u7f6e",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API:\u5149\u5708",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API:\u5feb\u95e8",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API:\u767d\u5e73\u8861",
+      "passed": true,
+      "detail": "status=200"
+    },
+    {
+      "test": "API:\u964d\u566a",
+      "passed": true,
+      "detail": "status=200"
+    }
+  ]
+}

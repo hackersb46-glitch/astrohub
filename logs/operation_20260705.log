@@ -1,0 +1,772 @@
+[2026-07-05 00:31:25.602] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 00:31:26.231] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 32, "blue": 74}
+[2026-07-05 00:33:29.692] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 00:33:29.695] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 00:33:40.670] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 32, "blue": 74}
+[2026-07-05 00:33:40.829] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 00:33:41.476] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 32, "blue": 74}
+[2026-07-05 00:33:41.617] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 00:33:45.409] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-05 00:33:46.411] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=777~1905, Y=1343~1992, 共732072像素
+[2026-07-05 00:33:46.411] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: coarse R=33 B=69 → R=89.4 G=92.7 B=110.8 (Δ=0.2308)
+[2026-07-05 00:33:48.153] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: coarse R=28 B=74 → R=107.1 G=90.2 B=77.2 (Δ=0.3317)
+[2026-07-05 00:33:49.433] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: coarse R=27 B=79 → R=96.8 G=95 B=83.2 (Δ=0.1434)
+[2026-07-05 00:33:50.926] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: coarse R=27 B=82 → R=93.7 G=96.9 B=93.3 (Δ=0.0693)
+[2026-07-05 00:33:52.380] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: coarse R=28 B=82 → R=92.7 G=97.1 B=96.3 (Δ=0.0526)
+[2026-07-05 00:33:53.487] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: medium R=28 B=82 → R=94.3 G=96.9 B=97.9 (Δ=0.0377)
+[2026-07-05 00:33:54.692] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: medium R=29 B=80 → R=92.2 G=97.5 B=106.2 (Δ=0.1439)
+[2026-07-05 00:33:55.948] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: medium R=29 B=80 → R=98 G=96.3 B=95.8 (Δ=0.0228)
+[2026-07-05 00:33:57.307] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: medium R=29 B=78 → R=95.6 G=96.9 B=104.1 (Δ=0.0875)
+[2026-07-05 00:33:58.676] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: fine R=29 B=78 → R=98.7 G=96.4 B=93 (Δ=0.0589)
+[2026-07-05 00:33:59.945] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: fine R=29 B=77 → R=95.7 G=97.2 B=101.9 (Δ=0.063)
+[2026-07-05 00:34:01.327] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: fine R=29 B=77 → R=98.9 G=96.5 B=90.5 (Δ=0.0868)
+[2026-07-05 00:34:02.625] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: fine R=29 B=76 → R=95.8 G=97.3 B=100.5 (Δ=0.0483)
+[2026-07-05 00:34:04.040] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: fine R=28 B=76 → R=99 G=96.6 B=89.5 (Δ=0.0983)
+[2026-07-05 00:34:05.374] [DEBUG  ] [operation_logger] [web] ptz: 调整 #15: done R=29 B=80 → R=97.6 G=96.7 B=88.2 (Δ=0.0228)
+[2026-07-05 00:34:07.345] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=29 B=80 (15步) ──
+[2026-07-05 00:34:07.353] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 00:41:46.996] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 00:41:47.924] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 29, "blue": 80}
+[2026-07-05 00:41:49.398] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 00:41:49.448] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 00:41:50.610] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 00:41:51.483] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 00:41:51.630] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 00:41:52.268] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 29, "blue": 80}
+[2026-07-05 00:41:53.960] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 00:41:56.144] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 00:41:56.257] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 02:02:28.541] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 02:02:29.449] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 29, "blue": 80}
+[2026-07-05 02:02:30.819] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 02:02:30.847] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 02:02:32.042] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 02:02:33.572] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 02:02:34.418] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 29, "blue": 80}
+[2026-07-05 02:02:34.419] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 02:02:36.706] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 02:02:38.367] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 02:07:07.523] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 02:07:08.153] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 29, "blue": 80}
+[2026-07-05 02:07:09.293] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 02:07:09.496] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 02:07:10.549] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 02:07:11.479] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 02:07:12.128] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 29, "blue": 80}
+[2026-07-05 02:07:12.128] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 02:07:14.368] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 02:28:02.524] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 02:28:03.132] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 29, "blue": 80}
+[2026-07-05 02:28:03.586] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 02:28:03.607] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 02:28:06.406] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 02:28:06.588] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 02:57:58.203] [INFO   ] [operation_logger] [ptz] home: {"device": "192.168.5.72"}
+[2026-07-05 02:57:58.226] [INFO   ] [operation_logger] [web] ptz: 归位
+[2026-07-05 04:09:40.442] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 04:09:41.021] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 04:09:41.521] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 04:09:41.524] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 04:09:50.371] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 04:09:50.521] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 04:09:55.160] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 29, "blue": 80}
+[2026-07-05 04:09:55.331] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 04:09:56.562] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-05 04:09:57.548] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1131~1677, Y=1198~1530, 共181272像素
+[2026-07-05 04:09:57.548] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: coarse R=34 B=75 → R=9 G=67.7 B=123.5 (Δ=1.6907)
+[2026-07-05 04:09:58.834] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: coarse R=39 B=70 → R=48.3 G=69.2 B=79.5 (Δ=0.4518)
+[2026-07-05 04:10:00.003] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: coarse R=44 B=65 → R=56.6 G=69.7 B=76.6 (Δ=0.2868)
+[2026-07-05 04:10:01.308] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: coarse R=45 B=65 → R=63.1 G=65.6 B=65.8 (Δ=0.0403)
+[2026-07-05 04:10:02.535] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: coarse R=45 B=65 → R=64 G=65.5 B=65.6 (Δ=0.0242)
+[2026-07-05 04:10:03.784] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: coarse R=46 B=61 → R=63.8 G=65.4 B=69 (Δ=0.0796)
+[2026-07-05 04:10:05.253] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: medium R=46 B=61 → R=67.4 G=64.8 B=60.1 (Δ=0.1132)
+[2026-07-05 04:10:06.504] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: medium R=45 B=61 → R=66.5 G=65.1 B=64.4 (Δ=0.0318)
+[2026-07-05 04:10:07.828] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: medium R=43 B=63 → R=66.4 G=64.9 B=59.5 (Δ=0.1054)
+[2026-07-05 04:10:09.633] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: fine R=43 B=63 → R=63.8 G=64.7 B=62.4 (Δ=0.0513)
+[2026-07-05 04:10:10.861] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: fine R=44 B=63 → R=61 G=65.4 B=67.7 (Δ=0.1035)
+[2026-07-05 04:10:12.237] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: fine R=44 B=64 → R=63.8 G=65.3 B=62.7 (Δ=0.0624)
+[2026-07-05 04:10:13.504] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: fine R=44 B=65 → R=64.1 G=65.3 B=63.3 (Δ=0.049)
+[2026-07-05 04:10:14.832] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: fine R=44 B=65 → R=64.4 G=65.3 B=64.6 (Δ=0.0253)
+[2026-07-05 04:10:15.991] [DEBUG  ] [operation_logger] [web] ptz: 调整 #15: fine R=45 B=65 → R=63.4 G=65.2 B=68.7 (Δ=0.0814)
+[2026-07-05 04:10:17.238] [DEBUG  ] [operation_logger] [web] ptz: 调整 #16: fine R=45 B=64 → R=65.3 G=65.2 B=66.1 (Δ=0.0154)
+[2026-07-05 04:10:19.521] [DEBUG  ] [operation_logger] [web] ptz: 调整 #17: fine R=45 B=63 → R=65 G=65.1 B=66.8 (Δ=0.0287)
+[2026-07-05 04:10:20.960] [DEBUG  ] [operation_logger] [web] ptz: 调整 #18: fine R=45 B=64 → R=65.8 G=65 B=63.2 (Δ=0.0401)
+[2026-07-05 04:10:22.270] [DEBUG  ] [operation_logger] [web] ptz: 调整 #19: done R=45 B=65 → R=65.9 G=64.9 B=63.3 (Δ=0.0154)
+[2026-07-05 04:10:24.235] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=45 B=65 (19步) ──
+[2026-07-05 04:10:24.243] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 04:10:33.249] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:10:35.901] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:10:35.901] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 04:10:36.156] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-05 04:10:36.185] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 04:10:38.670] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1208~1552, Y=1324~1587, 共90472像素
+[2026-07-05 04:10:38.672] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=61.14 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-05 04:10:39.575] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=50.15 (0.2s) 采样(best=61.1,方向=近)
+[2026-07-05 04:10:40.475] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=47.18 (0.2s) 采样(best=61.1,方向=近)
+[2026-07-05 04:10:41.497] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=41.24 (0.2s) 采样(best=61.1,方向=近)
+[2026-07-05 04:10:42.521] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=39.99 (0.2s) 采样(best=61.1,方向=近)
+[2026-07-05 04:10:43.476] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_far 反差=38.8 (0.2s) 反向(方向=远,尝试2/3)
+[2026-07-05 04:10:44.500] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_far 反差=40.83 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-05 04:11:26.996] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 04:11:27.767] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:11:28.713] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 04:11:28.740] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 04:11:29.973] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:11:30.800] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:11:31.470] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:11:33.358] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:11:34.710] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:12:17.588] [INFO   ] [operation_logger] [ptz] osd_info: {"device": "192.168.5.72", "enabled": false}
+[2026-07-05 04:12:17.941] [INFO   ] [operation_logger] [web] ptz: Info OSD: 关闭
+[2026-07-05 04:12:18.817] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": false}
+[2026-07-05 04:12:18.822] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 关闭
+[2026-07-05 04:12:21.058] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": true}
+[2026-07-05 04:12:21.184] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 显示
+[2026-07-05 04:12:22.559] [INFO   ] [operation_logger] [ptz] osd_ptz: {"device": "192.168.5.72", "enabled": false}
+[2026-07-05 04:12:22.563] [INFO   ] [operation_logger] [web] ptz: PTZ OSD: 关闭
+[2026-07-05 04:13:08.058] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:13:08.554] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 04:13:09.736] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 04:13:09.767] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 04:13:10.929] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:13:11.857] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:13:11.874] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 04:13:12.505] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:13:14.183] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:13:15.889] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:13:16.105] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 04:14:25.871] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:14:25.906] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-07-05 04:14:28.984] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-05 04:14:29.008] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-05 04:15:10.506] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 04:15:11.073] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:15:12.203] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 04:15:12.367] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 04:15:13.434] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:15:14.529] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:15:15.167] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:15:16.943] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:32:33.658] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 04:32:34.268] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:32:34.511] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 04:32:34.514] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 04:33:56.924] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 04:33:57.528] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:33:58.304] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 04:33:58.306] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 04:35:31.612] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 04:35:32.262] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 45, "blue": 65}
+[2026-07-05 04:35:32.573] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 04:35:32.575] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 04:35:49.746] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:35:49.909] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 04:35:52.318] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:35:52.482] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 04:35:56.527] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 45, "blue": 65}
+[2026-07-05 04:35:56.785] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 04:35:58.084] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-05 04:35:59.087] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1725~2101, Y=1362~1674, 共117312像素
+[2026-07-05 04:35:59.088] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: coarse R=50 B=60 → R=62.6 G=79.9 B=103.4 (Δ=0.5104)
+[2026-07-05 04:36:03.422] [ERROR  ] [operation_logger] [web] ptz: 白平衡失败: 截图失败
+[2026-07-05 04:36:03.423] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 04:36:19.368] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:36:19.641] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 04:36:21.350] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:36:21.680] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 04:36:25.249] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:36:25.421] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 04:36:26.649] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-05 04:36:29.217] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1687~1963, Y=1546~1764, 共60168像素
+[2026-07-05 04:36:29.218] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=59.2 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-05 04:36:30.066] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=55.03 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:31.051] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=52.54 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:32.087] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=48.89 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:33.049] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=45.73 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:34.007] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=47.24 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:34.877] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_near 反差=46.02 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:35.771] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: coarse focus_near 反差=47.36 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:36.725] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: coarse focus_near 反差=47.48 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:37.728] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: coarse focus_near 反差=49.19 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:38.731] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: coarse focus_near 反差=47.53 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:39.725] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: coarse focus_near 反差=49.9 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:40.672] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: coarse focus_near 反差=48 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:41.529] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: coarse focus_near 反差=46.75 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:42.444] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: coarse focus_near 反差=47.72 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:43.411] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: coarse focus_near 反差=47.38 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:44.460] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: coarse focus_near 反差=47.01 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:45.442] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: coarse focus_near 反差=48.85 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:46.408] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: coarse focus_near 反差=48.68 (0.2s) 采样(best=59.2,方向=近)
+[2026-07-05 04:36:47.236] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: coarse focus_far 反差=49.2 (0.2s) 平坦区(0步),反向(方向=远)
+[2026-07-05 04:36:48.246] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: coarse focus_far 反差=53.7 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-05 04:36:49.199] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: coarse focus_far 反差=52.21 (0.2s) 采样(best=53.7,方向=远)
+[2026-07-05 04:36:50.031] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: coarse focus_far 反差=66.75 (0.2s) 采样(best=66.7,方向=远)
+[2026-07-05 04:36:50.988] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: coarse focus_far 反差=150.11 (0.2s) 采样(best=150.1,方向=远)
+[2026-07-05 04:36:51.846] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: coarse focus_far 反差=140.28 (0.2s) 采样(best=150.1,方向=远)
+[2026-07-05 04:36:52.722] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: coarse focus_far 反差=139.05 (0.2s) 采样(best=150.1,方向=远)
+[2026-07-05 04:36:53.793] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: coarse focus_far 反差=131.87 (0.2s) 找到峰值(best1=150.1),回退3步
+[2026-07-05 04:36:54.720] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: approach focus_near 反差=134.6 (0.05s) 回退完成(反差=134.6,目标=150.1),进入精调
+[2026-07-05 04:36:55.437] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: approach focus_near 反差=137.48 (0.05s) 逼近(步1,best2=137.5,目标=150.1)
+[2026-07-05 04:36:56.132] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: done stop 反差=163.29 (0s) 对焦成功(best2=163.3>=best1=150.1)
+[2026-07-05 04:36:56.439] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=184.68 (30步) ──
+[2026-07-05 04:36:56.453] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 04:37:39.667] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 50, "blue": 60}
+[2026-07-05 04:37:39.820] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 04:37:40.271] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-05 04:37:41.536] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1629~2291, Y=678~1224, 共361452像素
+[2026-07-05 04:37:41.536] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: coarse R=55 B=55 → R=113.2 G=134.2 B=146.9 (Δ=0.2505)
+[2026-07-05 04:37:42.757] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: coarse R=50 B=60 → R=145.5 G=126.9 B=112.1 (Δ=0.2633)
+[2026-07-05 04:37:44.043] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: coarse R=45 B=64 → R=142.8 G=124.9 B=116.8 (Δ=0.2081)
+[2026-07-05 04:37:45.809] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: coarse R=42 B=64 → R=133.4 G=125.8 B=125.1 (Δ=0.0658)
+[2026-07-05 04:37:47.084] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: coarse R=40 B=64 → R=129.2 G=126.1 B=125.3 (Δ=0.031)
+[2026-07-05 04:37:48.443] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: coarse R=40 B=64 → R=129.5 G=130.3 B=128.6 (Δ=0.019)
+[2026-07-05 04:37:49.713] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: coarse R=41 B=64 → R=128.1 G=132.9 B=132.6 (Δ=0.0385)
+[2026-07-05 04:37:51.045] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: medium R=41 B=64 → R=128.3 G=134 B=132.1 (Δ=0.0563)
+[2026-07-05 04:37:51.992] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: medium R=42 B=64 → R=128.3 G=134.1 B=132.9 (Δ=0.0516)
+[2026-07-05 04:37:53.041] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: medium R=43 B=65 → R=128.7 G=134.7 B=132.2 (Δ=0.063)
+[2026-07-05 04:37:54.431] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: fine R=43 B=65 → R=129.3 G=135 B=132.9 (Δ=0.0568)
+[2026-07-05 04:37:55.682] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: fine R=44 B=65 → R=129.7 G=135 B=135.4 (Δ=0.042)
+[2026-07-05 04:37:56.991] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: fine R=45 B=65 → R=130.2 G=135.2 B=134.8 (Δ=0.0396)
+[2026-07-05 04:37:58.431] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: fine R=46 B=65 → R=131.4 G=135.1 B=134.6 (Δ=0.0305)
+[2026-07-05 04:37:59.752] [DEBUG  ] [operation_logger] [web] ptz: 调整 #15: fine R=46 B=65 → R=130.1 G=131.8 B=132.1 (Δ=0.0151)
+[2026-07-05 04:38:01.150] [DEBUG  ] [operation_logger] [web] ptz: 调整 #16: fine R=46 B=64 → R=129.7 G=130.9 B=133.4 (Δ=0.0277)
+[2026-07-05 04:38:02.436] [DEBUG  ] [operation_logger] [web] ptz: 调整 #17: fine R=46 B=64 → R=130.1 G=130.8 B=131.2 (Δ=0.0088)
+[2026-07-05 04:38:03.753] [DEBUG  ] [operation_logger] [web] ptz: 调整 #18: fine R=46 B=63 → R=130.4 G=130.8 B=132 (Δ=0.0123)
+[2026-07-05 04:38:05.036] [DEBUG  ] [operation_logger] [web] ptz: 调整 #19: fine R=46 B=63 → R=130.8 G=131 B=129.2 (Δ=0.0154)
+[2026-07-05 04:38:06.220] [DEBUG  ] [operation_logger] [web] ptz: 调整 #20: fine R=46 B=63 → R=131.1 G=131 B=130 (Δ=0.0082)
+[2026-07-05 04:38:08.034] [DEBUG  ] [operation_logger] [web] ptz: 调整 #21: done R=46 B=63 → R=131.1 G=131.2 B=132.8 (Δ=0.0082)
+[2026-07-05 04:38:09.898] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=46 B=63 (21步) ──
+[2026-07-05 04:38:09.906] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 04:38:19.084] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:38:19.270] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-05 04:38:19.392] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 04:38:21.976] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1564~2159, Y=732~1170, 共260610像素
+[2026-07-05 04:38:21.976] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=55.64 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-05 04:38:22.849] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=54.91 (0.2s) 采样(best=55.6,方向=近)
+[2026-07-05 04:38:23.724] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=55.05 (0.2s) 采样(best=55.6,方向=近)
+[2026-07-05 04:38:24.728] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=65.63 (0.2s) 采样(best=65.6,方向=近)
+[2026-07-05 04:38:25.809] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=106.4 (0.2s) 采样(best=106.4,方向=近)
+[2026-07-05 04:38:26.732] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=84.5 (0.2s) 采样(best=106.4,方向=近)
+[2026-07-05 04:38:27.684] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_near 反差=62.13 (0.2s) 采样(best=106.4,方向=近)
+[2026-07-05 04:38:28.575] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: coarse focus_near 反差=52.97 (0.2s) 找到峰值(best1=106.4),回退3步
+[2026-07-05 04:38:29.493] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: approach focus_far 反差=54.36 (0.05s) 回退完成(反差=54.4,目标=106.4),进入精调
+[2026-07-05 04:38:30.188] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: approach focus_near 反差=54.32 (0.05s) 越过best反向(步1,best2=54.4,目标=106.4)
+[2026-07-05 04:38:31.042] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: approach focus_far 反差=53.52 (0.05s) 越过best反向(步2,best2=54.4,目标=106.4)
+[2026-07-05 04:38:31.761] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: approach focus_near 反差=53.37 (0.05s) 越过best反向(步3,best2=54.4,目标=106.4)
+[2026-07-05 04:38:32.489] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: approach focus_far 反差=53.35 (0.05s) 越过best反向(步4,best2=54.4,目标=106.4)
+[2026-07-05 04:38:33.208] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: approach focus_near 反差=54.08 (0.05s) 越过best反向(步5,best2=54.4,目标=106.4)
+[2026-07-05 04:38:34.025] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: approach focus_far 反差=53.8 (0.05s) 越过best反向(步6,best2=54.4,目标=106.4)
+[2026-07-05 04:38:34.773] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: approach focus_near 反差=53.83 (0.05s) 越过best反向(步7,best2=54.4,目标=106.4)
+[2026-07-05 04:38:35.465] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: approach focus_near 反差=55.17 (0.05s) 逼近(步8,best2=55.2,目标=106.4)
+[2026-07-05 04:38:36.186] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: approach focus_far 反差=52.89 (0.05s) 越过best反向(步9,best2=55.2,目标=106.4)
+[2026-07-05 04:38:37.044] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: approach focus_near 反差=54.24 (0.05s) 越过best反向(步10,best2=55.2,目标=106.4)
+[2026-07-05 04:38:37.756] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: approach focus_far 反差=54.26 (0.05s) 越过best反向(步11,best2=55.2,目标=106.4)
+[2026-07-05 04:38:38.694] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: approach focus_near 反差=54.52 (0.05s) 越过best反向(步12,best2=55.2,目标=106.4)
+[2026-07-05 04:38:39.452] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: approach focus_far 反差=54.95 (0.05s) 越过best反向(步13,best2=55.2,目标=106.4)
+[2026-07-05 04:38:40.117] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: approach focus_near 反差=53.11 (0.05s) 越过best反向(步14,best2=55.2,目标=106.4)
+[2026-07-05 04:38:40.827] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: approach focus_far 反差=54.15 (0.05s) 越过best反向(步15,best2=55.2,目标=106.4)
+[2026-07-05 04:38:41.675] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: approach focus_near 反差=54.42 (0.05s) 越过best反向(步16,best2=55.2,目标=106.4)
+[2026-07-05 04:38:42.452] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: approach focus_near 反差=55.29 (0.05s) 逼近(步17,best2=55.3,目标=106.4)
+[2026-07-05 04:38:43.123] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: approach focus_far 反差=54.8 (0.05s) 越过best反向(步18,best2=55.3,目标=106.4)
+[2026-07-05 04:38:43.844] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: approach focus_near 反差=54.13 (0.05s) 越过best反向(步19,best2=55.3,目标=106.4)
+[2026-07-05 04:38:44.560] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: approach focus_far 反差=53.7 (0.05s) 越过best反向(步20,best2=55.3,目标=106.4)
+[2026-07-05 04:38:45.443] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: approach focus_near 反差=53.66 (0.05s) 越过best反向(步21,best2=55.3,目标=106.4)
+[2026-07-05 04:38:46.165] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: approach focus_far 反差=53.54 (0.05s) 越过best反向(步22,best2=55.3,目标=106.4)
+[2026-07-05 04:38:46.935] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: approach focus_near 反差=52.81 (0.05s) 越过best反向(步23,best2=55.3,目标=106.4)
+[2026-07-05 04:38:47.755] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: approach focus_far 反差=54 (0.05s) 越过best反向(步24,best2=55.3,目标=106.4)
+[2026-07-05 04:38:48.495] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: approach focus_near 反差=53.61 (0.05s) 越过best反向(步25,best2=55.3,目标=106.4)
+[2026-07-05 04:38:49.200] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: approach focus_far 反差=53.62 (0.05s) 越过best反向(步26,best2=55.3,目标=106.4)
+[2026-07-05 04:38:50.072] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #36: approach focus_near 反差=53.68 (0.05s) 越过best反向(步27,best2=55.3,目标=106.4)
+[2026-07-05 04:38:50.797] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #37: approach focus_far 反差=53.89 (0.05s) 越过best反向(步28,best2=55.3,目标=106.4)
+[2026-07-05 04:38:51.555] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #38: approach focus_near 反差=54.27 (0.05s) 越过best反向(步29,best2=55.3,目标=106.4)
+[2026-07-05 04:38:52.237] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #39: approach focus_far 反差=54.41 (0.05s) 越过best反向(步30,best2=55.3,目标=106.4)
+[2026-07-05 04:38:53.037] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #40: approach focus_near 反差=52.74 (0.05s) 越过best反向(步31,best2=55.3,目标=106.4)
+[2026-07-05 04:38:53.749] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #41: approach focus_far 反差=53.6 (0.05s) 越过best反向(步32,best2=55.3,目标=106.4)
+[2026-07-05 04:38:54.560] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #42: approach focus_near 反差=53.88 (0.05s) 越过best反向(步33,best2=55.3,目标=106.4)
+[2026-07-05 04:38:55.408] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #43: approach focus_near 反差=55.46 (0.05s) 逼近(步34,best2=55.5,目标=106.4)
+[2026-07-05 04:38:56.121] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #44: approach focus_far 反差=54.53 (0.05s) 越过best反向(步35,best2=55.5,目标=106.4)
+[2026-07-05 04:38:56.792] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #45: approach focus_near 反差=53.8 (0.05s) 越过best反向(步36,best2=55.5,目标=106.4)
+[2026-07-05 04:38:57.662] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #46: approach focus_far 反差=52.51 (0.05s) 越过best反向(步37,best2=55.5,目标=106.4)
+[2026-07-05 04:38:58.460] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #47: approach focus_near 反差=54.46 (0.05s) 越过best反向(步38,best2=55.5,目标=106.4)
+[2026-07-05 04:38:59.160] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #48: approach focus_far 反差=52.45 (0.05s) 越过best反向(步39,best2=55.5,目标=106.4)
+[2026-07-05 04:38:59.986] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #49: approach focus_near 反差=53.26 (0.05s) 越过best反向(步40,best2=55.5,目标=106.4)
+[2026-07-05 04:39:00.804] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #50: approach focus_far 反差=53.32 (0.05s) 越过best反向(步41,best2=55.5,目标=106.4)
+[2026-07-05 04:39:01.516] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #51: approach focus_near 反差=53.18 (0.05s) 越过best反向(步42,best2=55.5,目标=106.4)
+[2026-07-05 04:39:02.227] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #52: approach focus_far 反差=53.88 (0.05s) 越过best反向(步43,best2=55.5,目标=106.4)
+[2026-07-05 04:39:03.012] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #53: approach focus_near 反差=51.53 (0.05s) 越过best反向(步44,best2=55.5,目标=106.4)
+[2026-07-05 04:39:03.735] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #54: approach focus_far 反差=53.16 (0.05s) 越过best反向(步45,best2=55.5,目标=106.4)
+[2026-07-05 04:39:04.515] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #55: approach focus_near 反差=52.36 (0.05s) 越过best反向(步46,best2=55.5,目标=106.4)
+[2026-07-05 04:39:05.217] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #56: approach focus_far 反差=53.85 (0.05s) 越过best反向(步47,best2=55.5,目标=106.4)
+[2026-07-05 04:39:06.016] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #57: approach focus_near 反差=53.78 (0.05s) 越过best反向(步48,best2=55.5,目标=106.4)
+[2026-07-05 04:39:06.732] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #58: approach focus_far 反差=54.07 (0.05s) 越过best反向(步49,best2=55.5,目标=106.4)
+[2026-07-05 04:39:07.432] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #59: approach focus_near 反差=53.82 (0.05s) 越过best反向(步50,best2=55.5,目标=106.4)
+[2026-07-05 04:39:08.139] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #60: approach focus_far 反差=53.77 (0.05s) 越过best反向(步51,best2=55.5,目标=106.4)
+[2026-07-05 04:39:08.832] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #61: approach focus_near 反差=53.96 (0.05s) 越过best反向(步52,best2=55.5,目标=106.4)
+[2026-07-05 04:39:09.543] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #62: approach focus_far 反差=53.38 (0.05s) 越过best反向(步53,best2=55.5,目标=106.4)
+[2026-07-05 04:39:10.513] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #63: approach focus_near 反差=52.27 (0.05s) 越过best反向(步54,best2=55.5,目标=106.4)
+[2026-07-05 04:39:11.200] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #64: approach focus_far 反差=54.39 (0.05s) 越过best反向(步55,best2=55.5,目标=106.4)
+[2026-07-05 04:39:12.050] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #65: approach focus_near 反差=54 (0.05s) 越过best反向(步56,best2=55.5,目标=106.4)
+[2026-07-05 04:39:12.790] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #66: approach focus_far 反差=53.98 (0.05s) 越过best反向(步57,best2=55.5,目标=106.4)
+[2026-07-05 04:39:13.633] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #67: approach focus_near 反差=54.26 (0.05s) 越过best反向(步58,best2=55.5,目标=106.4)
+[2026-07-05 04:39:14.436] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #68: approach focus_far 反差=54.5 (0.05s) 越过best反向(步59,best2=55.5,目标=106.4)
+[2026-07-05 04:39:15.107] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #69: approach focus_near 反差=55.1 (0.05s) 越过best反向(步60,best2=55.5,目标=106.4)
+[2026-07-05 04:39:15.823] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #70: approach focus_far 反差=54.02 (0.05s) 越过best反向(步61,best2=55.5,目标=106.4)
+[2026-07-05 04:39:16.652] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #71: approach focus_near 反差=54.18 (0.05s) 越过best反向(步62,best2=55.5,目标=106.4)
+[2026-07-05 04:39:17.428] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #72: approach focus_far 反差=53.84 (0.05s) 越过best反向(步63,best2=55.5,目标=106.4)
+[2026-07-05 04:39:18.170] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #73: approach focus_near 反差=53.32 (0.05s) 越过best反向(步64,best2=55.5,目标=106.4)
+[2026-07-05 04:39:18.866] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #74: approach focus_far 反差=52.05 (0.05s) 越过best反向(步65,best2=55.5,目标=106.4)
+[2026-07-05 04:39:19.846] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #75: approach focus_near 反差=54.45 (0.05s) 越过best反向(步66,best2=55.5,目标=106.4)
+[2026-07-05 04:39:20.703] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #76: approach focus_near 反差=56.19 (0.05s) 逼近(步67,best2=56.2,目标=106.4)
+[2026-07-05 04:39:21.437] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #77: approach focus_far 反差=52.17 (0.05s) 越过best反向(步68,best2=56.2,目标=106.4)
+[2026-07-05 04:39:22.178] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #78: approach focus_near 反差=53.16 (0.05s) 越过best反向(步69,best2=56.2,目标=106.4)
+[2026-07-05 04:39:23.207] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #79: approach focus_far 反差=53.29 (0.05s) 越过best反向(步70,best2=56.2,目标=106.4)
+[2026-07-05 04:39:24.058] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #80: approach focus_near 反差=53.74 (0.05s) 越过best反向(步71,best2=56.2,目标=106.4)
+[2026-07-05 04:39:24.797] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #81: approach focus_far 反差=54.13 (0.05s) 越过best反向(步72,best2=56.2,目标=106.4)
+[2026-07-05 04:39:25.582] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #82: approach focus_near 反差=53.99 (0.05s) 越过best反向(步73,best2=56.2,目标=106.4)
+[2026-07-05 04:39:26.466] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #83: approach focus_far 反差=54.13 (0.05s) 越过best反向(步74,best2=56.2,目标=106.4)
+[2026-07-05 04:39:27.168] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #84: approach focus_near 反差=55.92 (0.05s) 越过best反向(步75,best2=56.2,目标=106.4)
+[2026-07-05 04:39:28.006] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #85: approach focus_far 反差=55.68 (0.05s) 越过best反向(步76,best2=56.2,目标=106.4)
+[2026-07-05 04:39:28.699] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #86: approach focus_near 反差=53.91 (0.05s) 越过best反向(步77,best2=56.2,目标=106.4)
+[2026-07-05 04:39:29.572] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #87: approach focus_far 反差=53.24 (0.05s) 越过best反向(步78,best2=56.2,目标=106.4)
+[2026-07-05 04:39:30.421] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #88: approach focus_near 反差=54.68 (0.05s) 越过best反向(步79,best2=56.2,目标=106.4)
+[2026-07-05 04:39:31.138] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #89: approach focus_far 反差=52.91 (0.05s) 越过best反向(步80,best2=56.2,目标=106.4)
+[2026-07-05 04:39:31.852] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #90: approach focus_near 反差=52.55 (0.05s) 越过best反向(步81,best2=56.2,目标=106.4)
+[2026-07-05 04:39:32.671] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #91: approach focus_far 反差=53.44 (0.05s) 越过best反向(步82,best2=56.2,目标=106.4)
+[2026-07-05 04:39:33.419] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #92: approach focus_near 反差=53.6 (0.05s) 越过best反向(步83,best2=56.2,目标=106.4)
+[2026-07-05 04:39:34.163] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #93: approach focus_far 反差=55.08 (0.05s) 越过best反向(步84,best2=56.2,目标=106.4)
+[2026-07-05 04:39:35.007] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #94: approach focus_near 反差=54.75 (0.05s) 越过best反向(步85,best2=56.2,目标=106.4)
+[2026-07-05 04:39:35.875] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #95: approach focus_far 反差=54.62 (0.05s) 越过best反向(步86,best2=56.2,目标=106.4)
+[2026-07-05 04:39:36.686] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #96: approach focus_near 反差=54.53 (0.05s) 越过best反向(步87,best2=56.2,目标=106.4)
+[2026-07-05 04:39:37.438] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #97: approach focus_far 反差=54.06 (0.05s) 越过best反向(步88,best2=56.2,目标=106.4)
+[2026-07-05 04:39:38.158] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #98: approach focus_near 反差=53.47 (0.05s) 越过best反向(步89,best2=56.2,目标=106.4)
+[2026-07-05 04:39:39.048] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #99: approach focus_far 反差=53.91 (0.05s) 越过best反向(步90,best2=56.2,目标=106.4)
+[2026-07-05 04:39:39.754] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #100: approach focus_near 反差=53.73 (0.05s) 越过best反向(步91,best2=56.2,目标=106.4)
+[2026-07-05 04:39:40.480] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #101: approach focus_far 反差=54.61 (0.05s) 越过best反向(步92,best2=56.2,目标=106.4)
+[2026-07-05 04:39:41.200] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #102: approach focus_near 反差=54.17 (0.05s) 越过best反向(步93,best2=56.2,目标=106.4)
+[2026-07-05 04:39:42.130] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #103: approach focus_far 反差=53.98 (0.05s) 越过best反向(步94,best2=56.2,目标=106.4)
+[2026-07-05 04:39:42.869] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #104: approach focus_near 反差=52.94 (0.05s) 越过best反向(步95,best2=56.2,目标=106.4)
+[2026-07-05 04:39:43.648] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #105: approach focus_far 反差=53.87 (0.05s) 越过best反向(步96,best2=56.2,目标=106.4)
+[2026-07-05 04:39:44.454] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #106: approach focus_near 反差=53.17 (0.05s) 越过best反向(步97,best2=56.2,目标=106.4)
+[2026-07-05 04:39:45.455] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #107: approach focus_far 反差=53.5 (0.05s) 越过best反向(步98,best2=56.2,目标=106.4)
+[2026-07-05 04:39:46.171] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #108: approach focus_near 反差=51.48 (0.05s) 越过best反向(步99,best2=56.2,目标=106.4)
+[2026-07-05 04:39:47.044] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #109: approach focus_far 反差=53.54 (0.05s) 越过best反向(步100,best2=56.2,目标=106.4)
+[2026-07-05 04:39:47.717] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #110: approach focus_near 反差=53.86 (0.05s) 越过best反向(步101,best2=56.2,目标=106.4)
+[2026-07-05 04:39:48.576] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #111: approach focus_far 反差=53.65 (0.05s) 越过best反向(步102,best2=56.2,目标=106.4)
+[2026-07-05 04:39:49.470] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #112: approach focus_near 反差=55.15 (0.05s) 越过best反向(步103,best2=56.2,目标=106.4)
+[2026-07-05 04:39:50.149] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #113: approach focus_far 反差=53.01 (0.05s) 越过best反向(步104,best2=56.2,目标=106.4)
+[2026-07-05 04:39:51.043] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #114: approach focus_near 反差=52.79 (0.05s) 越过best反向(步105,best2=56.2,目标=106.4)
+[2026-07-05 04:39:51.749] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #115: approach focus_far 反差=52.01 (0.05s) 越过best反向(步106,best2=56.2,目标=106.4)
+[2026-07-05 04:39:52.502] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #116: approach focus_near 反差=52.4 (0.05s) 越过best反向(步107,best2=56.2,目标=106.4)
+[2026-07-05 04:39:53.240] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #117: approach focus_far 反差=53 (0.05s) 越过best反向(步108,best2=56.2,目标=106.4)
+[2026-07-05 04:39:54.079] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #118: approach focus_near 反差=51.79 (0.05s) 越过best反向(步109,best2=56.2,目标=106.4)
+[2026-07-05 04:39:54.919] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #119: approach focus_far 反差=51.69 (0.05s) 越过best反向(步110,best2=56.2,目标=106.4)
+[2026-07-05 04:39:55.670] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #120: approach focus_near 反差=52.58 (0.05s) 越过best反向(步111,best2=56.2,目标=106.4)
+[2026-07-05 04:39:56.446] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #121: approach focus_far 反差=52.04 (0.05s) 越过best反向(步112,best2=56.2,目标=106.4)
+[2026-07-05 04:39:57.163] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #122: approach focus_near 反差=53.08 (0.05s) 越过best反向(步113,best2=56.2,目标=106.4)
+[2026-07-05 04:39:58.071] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #123: approach focus_far 反差=51.79 (0.05s) 越过best反向(步114,best2=56.2,目标=106.4)
+[2026-07-05 04:39:58.787] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #124: approach focus_near 反差=52.16 (0.05s) 越过best反向(步115,best2=56.2,目标=106.4)
+[2026-07-05 04:39:59.506] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #125: approach focus_far 反差=51.57 (0.05s) 越过best反向(步116,best2=56.2,目标=106.4)
+[2026-07-05 04:40:00.200] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #126: approach focus_near 反差=52.33 (0.05s) 越过best反向(步117,best2=56.2,目标=106.4)
+[2026-07-05 04:40:01.161] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #127: approach focus_far 反差=52.19 (0.05s) 越过best反向(步118,best2=56.2,目标=106.4)
+[2026-07-05 04:40:01.919] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #128: approach focus_near 反差=52.04 (0.05s) 越过best反向(步119,best2=56.2,目标=106.4)
+[2026-07-05 04:40:02.757] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #129: approach focus_far 反差=52.69 (0.05s) 越过best反向(步120,best2=56.2,目标=106.4)
+[2026-07-05 04:40:03.480] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #130: approach focus_near 反差=52.67 (0.05s) 越过best反向(步121,best2=56.2,目标=106.4)
+[2026-07-05 04:40:04.235] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #131: approach focus_far 反差=52.05 (0.05s) 越过best反向(步122,best2=56.2,目标=106.4)
+[2026-07-05 04:40:05.037] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #132: approach focus_near 反差=52.53 (0.05s) 越过best反向(步123,best2=56.2,目标=106.4)
+[2026-07-05 04:40:05.760] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #133: approach focus_far 反差=50.52 (0.05s) 越过best反向(步124,best2=56.2,目标=106.4)
+[2026-07-05 04:40:06.519] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #134: approach focus_near 反差=50.82 (0.05s) 越过best反向(步125,best2=56.2,目标=106.4)
+[2026-07-05 04:40:07.498] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #135: approach focus_far 反差=51.52 (0.05s) 越过best反向(步126,best2=56.2,目标=106.4)
+[2026-07-05 04:40:08.196] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #136: approach focus_near 反差=51.56 (0.05s) 越过best反向(步127,best2=56.2,目标=106.4)
+[2026-07-05 04:40:08.995] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #137: approach focus_far 反差=52.66 (0.05s) 越过best反向(步128,best2=56.2,目标=106.4)
+[2026-07-05 04:40:09.718] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #138: approach focus_near 反差=52.03 (0.05s) 越过best反向(步129,best2=56.2,目标=106.4)
+[2026-07-05 04:40:10.622] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #139: approach focus_far 反差=52.88 (0.05s) 越过best反向(步130,best2=56.2,目标=106.4)
+[2026-07-05 04:40:11.422] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #140: approach focus_near 反差=52.93 (0.05s) 越过best反向(步131,best2=56.2,目标=106.4)
+[2026-07-05 04:40:12.112] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #141: approach focus_far 反差=52.25 (0.05s) 越过best反向(步132,best2=56.2,目标=106.4)
+[2026-07-05 04:40:12.836] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #142: approach focus_near 反差=52.86 (0.05s) 越过best反向(步133,best2=56.2,目标=106.4)
+[2026-07-05 04:40:13.543] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #143: approach focus_far 反差=52.13 (0.05s) 越过best反向(步134,best2=56.2,目标=106.4)
+[2026-07-05 04:40:14.401] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #144: approach focus_near 反差=51.72 (0.05s) 越过best反向(步135,best2=56.2,目标=106.4)
+[2026-07-05 04:40:15.112] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #145: approach focus_far 反差=52.29 (0.05s) 越过best反向(步136,best2=56.2,目标=106.4)
+[2026-07-05 04:40:15.831] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #146: approach focus_near 反差=52.98 (0.05s) 越过best反向(步137,best2=56.2,目标=106.4)
+[2026-07-05 04:40:16.545] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #147: approach focus_far 反差=52.41 (0.05s) 越过best反向(步138,best2=56.2,目标=106.4)
+[2026-07-05 04:40:17.325] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #148: approach focus_near 反差=51.42 (0.05s) 越过best反向(步139,best2=56.2,目标=106.4)
+[2026-07-05 04:40:18.113] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #149: approach focus_far 反差=52.12 (0.05s) 越过best反向(步140,best2=56.2,目标=106.4)
+[2026-07-05 04:40:18.847] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #150: approach focus_near 反差=52.95 (0.05s) 越过best反向(步141,best2=56.2,目标=106.4)
+[2026-07-05 04:40:19.710] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #151: approach focus_far 反差=51.74 (0.05s) 越过best反向(步142,best2=56.2,目标=106.4)
+[2026-07-05 04:40:20.447] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #152: approach focus_near 反差=52.88 (0.05s) 越过best反向(步143,best2=56.2,目标=106.4)
+[2026-07-05 04:40:21.146] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #153: approach focus_far 反差=51.77 (0.05s) 越过best反向(步144,best2=56.2,目标=106.4)
+[2026-07-05 04:40:22.024] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #154: approach focus_near 反差=51.56 (0.05s) 越过best反向(步145,best2=56.2,目标=106.4)
+[2026-07-05 04:40:22.746] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #155: approach focus_far 反差=50.92 (0.05s) 越过best反向(步146,best2=56.2,目标=106.4)
+[2026-07-05 04:40:23.487] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #156: approach focus_near 反差=51.96 (0.05s) 越过best反向(步147,best2=56.2,目标=106.4)
+[2026-07-05 04:40:24.246] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #157: approach focus_far 反差=51.01 (0.05s) 越过best反向(步148,best2=56.2,目标=106.4)
+[2026-07-05 04:40:25.063] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #158: approach focus_near 反差=52.12 (0.05s) 越过best反向(步149,best2=56.2,目标=106.4)
+[2026-07-05 04:40:25.733] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #159: approach focus_far 反差=50.65 (0.05s) 越过best反向(步150,best2=56.2,目标=106.4)
+[2026-07-05 04:40:26.637] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #160: approach focus_near 反差=52.33 (0.05s) 越过best反向(步151,best2=56.2,目标=106.4)
+[2026-07-05 04:40:27.440] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #161: approach focus_far 反差=51.23 (0.05s) 越过best反向(步152,best2=56.2,目标=106.4)
+[2026-07-05 04:40:28.104] [INFO   ] [operation_logger] [web] ptz: 用户停止
+[2026-07-05 04:40:28.163] [INFO   ] [operation_logger] [web] ptz: 对焦: 用户停止
+[2026-07-05 04:40:28.215] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 04:40:33.772] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 04:40:33.997] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-05 04:40:34.087] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 04:40:36.403] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1288~1831, Y=623~1227, 共327972像素
+[2026-07-05 04:40:36.405] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=69.1 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-05 04:40:37.436] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=66.09 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:38.393] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=65.02 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:39.462] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=64.94 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:40.507] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=65.01 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:41.529] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=65.15 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:42.535] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_near 反差=65.2 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:43.465] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: coarse focus_near 反差=65.39 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:44.331] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: coarse focus_near 反差=65.65 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:45.162] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: coarse focus_near 反差=66.26 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:46.115] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: coarse focus_near 反差=66.75 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:47.083] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: coarse focus_near 反差=62.94 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:47.959] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: coarse focus_near 反差=64.04 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:48.841] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: coarse focus_near 反差=65.75 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:49.761] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: coarse focus_near 反差=65.26 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:50.630] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: coarse focus_near 反差=63.9 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:51.520] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: coarse focus_near 反差=65 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:52.485] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: coarse focus_near 反差=65.56 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:53.312] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: coarse focus_near 反差=65.63 (0.2s) 采样(best=69.1,方向=近)
+[2026-07-05 04:40:54.158] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: coarse focus_far 反差=64.99 (0.2s) 平坦区(0步),反向(方向=远)
+[2026-07-05 04:40:55.146] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: coarse focus_far 反差=64.94 (0.2s) 开始对焦(方向=远,尝试2/3)
+[2026-07-05 04:40:56.167] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: coarse focus_far 反差=64.8 (0.2s) 采样(best=64.9,方向=远)
+[2026-07-05 04:40:57.116] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: coarse focus_far 反差=64.18 (0.2s) 采样(best=64.9,方向=远)
+[2026-07-05 04:40:58.197] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: coarse focus_far 反差=66.38 (0.2s) 采样(best=66.4,方向=远)
+[2026-07-05 04:40:59.131] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: coarse focus_far 反差=73.67 (0.2s) 采样(best=73.7,方向=远)
+[2026-07-05 04:41:00.132] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: coarse focus_far 反差=124.86 (0.2s) 采样(best=124.9,方向=远)
+[2026-07-05 04:41:01.148] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: coarse focus_far 反差=96.03 (0.2s) 采样(best=124.9,方向=远)
+[2026-07-05 04:41:02.171] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: coarse focus_far 反差=69.41 (0.2s) 采样(best=124.9,方向=远)
+[2026-07-05 04:41:03.122] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: coarse focus_far 反差=65.9 (0.2s) 找到峰值(best1=124.9),回退3步
+[2026-07-05 04:41:04.029] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: approach focus_near 反差=67.57 (0.05s) 回退完成(反差=67.6,目标=124.9),进入精调
+[2026-07-05 04:41:04.867] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: approach focus_near 反差=68.17 (0.05s) 逼近(步1,best2=68.2,目标=124.9)
+[2026-07-05 04:41:05.592] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: approach focus_near 反差=68.37 (0.05s) 逼近(步2,best2=68.4,目标=124.9)
+[2026-07-05 04:41:06.283] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: approach focus_far 反差=67.15 (0.05s) 越过best反向(步3,best2=68.4,目标=124.9)
+[2026-07-05 04:41:07.155] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: approach focus_far 反差=68.86 (0.05s) 逼近(步4,best2=68.9,目标=124.9)
+[2026-07-05 04:41:07.888] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: approach focus_far 反差=69.82 (0.05s) 逼近(步5,best2=69.8,目标=124.9)
+[2026-07-05 04:41:08.611] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #36: approach focus_near 反差=68.1 (0.05s) 越过best反向(步6,best2=69.8,目标=124.9)
+[2026-07-05 04:41:09.318] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #37: approach focus_far 反差=68.53 (0.05s) 越过best反向(步7,best2=69.8,目标=124.9)
+[2026-07-05 04:41:10.174] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #38: approach focus_near 反差=69.16 (0.05s) 越过best反向(步8,best2=69.8,目标=124.9)
+[2026-07-05 04:41:10.990] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #39: approach focus_near 反差=73.34 (0.05s) 逼近(步9,best2=73.3,目标=124.9)
+[2026-07-05 04:41:11.779] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #40: approach focus_near 反差=73.52 (0.05s) 逼近(步10,best2=73.5,目标=124.9)
+[2026-07-05 04:41:12.509] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #41: approach focus_far 反差=70.32 (0.05s) 越过best反向(步11,best2=73.5,目标=124.9)
+[2026-07-05 04:41:13.224] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #42: approach focus_near 反差=70.67 (0.05s) 越过best反向(步12,best2=73.5,目标=124.9)
+[2026-07-05 04:41:14.025] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #43: approach focus_far 反差=68.69 (0.05s) 越过best反向(步13,best2=73.5,目标=124.9)
+[2026-07-05 04:41:14.756] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #44: approach focus_near 反差=70.26 (0.05s) 越过best反向(步14,best2=73.5,目标=124.9)
+[2026-07-05 04:41:15.543] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #45: approach focus_far 反差=70.68 (0.05s) 越过best反向(步15,best2=73.5,目标=124.9)
+[2026-07-05 04:41:16.273] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #46: approach focus_near 反差=72.32 (0.05s) 越过best反向(步16,best2=73.5,目标=124.9)
+[2026-07-05 04:41:17.062] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #47: approach focus_near 反差=74.37 (0.05s) 逼近(步17,best2=74.4,目标=124.9)
+[2026-07-05 04:41:17.780] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #48: approach focus_far 反差=67.65 (0.05s) 越过best反向(步18,best2=74.4,目标=124.9)
+[2026-07-05 04:41:18.568] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #49: approach focus_near 反差=68.71 (0.05s) 越过best反向(步19,best2=74.4,目标=124.9)
+[2026-07-05 04:41:19.262] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #50: approach focus_far 反差=68.3 (0.05s) 越过best反向(步20,best2=74.4,目标=124.9)
+[2026-07-05 04:41:20.074] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #51: approach focus_near 反差=68.05 (0.05s) 越过best反向(步21,best2=74.4,目标=124.9)
+[2026-07-05 04:41:20.829] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #52: approach focus_far 反差=66.95 (0.05s) 越过best反向(步22,best2=74.4,目标=124.9)
+[2026-07-05 04:41:21.919] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #53: approach focus_near 反差=67.59 (0.05s) 越过best反向(步23,best2=74.4,目标=124.9)
+[2026-07-05 04:41:22.640] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #54: approach focus_far 反差=68.6 (0.05s) 越过best反向(步24,best2=74.4,目标=124.9)
+[2026-07-05 04:41:23.527] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #55: approach focus_near 反差=67.96 (0.05s) 越过best反向(步25,best2=74.4,目标=124.9)
+[2026-07-05 04:41:24.321] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #56: approach focus_far 反差=70.33 (0.05s) 越过best反向(步26,best2=74.4,目标=124.9)
+[2026-07-05 04:41:25.121] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #57: approach focus_near 反差=69.21 (0.05s) 越过best反向(步27,best2=74.4,目标=124.9)
+[2026-07-05 04:41:25.884] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #58: approach focus_far 反差=69.59 (0.05s) 越过best反向(步28,best2=74.4,目标=124.9)
+[2026-07-05 04:41:26.607] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #59: approach focus_near 反差=69.56 (0.05s) 越过best反向(步29,best2=74.4,目标=124.9)
+[2026-07-05 04:41:27.293] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #60: approach focus_far 反差=63.64 (0.05s) 越过best反向(步30,best2=74.4,目标=124.9)
+[2026-07-05 04:41:28.151] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #61: approach focus_near 反差=62.98 (0.05s) 越过best反向(步31,best2=74.4,目标=124.9)
+[2026-07-05 04:41:28.893] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #62: approach focus_far 反差=67.39 (0.05s) 越过best反向(步32,best2=74.4,目标=124.9)
+[2026-07-05 04:41:29.630] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #63: approach focus_near 反差=67.18 (0.05s) 越过best反向(步33,best2=74.4,目标=124.9)
+[2026-07-05 04:41:30.344] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #64: approach focus_far 反差=67.31 (0.05s) 越过best反向(步34,best2=74.4,目标=124.9)
+[2026-07-05 04:41:31.150] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #65: approach focus_near 反差=70.86 (0.05s) 越过best反向(步35,best2=74.4,目标=124.9)
+[2026-07-05 04:41:31.845] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #66: approach focus_near 反差=76.5 (0.05s) 逼近(步36,best2=76.5,目标=124.9)
+[2026-07-05 04:41:32.631] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #67: approach focus_near 反差=77.7 (0.05s) 逼近(步37,best2=77.7,目标=124.9)
+[2026-07-05 04:41:33.478] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #68: approach focus_far 反差=71.52 (0.05s) 越过best反向(步38,best2=77.7,目标=124.9)
+[2026-07-05 04:41:34.197] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #69: approach focus_near 反差=72.42 (0.05s) 越过best反向(步39,best2=77.7,目标=124.9)
+[2026-07-05 04:41:34.945] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #70: approach focus_far 反差=71.8 (0.05s) 越过best反向(步40,best2=77.7,目标=124.9)
+[2026-07-05 04:41:35.652] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #71: approach focus_near 反差=74.48 (0.05s) 越过best反向(步41,best2=77.7,目标=124.9)
+[2026-07-05 04:41:36.496] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #72: approach focus_far 反差=76.96 (0.05s) 越过best反向(步42,best2=77.7,目标=124.9)
+[2026-07-05 04:41:37.257] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #73: approach focus_far 反差=82.6 (0.05s) 逼近(步43,best2=82.6,目标=124.9)
+[2026-07-05 04:41:38.065] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #74: approach focus_far 反差=89.2 (0.05s) 逼近(步44,best2=89.2,目标=124.9)
+[2026-07-05 04:41:38.794] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #75: approach focus_far 反差=96.48 (0.05s) 逼近(步45,best2=96.5,目标=124.9)
+[2026-07-05 04:41:39.928] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #76: approach focus_far 反差=115.44 (0.05s) 逼近(步46,best2=115.4,目标=124.9)
+[2026-07-05 04:41:40.631] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #77: done stop 反差=128.76 (0s) 对焦成功(best2=128.8>=best1=124.9)
+[2026-07-05 04:41:40.949] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=133.33 (77步) ──
+[2026-07-05 04:41:40.975] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 05:00:44.052] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 05:00:44.686] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 46, "blue": 63}
+[2026-07-05 05:00:44.937] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 05:00:44.960] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 05:00:57.015] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:00:57.210] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 05:16:47.556] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 05:16:48.160] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:16:48.281] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 05:16:48.401] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 05:16:52.287] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:16:52.424] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 05:25:50.389] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 05:25:50.966] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:25:51.100] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 05:25:51.244] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 05:25:56.099] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:25:56.278] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 05:36:41.647] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 05:36:42.247] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:36:42.549] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 05:36:42.580] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 05:36:45.494] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:36:45.657] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 05:42:22.372] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 05:42:22.948] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:42:23.078] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 05:42:23.216] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 05:42:25.326] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:42:28.192] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 46, "blue": 63}
+[2026-07-05 05:42:28.313] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-05 05:42:29.697] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-05 05:42:30.500] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1748~2371, Y=594~1105, 共318353像素
+[2026-07-05 05:42:30.500] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: coarse R=46 B=58 → R=120.8 G=122.3 B=154.8 (Δ=0.2785)
+[2026-07-05 05:42:31.770] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: coarse R=51 B=53 → R=106.4 G=125.4 B=154.4 (Δ=0.383)
+[2026-07-05 05:42:33.150] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: coarse R=51 B=48 → R=125 G=126.4 B=137.5 (Δ=0.0995)
+[2026-07-05 05:42:34.287] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: coarse R=51 B=53 → R=130.4 G=129.8 B=116.6 (Δ=0.107)
+[2026-07-05 05:42:35.240] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: coarse R=52 B=48 → R=124.2 G=126.7 B=138.3 (Δ=0.1111)
+[2026-07-05 05:42:36.240] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: medium R=52 B=48 → R=133.1 G=129.3 B=117.8 (Δ=0.119)
+[2026-07-05 05:42:37.216] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: medium R=50 B=50 → R=137.1 G=128.1 B=113.6 (Δ=0.1837)
+[2026-07-05 05:42:38.471] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: medium R=51 B=52 → R=126 G=130 B=122.9 (Δ=0.0854)
+[2026-07-05 05:42:39.906] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: medium R=51 B=50 → R=127.9 G=127.9 B=132.6 (Δ=0.0374)
+[2026-07-05 05:42:41.249] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: medium R=51 B=52 → R=129.5 G=129.3 B=123.7 (Δ=0.0451)
+[2026-07-05 05:42:42.221] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: fine R=51 B=52 → R=125.7 G=127.9 B=134.5 (Δ=0.0691)
+[2026-07-05 05:42:43.448] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: fine R=50 B=52 → R=131.3 G=127.7 B=129.9 (Δ=0.046)
+[2026-07-05 05:42:44.806] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: fine R=50 B=51 → R=125 G=128.9 B=132.7 (Δ=0.0602)
+[2026-07-05 05:42:46.251] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: fine R=51 B=51 → R=126.3 G=130.1 B=127.9 (Δ=0.0463)
+[2026-07-05 05:42:47.458] [DEBUG  ] [operation_logger] [web] ptz: 调整 #15: fine R=51 B=50 → R=129.6 G=129.6 B=130 (Δ=0.0043)
+[2026-07-05 05:42:48.787] [DEBUG  ] [operation_logger] [web] ptz: 调整 #16: fine R=51 B=51 → R=131.1 G=130.2 B=124.3 (Δ=0.0516)
+[2026-07-05 05:42:49.983] [DEBUG  ] [operation_logger] [web] ptz: 调整 #17: fine R=51 B=50 → R=130.2 G=130.2 B=130.6 (Δ=0.0034)
+[2026-07-05 05:42:51.207] [DEBUG  ] [operation_logger] [web] ptz: 调整 #18: fine R=51 B=51 → R=131.3 G=131 B=125.2 (Δ=0.0469)
+[2026-07-05 05:42:52.209] [DEBUG  ] [operation_logger] [web] ptz: 调整 #19: fine R=51 B=51 → R=129.8 G=130.9 B=131.8 (Δ=0.0152)
+[2026-07-05 05:42:53.455] [DEBUG  ] [operation_logger] [web] ptz: 调整 #20: done R=51 B=51 → R=134.6 G=130.3 B=126.6 (Δ=0.0034)
+[2026-07-05 05:42:55.372] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=51 B=51 (20步) ──
+[2026-07-05 05:42:55.380] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 05:43:07.250] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 05:43:07.474] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 05:43:09.876] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 05:43:10.110] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 05:43:22.340] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-05 05:43:24.283] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1436~1873, Y=549~945, 共173052像素
+[2026-07-05 05:43:24.283] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=1152.76 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-05 05:43:25.202] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=531.74 (0.2s) 采样(best=1152.8,方向=近)
+[2026-07-05 05:43:26.029] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=157.36 (0.2s) 采样(best=1152.8,方向=近)
+[2026-07-05 05:43:26.933] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=72.55 (0.2s) 找到峰值(best1=1152.8),回退3步
+[2026-07-05 05:43:27.775] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=66.13 (0.05s) 回退完成(反差=66.1,目标=1152.8),进入精调
+[2026-07-05 05:43:28.495] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=76.72 (0.05s) 逼近(步1,best2=76.7,目标=1152.8)
+[2026-07-05 05:43:29.183] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: approach focus_near 反差=69.08 (0.05s) 越过best反向(步2,best2=76.7,目标=1152.8)
+[2026-07-05 05:43:29.955] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: approach focus_near 反差=79.79 (0.05s) 逼近(步3,best2=79.8,目标=1152.8)
+[2026-07-05 05:43:30.736] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: approach focus_far 反差=64.2 (0.05s) 越过best反向(步4,best2=79.8,目标=1152.8)
+[2026-07-05 05:43:31.813] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: approach focus_near 反差=65.63 (0.05s) 越过best反向(步5,best2=79.8,目标=1152.8)
+[2026-07-05 05:43:32.451] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: approach focus_far 反差=74.71 (0.05s) 越过best反向(步6,best2=79.8,目标=1152.8)
+[2026-07-05 05:43:33.244] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: approach focus_far 反差=81.27 (0.05s) 逼近(步7,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:33.936] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: approach focus_near 反差=80.56 (0.05s) 越过best反向(步8,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:34.695] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: approach focus_far 反差=70.84 (0.05s) 越过best反向(步9,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:35.451] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: approach focus_near 反差=81.12 (0.05s) 越过best反向(步10,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:36.262] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: approach focus_far 反差=79.61 (0.05s) 越过best反向(步11,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:36.915] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: approach focus_near 反差=81.17 (0.05s) 越过best反向(步12,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:37.556] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: approach focus_far 反差=73.14 (0.05s) 越过best反向(步13,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:38.221] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: approach focus_near 反差=80.97 (0.05s) 越过best反向(步14,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:38.912] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: approach focus_far 反差=81.12 (0.05s) 越过best反向(步15,best2=81.3,目标=1152.8)
+[2026-07-05 05:43:39.565] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: approach focus_far 反差=82.54 (0.05s) 逼近(步16,best2=82.5,目标=1152.8)
+[2026-07-05 05:43:40.244] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: approach focus_near 反差=77.44 (0.05s) 越过best反向(步17,best2=82.5,目标=1152.8)
+[2026-07-05 05:43:40.890] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: approach focus_far 反差=74.38 (0.05s) 越过best反向(步18,best2=82.5,目标=1152.8)
+[2026-07-05 05:43:41.559] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: approach focus_far 反差=85.4 (0.05s) 逼近(步19,best2=85.4,目标=1152.8)
+[2026-07-05 05:43:42.219] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: approach focus_near 反差=74.64 (0.05s) 越过best反向(步20,best2=85.4,目标=1152.8)
+[2026-07-05 05:43:42.883] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: approach focus_far 反差=84.45 (0.05s) 越过best反向(步21,best2=85.4,目标=1152.8)
+[2026-07-05 05:43:43.556] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: approach focus_near 反差=85.14 (0.05s) 越过best反向(步22,best2=85.4,目标=1152.8)
+[2026-07-05 05:43:44.226] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: approach focus_near 反差=86.46 (0.05s) 逼近(步23,best2=86.5,目标=1152.8)
+[2026-07-05 05:43:44.885] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: approach focus_far 反差=80.29 (0.05s) 越过best反向(步24,best2=86.5,目标=1152.8)
+[2026-07-05 05:43:45.548] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: approach focus_far 反差=87.74 (0.05s) 逼近(步25,best2=87.7,目标=1152.8)
+[2026-07-05 05:43:46.282] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: approach focus_far 反差=102.73 (0.05s) 逼近(步26,best2=102.7,目标=1152.8)
+[2026-07-05 05:43:46.968] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: approach focus_far 反差=151.3 (0.05s) 逼近(步27,best2=151.3,目标=1152.8)
+[2026-07-05 05:43:47.976] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: approach focus_far 反差=506.73 (0.05s) 逼近(步28,best2=506.7,目标=1152.8)
+[2026-07-05 05:43:48.765] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: approach focus_far 反差=881.59 (0.05s) 逼近(步29,best2=881.6,目标=1152.8)
+[2026-07-05 05:43:49.754] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: approach focus_far 反差=1102.75 (0.05s) 逼近(步30,best2=1102.8,目标=1152.8)
+[2026-07-05 05:43:50.441] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #36: approach focus_far 反差=1108.21 (0.05s) 逼近(步31,best2=1108.2,目标=1152.8)
+[2026-07-05 05:43:51.186] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #37: approach focus_near 反差=1033.53 (0.05s) 越过best反向(步32,best2=1108.2,目标=1152.8)
+[2026-07-05 05:43:51.880] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #38: approach focus_far 反差=1016.54 (0.05s) 越过best反向(步33,best2=1108.2,目标=1152.8)
+[2026-07-05 05:43:52.552] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #39: approach focus_near 反差=797.94 (0.05s) 越过best反向(步34,best2=1108.2,目标=1152.8)
+[2026-07-05 05:43:53.262] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #40: approach focus_far 反差=845.59 (0.05s) 越过best反向(步35,best2=1108.2,目标=1152.8)
+[2026-07-05 05:43:53.931] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #41: approach focus_near 反差=819.25 (0.05s) 越过best反向(步36,best2=1108.2,目标=1152.8)
+[2026-07-05 05:43:54.721] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #42: approach focus_near 反差=1130.63 (0.05s) 逼近(步37,best2=1130.6,目标=1152.8)
+[2026-07-05 05:43:55.520] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #43: done stop 反差=1211.64 (0s) 对焦成功(best2=1211.6>=best1=1152.8)
+[2026-07-05 05:43:55.796] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=1224.58 (43步) ──
+[2026-07-05 05:43:55.811] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 05:44:06.387] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 05:44:06.610] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-05 05:44:06.697] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 05:44:08.649] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1025~2220, Y=366~1189, 共983485像素
+[2026-07-05 05:44:08.650] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=607.73 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-05 05:44:09.479] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=264.71 (0.2s) 采样(best=607.7,方向=近)
+[2026-07-05 05:44:10.411] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=96.93 (0.2s) 采样(best=607.7,方向=近)
+[2026-07-05 05:44:11.335] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=51.45 (0.2s) 找到峰值(best1=607.7),回退3步
+[2026-07-05 05:44:12.209] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: approach focus_far 反差=31.04 (0.05s) 回退完成(反差=31.0,目标=607.7),进入精调
+[2026-07-05 05:44:12.877] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: approach focus_far 反差=38.01 (0.05s) 逼近(步1,best2=38.0,目标=607.7)
+[2026-07-05 05:44:13.539] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: approach focus_near 反差=37.87 (0.05s) 越过best反向(步2,best2=38.0,目标=607.7)
+[2026-07-05 05:44:14.340] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: approach focus_far 反差=37.12 (0.05s) 越过best反向(步3,best2=38.0,目标=607.7)
+[2026-07-05 05:44:15.037] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: approach focus_far 反差=39.51 (0.05s) 逼近(步4,best2=39.5,目标=607.7)
+[2026-07-05 05:44:15.816] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: approach focus_far 反差=41.18 (0.05s) 逼近(步5,best2=41.2,目标=607.7)
+[2026-07-05 05:44:16.471] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: approach focus_far 反差=56.16 (0.05s) 逼近(步6,best2=56.2,目标=607.7)
+[2026-07-05 05:44:17.244] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: approach focus_far 反差=67.59 (0.05s) 逼近(步7,best2=67.6,目标=607.7)
+[2026-07-05 05:44:17.910] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: approach focus_far 反差=170.34 (0.05s) 逼近(步8,best2=170.3,目标=607.7)
+[2026-07-05 05:44:18.588] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: approach focus_far 反差=227.09 (0.05s) 逼近(步9,best2=227.1,目标=607.7)
+[2026-07-05 05:44:19.278] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: approach focus_far 反差=256.98 (0.05s) 逼近(步10,best2=257.0,目标=607.7)
+[2026-07-05 05:44:19.952] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: approach focus_far 反差=353.59 (0.05s) 逼近(步11,best2=353.6,目标=607.7)
+[2026-07-05 05:44:20.813] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: approach focus_far 反差=471.24 (0.05s) 逼近(步12,best2=471.2,目标=607.7)
+[2026-07-05 05:44:21.471] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: approach focus_far 反差=570.16 (0.05s) 逼近(步13,best2=570.2,目标=607.7)
+[2026-07-05 05:44:22.207] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: approach focus_near 反差=505.34 (0.05s) 越过best反向(步14,best2=570.2,目标=607.7)
+[2026-07-05 05:44:22.871] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: approach focus_far 反差=516.2 (0.05s) 越过best反向(步15,best2=570.2,目标=607.7)
+[2026-07-05 05:44:23.554] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: approach focus_near 反差=501.21 (0.05s) 越过best反向(步16,best2=570.2,目标=607.7)
+[2026-07-05 05:44:24.245] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: approach focus_far 反差=506.98 (0.05s) 越过best反向(步17,best2=570.2,目标=607.7)
+[2026-07-05 05:44:24.952] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: approach focus_near 反差=487.63 (0.05s) 越过best反向(步18,best2=570.2,目标=607.7)
+[2026-07-05 05:44:25.791] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: approach focus_far 反差=509.03 (0.05s) 越过best反向(步19,best2=570.2,目标=607.7)
+[2026-07-05 05:44:26.468] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: approach focus_near 反差=490.97 (0.05s) 越过best反向(步20,best2=570.2,目标=607.7)
+[2026-07-05 05:44:27.206] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: approach focus_far 反差=509.11 (0.05s) 越过best反向(步21,best2=570.2,目标=607.7)
+[2026-07-05 05:44:27.867] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: approach focus_near 反差=387.99 (0.05s) 越过best反向(步22,best2=570.2,目标=607.7)
+[2026-07-05 05:44:28.551] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #28: approach focus_far 反差=421.12 (0.05s) 越过best反向(步23,best2=570.2,目标=607.7)
+[2026-07-05 05:44:29.271] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #29: approach focus_near 反差=395.29 (0.05s) 越过best反向(步24,best2=570.2,目标=607.7)
+[2026-07-05 05:44:29.936] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #30: approach focus_far 反差=407.79 (0.05s) 越过best反向(步25,best2=570.2,目标=607.7)
+[2026-07-05 05:44:30.909] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #31: approach focus_near 反差=382.43 (0.05s) 越过best反向(步26,best2=570.2,目标=607.7)
+[2026-07-05 05:44:31.988] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #32: approach focus_far 反差=506.34 (0.05s) 越过best反向(步27,best2=570.2,目标=607.7)
+[2026-07-05 05:44:32.785] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #33: approach focus_near 反差=379.52 (0.05s) 越过best反向(步28,best2=570.2,目标=607.7)
+[2026-07-05 05:44:33.501] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #34: approach focus_far 反差=484.71 (0.05s) 越过best反向(步29,best2=570.2,目标=607.7)
+[2026-07-05 05:44:34.230] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #35: approach focus_near 反差=380.94 (0.05s) 越过best反向(步30,best2=570.2,目标=607.7)
+[2026-07-05 05:44:34.902] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #36: approach focus_far 反差=407.2 (0.05s) 越过best反向(步31,best2=570.2,目标=607.7)
+[2026-07-05 05:44:35.587] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #37: approach focus_near 反差=391.75 (0.05s) 越过best反向(步32,best2=570.2,目标=607.7)
+[2026-07-05 05:44:36.295] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #38: approach focus_far 反差=413.27 (0.05s) 越过best反向(步33,best2=570.2,目标=607.7)
+[2026-07-05 05:44:37.170] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #39: approach focus_near 反差=391.53 (0.05s) 越过best反向(步34,best2=570.2,目标=607.7)
+[2026-07-05 05:44:37.392] [INFO   ] [operation_logger] [web] ptz: 用户停止
+[2026-07-05 05:44:37.862] [INFO   ] [operation_logger] [web] ptz: 对焦: 用户停止
+[2026-07-05 05:44:37.874] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 05:44:40.598] [INFO   ] [operation_logger] [ptz] focus_mode: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 05:44:40.745] [INFO   ] [operation_logger] [web] ptz: 对焦模式: manual
+[2026-07-05 05:44:41.597] [INFO   ] [operation_logger] [web] ptz: ── 对焦迭代开始 ──
+[2026-07-05 05:44:43.575] [INFO   ] [operation_logger] [web] ptz: 对焦开始, X=1706~1831, Y=588~1247, 共82375像素
+[2026-07-05 05:44:43.576] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #1: coarse focus_near 反差=6.03 (0.2s) 开始对焦(方向=近,尝试1/3)
+[2026-07-05 05:44:44.471] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #2: coarse focus_near 反差=6.59 (0.2s) 采样(best=6.6,方向=近)
+[2026-07-05 05:44:45.448] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #3: coarse focus_near 反差=8.39 (0.2s) 采样(best=8.4,方向=近)
+[2026-07-05 05:44:46.296] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #4: coarse focus_near 反差=8.91 (0.2s) 采样(best=8.9,方向=近)
+[2026-07-05 05:44:47.158] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #5: coarse focus_near 反差=12.35 (0.2s) 采样(best=12.3,方向=近)
+[2026-07-05 05:44:47.994] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #6: coarse focus_near 反差=16.87 (0.2s) 采样(best=16.9,方向=近)
+[2026-07-05 05:44:48.792] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #7: coarse focus_near 反差=25.31 (0.2s) 采样(best=25.3,方向=近)
+[2026-07-05 05:44:49.875] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #8: coarse focus_near 反差=77.24 (0.2s) 采样(best=77.2,方向=近)
+[2026-07-05 05:44:50.725] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #9: coarse focus_near 反差=722.9 (0.2s) 采样(best=722.9,方向=近)
+[2026-07-05 05:44:51.571] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #10: coarse focus_near 反差=213.94 (0.2s) 采样(best=722.9,方向=近)
+[2026-07-05 05:44:52.485] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #11: coarse focus_near 反差=56.48 (0.2s) 采样(best=722.9,方向=近)
+[2026-07-05 05:44:53.402] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #12: coarse focus_near 反差=34.82 (0.2s) 找到峰值(best1=722.9),回退3步
+[2026-07-05 05:44:54.209] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #13: approach focus_far 反差=22.53 (0.05s) 回退完成(反差=22.5,目标=722.9),进入精调
+[2026-07-05 05:44:54.843] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #14: approach focus_far 反差=25.76 (0.05s) 逼近(步1,best2=25.8,目标=722.9)
+[2026-07-05 05:44:55.603] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #15: approach focus_far 反差=28.31 (0.05s) 逼近(步2,best2=28.3,目标=722.9)
+[2026-07-05 05:44:56.255] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #16: approach focus_far 反差=32.15 (0.05s) 逼近(步3,best2=32.2,目标=722.9)
+[2026-07-05 05:44:56.877] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #17: approach focus_far 反差=36.44 (0.05s) 逼近(步4,best2=36.4,目标=722.9)
+[2026-07-05 05:44:57.514] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #18: approach focus_far 反差=39.16 (0.05s) 逼近(步5,best2=39.2,目标=722.9)
+[2026-07-05 05:44:58.218] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #19: approach focus_far 反差=43.52 (0.05s) 逼近(步6,best2=43.5,目标=722.9)
+[2026-07-05 05:44:58.876] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #20: approach focus_far 反差=52.87 (0.05s) 逼近(步7,best2=52.9,目标=722.9)
+[2026-07-05 05:44:59.520] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #21: approach focus_far 反差=67.58 (0.05s) 逼近(步8,best2=67.6,目标=722.9)
+[2026-07-05 05:45:00.229] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #22: approach focus_far 反差=84.12 (0.05s) 逼近(步9,best2=84.1,目标=722.9)
+[2026-07-05 05:45:00.920] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #23: approach focus_far 反差=112.41 (0.05s) 逼近(步10,best2=112.4,目标=722.9)
+[2026-07-05 05:45:01.550] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #24: approach focus_far 反差=200.1 (0.05s) 逼近(步11,best2=200.1,目标=722.9)
+[2026-07-05 05:45:02.242] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #25: approach focus_far 反差=377.1 (0.05s) 逼近(步12,best2=377.1,目标=722.9)
+[2026-07-05 05:45:02.972] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #26: approach focus_far 反差=721.99 (0.05s) 逼近(步13,best2=722.0,目标=722.9)
+[2026-07-05 05:45:03.744] [DEBUG  ] [operation_logger] [web] ptz: 对焦 #27: done stop 反差=879.1 (0s) 对焦成功(best2=879.1>=best1=722.9)
+[2026-07-05 05:45:04.010] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成: 反差=885.29 (27步) ──
+[2026-07-05 05:45:04.021] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-05 06:01:11.568] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 06:01:11.592] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-07-05 06:01:15.815] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/300"}
+[2026-07-05 06:01:16.026] [INFO   ] [operation_logger] [web] ptz: 快门: 1/300
+[2026-07-05 06:01:18.560] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/6000"}
+[2026-07-05 06:01:18.568] [INFO   ] [operation_logger] [web] ptz: 快门: 1/6000
+[2026-07-05 06:01:21.179] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 100}
+[2026-07-05 06:01:21.209] [INFO   ] [operation_logger] [web] ptz: 增益: 100
+[2026-07-05 06:01:24.629] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/10000"}
+[2026-07-05 06:01:24.658] [INFO   ] [operation_logger] [web] ptz: 快门: 1/10000
+[2026-07-05 06:01:27.841] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/30000"}
+[2026-07-05 06:01:28.035] [INFO   ] [operation_logger] [web] ptz: 快门: 1/30000
+[2026-07-05 06:01:31.038] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 1600}
+[2026-07-05 06:01:31.214] [INFO   ] [operation_logger] [web] ptz: 光圈: F16.0
+[2026-07-05 06:01:58.609] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 100, "temporal": 0}
+[2026-07-05 06:01:58.618] [INFO   ] [operation_logger] [web] ptz: 时域降噪: 0
+[2026-07-05 06:02:05.697] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-05 06:02:05.705] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-05 06:03:06.731] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 06:03:07.375] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 51, "blue": 51}
+[2026-07-05 06:03:08.828] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 06:03:08.832] [INFO   ] [operation_logger] [web] ptz: 已加载 29 个预置点
+[2026-07-05 07:50:00.105] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 07:50:00.718] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 51, "blue": 51}
+[2026-07-05 07:50:03.784] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 07:50:03.937] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-05 07:51:46.758] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 07:51:46.956] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-07-05 07:51:50.700] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/600"}
+[2026-07-05 07:51:50.746] [INFO   ] [operation_logger] [web] ptz: 快门: 1/600
+[2026-07-05 07:51:57.308] [INFO   ] [operation_logger] [image] iris: {"device": "192.168.5.72", "level": 680}
+[2026-07-05 07:51:57.314] [INFO   ] [operation_logger] [web] ptz: 光圈: F6.8
+[2026-07-05 07:52:00.990] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 0}
+[2026-07-05 07:52:01.155] [INFO   ] [operation_logger] [web] ptz: 增益: 0
+[2026-07-05 07:52:07.153] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 40}
+[2026-07-05 07:52:07.324] [INFO   ] [operation_logger] [web] ptz: 增益: 40
+[2026-07-05 07:52:10.362] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 20}
+[2026-07-05 07:52:10.370] [INFO   ] [operation_logger] [web] ptz: 增益: 20
+[2026-07-05 07:52:13.654] [INFO   ] [operation_logger] [image] gain: {"device": "192.168.5.72", "level": 13}
+[2026-07-05 07:52:13.661] [INFO   ] [operation_logger] [web] ptz: 增益: 13
+[2026-07-05 07:52:18.581] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-05 07:52:18.619] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-05 07:57:22.376] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 07:57:23.015] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 51, "blue": 51}
+[2026-07-05 07:57:24.715] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 07:57:24.739] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-05 08:07:31.748] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 08:07:32.365] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 51, "blue": 51}
+[2026-07-05 08:07:32.695] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 08:07:32.718] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-05 08:27:12.825] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-05 08:27:12.985] [INFO   ] [operation_logger] [web] ptz: 曝光: 手动
+[2026-07-05 08:27:17.960] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "auto"}
+[2026-07-05 08:27:17.969] [INFO   ] [operation_logger] [web] ptz: 曝光: 自动
+[2026-07-05 10:02:16.554] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 67}}
+[2026-07-05 10:02:16.716] [INFO   ] [operation_logger] [web] ptz: 亮度: 67
+[2026-07-05 10:02:19.530] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 89}}
+[2026-07-05 10:02:19.701] [INFO   ] [operation_logger] [web] ptz: 亮度: 89
+[2026-07-05 10:02:22.082] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 58}}
+[2026-07-05 10:02:22.090] [INFO   ] [operation_logger] [web] ptz: 亮度: 58
+[2026-07-05 10:02:26.104] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 86}}
+[2026-07-05 10:02:26.113] [INFO   ] [operation_logger] [web] ptz: 亮度: 86
+[2026-07-05 10:02:31.049] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 27}}
+[2026-07-05 10:02:31.086] [INFO   ] [operation_logger] [web] ptz: 亮度: 27
+[2026-07-05 10:02:33.445] [INFO   ] [operation_logger] [image] color: {"device": "192.168.5.72", "updated": {"brightness": 50}}
+[2026-07-05 10:02:33.616] [INFO   ] [operation_logger] [web] ptz: 亮度: 50
+[2026-07-05 10:02:43.111] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 100, "temporal": 100}
+[2026-07-05 10:02:43.124] [INFO   ] [operation_logger] [web] ptz: 时域降噪: 100
+[2026-07-05 10:02:46.921] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 100, "temporal": 52}
+[2026-07-05 10:02:47.090] [INFO   ] [operation_logger] [web] ptz: 时域降噪: 52
+[2026-07-05 10:02:47.817] [INFO   ] [operation_logger] [image] noisereduce: {"device": "192.168.5.72", "spatial": 100, "temporal": 6}
+[2026-07-05 10:02:47.969] [INFO   ] [operation_logger] [web] ptz: 时域降噪: 6
+[2026-07-05 10:19:23.817] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 10:19:24.193] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 10:19:24.663] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 10:19:25.045] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 51, "blue": 51}
+[2026-07-05 10:19:25.217] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-05 20:51:47.475] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-05 20:51:48.186] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 51, "blue": 51}
+[2026-07-05 20:51:51.085] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-05 20:51:51.089] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-05 21:46:42.207] [INFO   ] [operation_logger] [image] whitebalance: {"device": "240f9b764193", "mode": "manual", "red": 200, "blue": 51}
+[2026-07-05 21:48:08.497] [INFO   ] [operation_logger] [image] noisereduce: {"device": "240f9b764193", "spatial": 75, "temporal": 6}
+[2026-07-05 21:48:08.860] [INFO   ] [operation_logger] [image] dss: {"device": "240f9b764193", "level": "*4"}
+[2026-07-05 21:48:59.756] [INFO   ] [operation_logger] [image] exposure: {"device": "240f9b764193", "mode": "manual"}
+[2026-07-05 21:49:00.232] [INFO   ] [operation_logger] [image] iris: {"device": "240f9b764193", "level": 160}
+[2026-07-05 21:49:00.407] [INFO   ] [operation_logger] [image] sharpness: {"device": "240f9b764193", "level": 60}
+[2026-07-05 21:49:00.681] [INFO   ] [operation_logger] [image] color: {"device": "240f9b764193", "updated": {"brightness": 55, "contrast": 52, "saturation": 58}}
+[2026-07-05 22:35:05.916] [INFO   ] [operation_logger] [api] disconnect: {"mac": "192.168.5.72"}
+[2026-07-05 22:35:05.921] [INFO   ] [operation_logger] [disconnect] {'mac': '192.168.5.72', 'status': 'success'}: 
+[2026-07-05 23:12:10.422] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/600"}
+[2026-07-05 23:14:01.827] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/600"}
+[2026-07-05 23:14:02.004] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/1000"}
+[2026-07-05 23:15:01.234] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/250"}
+[2026-07-05 23:15:01.454] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/1000"}
+[2026-07-05 23:15:01.817] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/30000"}
+[2026-07-05 23:15:02.257] [INFO   ] [operation_logger] [image] shutter: {"device": "192.168.5.72", "level": "1/25"}

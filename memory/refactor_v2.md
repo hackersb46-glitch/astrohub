@@ -78,7 +78,7 @@ python start.py --status
 ## 二、文件结构
 
 ```
-D:\astro_py\astro_hub/
+项目目录/
 ├── start.py            # 统一启动入口
 ├── start.sh            # Shell 启动脚本
 ├── start.bat           # Windows 批处理（保留）

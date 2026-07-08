@@ -4,8 +4,8 @@ AstroHub v2.0 - 统一路由聚合
 整合 M1-M11 所有模块路由到 /api/v1/ 下:
 - /api/v1/health            - 全局健康检查
 - /api/v1/discovery/sadp    - SADP 设备发现
-- /api/v1/devices/*         - 设备管理（真实）
-- /api/v1/ptz/*             - PTZ 控制（真实）
+- /api/v1/devices/*         - 设备管理(真实)
+- /api/v1/ptz/*             - PTZ 控制(真实)
 - /api/v1/streams/*         - 流服务
 - /api/v1/calibration/*     - 校准
 - /api/v1/ascom/*           - ASCOM 设备
@@ -16,13 +16,14 @@ Author: 雅痞张@南方天文
 
 from __future__ import annotations
 
+import asyncio
 import time
 from datetime import datetime, timezone
 from typing import Any
 
 from pydantic import BaseModel
 from fastapi import APIRouter, FastAPI, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response, StreamingResponse
 
 # v6.40: 操作日志
 from src.operation_logger import log_api, log_web, log_error, log_info
@@ -32,14 +33,16 @@ from src.operation_logger import log_api, log_web, log_error, log_info
 # ================================================================ #
 
 from src.core.ws_manager import WebSocketManager
-from src.core.ptz_manager import PTZManager
+from src.core.ptz_controller import PTZDeviceController
+from src.ptz.isapi.ptz import PTZController
 from src.core.device_manager import DeviceManager
-from src.core.stream_manager import StreamManager
 from src.core.calibration_manager import CalibrationManager
 from src.core.auth import AuthManager
 from src.core.ascom_manager import ASCOMManager
-from src.core.orchestrator import Orchestrator
+from src.core.task_scheduler import TaskScheduler
 from src.core.health_monitor import HealthMonitor
+from src.main.constants import VERSION, VERSION_NUM
+from src.config_paths import DEVICES_DIR
 
 
 # ================================================================ #
@@ -110,13 +113,13 @@ class SADPIpModifyRequest(BaseModel):
     gateway: str = ""
 
 class SystemInfoRequest(BaseModel):
-    """系统信息请求（可选的绑定 ip）。"""
+    """系统信息请求(可选的绑定 ip)。"""
     nic_index: int | None = None
 
 class PTZMoveRequest(BaseModel):
     """PTZ 移动请求。
-    
-    speed: 1-7 档位，默认 4 档
+
+    speed: 1-7 档位,默认 4 档
     档位映射: 1→14, 2→28, 3→43, 4→57, 5→71, 6→86, 7→100
     """
     direction: str
@@ -124,8 +127,8 @@ class PTZMoveRequest(BaseModel):
 
 class PTZAbsoluteRequest(BaseModel):
     """PTZ 绝对移动请求。
-    
-    speed: 1-7 档位，默认 4 档
+
+    speed: 1-7 档位,默认 4 档
     """
     pan: float
     tilt: float
@@ -176,8 +179,8 @@ operations_log: list[dict[str, str]] = []
 MAX_LOG_ENTRIES = 10
 
 
-def operation_log(action: str, details: str) -> None:
-    """追加操作到日志列表（环形缓冲区，最多 MAX_LOG_ENTRIES 条）。"""
+def operation_log(action: str, details: str) ->PTZDeviceController | None:
+    """追加操作到日志列表(环形缓冲区,最多 MAX_LOG_ENTRIES 条)。"""
     entry = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "action": action,
@@ -195,12 +198,12 @@ def operation_log(action: str, details: str) -> None:
 _managers: dict[str, Any] = {}
 
 
-def set_managers(**kwargs: Any) -> None:
+def set_managers(**kwargs: Any) ->PTZDeviceController | None:
     """注入所有管理器实例。"""
     _managers.update(kwargs)
 
 
-def _resolve_device_id_to_ip(mgr: "PTZManager", device_id: str) -> str | None:
+def _resolve_device_id_to_ip(mgr: "PTZDeviceController", device_id: str) -> str | None:
     """解析 device_id 为实际 IP 地址。
 
     device_id 可能是 IP 地址或 MAC 地址。
@@ -212,7 +215,7 @@ def _resolve_device_id_to_ip(mgr: "PTZManager", device_id: str) -> str | None:
     mac_clean = device_id.replace(":", "").replace("-", "").lower()
     # 无分隔符12位十六进制 = MAC
     if len(mac_clean) == 12 and re.match(r'^[0-9a-f]{12}$', mac_clean):
-        # 是 MAC 地址，尝试从发现缓存中查找
+        # 是 MAC 地址,尝试从发现缓存中查找
         discovered = mgr.get_discovered_devices()
         for dev in discovered:
             dev_mac = dev.get("mac", "").replace(":", "").replace("-", "").lower()
@@ -226,8 +229,8 @@ def _resolve_device_id_to_ip(mgr: "PTZManager", device_id: str) -> str | None:
                 ip = dev.get("ip", "")
                 if ip:
                     return ip
-        return None
-    # 看起来像 IP 地址，直接返回
+        returnPTZDeviceController | None
+    # 看起来像 IP 地址,直接返回
     return device_id
 
 
@@ -240,9 +243,8 @@ def _resolve_device_id_to_ip(mgr: "PTZManager", device_id: str) -> str | None:
 async def global_health() -> dict:
     """全局健康检查端点 (GET /api/v1/health)。"""
     module_keys = (
-        "ptz_manager",
+        "ptz_controller",
         "device_manager",
-        "stream_manager",
         "calibration_manager",
         "db_manager",
         "auth_service",
@@ -269,22 +271,31 @@ async def global_health() -> dict:
     }
 
 
+@health_router.get("/version", summary="获取版本号")
+async def get_version() -> dict:
+    """获取系统版本号 (GET /api/v1/version)。"""
+    return {
+        "version": VERSION,
+        "version_num": VERSION_NUM,
+    }
+
+
 @api_router.get("/localhost", summary="本机信息", tags=["System"])
 async def get_localhost_info() -> dict:
     """获取本机系统信息 (hostname, CPU, RAM, GPU, IP, gateway).
-    
+
     首次调用时会自动收集并保存到 data/reports/localhost.json
     """
     from src.advanced.startup import get_localhost_info, run_startup, check_localhost_exists
-    
-    # 如果文件不存在，先收集
+
+    # 如果文件不存在,先收集
     if not check_localhost_exists():
         try:
             info = run_startup()
             return {"success": True, "data": info, "first_run": True}
         except Exception as e:
             return {"success": False, "message": f"收集本机信息失败: {e}"}
-    
+
     # 读取已保存的信息
     info = get_localhost_info()
     if info:
@@ -301,17 +312,17 @@ async def get_localhost_info() -> dict:
 @api_router.get("/discovery/sadp", summary="SADP 设备发现", tags=["Discovery"])
 async def sadp_discover(bind_ip: str = "0.0.0.0") -> dict:
     """通过 SADP 多播发现局域网内 PTZ 设备。
-    
-    BUG-003 修复: 直接使用 SADPManager，不依赖 PTZManager。
+
+    BUG-003 修复: 直接使用 SADPManager,不依赖 PTZDeviceController。
     """
     start = time.time()
-    
-    # 优先使用 PTZManager（如果已初始化）
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+
+    # 优先使用 PTZDeviceController(如果已初始化)
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if mgr:
         devices = mgr.discover_devices(bind_ip=bind_ip)
     else:
-        # 直接使用 SADPManager 不依赖 PTZManager
+        # 直接使用 SADPManager 不依赖 PTZDeviceController
         try:
             from src.core.sadp_discovery import SADPManager
             sadp_mgr = SADPManager()
@@ -330,11 +341,10 @@ async def sadp_discover(bind_ip: str = "0.0.0.0") -> dict:
                     "firmware_version": d.get("firmware_version", ""),
                     "activated": d.get("activated", False),
                     "is_hikvision": d.get("is_hikvision", False),
-                    "source": "sadp",
                 })
         except Exception as e:
             return {"success": False, "message": f"SADP 发现异常: {e}", "devices": []}
-    
+
     elapsed = round(time.time() - start, 1)
 
     # BUG-015 修复: 统一 MAC 地址格式为横杠小写 (24-0f-9b-76-41-93)
@@ -360,148 +370,174 @@ async def sadp_discover(bind_ip: str = "0.0.0.0") -> dict:
 
 @api_router.get("/devices", summary="设备列表", tags=["Devices"])
 async def list_devices() -> dict:
-    """获取设备列表（MAC 去重合并 SADP 发现 + 手动存储）."""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    """获取设备列表（MAC唯一标识，SADP更新IP/型号）.""" 
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
         return {"success": False, "data": [], "total": 0}
 
     def _normalize_mac(mac: str) -> str:
-        """统一 MAC 为无分隔符小写格式 (aabbccddeeff).
-
-        BUG-016 修复: 增强 MAC 格式校验，拒绝假 MAC 地址（如 IP 地址填入 MAC 字段）。
-        """
+        """统一 MAC 为无分隔符小写格式.""" 
         import re
         clean = mac.replace(":", "").replace("-", "").lower()
-        # 验证: 必须是恰好12位十六进制字符
         if len(clean) != 12 or not re.match(r'^[0-9a-f]{12}$', clean):
             return ""
         return clean
 
-    def _has_device_mac(dev: dict) -> bool:
-        """判断设备是否有有效 MAC."""
-        return bool(_normalize_mac(dev.get("mac", "") or ""))
-
     stored = mgr.list_stored_devices()
     discovered = mgr.get_discovered_devices()
-    online_ips = mgr.list_controllers()
 
-    # --- Pass 1: 存储设备按 MAC 建索引 ---
-    keyed: dict[str, dict[str, Any]] = {}  # normalized_mac -> merged_record
-    no_mac: list[dict[str, Any]] = []      # manual entry without MAC
-
+    # 以MAC为唯一键，存储设备为基础
+    devices: dict[str, dict[str, Any]] = {}
     for dev in stored:
-        mac_norm = _normalize_mac(dev.get("mac", "") or "")
-        if mac_norm:
-            keyed[mac_norm] = {
-                "mac": mac_norm,
+        mac = _normalize_mac(dev.get("mac", "") or "")
+        if mac:
+            devices[mac] = {
+                "mac": mac,
                 "ip": dev.get("ip", ""),
-                "name": dev.get("name", "") or dev.get("device_name", ""),  # 用户设置的名称
-                "model": dev.get("model", ""),  # 设备型号
-                "gateway": dev.get("gateway", ""),  # v6.01
-                "subnet_mask": dev.get("subnet_mask", ""),  # v6.01
-                "source": "manual",
-                "online": False,  # updated later
-                "activated": False,
+                "name": dev.get("name", "") or dev.get("device_name", ""),
+                "model": dev.get("model", ""),
+                "gateway": dev.get("gateway", ""),
+                "subnet_mask": dev.get("subnet_mask", ""),
                 "has_credentials": True,
             }
-        else:
-            no_mac.append({
-                "mac": "",
-                "ip": dev.get("ip", ""),
-                "name": dev.get("name", "") or dev.get("device_name", "") or f"PTZ-{dev.get('ip', '')}",  # v7.16: 简化名称
-                "model": dev.get("model", "") or "PTZ",  # v7.16: 简化型号
-                "source": "manual",
-                "online": False,
-                "activated": False,
-                "has_credentials": True,
-            })
 
-    # --- Pass 2: 合并 SADP 发现设备 ---
+    # SADP发现：更新或新增
     for sadp in discovered:
-        sadp_mac = _normalize_mac(sadp.get("mac", "") or "")
-        if sadp_mac and sadp_mac in keyed:
-            # 匹配到存储设备 → 合并
-            existing = keyed[sadp_mac]
-            existing["ip"] = sadp.get("ip") or existing["ip"]
-            existing["model"] = sadp.get("model") or existing["model"]
-            # name: 优先保留用户设置的名称，否则用 SADP 发现的
-            if not existing.get("name"):
-                existing["name"] = sadp.get("device_name") or sadp.get("name", "")
-            existing["activated"] = sadp.get("activated", False)
-            existing["gateway"] = sadp.get("gateway", "")
-            existing["subnet_mask"] = sadp.get("subnet_mask", "")
-            existing["source"] = "merged"
-        elif sadp_mac:
-            # 新发现设备
-            keyed[sadp_mac] = {
-                "mac": sadp_mac,
+        mac = _normalize_mac(sadp.get("mac", "") or "")
+        if not mac:
+            continue
+        if mac in devices:
+            # 更新：SADP数据为准（IP可能变了）
+            devices[mac]["ip"] = sadp.get("ip", "") or devices[mac]["ip"]
+            devices[mac]["model"] = sadp.get("model", "") or devices[mac]["model"]
+            devices[mac]["gateway"] = sadp.get("gateway", "")
+            devices[mac]["subnet_mask"] = sadp.get("subnet_mask", "")
+        else:
+            # 新增：首次发现
+            devices[mac] = {
+                "mac": mac,
                 "ip": sadp.get("ip", ""),
-                "name": sadp.get("device_name") or sadp.get("name", "") or f"PTZ-{sadp.get('ip', '')}",  # v7.16: 简化名称
-                "model": sadp.get("model", "") or "PTZ",  # v7.16: 简化型号
-                "source": "sadp",
-                "online": False,
-                "activated": sadp.get("activated", False),
+                "name": sadp.get("device_name", "") or sadp.get("name", ""),
+                "model": sadp.get("model", "") or "PTZ",
+                "gateway": sadp.get("gateway", ""),
+                "subnet_mask": sadp.get("subnet_mask", ""),
                 "has_credentials": False,
             }
 
-    # --- 构建最终列表 + 在线状态 + v7.16: 按 IP 去重 ---
-    # 优先保留有 MAC 的记录，无 MAC 的作为补充
-    ip_to_device: dict[str, dict[str, Any]] = {}
-    
-    # 先添加有 MAC 的设备
-    for dev in keyed.values():
-        ip = dev.get("ip", "")
-        if ip:
-            ip_to_device[ip] = dev
-    
-    # 再添加无 MAC 的设备（如果 IP 不重复）
-    for dev in no_mac:
-        ip = dev.get("ip", "")
-        if ip and ip not in ip_to_device:
-            ip_to_device[ip] = dev
-    
-    all_devices = list(ip_to_device.values())
-    for dev in all_devices:
-        ip = dev.get("ip", "")
-        dev["online"] = ip in online_ips
+    return {"success": True, "data": list(devices.values()), "total": len(devices)}
 
-    return {"success": True, "data": all_devices, "total": len(all_devices)}
+
+@api_router.post("/devices/refresh", summary="刷新设备状态", tags=["Devices"])
+async def refresh_devices() -> dict:
+    """并行ping所有设备，更新在线状态(timeout=1s)。""" 
+    from concurrent.futures import ThreadPoolExecutor
+    from src.core.ptz_controller import check_reachable
+    
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return {"success": False, "data": [], "total": 0}
+
+    def _normalize_mac(mac: str) -> str:
+        import re
+        clean = mac.replace(":", "").replace("-", "").lower()
+        if len(clean) != 12 or not re.match(r'^[0-9a-f]{12}$', clean):
+            return ""
+        return clean
+
+    stored = mgr.list_stored_devices()
+    discovered = mgr.get_discovered_devices()
+
+    # 以MAC为唯一键
+    devices: dict[str, dict[str, Any]] = {}
+    for dev in stored:
+        mac = _normalize_mac(dev.get("mac", "") or "")
+        if mac:
+            devices[mac] = {
+                "mac": mac,
+                "ip": dev.get("ip", ""),
+                "name": dev.get("name", "") or dev.get("device_name", ""),
+                "model": dev.get("model", ""),
+                "gateway": dev.get("gateway", ""),
+                "subnet_mask": dev.get("subnet_mask", ""),
+                "has_credentials": True,
+                "status": "离线",
+            }
+
+    for sadp in discovered:
+        mac = _normalize_mac(sadp.get("mac", "") or "")
+        if not mac:
+            continue
+        if mac in devices:
+            devices[mac]["ip"] = sadp.get("ip", "") or devices[mac]["ip"]
+            devices[mac]["model"] = sadp.get("model", "") or devices[mac]["model"]
+            devices[mac]["gateway"] = sadp.get("gateway", "")
+            devices[mac]["subnet_mask"] = sadp.get("subnet_mask", "")
+        else:
+            devices[mac] = {
+                "mac": mac,
+                "ip": sadp.get("ip", ""),
+                "name": sadp.get("device_name", "") or sadp.get("name", ""),
+                "model": sadp.get("model", "") or "PTZ",
+                "gateway": sadp.get("gateway", ""),
+                "subnet_mask": sadp.get("subnet_mask", ""),
+                "has_credentials": False,
+                "status": "离线",
+            }
+
+    # 并行ping检测状态
+    devices_list = list(devices.values())
+    ips = [d["ip"] for d in devices_list if d["ip"]]
+    
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        reachability = list(executor.map(lambda ip: check_reachable(ip, timeout=1), ips))
+    
+    # 更新状态
+    ip_status = dict(zip(ips, reachability))
+    for dev in devices_list:
+        ip = dev.get("ip", "")
+        if ip and ip_status.get(ip, False):
+            dev["status"] = "在线"
+        else:
+            dev["status"] = "离线"
+    
+    # 检查已连接状态
+    online_ips = mgr.list_controllers()
+    for dev in devices_list:
+        if dev.get("ip") in online_ips and dev.get("status") == "在线":
+            dev["status"] = "已连接"
+
+    return {"success": True, "data": devices_list, "total": len(devices_list)}
 
 
 @api_router.get("/devices/active", summary="获取上次连接的设备", tags=["Devices"])
 async def get_active_device() -> dict:
-    """v6.30: 获取上次连接的设备（用于快速连接）。"""
-    from src.advanced.device_config import get_current_device
-    
-    device = get_current_device()
+    """v6.30: 获取上次连接的设备(用于快速连接)。"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "active": False, "device": None, "message": "PTZDeviceController未初始化"}
+
+    device = mgr.get_connected_device()
     if device is None:
-        return {
-            "success": False,
-            "active": False,
-            "device": None,
-            "message": "无上次连接设备"
-        }
-    
-    return {
-        "success": True,
-        "active": True,
-        "device": device
-    }
+        return {"success": False, "active": False, "device": None, "message": "无上次连接设备"}
+
+    return {"success": True, "active": True, "device": device}
 
 
 @api_router.post("/devices/active", summary="设置上次连接的设备", tags=["Devices"])
 async def set_active_device(mac: str) -> dict:
-    """v6.30: 设置上次连接的设备（用于快速连接）。"""
-    from src.advanced.device_config import get_device_by_mac, load_config, save_config
-    
-    device = get_device_by_mac(mac)
+    """v6.30: 设置上次连接的设备(用于快速连接)。"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
+    if not mgr:
+        return {"success": False, "message": "PTZDeviceController未初始化"}
+
+    # 从 devices/{mac}/info.json 读取设备信息
+    device = mgr.config.get_device(mac)
     if device is None:
         return {"success": False, "message": f"设备不存在: {mac}"}
-    
-    config = load_config()
-    config["current_device"] = mac
-    save_config(config)
-    
+
+    # 更新 registry.json 的 active_device 和 last_connected
+    mgr.config.upsert_device(mac, {"mac": mac})
+
     return {
         "success": True,
         "message": f"上次连接设备已设置: {device.get('model', 'Unknown')} @ {device.get('ip')}",
@@ -511,33 +547,31 @@ async def set_active_device(mac: str) -> dict:
 
 @api_router.post("/devices", summary="注册设备", tags=["Devices"])
 async def register_device(req: AddDeviceRequest) -> dict:
-    """手动添加设备（IP + 凭据）并自动设为活跃。
-    
-    v7.17: 必须有 MAC 地址才能注册，如果没有则从 SADP 发现中查找。
+    """手动添加设备(IP + 凭据)并自动设为活跃。
+
+    v7.17: 必须有 MAC 地址才能注册,如果没有则从 SADP 发现中查找。
     """
-    from src.advanced.device_config import set_current_device
-    
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
-    
-    # v7.17: 如果没有 MAC，从 SADP 发现中查找
+        return {"success": False, "message": "PTZDeviceController未初始化"}
+
+    # v7.17: 如果没有 MAC,从 SADP 发现中查找
     device_mac = req.mac
     device_model = req.model
     device_name = req.name
-    
+
     if not device_mac:
         # 检查 SADP 发现中是否有该 IP 的设备
         sadp_devices = mgr._discovered
         for mac, info in sadp_devices.items():
             if info.ip == req.ip:
                 device_mac = mac
-                device_model = device_model or getattr(info, 'model', None)
-                device_name = device_name or getattr(info, 'device_name', None)
+                device_model = device_model or getattr(info, 'model',PTZDeviceController | None)
+                device_name = device_name or getattr(info, 'device_name',PTZDeviceController | None)
                 break
-        
+
         if not device_mac:
-            return {"success": False, "message": f"未发现设备 {req.ip}，请先执行 SADP 发现"}
+            return {"success": False, "message": f"未发现设备 {req.ip},请先执行 SADP 发现"}
 
     # 使用正确的 MAC 保存
     mgr.save_credentials(
@@ -559,10 +593,11 @@ async def register_device(req: AddDeviceRequest) -> dict:
             name=device_name or f"PTZ-{req.ip}",
             model=device_model or "PTZ",
         )
-    
-    # 设为活跃设备
-    set_current_device(device_mac, ip=req.ip, model=device_model, port=req.port)
 
+    # 设为活跃设备(更新 registry.json)
+    mgr.config.upsert_device(device_mac, {"ip": req.ip, "model": device_model or "", "port": req.port, "mac": device_mac})
+
+    log_info("device", "register", {"ip": req.ip, "mac": device_mac, "name": device_name})
     return {
         "success": True,
         "message": f"设备已保存: {device_mac} @ {req.ip}",
@@ -580,30 +615,30 @@ async def register_device(req: AddDeviceRequest) -> dict:
 async def connect_device(device_id: str, req: ConnectDeviceRequest | None = None) -> dict:
     """连接 PTZ 设备并认证。
 
-    device_id 可以是 IP 地址或 MAC 地址。如果是 MAC，自动解析为 IP。
-    使用 admin 作为默认用户名，密码必须由用户提供或已保存在配置中。
-    
-    BUG-014 修复: ISAPI 连接前 socket 预检，5 秒超时快速失败。
+    device_id 可以是 IP 地址或 MAC 地址。如果是 MAC,自动解析为 IP。
+    使用 admin 作为默认用户名,密码必须由用户提供或已保存在配置中。
+
+    BUG-014 修复: ISAPI 连接前 socket 预检,5 秒超时快速失败。
     """
     log_api("connect", {"mac": device_id})
-    
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
-    if not mgr:
-        log_error("connect", {"mac": device_id, "error": "PTZManager 未初始化"})
-        return {"success": False, "message": "PTZManager 未初始化"}
 
-    # 解析 device_id: 如果看起来像 MAC，从发现缓存中解析 IP
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
+    if not mgr:
+        log_error("connect", {"mac": device_id, "error": "PTZDeviceController未初始化"})
+        return {"success": False, "message": "PTZDeviceController未初始化"}
+
+    # 解析 device_id: 如果看起来像 MAC,从发现缓存中解析 IP
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
         log_error("connect", {"mac": device_id, "error": "无法解析设备标识"})
-        return {"success": False, "message": f"无法解析设备标识: {device_id}，请提供 IP 地址或确保设备已通过 SADP 发现"}
+        return {"success": False, "message": f"无法解析设备标识: {device_id},请提供 IP 地址或确保设备已通过 SADP 发现"}
 
-    # 如果未提供凭据，尝试从存储获取
+    # 如果未提供凭据,尝试从存储获取
     if req is None:
         creds = mgr.get_credentials(target_ip)
         if not creds:
             log_error("connect", {"mac": device_id, "error": "设备未保存凭据"})
-            return {"success": False, "message": "设备未保存凭据，请先提供用户名和密码"}
+            return {"success": False, "message": "设备未保存凭据,请先提供用户名和密码"}
         username = creds["username"]
         password = creds["password"]
         port = creds.get("port", 80)
@@ -617,12 +652,12 @@ async def connect_device(device_id: str, req: ConnectDeviceRequest | None = None
     result = mgr.connect_device(target_ip, username, password, port)
     if result and result.get("success"):
         log_info("connect", {"mac": device_id, "ip": target_ip, "status": "success"})
-        # 更新 DeviceManager 状态（使用 device_id 保持前端一致）
+        # 更新 DeviceManager 状态(使用 device_id 保持前端一致)
         dm: DeviceManager | None = _managers.get("device_manager")  # type: ignore[assignment]
         if dm:
             dm.update_status(device_id, "online")
         return result
-    
+
     log_error("connect", {"mac": device_id, "ip": target_ip, "status": "failed"})
     return result or {"success": False, "message": "连接失败"}
 
@@ -631,10 +666,10 @@ async def connect_device(device_id: str, req: ConnectDeviceRequest | None = None
 async def disconnect_device(device_id: str) -> dict:
     """断开 PTZ 设备连接."""
     log_api("disconnect", {"mac": device_id})
-    
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     mgr.disconnect_device(device_id)
 
@@ -649,9 +684,9 @@ async def disconnect_device(device_id: str) -> dict:
 @api_router.delete("/devices/{device_id}", summary="删除设备", tags=["Devices"])
 async def delete_device(device_id: str) -> dict:
     """删除设备。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     # 先断开
     mgr.disconnect_device(device_id)
@@ -663,6 +698,7 @@ async def delete_device(device_id: str) -> dict:
     if dm:
         dm.unregister_device(device_id)
 
+    log_info("device", "delete", {"device_id": device_id})
     return {
         "success": True,
         "message": f"设备已删除: {device_id}",
@@ -671,10 +707,10 @@ async def delete_device(device_id: str) -> dict:
 
 @api_router.get("/devices/{device_id}/info", summary="设备详细信息", tags=["Devices"])
 async def get_device_info(device_id: str) -> dict:
-    """获取设备详细信息（通过 ISAPI）。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    """获取设备详细信息(通过 ISAPI)。"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     # 解析 device_id (MAC) 到 IP
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
@@ -690,10 +726,10 @@ async def get_device_info(device_id: str) -> dict:
 
 @api_router.put("/devices/{device_id}/network", summary="修改设备网络配置", tags=["Devices"])
 async def modify_network(device_id: str, req: ModifyNetworkRequest) -> dict:
-    """修改设备网络配置（通过 SADP 协议）。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    """修改设备网络配置(通过 SADP 协议)。"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     result = mgr.modify_device_network(
         ip=device_id,
@@ -711,10 +747,10 @@ async def modify_network(device_id: str, req: ModifyNetworkRequest) -> dict:
 
 @api_router.post("/sadp/{mac}/modify-ip", summary="SADP 修改设备 IP (含自动验证循环)", tags=["SADP"])
 async def sadp_modify_ip(mac: str, req: SADPIpModifyRequest) -> dict:
-    """通过 SADP DLL 修改设备 IP，含自动重试和扫描确认循环。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    """通过 SADP DLL 修改设备 IP,含自动重试和扫描确认循环。"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     result = mgr.modify_reachable_with_retry(
         mac=mac,
@@ -746,9 +782,9 @@ async def sadp_error_codes() -> JSONResponse:
 @api_router.post("/sadp/auto-reconnect", summary="P2.7: 已知设备自动重连", tags=["SADP"])
 async def sadp_auto_reconnect(req: AutoReconnectDevicesRequest | None = None) -> dict:
     """P2.7: 扫描 SADP 设备 -> MAC匹配已保存设备 -> IP不可达时自动修改 IP。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     bind_ip = "0.0.0.0"
     target_ip = None
@@ -773,34 +809,37 @@ class AutoReconnectDevicesRequest(BaseModel):
 @api_router.get("/ptz/connected", summary="获取已连接设备状态 (v6.15)", tags=["PTZ"])
 async def get_connected_device() -> dict:
     """v7.10: 获取当前连接状态和上次连接设备信息。
-    
+
     返回:
-    - connected: 当前是否已连接（基于 active_device）
-    - device: 上次连接的设备信息（基于 last_connected，用于快速连接）
+    - connected: 当前是否已连接(基于 active_device)
+    - device: 上次连接的设备信息(基于 last_connected,用于快速连接)
     """
     import json
     from src.config_paths import REGISTRY_FILE
-    
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化", "connected": False, "device": None}
-    
-    # v7.10: 获取上次连接的设备（用于快速连接）
+        return {"success": False, "message": "PTZDeviceController未初始化", "connected": False, "device": None}
+
+    # v7.10: 获取上次连接的设备(用于快速连接)
     device = mgr.get_connected_device()
-    
-    # v7.10: 检查当前是否实际连接（基于 active_device）
+
+    # v7.10: 检查当前是否实际连接(基于 active_device)
+    # v7.31: 同时检查 active_device 非空 AND _controllers 非空
     connected = False
     try:
         if REGISTRY_FILE.exists():
             registry = json.loads(REGISTRY_FILE.read_text(encoding='utf-8'))
             active_mac = registry.get('active_device', '').strip()
-            connected = bool(active_mac)
+            # 同时检查 active_device 非空 AND 实际连接存在
+            if active_mac and hasattr(mgr, '_controllers') and mgr._controllers:
+                connected = True
     except Exception:
         pass
-    
+
     if not device:
         return {"success": True, "connected": False, "device": None}
-    
+
     return {"success": True, "connected": connected, "device": device}
 
 @api_router.get("/system/info", summary="系统硬件信息 (P1.1)", tags=["System"])
@@ -816,7 +855,7 @@ async def get_system_info() -> dict:
 
 @api_router.get("/system/nics", summary="网络接口列表 (P1.2)", tags=["System"])
 async def get_nics() -> dict:
-    """获取所有网络接口列表，按优先级排序。"""
+    """获取所有网络接口列表,按优先级排序。"""
     try:
         from src.core.net_detector import get_all_nics
         nics = get_all_nics()
@@ -842,6 +881,37 @@ async def get_operations_log() -> dict:
     return {"success": True, "data": list(reversed(operations_log)), "total": len(operations_log)}
 
 
+@health_router.get("/log/operations/file", summary="从文件读取操作日志")
+async def get_operation_log_file(lines: int = 50) -> dict:
+    """从日志文件读取最近N条操作日志."""
+    from src.operation_logger import LOG_DIR
+    from datetime import datetime
+
+    today = datetime.now().strftime("%Y%m%d")
+    log_file = LOG_DIR / f"operation_{today}.log"
+
+    if not log_file.exists():
+        return {"success": True, "data": [], "total": 0}
+
+    try:
+        with open(log_file, "r", encoding="utf-8") as f:
+            all_lines = f.readlines()
+
+        recent = all_lines[-lines:] if len(all_lines) > lines else all_lines
+        recent.reverse()
+
+        entries = []
+        for line in recent:
+            line = line.strip()
+            if not line:
+                continue
+            entries.append(line)
+
+        return {"success": True, "data": entries, "total": len(entries)}
+    except Exception as e:
+        return {"success": False, "message": str(e), "data": [], "total": 0}
+
+
 # ================================================================ #
 #  PTZ 控制端点
 # ================================================================ #
@@ -851,9 +921,9 @@ async def get_operations_log() -> dict:
 async def ptz_move(device_id: str, req: PTZMoveRequest) -> dict:
     """PTZ 方向移动控制。"""
     try:
-        mgr: PTZManager | None = _managers.get("ptz_manager")
+        mgr: PTZDeviceController | None = _managers.get("ptz_controller")
         if not mgr:
-            return {"success": False, "message": "PTZManager 未初始化"}
+            return {"success": False, "message": "PTZDeviceController未初始化"}
 
         target_ip = _resolve_device_id_to_ip(mgr, device_id)
         if not target_ip:
@@ -868,26 +938,28 @@ async def ptz_move(device_id: str, req: PTZMoveRequest) -> dict:
 
 @api_router.post("/ptz/{device_id}/home", summary="PTZ 归位", tags=["PTZ"])
 async def ptz_gotohome(device_id: str) -> dict:
-    """PTZ 归位（预置点 10）。"""
+    """PTZ 归位(预置点 10)。"""
     import asyncio
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
         return {"success": False, "message": f"无法解析设备标识: {device_id}"}
 
     result = await asyncio.to_thread(mgr.ptz_home, target_ip)
+    if result.get("success"):
+        log_info("ptz", "home", {"device": device_id})
     return result
 
 
 @api_router.post("/ptz/{device_id}/stop", summary="PTZ 停止", tags=["PTZ"])
 async def ptz_stop(device_id: str) -> dict:
     """PTZ 停止所有移动。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     # BUG-A 修复: 支持 MAC 地址作为 device_id
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
@@ -905,10 +977,10 @@ class FocusModeRequest(BaseModel):
 
 @api_router.post("/ptz/{device_id}/focus/mode", summary="设置对焦模式", tags=["PTZ"])
 async def set_focus_mode(device_id: str, req: FocusModeRequest) -> dict:
-    """设置对焦模式（手动/自动/半自动）"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    """设置对焦模式(手动/自动/半自动)"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -922,16 +994,17 @@ async def set_focus_mode(device_id: str, req: FocusModeRequest) -> dict:
     try:
         # ISAPI 端点: PUT /ISAPI/Image/channels/1/focusConfiguration
         mode_upper = "MANUAL" if req.mode.lower() == "manual" else ("AUTO" if req.mode.lower() == "auto" else "SEMIAUTOMATIC")
-        
+
         xml = f'''<?xml version="1.0" encoding="UTF-8"?>
 <FocusConfiguration version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
   <focusStyle>{mode_upper}</focusStyle>
   <focusLimited>300</focusLimited>
 </FocusConfiguration>'''
-        
+
         result = ctrl.client.put("/Image/channels/1/focusConfiguration", xml)
-        
+
         if result.status_code == 200:
+            log_info("ptz", "focus_mode", {"device": device_id, "mode": req.mode})
             return {"success": True, "message": f"对焦模式已设置为 {req.mode}"}
         return {"success": False, "message": f"设置对焦模式失败: {result.status_code}"}
     except Exception as e:
@@ -941,9 +1014,9 @@ async def set_focus_mode(device_id: str, req: FocusModeRequest) -> dict:
 @api_router.get("/ptz/{device_id}/focus/mode", summary="获取对焦模式", tags=["PTZ"])
 async def get_focus_mode(device_id: str) -> dict:
     """获取当前对焦模式"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -958,14 +1031,14 @@ async def get_focus_mode(device_id: str) -> dict:
         result = ctrl.client.get("/Image/channels/1")
         if result.status_code != 200:
             return {"success": False, "message": f"获取图像配置失败: {result.status_code}"}
-        
+
         root = ET.fromstring(result.xml)
         focus_style = "unknown"
         for elem in root.iter():
             if elem.tag.endswith('focusStyle'):
                 focus_style = (elem.text or "").lower()
                 break
-        
+
         # 转换为前端格式
         mode_map = {"manual": "manual", "automatic": "auto", "semiautomatic": "semiauto"}
         mode = mode_map.get(focus_style, focus_style)
@@ -977,9 +1050,9 @@ async def get_focus_mode(device_id: str) -> dict:
 @api_router.get("/ptz/{device_id}/presets", summary="获取预置点列表", tags=["PTZ"])
 async def ptz_list_presets(device_id: str) -> dict:
     """获取设备所有预置点列表."""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -991,38 +1064,44 @@ async def ptz_list_presets(device_id: str) -> dict:
 @api_router.post("/ptz/{device_id}/preset/{preset_id}", summary="预置位", tags=["PTZ"])
 async def ptz_preset(device_id: str, preset_id: int) -> dict:
     """移动到指定预置点。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     # BUG-A 修复: 支持 MAC 地址作为 device_id
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
         return {"success": False, "message": f"无法解析设备标识: {device_id}"}
 
-    return mgr.ptz_preset(target_ip, preset_id=preset_id)
+    result = mgr.ptz_preset(target_ip, preset_id=preset_id)
+    if result.get("success"):
+        log_info("ptz", "preset_goto", {"device": device_id, "preset_id": preset_id})
+    return result
 
 
 @api_router.post("/ptz/{device_id}/preset/{preset_id}/set", summary="保存预置位", tags=["PTZ"])
-async def ptz_set_preset(device_id: str, preset_id: int) -> dict:
+async def ptz_set_preset(device_id: str, preset_id: int, name: str = "") -> dict:
     """设置当前位置为指定预置点。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
         return {"success": False, "message": f"无法解析设备标识: {device_id}"}
 
-    return mgr.set_preset(target_ip, preset_id=preset_id)
+    result = mgr.set_preset(target_ip, preset_id=preset_id, name=name)
+    if result.get("success"):
+        log_info("ptz", "preset_set", {"device": device_id, "preset_id": preset_id, "name": name})
+    return result
 
 
 @api_router.post("/ptz/{device_id}/absolute", summary="绝对位置", tags=["PTZ"])
 async def ptz_absolute(device_id: str, req: PTZAbsoluteRequest) -> dict:
-    """绝对坐标移动（Pan/Tilt/Zoom）。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    """绝对坐标移动(Pan/Tilt/Zoom)。"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     # BUG-A 修复: 支持 MAC 地址作为 device_id
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
@@ -1041,9 +1120,9 @@ async def ptz_absolute(device_id: str, req: PTZAbsoluteRequest) -> dict:
 @api_router.get("/ptz/{device_id}/position", summary="获取 PTZ 位置", tags=["PTZ"])
 async def get_ptz_position(device_id: str) -> dict:
     """获取 PTZ 当前位置。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     # BUG-A 修复: 支持 MAC 地址作为 device_id
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
@@ -1066,9 +1145,9 @@ async def ptz_osd_toggle(device_id: str, enabled: bool = True) -> dict:
     enabled=True  开启 PTZ 坐标OSD
     enabled=False 关闭 PTZ 坐标OSD
     """
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -1110,7 +1189,7 @@ async def ptz_osd_toggle(device_id: str, enabled: bool = True) -> dict:
                 if elem is not None:
                     elem.text = val
 
-        # PUT 更新（移除 ns0: 命名空间前缀）
+        # PUT 更新(移除 ns0: 命名空间前缀)
         xml_str = ET.tostring(root, encoding="unicode")
         xml_str = xml_str.replace('ns0:', '')
         xml_str = xml_str.replace('xmlns:ns0=', 'xmlns=')
@@ -1131,12 +1210,12 @@ async def ptz_osd_toggle(device_id: str, enabled: bool = True) -> dict:
 
 @api_router.post("/ptz/{device_id}/osd/ptz", summary="切换 PTZ 坐标 OSD", tags=["PTZ"])
 async def ptz_osd_ptz_toggle(device_id: str, body: dict = None) -> dict:
-    """切换 PTZ 坐标（P/T/Z）OSD 显示。"""
+    """切换 PTZ 坐标(P/T/Z)OSD 显示。"""
     enabled = (body or {}).get("enabled", True) if body else True
-    
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -1167,12 +1246,13 @@ async def ptz_osd_ptz_toggle(device_id: str, body: dict = None) -> dict:
             if elem is not None:
                 elem.text = val
 
-        # PUT 更新（移除 ns0: 命名空间前缀）
+        # PUT 更新(移除 ns0: 命名空间前缀)
         xml_str = ET.tostring(root, encoding='unicode')
         xml_str = xml_str.replace('ns0:', '')
         xml_str = xml_str.replace('xmlns:ns0=', 'xmlns=')
         put_resp = client.put(endpoint, '<?xml version="1.0" encoding="UTF-8"?>' + xml_str)
         if put_resp.status_code == 200:
+            log_info("ptz", "osd_ptz", {"device": device_id, "enabled": enabled})
             return {"success": True, "message": f"PTZ 坐标 OSD 已{'开启' if enabled else '关闭'}", "enabled": enabled}
         else:
             return {"success": False, "message": f"PUT 失败: HTTP {put_resp.status_code}"}
@@ -1183,12 +1263,12 @@ async def ptz_osd_ptz_toggle(device_id: str, body: dict = None) -> dict:
 
 @api_router.post("/ptz/{device_id}/osd/info", summary="切换 OSD 信息显示", tags=["PTZ"])
 async def ptz_osd_info_toggle(device_id: str, body: dict = None) -> dict:
-    """切换 OSD 信息显示（用户自定义、日期时间等）。"""
+    """切换 OSD 信息显示(用户自定义、日期时间等)。"""
     enabled = (body or {}).get("enabled", True) if body else True
-    
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -1226,7 +1306,7 @@ async def ptz_osd_info_toggle(device_id: str, body: dict = None) -> dict:
                 if enabled_elem is not None:
                     enabled_elem.text = val
 
-        # PUT 更新（带 XML 声明，移除 ns0: 命名空间前缀）
+        # PUT 更新(带 XML 声明,移除 ns0: 命名空间前缀)
         new_xml = '<?xml version="1.0" encoding="UTF-8"?>'
         xml_str = ET.tostring(root, encoding='unicode')
         # 移除 ns0: 前缀和 xmlns:ns0 声明
@@ -1235,6 +1315,7 @@ async def ptz_osd_info_toggle(device_id: str, body: dict = None) -> dict:
         new_xml += xml_str
         put_resp = client.put(endpoint, new_xml)
         if put_resp.status_code == 200:
+            log_info("ptz", "osd_info", {"device": device_id, "enabled": enabled})
             return {"success": True, "message": f"OSD 信息显示已{'开启' if enabled else '关闭'}", "enabled": enabled}
         else:
             return {"success": False, "message": f"PUT 失败: HTTP {put_resp.status_code}"}
@@ -1256,10 +1337,10 @@ class ImageAdjustRequest(BaseModel):
 
 @api_router.get("/ptz/{device_id}/image/settings", summary="获取画面设置", tags=["Image"])
 async def get_image_settings(device_id: str) -> dict:
-    """获取当前画面参数（亮度/对比度/饱和度）。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    """获取当前画面参数(亮度/对比度/饱和度)。"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -1300,9 +1381,9 @@ async def get_image_settings(device_id: str) -> dict:
 @api_router.put("/ptz/{device_id}/image/settings", summary="更新画面设置", tags=["Image"])
 async def update_image_settings(device_id: str, req: ImageAdjustRequest) -> dict:
     """更新画面参数。"""
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -1341,16 +1422,17 @@ async def update_image_settings(device_id: str, req: ImageAdjustRequest) -> dict
                 break
 
         # 发送更新
-        # 使用 /Image/channels/1/Color 端点，而不是整个 ImageChannel
+        # 使用 /Image/channels/1/Color 端点,而不是整个 ImageChannel
         color_xml = f'''<?xml version="1.0" encoding="UTF-8"?>
 <Color version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
 <brightnessLevel>{updated.get("brightness", 50)}</brightnessLevel>
 <contrastLevel>{updated.get("contrast", 50)}</contrastLevel>
 <saturationLevel>{updated.get("saturation", 50)}</saturationLevel>
 </Color>'''
-        
+
         put_resp = client.put("/Image/channels/1/Color", color_xml)
         if put_resp.status_code == 200:
+            log_info("image", "color", {"device": device_id, "updated": updated})
             return {"success": True, "message": "画面设置已更新", "data": updated}
         else:
             return {"success": False, "message": f"更新失败: HTTP {put_resp.status_code}"}
@@ -1359,16 +1441,16 @@ async def update_image_settings(device_id: str, req: ImageAdjustRequest) -> dict
         return {"success": False, "message": f"更新画面设置异常: {e}"}
 
 
-@api_router.post("/ptz/{device_id}/capture", summary="PTZ 截图（ISAPI 原生）", tags=["PTZ"])
+@api_router.post("/ptz/{device_id}/capture", summary="PTZ 截图(ISAPI 原生)", tags=["PTZ"])
 async def ptz_capture(device_id: str, req: PTZCaptureRequest | None = None) -> dict:
     """通过海康 ISAPI 原生方法截取 PTZ 设备当前视频帧。
 
     使用: GET /ISAPI/Streaming/Channels/{channel}/picture
     不再依赖 ffmpeg。
     """
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -1385,29 +1467,35 @@ async def ptz_capture(device_id: str, req: PTZCaptureRequest | None = None) -> d
     try:
         jpeg_bytes = client.capture_picture()
         if not jpeg_bytes:
-            return {"success": False, "message": "ISAPI 截图失败：设备未返回图像数据"}
+            return {"success": False, "message": "ISAPI 截图失败:设备未返回图像数据"}
 
         # JPEG 头验证
         if jpeg_bytes[:3] != b"\xff\xd8\xff":
             return {"success": False, "message": "返回的数据不是有效的 JPEG"}
 
-        # 保存文件
-        from src.stream.constants import DOWNLOAD_IMAGE_DIR
+        # v7.105: 保存文件(使用配置路径 + 日期子目录)
+        from datetime import datetime
         from src.core.file_naming import generate_filename
 
-        # 获取设备名称（如有）
-        target_name = ""
-        if req and req.stream_id:
-            target_name = req.stream_id
-        elif req and req.stream_url:
-            target_name = "capture"
+        record_path = _resolve_storage_path()
+        from pathlib import Path
+        record_dir = Path(record_path)
 
-        filename = generate_filename(target_name=target_name or None, device_ip=target_ip, extension=".jpg")
-        filepath = DOWNLOAD_IMAGE_DIR / filename
-        filepath.parent.mkdir(parents=True, exist_ok=True)
+        # 日期子目录
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        date_dir = record_dir / date_str
+        date_dir.mkdir(parents=True, exist_ok=True)
+
+        # v7.108: 获取设备名称(优先 name,回退 device_name,再回退 model)
+        creds = mgr.get_credentials(target_ip)
+        device_name = (creds.get("name", "") or creds.get("device_name", "") or creds.get("model", "") or "").replace(" ", "_").replace("/", "_").replace("\\", "_") or target_ip
+
+        filename = generate_filename(target_name=device_name, extension=".jpg")
+        filepath = date_dir / filename
         filepath.write_bytes(jpeg_bytes)
         file_size = filepath.stat().st_size
 
+        log_info("ptz", "capture", {"device": device_id, "filename": filename})
         return {
             "success": True,
             "message": f"截图成功: {device_id}",
@@ -1416,6 +1504,7 @@ async def ptz_capture(device_id: str, req: PTZCaptureRequest | None = None) -> d
                 "image_path": str(filepath),
                 "image_size": file_size,
                 "filename": filename,
+                "relative_path": f"{date_str}/{filename}",
                 "format": "jpeg",
                 "verified": True,
             },
@@ -1429,37 +1518,35 @@ async def ptz_capture(device_id: str, req: PTZCaptureRequest | None = None) -> d
 # ================================================================ #
 
 
-@api_router.post("/ptz/{device_id}/record/start", summary="启动录像（FFmpeg RTSP → 本地）", tags=["PTZ"])
+@api_router.post("/ptz/{device_id}/record/start", summary="启动录像(ISAPI 官方)", tags=["PTZ"])
 async def ptz_record_start(device_id: str, req: PTZRecordRequest | None = None) -> dict:
-    """通过 FFmpeg 拉取 RTSP 流录制到本地 record/ 目录。
-
-    适用于设备无内置存储介质（HDD/SD/NAS 为空）的场景。
-    支持 target_name 参数指定文件名标识（跟踪目标名称）。
-    """
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    """v7.107: 通过海康 ISAPI 官方方法启动摄像头录像。"""
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
         return {"success": False, "message": f"无法解析设备标识: {device_id}"}
 
     target_name = req.target_name if req else ""
+    log_info("ptz", "record_start", {"device": device_id, "target": target_name})
     return mgr.start_recording(target_ip, target_name=target_name)
 
 
-@api_router.post("/ptz/{device_id}/record/stop", summary="停止录像（FFmpeg 进程）", tags=["PTZ"])
+@api_router.post("/ptz/{device_id}/record/stop", summary="停止录像(ISAPI 官方)", tags=["PTZ"])
 async def ptz_record_stop(device_id: str) -> dict:
     """停止 FFmpeg 录制进程。如有 FTP 配置则自动上传。
     """
-    mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
         return {"success": False, "message": f"无法解析设备标识: {device_id}"}
 
+    log_info("ptz", "record_stop", {"device": device_id})
     return mgr.stop_recording(target_ip)
 
 
@@ -1467,20 +1554,6 @@ async def ptz_record_stop(device_id: str) -> dict:
 #  流服务端点
 # ================================================================ #
 
-
-@api_router.get("/streams", summary="流列表", tags=["Streams"])
-async def list_streams() -> dict:
-    """获取流列表。"""
-    mgr: StreamManager | None = _managers.get("stream_manager")  # type: ignore[assignment]
-    if mgr:
-        try:
-            streams = mgr.list_streams()
-            if streams:
-                return {"data": streams, "total": len(streams)}
-        except Exception:
-            pass
-    # Return empty but properly structured
-    return {"data": [], "total": 0}
 
 
 # ================================================================ #
@@ -1539,17 +1612,17 @@ async def ascom_connect(ascom_type: str) -> dict:
 async def ascom_telescope_slew(req: TelescopeSlewRequest | None = None,
                                 ra: float = 0, dec: float = 0) -> dict:
     """控制望远镜 Slew 到目标赤经/赤纬。
-    
+
     支持两种参数传入方式:
     1. JSON body: {"ra": 12.5, "dec": 45.0}
     2. Query params: ?ra=12.5&dec=45.0
     """
     ra_val = req.ra if req else ra
     dec_val = req.dec if req else dec
-    
+
     from src.ascom.core.driver_manager import get_telescope
     from src.ascom.constants import ErrorCode
-    
+
     try:
         scope = get_telescope()
         result = scope.slew_to_coordinates(ra_val, dec_val)
@@ -1559,6 +1632,7 @@ async def ascom_telescope_slew(req: TelescopeSlewRequest | None = None,
                 "message": result.get("message", "Slew 失败"),
                 "code": result.get("code", "ASCOM_TELESCOPE_SLEW_FAILED"),
             }
+        log_info("ascom", "slew", {"ra": ra_val, "dec": dec_val})
         return {
             "success": True,
             "message": result.get("message", "Slew 成功"),
@@ -1571,7 +1645,7 @@ async def ascom_telescope_slew(req: TelescopeSlewRequest | None = None,
 @api_router.post("/ascom/telescope/tracking", summary="设置望远镜跟踪模式", tags=["ASCOM"])
 async def ascom_telescope_tracking(mode: str = "trackSidereal") -> dict:
     """设置望远镜跟踪模式。
-    
+
     支持的模式:
     - trackSidereal: 恒星跟踪
     - trackLunar: 月球跟踪
@@ -1580,21 +1654,21 @@ async def ascom_telescope_tracking(mode: str = "trackSidereal") -> dict:
     """
     from src.ascom.core.driver_manager import get_telescope
     from src.ascom.constants import TrackingMode, ErrorCode
-    
+
     mode_map = {
         "trackSidereal": TrackingMode.SIDEREAL,
         "trackLunar": TrackingMode.LUNAR,
         "trackSolar": TrackingMode.SOLAR,
         "trackOff": TrackingMode.OFF,
     }
-    
+
     tracking_mode = mode_map.get(mode)
     if tracking_mode is None:
         return {
             "success": False,
             "message": f"无效的跟踪模式: {mode} (支持: {list(mode_map.keys())})",
         }
-    
+
     try:
         scope = get_telescope()
         result = scope.set_tracking_mode(tracking_mode)
@@ -1603,6 +1677,7 @@ async def ascom_telescope_tracking(mode: str = "trackSidereal") -> dict:
                 "success": False,
                 "message": result.get("message", "设置跟踪模式失败"),
             }
+        log_info("ascom", "tracking", {"mode": mode})
         return {
             "success": True,
             "message": result.get("message", f"跟踪模式已设为 {mode}"),
@@ -1616,7 +1691,7 @@ async def ascom_telescope_tracking(mode: str = "trackSidereal") -> dict:
 async def ascom_telescope_disconnect() -> dict:
     """断开 ASCOM 望远镜连接。"""
     from src.ascom.core.driver_manager import get_telescope
-    
+
     try:
         scope = get_telescope()
         result = scope.disconnect()
@@ -1632,7 +1707,7 @@ async def ascom_telescope_disconnect() -> dict:
 async def ascom_telescope_position() -> dict:
     """查询望远镜当前赤经/赤纬。"""
     from src.ascom.core.driver_manager import get_telescope
-    
+
     try:
         scope = get_telescope()
         result = scope.get_position()
@@ -1647,7 +1722,7 @@ async def ascom_telescope_position() -> dict:
 async def ascom_telescope_abort() -> dict:
     """取消正在进行的 Slew 操作。"""
     from src.ascom.core.driver_manager import get_telescope
-    
+
     try:
         scope = get_telescope()
         result = scope.abort_slew()
@@ -1686,129 +1761,538 @@ async def save_settings() -> dict:
     }
 
 
+# === v8.69: 控制台状态持久化 ===
+import json as _json
+from pathlib import Path as _Path
+_REGISTRY_FILE = _Path(__file__).resolve().parent.parent.parent / "data" / "registry.json"
+
+
+def _read_registry() -> dict:
+    if _REGISTRY_FILE.exists():
+        with open(_REGISTRY_FILE, "r", encoding="utf-8") as f:
+            return _json.load(f)
+    return {}
+
+
+def _write_registry(data: dict):
+    _REGISTRY_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(_REGISTRY_FILE, "w", encoding="utf-8") as f:
+        _json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+@api_router.get("/console/state", summary="获取控制台状态", tags=["Console"])
+async def get_console_state() -> dict:
+    """获取上次保存的控制台状态（白平衡/对焦/曝光模式 + 选区）。"""
+    registry = _read_registry()
+    return {"success": True, "data": registry.get("console_state", {})}
+
+
+@api_router.post("/console/state", summary="保存控制台状态", tags=["Console"])
+async def save_console_state(data: dict) -> dict:
+    """保存控制台状态。"""
+    registry = _read_registry()
+    registry["console_state"] = data
+    _write_registry(registry)
+    return {"success": True, "message": "控制台状态已保存"}
+
+
+class StorageSettingsRequest(BaseModel):
+    record_path: str = ""
+
+
+class PathSettingsRequest(BaseModel):
+    category: str = ""  # "config" or "ext"
+    local_config: str = ""
+    device_config: str = ""
+    test_data: str = ""
+    sdk_path: str = ""
+    astap_path: str = ""
+    obs_path: str = ""
+
+
+@api_router.get("/settings/storage", summary="获取存储设置", tags=["Settings"])
+async def get_storage_settings() -> dict:
+    """v7.105: 获取统一存储路径。"""
+    record_path = _resolve_storage_path()
+    return {"success": True, "data": {"record_path": record_path}}
+
+
+@api_router.get("/files/list", summary="获取文件列表(按日期分组，内嵌元数据)", tags=["Files"])
+async def list_files() -> dict:
+    """v8.57: 列出存储目录下的文件，按日期分组返回。
+
+    排除 .thumb.jpg 和 .meta.json 文件。
+    视频文件内嵌元数据(duration/width/height)，无需前端再请求 /files/info。
+    """
+    from pathlib import Path
+    from datetime import datetime
+    import json
+
+    try:
+        record_path = _resolve_storage_path()
+        rdir = Path(record_path)
+
+        if not rdir.exists():
+            return {"success": True, "data": {"groups": []}}
+
+        groups = {}
+        media_exts = ["*.jpg", "*.jpeg", "*.mp4", "*.avi", "*.mov", "*.mkv"]
+        skip_suffixes = ('.thumb.jpg', '.meta.json')
+
+        for d in rdir.iterdir():
+            if d.is_dir() and len(d.name) == 10 and d.name[4] == '-' and d.name[7] == '-':
+                for pattern in media_exts:
+                    for f in d.glob(pattern):
+                        # 排除缩略图和元数据文件
+                        if f.name.endswith(skip_suffixes):
+                            continue
+                        try:
+                            mtime = f.stat().st_mtime
+                            ext = f.suffix.lower()
+                            file_type = "video" if ext in [".mp4", ".avi", ".mov", ".mkv"] else "image"
+                            item = {
+                                "file": d.name + "/" + f.name,
+                                "date": datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M:%S"),
+                                "type": file_type
+                            }
+                            # 视频文件：内嵌元数据
+                            if file_type == "video":
+                                meta_file = f.with_suffix('.meta.json')
+                                if meta_file.exists():
+                                    try:
+                                        meta = json.loads(meta_file.read_text(encoding='utf-8'))
+                                        item['duration'] = meta.get('duration', '')
+                                        item['width'] = meta.get('width', 0)
+                                        item['height'] = meta.get('height', 0)
+                                    except Exception:
+                                        pass
+                            groups.setdefault(d.name, []).append(item)
+                        except Exception:
+                            pass
+
+        sorted_groups = []
+        for date_str in sorted(groups.keys(), reverse=True):
+            sorted_groups.append({"date": date_str, "items": sorted(groups[date_str], key=lambda x: x["date"], reverse=True)})
+
+        return {"success": True, "data": {"groups": sorted_groups}}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.get("/files/serve/{filename:path}", summary="提供文件访问", tags=["Files"])
+async def serve_file(filename: str):
+    """v7.105: 提供文件直接访问(流式传输,零内存占用)."""
+    from pathlib import Path
+    from fastapi.responses import FileResponse
+
+    record_path = _resolve_storage_path()
+    file_path = Path(record_path) / filename
+
+    if not file_path.exists():
+        return JSONResponse(status_code=404, content={"success": False, "message": "文件不存在"})
+
+    return FileResponse(
+        path=str(file_path),
+        filename=file_path.name,
+        media_type=_guess_mime(file_path.suffix.lower()),
+    )
+
+
+def _guess_mime(ext: str) -> str:
+    """v7.105: 根据扩展名猜 MIME 类型."""
+    mime_map = {
+        '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+        '.png': 'image/png', '.gif': 'image/gif',
+        '.mp4': 'video/mp4', '.avi': 'video/x-msvideo',
+        '.mov': 'video/quicktime', '.mkv': 'video/x-matroska',
+    }
+    return mime_map.get(ext, 'application/octet-stream')
+
+
+@api_router.post("/files/open-folder", summary="打开存储目录", tags=["Files"])
+async def open_record_folder() -> dict:
+    """v7.105: 打开存储目录。"""
+    import subprocess
+    import platform
+    from pathlib import Path
+
+    record_path = _resolve_storage_path()
+    folder = Path(record_path)
+    if not folder.exists():
+        folder.mkdir(parents=True, exist_ok=True)
+
+    try:
+        if platform.system() == 'Windows':
+            subprocess.Popen(['explorer', str(folder.resolve())])
+        elif platform.system() == 'Darwin':
+            subprocess.Popen(['open', str(folder)])
+        else:
+            subprocess.Popen(['xdg-open', str(folder)])
+        return {"success": True, "path": str(folder.resolve())}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.get("/files/thumb/{filename:path}", summary="返回缩略图(仅返回已生成的)", tags=["Files"])
+async def get_video_thumb(filename: str):
+    """v8.57: 返回视频缩略图(仅返回已生成的.thumb.jpg)，不再动态生成。"""
+    from pathlib import Path
+    from fastapi.responses import FileResponse
+
+    record_path = _resolve_storage_path()
+    file_path = Path(record_path) / filename
+    if not file_path.exists():
+        return JSONResponse(status_code=404, content={"success": False, "message": "文件不存在"})
+
+    # 非视频文件直接返回原文件
+    ext = file_path.suffix.lower()
+    if ext not in ['.mp4', '.avi', '.mov', '.mkv']:
+        return FileResponse(path=str(file_path), media_type=_guess_mime(ext))
+
+    # 返回已生成的缩略图
+    thumb_path = file_path.with_suffix('.thumb.jpg')
+    if thumb_path.exists():
+        return FileResponse(path=str(thumb_path), media_type='image/jpeg')
+
+    # 缩略图未生成，返回原文件
+    return FileResponse(path=str(file_path), media_type=_guess_mime(ext))
+
+
+class DeleteFilesRequest(BaseModel):
+    files: list[str] = []
+
+
+@api_router.post("/files/delete", summary="批量删除文件", tags=["Files"])
+async def delete_files(req: DeleteFilesRequest) -> dict:
+    """v7.105: 批量删除文件."""
+    from pathlib import Path
+
+    record_path = _resolve_storage_path()
+    deleted = []
+    failed = []
+
+    for f in req.files:
+        file_path = Path(record_path) / f
+        if file_path.exists():
+            try:
+                file_path.unlink()
+                deleted.append(f)
+            except Exception:
+                failed.append(f)
+        else:
+            failed.append(f)
+
+    return {"success": True, "deleted": deleted, "failed": failed}
+
+
+@api_router.post("/files/upload-record", summary="上传录像文件，保存后自动生成缩略图和元数据", tags=["Files"])
+async def upload_record(request: Request) -> dict:
+    """v8.57: 上传录像文件，保存后自动生成缩略图(.thumb.jpg)和元数据(.meta.json)。"""
+    from pathlib import Path
+    from datetime import datetime
+    from fastapi import UploadFile
+    import shutil, json, subprocess
+
+    try:
+        form = await request.form()
+        file: UploadFile = form.get("file")
+        if not file:
+            return {"success": False, "message": "未收到文件"}
+
+        record_path = _resolve_storage_path()
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        date_dir = Path(record_path) / date_str
+        date_dir.mkdir(parents=True, exist_ok=True)
+
+        filepath = date_dir / file.filename
+        with open(filepath, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+
+        # 录像文件保存后自动生成缩略图和元数据
+        ext = filepath.suffix.lower()
+        if ext in ['.mp4', '.avi', '.mov', '.mkv']:
+            _generate_thumb_and_meta(filepath)
+
+        return {"success": True, "filepath": str(filepath), "filename": file.filename}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+class MoveRecordingRequest(BaseModel):
+    filename: str
+    device_ip: str = ""
+
+
+@api_router.post("/files/move-recording", summary="静默移动录像到存储路径", tags=["Files"])
+async def move_recording(req: MoveRecordingRequest) -> dict:
+    """v7.113: WASM 录制存到浏览器下载目录后,服务端静默移动到配置路径。"""
+    from pathlib import Path
+    from datetime import datetime
+    import shutil
+    import time
+
+    try:
+        # 目标路径(复用 _resolve_storage_path)
+        record_path = _resolve_storage_path()
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        date_str_alt = datetime.now().strftime("%Y%m%d")
+        target_dir = Path(record_path) / date_str
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        target_file = target_dir / req.filename
+
+        # 源目录:浏览器默认下载目录(bDateDir 创建的目录可能是 YYYY-MM-DD 或 YYYYMMDD)
+        downloads = Path.home() / "Downloads"
+        src_candidates = [
+            downloads / date_str / req.filename,
+            downloads / date_str_alt / req.filename,
+            downloads / req.filename,
+        ]
+
+        src_file = None
+        # 重试等待文件落盘(I_StopRecord 回调成功不代表文件已写完)
+        for _ in range(6):
+            for candidate in src_candidates:
+                if candidate.exists():
+                    src_file = candidate
+                    break
+            if src_file:
+                break
+            time.sleep(0.5)
+
+        if src_file is None:
+            return {"success": False, "message": f"源文件未找到: {req.filename}"}
+
+        # 移动文件
+        shutil.move(str(src_file), str(target_file))
+        # 生成缩略图和元数据
+        _generate_thumb_and_meta(target_file)
+        return {"success": True, "filepath": str(target_file), "filename": req.filename}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+def _generate_thumb_and_meta(filepath: Path) -> None:
+    """v8.57: 为视频生成缩略图(.thumb.jpg)和元数据(.meta.json)。"""
+    import subprocess, json
+    try:
+        # 生成缩略图
+        thumb_file = filepath.with_suffix('.thumb.jpg')
+        if not thumb_file.exists():
+            try:
+                subprocess.run([
+                    'ffmpeg', '-y', '-ss', '1', '-i', str(filepath),
+                    '-vframes', '1', '-q:v', '5', '-s', '320x180', str(thumb_file)
+                ], capture_output=True, timeout=10,
+                creationflags=subprocess.CREATE_NO_WINDOW if hasattr(subprocess, 'CREATE_NO_WINDOW') else 0)
+            except Exception:
+                pass  # 缩略图生成失败不影响主流程
+
+        # 生成元数据
+        meta_file = filepath.with_suffix('.meta.json')
+        if not meta_file.exists():
+            try:
+                result = subprocess.run([
+                    'ffprobe', '-v', 'quiet', '-print_format', 'json',
+                    '-show_format', '-show_streams', str(filepath)
+                ], capture_output=True, timeout=10,
+                creationflags=subprocess.CREATE_NO_WINDOW if hasattr(subprocess, 'CREATE_NO_WINDOW') else 0)
+                if result.returncode == 0:
+                    info = json.loads(result.stdout)
+                    meta = {"type": "video"}
+                    for s in info.get('streams', []):
+                        if s.get('codec_type') == 'video':
+                            meta['width'] = s.get('width', 0)
+                            meta['height'] = s.get('height', 0)
+                            break
+                    dur = float(info.get('format', {}).get('duration', 0))
+                    h, m = divmod(int(dur), 3600)
+                    m, s = divmod(m, 60)
+                    meta['duration'] = f"{h:02d}:{m:02d}:{s:02d}"
+                    meta['duration_sec'] = int(dur)
+                    meta_file.write_text(json.dumps(meta, ensure_ascii=False), encoding='utf-8')
+            except Exception:
+                pass  # 元数据生成失败不影响主流程
+    except Exception:
+        pass
+
+
+def _resolve_storage_path() -> str:
+    """v7.105: 获取统一存储路径(优先从配置文件读取)。"""
+    from src.config_paths import RECORD_DIR, DATA_DIR
+    import json
+
+    default_path = str(RECORD_DIR)
+
+    config_path = DATA_DIR / "config" / "storage.json"
+    if config_path.exists():
+        try:
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            return config.get("record_path") or default_path
+        except Exception:
+            pass
+    return default_path
+
+
+# 保留旧函数以兼容外部调用(已弃用)
+def _resolve_storage_paths() -> tuple[str, str]:
+    """已弃用:保留兼容性。"""
+    p = _resolve_storage_path()
+    return (p, p)
+
+
+@api_router.post("/settings/storage", summary="保存存储设置", tags=["Settings"])
+async def save_storage_settings(req: StorageSettingsRequest) -> dict:
+    """v7.105: 保存统一存储路径。"""
+    from src.config_paths import DATA_DIR
+    import json
+    config_path = DATA_DIR / "config" / "storage.json"
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    config = {"record_path": req.record_path}
+    with open(config_path, "w", encoding="utf-8") as f:
+        json.dump(config, f, indent=2, ensure_ascii=False)
+    return {"success": True, "message": "存储设置已保存"}
+
+
+@api_router.get("/settings/folder-picker", summary="打开文件夹选择对话框", tags=["Settings"])
+async def folder_picker() -> dict:
+    """打开系统原生文件夹选择对话框,返回用户选择的路径。"""
+    import asyncio
+    import threading
+
+    result = {"path": ""}
+
+    def _pick():
+        try:
+            import tkinter as tk
+            from tkinter import filedialog
+            root = tk.Tk()
+            root.withdraw()
+            root.attributes("-topmost", True)
+            path = filedialog.askdirectory(title="选择文件夹")
+            root.destroy()
+            result["path"] = path or ""
+        except Exception as e:
+            result["error"] = str(e)
+
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, lambda: _pick())
+
+    if result.get("error"):
+        return {"success": False, "message": result["error"]}
+    if result["path"]:
+        return {"success": True, "path": result["path"]}
+    return {"success": False, "message": "未选择文件夹"}
+
+
+@api_router.get("/settings/file-picker", summary="打开文件选择对话框", tags=["Settings"])
+async def file_picker() -> dict:
+    """打开系统原生文件选择对话框,返回用户选择的文件路径。"""
+    import asyncio
+
+    result = {"path": ""}
+
+    def _pick():
+        try:
+            import tkinter as tk
+            from tkinter import filedialog
+            root = tk.Tk()
+            root.withdraw()
+            root.attributes("-topmost", True)
+            path = filedialog.askopenfilename(title="选择文件")
+            root.destroy()
+            result["path"] = path or ""
+        except Exception as e:
+            result["error"] = str(e)
+
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, lambda: _pick())
+
+    if result.get("error"):
+        return {"success": False, "message": result["error"]}
+    if result["path"]:
+        return {"success": True, "path": result["path"]}
+    return {"success": False, "message": "未选择文件"}
+
+
+@api_router.get("/settings/paths", summary="获取所有路径配置", tags=["Settings"])
+async def get_all_paths() -> dict:
+    """获取配置路径和扩展路径的当前设置。"""
+    from src.config_paths import DATA_DIR, CONFIG_DIR, DEVICES_DIR, APP_DIR, SDK_LIBS_DIR
+    import json
+
+    # 默认值来自 config_paths (实际路径)
+    defaults = {
+        "local_config": str(CONFIG_DIR),
+        "device_config": str(DEVICES_DIR),
+        "test_data": str(DEVICES_DIR),
+        "sdk_path": str(SDK_LIBS_DIR),
+        "astap_path": r"C:\Program Files\astap\astap.exe",
+        "obs_path": r"C:\Program Files\obs-studio\bin\64bit\obs64.exe",
+    }
+
+    # 从存储文件读取已保存的配置 (覆盖默认值)
+    config_path = DATA_DIR / "config" / "paths.json"
+    if config_path.exists():
+        try:
+            with open(config_path, "r", encoding="utf-8") as f:
+                saved = json.load(f)
+                defaults.update(saved)
+        except Exception:
+            pass
+
+    return {"success": True, "data": defaults}
+
+
+@api_router.post("/settings/paths", summary="保存路径配置", tags=["Settings"])
+async def save_paths(req: PathSettingsRequest) -> dict:
+    """保存配置路径和扩展路径。动态更新 astap_solve 等模块的路径引用。"""
+    from src.config_paths import DATA_DIR
+    import json
+
+    config_path = DATA_DIR / "config" / "paths.json"
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # 读取现有配置
+    existing = {}
+    if config_path.exists():
+        try:
+            with open(config_path, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+        except Exception:
+            pass
+
+    # 更新配置
+    if req.category == "config":
+        if req.local_config: existing["local_config"] = req.local_config
+        if req.device_config: existing["device_config"] = req.device_config
+        if req.test_data: existing["test_data"] = req.test_data
+    elif req.category == "ext":
+        if req.sdk_path: existing["sdk_path"] = req.sdk_path
+        if req.astap_path: existing["astap_path"] = req.astap_path
+        if req.obs_path: existing["obs_path"] = req.obs_path
+
+    with open(config_path, "w", encoding="utf-8") as f:
+        json.dump(existing, f, indent=2, ensure_ascii=False)
+
+    # 动态更新 ASTAP 路径
+    if req.category == "ext" and req.astap_path:
+        try:
+            from src.api import astap_solve
+            astap_solve.ASTAP_EXE = req.astap_path
+        except Exception:
+            pass
+
+    return {"success": True, "message": "路径配置已保存"}
+
+
 # ================================================================ #
 #  流服务器扩展端点 (P0: 启动 / Snapshot / HLS)
 # ================================================================ #
 
 
-@api_router.post("/streams/{device_id}/start", summary="启动设备视频流", tags=["Streams"])
-async def start_stream(device_id: str, rtsp_url: str = "", stream_name: str = "") -> dict:
-    """启动设备视频流（HLS）。"""
-    from src.core.stream_manager import StreamManager
-    from src.config_paths import DATA_DIR
-    import os
-    
-    mgr: StreamManager | None = _managers.get("stream_manager")  # type: ignore[assignment]
-    if not mgr:
-        return {"success": False, "message": "StreamManager 未初始化", "data": [], "total": 0}
-    
-    # Try to get credentials for the device
-    ptz_mgr = _managers.get("ptz_manager")
-    if not rtsp_url and ptz_mgr:
-        creds = ptz_mgr._credentials.get(device_id)
-        if creds:
-            user = creds.get("username", "admin")
-            pwd = creds.get("password", "")
-            rtsp_url = f"rtsp://{user}:{pwd}@{device_id}:554/Streaming/Channels/101"
-    
-    if not rtsp_url:
-        rtsp_url = f"rtsp://admin@{device_id}:554/Streaming/Channels/101"
-    if not stream_name:
-        stream_name = f"Stream-{device_id}"
-    
-    # Create stream record in StreamManager
-    stream_result = mgr.start_stream(
-        device_id=device_id,
-        rtsp_url=rtsp_url,
-        stream_name=stream_name,
-    )
-    stream_id = stream_result.get("stream_id") if isinstance(stream_result, dict) else stream_result
-
-    
-    
-    if not stream_id:
-        return {"success": False, "message": "流启动失败", "data": [], "total": 0, "stream_id": None}
-    
-    streams = mgr.list_streams()
-    return {
-        "success": True,
-        "message": f"已启动流: {stream_name}",
-        "data": streams,
-        "total": len(streams),
-        "stream_id": stream_id,
-    }
-
-@api_router.post("/streams/{device_id}/stop", summary="停止设备视频流", tags=["Streams"])
-async def stop_stream(device_id: str) -> dict:
-    """停止设备的视频流。"""
-    mgr: StreamManager | None = _managers.get("stream_manager")  # type: ignore[assignment]
-    if not mgr:
-        return {"success": False, "message": "StreamManager 未初始化"}
-    
-    # 查找该设备的流
-    for stream in mgr.list_streams():
-        if stream.get("device_id") == device_id:
-            sid = stream.get("stream_id")
-            mgr.stop_stream(sid)
-            streams = mgr.list_streams()
-            return {
-                "success": True,
-                "message": f"流已停止: {device_id}",
-                "data": streams,
-                "total": len(streams),
-            }
-    return {"success": False, "message": f"未找到设备 {device_id} 的流"}
 
 
-@api_router.get("/streams/{device_id}/snapshot", summary="获取设备快照", tags=["Streams"])
-async def get_stream_snapshot(device_id: str) -> dict:
-    """获取设备当前帧的静态图像快照。
-    
-    返回 base64 编码的 JPEG 图像或快照 URL。
-    """
-    mgr: StreamManager | None = _managers.get("stream_manager")  # type: ignore[assignment]
-    if not mgr:
-        return {"success": False, "message": "StreamManager 未初始化"}
-    
-    # 查找该设备的流
-    for stream in mgr.list_streams():
-        if str(stream.get("device_id")) == str(device_id):
-            sid = stream.get("stream_id")
-            preview_url = mgr.get_preview_url(sid)
-            status = mgr.get_stream_status(sid)
-            return {
-                "success": True,
-                "message": f"快照获取成功: {device_id}",
-                "data": {
-                    "mac": device_id,
-                    "stream_id": sid,
-                    "preview_url": preview_url,
-                    "status": status,
-                    "snapshot_url": f"/hls/{sid}/snapshot.jpg",
-                },
-            }
-    
-    # 如果流未启动，尝试自动创建
-    rtsp_url = f"rtsp://{device_id}:554/stream"
-    try:
-        stream_id = mgr.start_stream(
-            device_id=device_id,
-            rtsp_url=rtsp_url,
-            stream_name=f"Snapshot-{device_id}",
-        )
-        preview_url = mgr.get_preview_url(stream_id)
-        return {
-            "success": True,
-            "message": f"流已自动创建并获取快照: {device_id}",
-            "data": {
-                "mac": device_id,
-                "stream_id": stream_id,
-                "preview_url": preview_url,
-                "snapshot_url": f"/hls/{stream_id}/snapshot.jpg",
-            },
-        }
-    except Exception as e:
-        return {"success": False, "message": f"获取快照失败: {e}"}
 
 
 # ================================================================ #
@@ -1816,9 +2300,9 @@ async def get_stream_snapshot(device_id: str) -> dict:
 # ================================================================ #
 
 def _resolve_mac_from_ip(device_ip: str, client: "ISAPIClient | None" = None,
-                          ptz_mgr: "PTZManager | None" = None) -> str:
-    """通过 PTZManager 缓存或 ISAPI 获取设备的 MAC 地址。"""
-    # Try PTZManager cache first
+                          ptz_mgr: "PTZDeviceController" = None) -> str:
+    """通过 PTZDeviceController | None缓存或 ISAPI 获取设备的 MAC 地址。"""
+    # Try PTZDeviceController | Nonecache first
     if ptz_mgr:
         import re
         discovered = ptz_mgr.get_discovered_devices()
@@ -1838,32 +2322,6 @@ def _resolve_mac_from_ip(device_ip: str, client: "ISAPIClient | None" = None,
     return device_ip.replace(".", "_").replace("/", "_").upper()
 
 # Pydantic 请求模型
-class AdvancedFunctionRunRequest(BaseModel):
-    """功能探测运行请求。"""
-    device_ip: str = ""
-    username: str = "admin"
-    password: str = ""
-    port: int = 80
-    item: str = ""  # 留空 = 全部探测
-
-
-class AdvancedLimitRunRequest(BaseModel):
-    """限位测试运行请求。"""
-    device_ip: str = ""
-    username: str = "admin"
-    password: str = ""
-    port: int = 80
-
-
-class AdvancedSpeedRunRequest(BaseModel):
-    """速度测试运行请求。"""
-    device_ip: str = ""
-    username: str = "admin"
-    password: str = ""
-    port: int = 80
-    speed_profile: str = "lite"
-
-
 class AdvancedConfigWriteRequest(BaseModel):
     """配置写入请求。"""
     mac: str
@@ -1879,357 +2337,7 @@ class AdvancedOnboardingStartRequest(BaseModel):
     mac: str
 
 
-# --- Function 功能探测 ---
 
-@api_router.post("/advanced/function/run", summary="运行功能探测", tags=["Advanced"])
-async def advanced_function_run(req: AdvancedFunctionRunRequest) -> dict:
-    """运行设备功能探测 (P4.1-P4.21)。"""
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.advanced.function import FunctionDetector
-
-        mgr: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
-        username = req.username or "admin"
-        password = req.password
-        port = req.port or 80
-        if not password:
-            creds = mgr.get_credentials(req.device_ip) if mgr else None
-            if creds:
-                username = creds.get("username", username)
-                password = creds.get("password", "")
-                port = creds.get("port", port)
-
-        client = ISAPIClient(
-            ip=req.device_ip,
-            username=username,
-            password=password,
-            port=port,
-        )
-        if not client.verify_credentials():
-            return {"success": False, "message": "设备认证失败"}
-
-        detector = FunctionDetector(client)
-
-        if req.item:
-            result = {req.item: detector.detect_single(req.item)}
-            restore_ok = detector.restore_all()
-        else:
-            # v7.33: 使用 run_all 统一保存 function.json
-            result = detector.run_all()
-            restore_ok = result.get("success", False)
-
-        # Auto-save to DataStore (按设计文档)
-        from src.storage.store import get_store
-
-        ptz_mgr_fn: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
-        mac = _resolve_mac_from_ip(req.device_ip, ptz_mgr=ptz_mgr_fn)
-        config_saved = False
-        try:
-            store = get_store()
-            registry = store.get_registry()
-            mac_key = mac.upper().replace(":", "-")
-            device_id = registry.get("devices", {}).get(mac_key, {}).get("id", "dev_001")
-            store.save_function_results(device_id, result)
-            config_saved = True
-        except Exception:
-            pass
-
-        # v7.33: 直接返回 run_all 的结果（包含 _format, detected_at, functions）
-        if not req.item:
-            # result 已经是 run_all 的完整输出
-            return result
-        else:
-            # 单项探测返回旧格式
-            return {
-                "success": True,
-                "message": f"功能探测完成: {req.device_ip}",
-                "results": result,
-                "restored": restore_ok,
-                "status": detector.get_status(),
-                "config_saved": config_saved,
-                "mac": mac,
-            }
-    except Exception as e:
-        return {"success": False, "message": f"功能探测异常: {e}"}
-
-
-@api_router.get("/advanced/function/status", summary="获取功能探测状态", tags=["Advanced"])
-async def advanced_function_status(device_ip: str = Query(default="")) -> dict:
-    """获取设备功能探测状态。"""
-    if not device_ip:
-        return {"success": True, "status": {"total": 0, "completed": 0, "supported": 0, "progress": 0}, "supported_functions": []}
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.advanced.function import FunctionDetector
-
-        ptz_mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
-        creds = ptz_mgr.get_credentials(device_ip) if ptz_mgr else None
-        if not creds:
-            return {"success": False, "message": "设备未保存凭据，请先注册设备"}
-        client = ISAPIClient(
-            ip=device_ip,
-            username=creds["username"],
-            password=creds["password"],
-            port=creds.get("port", 80),
-        )
-        detector = FunctionDetector(client)
-
-        return {
-            "success": True,
-            "status": detector.get_status(),
-            "supported_functions": detector.get_supported_functions(),
-        }
-    except Exception as e:
-        return {"success": False, "message": f"获取状态异常: {e}"}
-
-
-@api_router.post("/advanced/function/restore", summary="恢复功能默认值", tags=["Advanced"])
-async def advanced_function_restore(device_ip: str = "", username: str = "admin", password: str = "", port: int = 80) -> dict:
-    """恢复设备功能默认值 (P4.21)。"""
-    if not device_ip:
-        return {"success": False, "message": "缺少 device_ip 参数"}
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.advanced.function import FunctionDetector, RESTORE_DEFAULTS_ENDPOINT
-
-        client = ISAPIClient(ip=device_ip, username=username, password=password, port=port)
-        if not client.verify_credentials():
-            return {"success": False, "message": "设备认证失败"}
-
-        # 调用设备恢复默认 API
-        result = client.put(RESTORE_DEFAULTS_ENDPOINT,
-            '<?xml version="1.0" encoding="UTF-8"?><restore xmlns="http://www.hikvision.com/ver20/XMLSchema"/>')
-
-        return {
-            "success": result.status_code == 200,
-            "message": "设备参数已尝试恢复",
-            "http_status": result.status_code,
-        }
-    except Exception as e:
-        return {"success": False, "message": f"恢复异常: {e}"}
-
-
-# --- Limit 限位测试 ---
-
-@api_router.post("/advanced/limit/run", summary="运行限位测试", tags=["Advanced"])
-async def advanced_limit_run(req: AdvancedLimitRunRequest) -> dict:
-    """运行设备限位测试 (P6.0-P6.4)。"""
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.advanced.limit import LimitTester
-        from src.storage.store import get_store  # v7.37: 添加导入
-
-        mgr: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
-        username = req.username or "admin"
-        password = req.password
-        port = req.port or 80
-        if not password:
-            creds = mgr.get_credentials(req.device_ip) if mgr else None
-            if creds:
-                username = creds.get("username", username)
-                password = creds.get("password", "")
-                port = creds.get("port", port)
-
-        client = ISAPIClient(
-            ip=req.device_ip,
-            username=username,
-            password=password,
-            port=port,
-        )
-        if not client.verify_credentials():
-            return {"success": False, "message": "设备认证失败"}
-
-        ptz_mgr_lm: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
-        mac = _resolve_mac_from_ip(req.device_ip, ptz_mgr=ptz_mgr_lm)
-        
-        # 从MAC获取device_id
-        store = get_store()
-        registry = store.get_registry()
-        mac_key = mac.upper().replace(":", "-") if mac else "unknown"
-        device_id = registry.get("devices", {}).get(mac_key, {}).get("id", "dev_001")
-        
-        tester = LimitTester(client, device_id=device_id)
-        results = tester.run_all_tests()
-
-        # Auto-save to DataStore (按设计文档)
-        config_saved = False
-        try:
-            store.save_limit_results(device_id, results)
-            config_saved = True
-        except Exception:
-            pass
-
-        return {
-            "success": results.get("success", False),
-            "message": f"限位测试完成: {req.device_ip}",
-            "results": results,
-            "csv_path": results.get("csv_path", ""),
-            "config_saved": config_saved,
-            "mac": mac,
-        }
-    except Exception as e:
-        return {"success": False, "message": f"限位测试异常: {e}"}
-
-
-@api_router.get("/advanced/limit/status", summary="获取限位测试状态", tags=["Advanced"])
-async def advanced_limit_status(device_ip: str = Query(default="")) -> dict:
-    """获取设备限位测试状态。"""
-    if not device_ip:
-        return {"success": True, "status": {}}
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.advanced.limit import LimitTester
-
-        ptz_mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
-        creds = ptz_mgr.get_credentials(device_ip) if ptz_mgr else None
-        if not creds:
-            return {"success": False, "message": "设备未保存凭据，请先注册设备"}
-        client = ISAPIClient(
-            ip=device_ip,
-            username=creds["username"],
-            password=creds["password"],
-            port=creds.get("port", 80),
-        )
-        tester = LimitTester(client, device_id="status_check")
-
-        return {
-            "success": True,
-            "status": tester.get_status(),
-        }
-    except Exception as e:
-        return {"success": False, "message": f"获取状态异常: {e}"}
-
-
-# --- P5.1/P5.2 Move Tests ---
-
-class AdvancedMoveTestRequest(BaseModel):
-    """移动测试请求 (P5.1/P5.2)。"""
-    device_ip: str = ""
-    username: str = "admin"
-    password: str = ""
-    port: int = 80
-
-
-@api_router.post("/advanced/move/continuous", summary="P5.1 Continuous Move测试", tags=["Advanced"])
-async def advanced_continuous_move_test(req: AdvancedMoveTestRequest) -> dict:
-    """P5.1: 测试持续运动能力。"""
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.advanced.function import test_continuous_move
-
-        client = ISAPIClient(ip=req.device_ip, username=req.username, password=req.password, port=req.port)
-        result = test_continuous_move(client)
-        return {"success": True, "result": result}
-    except Exception as e:
-        return {"success": False, "message": str(e)}
-
-
-@api_router.post("/advanced/move/absolute", summary="P5.2 Absolute Move测试", tags=["Advanced"])
-async def advanced_absolute_move_test(req: AdvancedMoveTestRequest) -> dict:
-    """P5.2: 测试绝对运动能力（评审必须）。"""
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.advanced.function import test_absolute_move
-
-        client = ISAPIClient(ip=req.device_ip, username=req.username, password=req.password, port=req.port)
-        result = test_absolute_move(client)
-        return {"success": True, "result": result}
-    except Exception as e:
-        return {"success": False, "message": str(e)}
-
-
-# --- Speed 速度测试 ---
-
-@api_router.post("/advanced/speed/run", summary="运行速度测试", tags=["Advanced"])
-async def advanced_speed_run(req: AdvancedSpeedRunRequest) -> dict:
-    """运行设备速度测试 (P5.4)。"""
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.ptz.isapi.ptz import PTZController
-        from src.advanced.speed import SpeedTester
-
-        # 使用传入的凭据
-        username = req.username or "admin"
-        password = req.password
-        port = req.port or 80
-
-        # 如果密码为空，尝试从PTZManager获取
-        if not password:
-            mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
-            if mgr:
-                creds = mgr.get_credentials(req.device_ip)
-                if creds:
-                    username = creds.get("username", username)
-                    password = creds.get("password", "")
-                    port = creds.get("port", port)
-
-        client = ISAPIClient(ip=req.device_ip, username=username, password=password, port=port)
-        ptz = PTZController(client)
-
-        # 获取限位数据
-        from src.storage.store import get_store
-        store = get_store()
-        device_id = "dev_001"
-        limit_data = store.get_limit_results(device_id)
-        limit_map = limit_data.get("results") if limit_data else None
-
-        # 先获取MAC
-        ptz_mgr_sp: "PTZManager | None" = _managers.get("ptz_manager")  # type: ignore[assignment]
-        mac = _resolve_mac_from_ip(req.device_ip, ptz_mgr=ptz_mgr_sp) or "unknown"
-        mac_key = mac.upper().replace(":", "-")
-
-        tester = SpeedTester(ptz)
-        results = tester.run_all_tests(config=None, speed_profile=req.speed_profile)
-
-        # Auto-save to DataStore
-        config_saved = False
-        try:
-            store = get_store()
-            registry = store.get_registry()
-            device_id = registry.get("devices", {}).get(mac_key, {}).get("id", "dev_001")
-            store.save_speed_results(device_id, results)
-            config_saved = True
-        except Exception:
-            pass
-
-        return {
-            "success": results.get("success", False),
-            "message": f"速度测试完成: {req.device_ip}",
-            "results": results,
-            "config_saved": config_saved,
-            "mac": mac,
-        }
-    except Exception as e:
-        return {"success": False, "message": f"速度测试异常: {e}"}
-
-
-@api_router.get("/advanced/speed/status", summary="获取速度测试状态", tags=["Advanced"])
-async def advanced_speed_status(device_ip: str = Query(default="")) -> dict:
-    """获取设备速度测试状态。"""
-    if not device_ip:
-        return {"success": True, "status": {}}
-    try:
-        from src.ptz.isapi.client import ISAPIClient
-        from src.advanced.speed import SpeedTester
-
-        ptz_mgr: PTZManager | None = _managers.get("ptz_manager")  # type: ignore[assignment]
-        creds = ptz_mgr.get_credentials(device_ip) if ptz_mgr else None
-        if not creds:
-            return {"success": False, "message": "设备未保存凭据，请先注册设备"}
-        client = ISAPIClient(
-            ip=device_ip,
-            username=creds["username"],
-            password=creds["password"],
-            port=creds.get("port", 80),
-        )
-        tester = SpeedTester(client)
-
-        return {
-            "success": True,
-            "status": tester.get_status(),
-        }
-    except Exception as e:
-        return {"success": False, "message": f"获取状态异常: {e}"}
 
 
 # --- One-Click Detect 一键检测 ---
@@ -2246,6 +2354,39 @@ class AdvancedDetectStartRequest(BaseModel):
 
 # 一键检测任务注册表
 detect_tasks: dict[str, dict] = {}
+
+
+def _format_speed_results(results: list) -> dict:
+    """将 run_all_tests 返回的 list 分组为前端格式。
+
+    Returns: {speed_map, pan_speed, tilt_speed, by_zoom, total_tests}
+    """
+    by_zoom = {}
+    speed_map = {}
+    pan_map = {}
+    tilt_map = {}
+    for r in results:
+        sl = str(r.get("speed_level", 0))
+        sv = r.get("speed_val", 0.0)
+        axis = r.get("axis", "")
+        zoom = r.get("zoom", 0)
+        speed_map.setdefault(sl, []).append(sv)
+        if axis == "pan":
+            pan_map.setdefault(sl, []).append(sv)
+        elif axis == "tilt":
+            tilt_map.setdefault(sl, []).append(sv)
+        by_zoom.setdefault(zoom, {}).setdefault(axis, {})[sl] = sv
+    for m in (speed_map, pan_map, tilt_map):
+        for k, v in m.items():
+            m[k] = round(sum(v) / len(v), 2)
+    return {
+        "speed_map": speed_map,
+        "pan_speed": pan_map,
+        "tilt_speed": tilt_map,
+        "by_zoom": by_zoom,
+        "total_tests": len(results),
+    }
+
 
 
 @api_router.post("/advanced/detect/start", summary="启动一键检测", tags=["Advanced"])
@@ -2266,14 +2407,14 @@ async def advanced_detect_start(req: AdvancedDetectStartRequest) -> dict:
     async def _run_detect():
         try:
             from src.ptz.isapi.client import ISAPIClient
-            from src.advanced.function import FunctionDetector, FUNCTION_ENDPOINTS
-            from src.advanced.limit import LimitTester
-            from src.advanced.speed import SpeedTester
             from src.advanced.config_writer import write_device_config
 
-            mgr: PTZManager | None = _managers.get("ptz_manager")
+            def _cancelled():
+                return detect_tasks.get(task_id, {}).get("status") == "cancelled"
+
+            mgr: PTZDeviceController | None = _managers.get("ptz_controller")
             if not mgr:
-                detect_tasks[task_id].update(status="failed", current_step="PTZManager not initialized")
+                detect_tasks[task_id].update(status="failed", current_step="PTZDeviceControllernot initialized")
                 return
 
             # Fallback: retrieve stored credentials if password is empty
@@ -2301,32 +2442,72 @@ async def advanced_detect_start(req: AdvancedDetectStartRequest) -> dict:
             results: dict = {}
 
             if "function" in req.items:
+                from src.advanced.function import FunctionDetector, FUNCTION_ENDPOINTS
+
+                if _cancelled(): return
                 detect_tasks[task_id].update(progress=0.0, current_step="function_detection")
                 detector = FunctionDetector(client)
                 func_result = {}
+                total_funcs = len(FUNCTION_ENDPOINTS)
                 for idx, item_key in enumerate(FUNCTION_ENDPOINTS):
-                    func_result[item_key] = detector.detect_single(item_key)
-                    detect_tasks[task_id]["progress"] = round(10.0 + (idx / len(FUNCTION_ENDPOINTS)) * 20.0, 1)
-                detector.restore_all()
+                    if _cancelled(): return
+                    detect_tasks[task_id]["current_step"] = f"{item_key}"
+                    detect_tasks[task_id]["total_items"] = total_funcs
+                    func_result[item_key] = await asyncio.to_thread(detector.detect_single, item_key)
+                    detect_tasks[task_id]["completed_items"] = idx + 1
+                    detect_tasks[task_id]["progress"] = round(10.0 + ((idx + 1) / total_funcs) * 20.0, 1)
+                    detect_tasks[task_id]["last_result"] = "pass" if func_result[item_key].get("supported", False) else "failed"
+                await asyncio.to_thread(detector.restore_all)
                 results["function"] = func_result
                 write_device_config(mac=_resolve_mac_from_ip(req.device_ip, ptz_mgr=mgr), capabilities=func_result, ip=req.device_ip)
 
             if "limit" in req.items:
-                detect_tasks[task_id].update(progress=35.0, current_step="limit_test")
+                from src.advanced.limit import LimitTester
+
+                if _cancelled(): return
+                detect_tasks[task_id].update(progress=35.0, current_step="limit_test", total_items=3, completed_items=0)
                 mac = _resolve_mac_from_ip(req.device_ip, ptz_mgr=mgr)
                 device_id = mac.upper().replace(":", "-") if mac else "onboarding"
+                if not PTZController(client).setup_home_preset():
+                    detect_tasks[task_id].update(status="failed", current_step="limit: HOME预设10设置失败(10s超时)")
+                    return
                 limit_tester = LimitTester(client, device_id=device_id)
-                limit_result = limit_tester.run_all_tests()
+                # v7.56: 添加进度回调
+                def limit_progress_callback(step_name: str, completed: int, result: str = ""):
+                    detect_tasks[task_id]["current_step"] = step_name
+                    detect_tasks[task_id]["completed_items"] = completed
+                    detect_tasks[task_id]["last_result"] = result
+                limit_result = await asyncio.to_thread(limit_tester.run_all_tests, limit_progress_callback)
+                if not limit_result.get("success"):
+                    detect_tasks[task_id].update(status="failed", current_step=f"limit: {limit_result.get('message', limit_result.get('error', '未知错误'))}")
+                    return
                 results["limit"] = limit_result
-                detect_tasks[task_id]["progress"] = 60.0
+                detect_tasks[task_id].update(progress=60.0, completed_items=3)
                 write_device_config(mac=mac, limits=limit_result, ip=req.device_ip)
 
             if "speed" in req.items:
-                detect_tasks[task_id].update(progress=65.0, current_step="speed_test")
-                speed_tester = SpeedTester(ctrl)
-                speed_result = speed_tester.run_all_tests(speed_profile=req.speed_profile)
-                results["speed"] = speed_result
-                detect_tasks[task_id]["progress"] = 95.0
+                from src.advanced.speed import SpeedTester
+
+                if _cancelled(): return
+                detect_tasks[task_id].update(progress=65.0, current_step="speed_test", total_items=0, completed_items=0)
+                if not PTZController(client).setup_home_preset():
+                    detect_tasks[task_id].update(status="failed", current_step="speed: HOME预设10设置失败(10s超时)")
+                    return
+                speed_tester = SpeedTester(PTZController(client))
+                # v7.56: 添加进度回调
+                def speed_progress_callback(step_name: str, completed: int, total: int, result: str = ""):
+                    detect_tasks[task_id]["current_step"] = step_name
+                    detect_tasks[task_id]["completed_items"] = completed
+                    detect_tasks[task_id]["total_items"] = total
+                    detect_tasks[task_id]["last_result"] = result
+                speed_result = await asyncio.to_thread(speed_tester.run_all_tests, None, req.speed_profile, speed_progress_callback)
+                if not speed_result:
+                    detect_tasks[task_id].update(status="failed", current_step="speed: 无结果")
+                    return
+                # v7.119: 将list结果分组为前端格式 {speed_map, pan_speed, tilt_speed, by_zoom}
+                speed_formatted = _format_speed_results(speed_result)
+                results["speed"] = speed_formatted
+                detect_tasks[task_id].update(progress=95.0)
                 write_device_config(mac=_resolve_mac_from_ip(req.device_ip, ptz_mgr=mgr), speed=speed_result, ip=req.device_ip)
 
             detect_tasks[task_id].update(
@@ -2358,6 +2539,9 @@ async def advanced_detect_status(task_id: str) -> dict:
         "status": task["status"],
         "progress": task.get("progress", 0.0),
         "current_step": task.get("current_step", ""),
+        "completed_items": task.get("completed_items", 0),
+        "total_items": task.get("total_items", 0),
+        "last_result": task.get("last_result", ""),
     }
 
 
@@ -2373,6 +2557,19 @@ async def advanced_detect_result(task_id: str) -> dict:
         "success": True,
         "results": task.get("results", {}),
     }
+
+
+@api_router.post("/advanced/detect/cancel/{task_id}", summary="取消检测任务", tags=["Advanced"])
+async def advanced_detect_cancel(task_id: str) -> dict:
+    """取消正在运行的一键检测任务。"""
+    task = detect_tasks.get(task_id)
+    if not task:
+        return {"success": False, "message": "任务不存在"}
+    if task["status"] not in ("running",):
+        return {"success": False, "message": f"任务状态为 {task['status']},无法取消"}
+    task["status"] = "cancelled"
+    task["current_step"] = "cancelled"
+    return {"success": True, "message": "任务已取消"}
 
 
 # --- Config 配置 ---
@@ -2498,11 +2695,11 @@ async def advanced_onboarding_run(req: AdvancedOnboardingStartRequest) -> dict:
     """
     from src.advanced.onboarding import OnboardingManager
 
-    mgr = _managers.get("ptz_manager")
+    mgr = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
-    # Find device IP from PTZManager
+    # Find device IP from PTZDeviceController
     device_ip = None
     for dev in mgr.list_stored_devices():
         if dev.get("mac", "").upper().replace("-", ":") == req.mac.upper().replace("-", ":"):
@@ -2518,7 +2715,7 @@ async def advanced_onboarding_run(req: AdvancedOnboardingStartRequest) -> dict:
 
     creds = mgr.get_credentials(device_ip)
     if not creds:
-        return {"success": False, "message": "设备未保存凭据，请先连接设备"}
+        return {"success": False, "message": "设备未保存凭据,请先连接设备"}
 
     manager = OnboardingManager()
 
@@ -2597,10 +2794,10 @@ api_router.include_router(astap_router)
 
 @api_router.get("/ptz/devices/{ip}/credentials")
 async def get_ptz_device_credentials(ip: str):
-    """获取设备凭据（用于 WASM SDK 登录）
-    先查内存，再回退读 data/devices/{MAC}.json
+    """获取设备凭据。
+    先查内存,再回退读 data/devices/{MAC}.json
     """
-    ptz_mgr = _managers.get("ptz_manager")
+    ptz_mgr = _managers.get("ptz_controller")
     if ptz_mgr:
         creds = ptz_mgr._credentials.get(ip)
         if creds:
@@ -2611,7 +2808,7 @@ async def get_ptz_device_credentials(ip: str):
                 "password": creds.get("password", ""),
                 "port": creds.get("port", 80),
             }
-    # 回退：从 data/devices/{MAC}.json 文件读取
+    # 回退:从 data/devices/{MAC}.json 文件读取
     try:
         from pathlib import Path
         import json as _json
@@ -2645,25 +2842,25 @@ async def get_ptz_device_credentials(ip: str):
 @api_router.get("/ptz/{device_id}/function", summary="获取设备功能探测结果", tags=["Image"])
 async def get_device_function(device_id: str) -> dict:
     """v6.33: 从 data/devices/{mac}/ 读取设备功能探测结果。
-    
+
     1. 通过 IP 找到对应设备的 MAC
     2. 使用 MAC 读取 data/devices/{mac}/function.json 或 function_*.json
-    3. 优先最新时间戳文件，其次固定名称
+    3. 优先最新时间戳文件,其次固定名称
     4. MAC 不匹配则返回错误
     """
     import json
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化", "data": None}
-    
+        return {"success": False, "message": "PTZDeviceController未初始化", "data": None}
+
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
         return {"success": False, "message": f"无法解析设备标识: {device_id}", "data": None}
-    
-    # v6.33: 通过 IP 找到 MAC，确保数据匹配正确设备
+
+    # v6.33: 通过 IP 找到 MAC,确保数据匹配正确设备
     from src.advanced.device_path import get_devices_dir, get_data_path_read
     devices_dir = get_devices_dir()
-    
+
     target_mac = None
     for device_dir in devices_dir.iterdir():
         if device_dir.is_dir():
@@ -2676,11 +2873,11 @@ async def get_device_function(device_id: str) -> dict:
                         break
                 except Exception:
                     continue
-    
+
     if not target_mac:
         return {"success": False, "message": "未找到该设备的设备目录", "data": None}
-    
-    # v6.33: 使用 MAC 读取功能探测数据（优先时间戳文件）
+
+    # v6.33: 使用 MAC 读取功能探测数据(优先时间戳文件)
     func_file = get_data_path_read(None, target_mac, "function")
     if func_file and func_file.exists():
         try:
@@ -2689,18 +2886,35 @@ async def get_device_function(device_id: str) -> dict:
         except Exception as e:
             return {"success": False, "message": f"读取功能探测数据失败: {e}", "data": None}
     else:
-        return {"success": False, "message": "未找到功能探测数据，请先完成功能测试", "data": None}
+        return {"success": False, "message": "未找到功能探测数据,请先完成功能测试", "data": None}
 
 
+
+
+def _parse_wb_xml(xml_str: str) -> tuple[int, int]:
+    """从 whiteBalance XML 解析 (red_gain, blue_gain), 失败返回 (100, 100)。"""
+    import xml.etree.ElementTree as ET
+    try:
+        root = ET.fromstring(xml_str)
+        red, blue = 100, 100
+        for elem in root.iter():
+            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
+            if tag in ("WhiteBalanceRed", "whiteBalanceRed"):
+                red = int((elem.text or "100").strip())
+            elif tag in ("WhiteBalanceBlue", "whiteBalanceBlue"):
+                blue = int((elem.text or "100").strip())
+        return red, blue
+    except Exception:
+        return 100, 100
 
 
 @api_router.get("/ptz/{device_id}/image/whitebalance", summary="获取白平衡设置", tags=["Image"])
 async def get_whitebalance(device_id: str) -> dict:
     """获取设备白平衡当前设置。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -2716,24 +2930,36 @@ async def get_whitebalance(device_id: str) -> dict:
         if resp.status_code != 200:
             return {"success": False, "message": f"获取白平衡失败: HTTP {resp.status_code}"}
 
+        import xml.etree.ElementTree as ET
         root = ET.fromstring(resp.xml)
-        result = {"success": True, "data": {}}
+        mode = "manual"
         for elem in root.iter():
             tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
             if tag == "WhiteBalanceStyle":
-                result["data"]["mode"] = (elem.text or "manual").lower()
-            elif tag == "WhiteBalanceRed":
-                result["data"]["red_gain"] = int((elem.text or "50").strip())
-            elif tag == "WhiteBalanceBlue":
-                result["data"]["blue_gain"] = int((elem.text or "50").strip())
-            elif tag == "whiteBalanceRed":
-                result["data"]["red_gain"] = int((elem.text or "50").strip())
-            elif tag == "whiteBalanceBlue":
-                result["data"]["blue_gain"] = int((elem.text or "50").strip())
-
-        result["data"]["min"] = 0
-        result["data"]["max"] = 255
-        result["data"]["supported_modes"] = ["manual", "auto"]
+                mode = (elem.text or "manual").lower()
+        red_gain, blue_gain = _parse_wb_xml(resp.xml)
+        
+        # 从设备配置文件读取白平衡范围
+        wb_min, wb_max = 0, 255
+        import json as _json
+        try:
+            dm: DeviceManager | None = _managers.get("device_manager")  # type: ignore[assignment]
+            if dm:
+                for dev in dm.list_devices():
+                    if dev.ip == target_ip:
+                        cfg_path = dm._devices_dir / f"{dev.mac}.json"
+                        if cfg_path.exists():
+                            with open(cfg_path, "r", encoding="utf-8") as f:
+                                dev_data = _json.load(f)
+                            caps = dev_data.get("capabilities", {})
+                            wb_cap = caps.get("white_balance", {})
+                            wb_min = wb_cap.get("min_val", 0)
+                            wb_max = wb_cap.get("max_val", 255)
+                        break
+        except Exception:
+            pass
+        
+        result = {"success": True, "data": {"mode": mode, "red_gain": red_gain, "blue_gain": blue_gain, "min": wb_min, "max": wb_max, "supported_modes": ["manual", "auto"]}}
         return result
     except Exception as e:
         return {"success": False, "message": f"获取白平衡异常: {e}"}
@@ -2741,11 +2967,11 @@ async def get_whitebalance(device_id: str) -> dict:
 
 @api_router.post("/ptz/{device_id}/image/whitebalance", summary="设置白平衡", tags=["Image"])
 async def set_whitebalance(device_id: str, data: dict) -> dict:
-    """设置白平衡参数（模式或R/B增益）。"""
+    """设置白平衡参数(模式或R/B增益)。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -2761,7 +2987,7 @@ async def set_whitebalance(device_id: str, data: dict) -> dict:
         mode_input = data.get("mode")
         red_input = data.get("red_gain")
         blue_input = data.get("blue_gain")
-        
+
         # 获取当前值
         resp = client.get("/Image/channels/1/whiteBalance")
         current_mode = "auto"
@@ -2778,24 +3004,25 @@ async def set_whitebalance(device_id: str, data: dict) -> dict:
                     current_red = int(elem.text or 100)
                 elif tag == "WhiteBalanceBlue":
                     current_blue = int(elem.text or 80)
-        
+
         # 使用传入值或当前值
         mode_val = mode_input if mode_input else current_mode
         red_val = red_input if red_input is not None else current_red
         blue_val = blue_input if blue_input is not None else current_blue
-        
+
         # ISAPI 要求小写
         mode_isapi = mode_val.lower() if mode_val else "manual"
-        
+
         xml_str = f'''<?xml version="1.0" encoding="UTF-8"?>
 <WhiteBalance version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
 <WhiteBalanceStyle>{mode_isapi}</WhiteBalanceStyle>
 <WhiteBalanceRed>{red_val}</WhiteBalanceRed>
 <WhiteBalanceBlue>{blue_val}</WhiteBalanceBlue>
 </WhiteBalance>'''
-        
+
         put_resp = client.put("/Image/channels/1/whiteBalance", xml_str)
         if put_resp.status_code == 200:
+            log_info("image", "whitebalance", {"device": device_id, "mode": mode_val, "red": red_val, "blue": blue_val})
             return {"success": True, "message": "白平衡已更新", "data": {"mode": mode_val, "red_gain": red_val, "blue_gain": blue_val}}
         return {"success": False, "message": f"更新失败: HTTP {put_resp.status_code}"}
     except Exception as e:
@@ -2806,9 +3033,9 @@ async def set_whitebalance(device_id: str, data: dict) -> dict:
 async def get_noisereduce(device_id: str) -> dict:
     """获取设备降噪当前设置。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -2847,9 +3074,9 @@ async def get_noisereduce(device_id: str) -> dict:
 async def set_noisereduce(device_id: str, data: dict) -> dict:
     """设置降噪参数。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -2864,7 +3091,7 @@ async def set_noisereduce(device_id: str, data: dict) -> dict:
         # 先获取当前降噪设置
         current_spatial = 50
         current_temporal = 50
-        
+
         resp = client.get("/Image/channels/1/noiseReduce")
         if resp.status_code == 200:
             import xml.etree.ElementTree as ET
@@ -2875,11 +3102,11 @@ async def set_noisereduce(device_id: str, data: dict) -> dict:
                     current_spatial = int(elem.text or 50)
                 elif tag == "InterFrameNoiseReduceLevel":
                     current_temporal = int(elem.text or 50)
-        
+
         # 使用传入值或当前值
         spatial = data.get("spatial_level", current_spatial)
         temporal = data.get("temporal_level", current_temporal)
-        
+
         # ISAPI advanced 模式: FrameNoiseReduceLevel = 空域, InterFrameNoiseReduceLevel = 时域
         xml_str = f'''<?xml version="1.0" encoding="UTF-8"?>
 <NoiseReduce version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
@@ -2892,6 +3119,7 @@ async def set_noisereduce(device_id: str, data: dict) -> dict:
 
         put_resp = client.put("/Image/channels/1/noiseReduce", xml_str)
         if put_resp.status_code == 200:
+            log_info("image", "noisereduce", {"device": device_id, "spatial": spatial, "temporal": temporal})
             return {"success": True, "message": "降噪已更新", "data": {"spatial_level": spatial, "temporal_level": temporal}}
         return {"success": False, "message": f"更新失败: HTTP {put_resp.status_code}"}
     except Exception as e:
@@ -2900,11 +3128,11 @@ async def set_noisereduce(device_id: str, data: dict) -> dict:
 
 @api_router.post("/ptz/{device_id}/image/reset", summary="重置画面控制到默认值", tags=["Image"])
 async def reset_image_controls(device_id: str) -> dict:
-    """v6.51: 重置设备画面控制到默认值（不调用设备系统重置）。"""
+    """v6.51: 重置设备画面控制到默认值(不调用设备系统重置)。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -2916,7 +3144,7 @@ async def reset_image_controls(device_id: str) -> dict:
 
     client = ctrl.client
     results = {}
-    
+
     # 定义画面控制默认值
     default_values = {
         "brightness": 50,
@@ -2926,7 +3154,7 @@ async def reset_image_controls(device_id: str) -> dict:
         "noise_reduce": 50,
         "sharpness": 50,
     }
-    
+
     try:
         # 1. 重置亮度/对比度/饱和度
         color_xml = f'''<?xml version="1.0" encoding="UTF-8"?>
@@ -2937,7 +3165,7 @@ async def reset_image_controls(device_id: str) -> dict:
 </Color>'''
         resp = client.put("/Image/channels/1/Color", color_xml)
         results["color"] = resp.status_code == 200
-        
+
         # 2. 重置白平衡
         wb_xml = '''<?xml version="1.0" encoding="UTF-8"?>
 <WhiteBalance version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
@@ -2945,7 +3173,7 @@ async def reset_image_controls(device_id: str) -> dict:
 </WhiteBalance>'''
         resp = client.put("/Image/channels/1/whiteBalance", wb_xml)
         results["white_balance"] = resp.status_code == 200
-        
+
         # 3. 重置降噪 - 使用 advanced 模式
         nr_xml = '''<?xml version="1.0" encoding="UTF-8"?>
 <NoiseReduce version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
@@ -2957,7 +3185,7 @@ async def reset_image_controls(device_id: str) -> dict:
 </NoiseReduce>'''
         resp = client.put("/Image/channels/1/noiseReduce", nr_xml)
         results["noise_reduce"] = resp.status_code == 200
-        
+
         # 4. 重置锐度
         sharp_xml = '''<?xml version="1.0" encoding="UTF-8"?>
 <Sharpness version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
@@ -2965,8 +3193,10 @@ async def reset_image_controls(device_id: str) -> dict:
 </Sharpness>'''
         resp = client.put("/Image/channels/1/Sharpness", sharp_xml)
         results["sharpness"] = resp.status_code == 200
-        
+
         all_success = all(results.values())
+        if all_success:
+            log_info("image", "reset", {"device": device_id})
         return {
             "success": all_success,
             "message": "画面控制已重置到默认值" if all_success else "部分重置失败",
@@ -2980,9 +3210,9 @@ async def reset_image_controls(device_id: str) -> dict:
 async def get_exposure(device_id: str) -> dict:
     """获取设备曝光当前模式 - v7.03: 使用 ExposureType 字段"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3006,7 +3236,7 @@ async def get_exposure(device_id: str) -> dict:
             if tag in ("ExposureType", "exposureType", "ExposureMode", "exposureMode"):
                 result["data"]["mode"] = elem.text or "auto"
 
-        # 如果没有找到曝光模式，默认 auto
+        # 如果没有找到曝光模式,默认 auto
         if "mode" not in result["data"]:
             result["data"]["mode"] = "auto"
         return result
@@ -3018,9 +3248,9 @@ async def get_exposure(device_id: str) -> dict:
 async def set_exposure(device_id: str, data: dict) -> dict:
     """设置曝光模式 - v7.03: 使用 ExposureType 字段"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3041,6 +3271,7 @@ async def set_exposure(device_id: str, data: dict) -> dict:
 
         put_resp = client.put("/Image/channels/1/exposure", xml_str)
         if put_resp.status_code == 200:
+            log_info("image", "exposure", {"device": device_id, "mode": mode})
             return {"success": True, "message": f"曝光模式已设置为 {mode}"}
         return {"success": False, "message": f"更新失败: HTTP {put_resp.status_code}"}
     except Exception as e:
@@ -3051,9 +3282,10 @@ async def set_exposure(device_id: str, data: dict) -> dict:
 async def get_shutter(device_id: str) -> dict:
     """获取设备快门当前设置。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    import json
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3074,19 +3306,52 @@ async def get_shutter(device_id: str) -> dict:
         for elem in root.iter():
             tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
             if tag in ("ShutterLevel", "shutterLevel"):
-                result["data"]["current_level"] = elem.text or "1/60"
+                result["data"]["current_level"] = elem.text or "1/30000"
             elif tag in ("minShutterLevelLimit", "MinShutterLevelLimit"):
                 result["data"]["min"] = elem.text or "1/30000"
             elif tag in ("maxShutterLevelLimit", "MaxShutterLevelLimit"):
                 result["data"]["max"] = elem.text or "1/25"
 
-        # 常用快门值
-        result["data"]["supported_levels"] = [
-            "1/30", "1/60", "1/125", "1/250", "1/500",
-            "1/1000", "1/2000", "1/4000", "1/8000",
-            result["data"].get("min", "1/30000"),
-            result["data"].get("max", "1/25")
-        ]
+        # v8.47: 从 function.json 读取真实支持的快门值
+        # device_id可能是MAC或IP，需要两种方式都能匹配
+        supported_levels = []
+        try:
+            # 方式1: device_id就是MAC
+            device_dir = DEVICES_DIR / device_id
+            if device_dir.exists() and device_dir.is_dir():
+                func_file = device_dir / "function.json"
+                if func_file.exists():
+                    func_data = json.loads(func_file.read_text(encoding="utf-8"))
+                    if "functions" in func_data and "shutter" in func_data["functions"]:
+                        supported_levels = func_data["functions"]["shutter"].get("opt_values", [])
+            # 方式2: device_id是IP，需要通过info.json查找对应的MAC
+            if not supported_levels:
+                for device_dir in DEVICES_DIR.iterdir():
+                    if device_dir.is_dir():
+                        info_file = device_dir / "info.json"
+                        if info_file.exists():
+                            try:
+                                info = json.loads(info_file.read_text(encoding="utf-8"))
+                                if info.get("ip") == target_ip:
+                                    func_file = device_dir / "function.json"
+                                    if func_file.exists():
+                                        func_data = json.loads(func_file.read_text(encoding="utf-8"))
+                                        if "functions" in func_data and "shutter" in func_data["functions"]:
+                                            supported_levels = func_data["functions"]["shutter"].get("opt_values", [])
+                                    break
+                            except Exception:
+                                continue
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+        
+        if not supported_levels:
+            # 回退: 使用设备返回的min/max
+            supported_levels = [
+                result["data"].get("max", "1/25"),
+                result["data"].get("min", "1/30000")
+            ]
+        result["data"]["supported_levels"] = supported_levels
         result["data"]["mode"] = "manual"
         return result
     except Exception as e:
@@ -3097,9 +3362,10 @@ async def get_shutter(device_id: str) -> dict:
 async def set_shutter(device_id: str, data: dict) -> dict:
     """设置快门参数 - v7.07: 使用独立 Shutter 端点"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    import json
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3111,8 +3377,21 @@ async def set_shutter(device_id: str, data: dict) -> dict:
 
     client = ctrl.client
     try:
-        level = data.get("level", "1/60")
-        
+        # v8.47: 从 function.json 获取默认值，避免硬编码不支持的值（device_id就是MAC）
+        default_level = "1/30000"
+        try:
+            device_dir = DEVICES_DIR / device_id
+            func_file = device_dir / "function.json"
+            if func_file.exists():
+                func_data = json.loads(func_file.read_text(encoding="utf-8"))
+                if "functions" in func_data and "shutter" in func_data["functions"]:
+                    opt_values = func_data["functions"]["shutter"].get("opt_values", [])
+                    if opt_values:
+                        default_level = opt_values[0]
+        except Exception:
+            pass
+        level = data.get("level", default_level)
+
         # v7.07: 使用独立 Shutter 端点
         xml_str = f'''<?xml version="1.0" encoding="UTF-8"?>
 <Shutter version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
@@ -3121,6 +3400,7 @@ async def set_shutter(device_id: str, data: dict) -> dict:
 
         put_resp = client.put("/Image/channels/1/Shutter", xml_str)
         if put_resp.status_code == 200:
+            log_info("image", "shutter", {"device": device_id, "level": level})
             return {"success": True, "message": f"快门已设置为 {level}"}
         return {"success": False, "message": f"更新失败: HTTP {put_resp.status_code}"}
     except Exception as e:
@@ -3131,9 +3411,9 @@ async def set_shutter(device_id: str, data: dict) -> dict:
 async def get_iris(device_id: str) -> dict:
     """获取设备光圈当前设置。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3169,9 +3449,9 @@ async def get_iris(device_id: str) -> dict:
 async def set_iris(device_id: str, data: dict) -> dict:
     """设置光圈参数。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3184,7 +3464,7 @@ async def set_iris(device_id: str, data: dict) -> dict:
     client = ctrl.client
     try:
         level = data.get("level", 160)
-        
+
         # v7.03: 使用独立的 Iris 端点
         xml_str = f'''<?xml version="1.0" encoding="UTF-8"?>
 <Iris version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
@@ -3193,6 +3473,7 @@ async def set_iris(device_id: str, data: dict) -> dict:
 
         put_resp = client.put("/Image/channels/1/Iris", xml_str)
         if put_resp.status_code == 200:
+            log_info("image", "iris", {"device": device_id, "level": level})
             return {"success": True, "message": f"光圈已设置"}
         return {"success": False, "message": f"更新失败: HTTP {put_resp.status_code}"}
     except Exception as e:
@@ -3204,9 +3485,9 @@ async def set_iris(device_id: str, data: dict) -> dict:
 async def get_gain(device_id: str) -> dict:
     """获取设备增益当前设置。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3240,9 +3521,9 @@ async def get_gain(device_id: str) -> dict:
 async def set_gain(device_id: str, data: dict) -> dict:
     """设置增益参数。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3254,17 +3535,28 @@ async def set_gain(device_id: str, data: dict) -> dict:
 
     client = ctrl.client
     try:
-        level = data.get("level", 0)
-        
-        # v7.03: 使用独立的 Gain 端点
+        level = data.get("level")
+        gain_limit = data.get("gain_limit")  # v8.68: 增益限制
+
+        # v8.68: 根据提供的字段构建XML
+        parts = []
+        if level is not None:
+            parts.append(f"  <GainLevel>{int(level)}</GainLevel>")
+        if gain_limit is not None:
+            parts.append(f"  <GainLimit>{int(gain_limit)}</GainLimit>")
+
+        if not parts:
+            return {"success": False, "message": "未提供增益参数"}
+
         xml_str = f'''<?xml version="1.0" encoding="UTF-8"?>
 <Gain version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
-  <GainLevel>{level}</GainLevel>
+{chr(10).join(parts)}
 </Gain>'''
 
         put_resp = client.put("/Image/channels/1/Gain", xml_str)
         if put_resp.status_code == 200:
-            return {"success": True, "message": f"增益已设置为 {level}"}
+            log_info("image", "gain", {"device": device_id, "level": level, "gain_limit": gain_limit})
+            return {"success": True, "message": f"增益已更新"}
         return {"success": False, "message": f"更新失败: HTTP {put_resp.status_code}"}
     except Exception as e:
         return {"success": False, "message": f"设置增益异常: {e}"}
@@ -3274,9 +3566,9 @@ async def set_gain(device_id: str, data: dict) -> dict:
 async def get_sharpness(device_id: str) -> dict:
     """获取设备锐度当前设置。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3310,9 +3602,9 @@ async def get_sharpness(device_id: str) -> dict:
 async def set_sharpness(device_id: str, data: dict) -> dict:
     """设置锐度参数。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3325,7 +3617,7 @@ async def set_sharpness(device_id: str, data: dict) -> dict:
     client = ctrl.client
     try:
         level = data.get("level", 50)
-        
+
         xml_str = f'''<?xml version="1.0" encoding="UTF-8"?>
 <Sharpness version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
   <SharpnessLevel>{level}</SharpnessLevel>
@@ -3333,6 +3625,7 @@ async def set_sharpness(device_id: str, data: dict) -> dict:
 
         put_resp = client.put("/Image/channels/1/Sharpness", xml_str)
         if put_resp.status_code == 200:
+            log_info("image", "sharpness", {"device": device_id, "level": level})
             return {"success": True, "message": f"锐度已设置为 {level}"}
         return {"success": False, "message": f"更新失败: HTTP {put_resp.status_code}"}
     except Exception as e:
@@ -3341,11 +3634,11 @@ async def set_sharpness(device_id: str, data: dict) -> dict:
 
 @api_router.get("/ptz/{device_id}/image/color", summary="获取颜色设置", tags=["Image"])
 async def get_color(device_id: str) -> dict:
-    """获取设备颜色（亮度/对比度/饱和度）当前设置。"""
+    """获取设备颜色(亮度/对比度/饱和度)当前设置。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3377,13 +3670,171 @@ async def get_color(device_id: str) -> dict:
         return {"success": False, "message": f"获取颜色异常: {e}"}
 
 
-@api_router.get("/ptz/{device_id}/osd/ptz", summary="获取PTZ OSD状态", tags=["OSD"])
+# === 滤镜与日夜模式 (v8.43) ===
+
+@api_router.get("/ptz/{device_id}/image/filter", summary="获取滤镜与日夜模式", tags=["Image"])
+async def get_filter_settings(device_id: str) -> dict:
+    """获取当前 dayNightMode 和 IrcutFilterType 设置。"""
+    import xml.etree.ElementTree as ET
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return {"success": False, "message": "PTZDeviceController未初始化"}
+
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    ctrl, err = mgr._get_controller(target_ip)
+    if err:
+        return {"success": False, "message": err}
+
+    client = ctrl.client
+    import xml.etree.ElementTree as ET
+    try:
+        # 日夜模式 + IR滤镜 统一从 /Image/channels/1/IrcutFilter 获取
+        ircut_resp = await asyncio.to_thread(client.get, "/Image/channels/1/IrcutFilter")
+        if ircut_resp.status_code != 200:
+            return {"success": False, "message": f"获取滤镜设置失败: HTTP {ircut_resp.status_code}"}
+
+        filter_type = "auto"
+        root = ET.fromstring(ircut_resp.xml)
+        for elem in root.iter():
+            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
+            if tag == "IrcutFilterType":
+                filter_type = (elem.text or "auto").strip()
+
+        # dayNightMode: 直接返回 (day/night/auto)
+        # IrcutFilterType: 映射 day→on, night→off, auto→auto
+        ir_cut_map = {"day": "on", "night": "off", "auto": "auto", "schedule": "auto"}
+
+        return {
+            "success": True,
+            "data": {
+                "dayNightMode": filter_type,
+                "IrcutFilterType": ir_cut_map.get(filter_type, filter_type)
+            }
+        }
+    except Exception as e:
+        return {"success": False, "message": f"获取滤镜设置异常: {e}"}
+
+
+@api_router.post("/ptz/{device_id}/image/filter", summary="设置滤镜与日夜模式", tags=["Image"])
+async def set_filter_settings(device_id: str, body: dict) -> dict:
+    """设置 dayNightMode 和/或 IrcutFilterType。
+
+    请求体:
+        {"dayNightMode": "day|night|auto", "IrcutFilterType": "on|off|auto"}
+    """
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return {"success": False, "message": "PTZDeviceController未初始化"}
+
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+
+    ctrl, err = mgr._get_controller(target_ip)
+    if err:
+        return {"success": False, "message": err}
+
+    client = ctrl.client
+    day_night = body.get("dayNightMode", "")
+    ir_cut = body.get("IrcutFilterType", "")
+
+    try:
+        # 日夜模式 + IR滤镜 统一用 /Image/channels/1/IrcutFilter 端点
+        # dayNightMode: day/night/auto 直接映射为 IrcutFilterType
+        # IrcutFilterType: on→day, off→night, auto→auto
+        if day_night or ir_cut:
+            if day_night:
+                # dayNightMode 直传 (day/night/auto)
+                value = day_night
+            else:
+                # IrcutFilterType 映射
+                action_map = {"on": "day", "off": "night", "auto": "auto"}
+                value = action_map.get(ir_cut, ir_cut)
+
+            ircut_xml = f'''<?xml version="1.0" encoding="UTF-8"?>
+<IrcutFilter version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
+<IrcutFilterType>{value}</IrcutFilterType>
+</IrcutFilter>'''
+            ircut_put = await asyncio.to_thread(client.put, "/Image/channels/1/IrcutFilter", ircut_xml)
+            if ircut_put.status_code != 200:
+                return {"success": False, "message": f"设置滤镜失败: HTTP {ircut_put.status_code}"}
+
+        log_info("image", "filter", {"device": device_id, "dayNight": day_night, "irCut": ir_cut})
+        return {"success": True, "message": "滤镜设置成功"}
+    except Exception as e:
+        return {"success": False, "message": f"设置滤镜异常: {e}"}
+
+
+# === 慢快门 DSS (v8.45) ===
+
+@api_router.get("/ptz/{device_id}/image/slow-shutter", summary="获取慢快门设置", tags=["Image"])
+async def get_slow_shutter(device_id: str) -> dict:
+    mgr = _managers.get("ptz_controller")
+    if not mgr:
+        return {"success": False, "message": "PTZDeviceController未初始化"}
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    ctrl, err = mgr._get_controller(target_ip)
+    if err:
+        return {"success": False, "message": err}
+    client = ctrl.client
+    try:
+        # 使用轻量级 DSS 子端点（GET 可用，只需 ~几百字节）
+        resp = await asyncio.to_thread(client.get, "/Image/channels/1/DSS")
+        if resp.status_code != 200:
+            return {"success": False, "message": f"获取DSS失败: HTTP {resp.status_code}"}
+        import xml.etree.ElementTree as ET
+        root = ET.fromstring(resp.xml)
+        enabled = False
+        dss_level = ""
+        for elem in root.iter():
+            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
+            if tag == "enabled":
+                enabled = (elem.text or "").strip().lower() == "true"
+            elif tag == "DSSLevel":
+                dss_level = (elem.text or "").strip()
+        return {"success": True, "data": {"supported": True, "enabled": enabled, "dss_level": dss_level}}
+    except Exception as e:
+        return {"success": False, "message": f"获取DSS异常: {e}"}
+
+@api_router.post("/ptz/{device_id}/image/slow-shutter", summary="设置慢快门", tags=["Image"])
+async def set_slow_shutter(device_id: str, body: dict) -> dict:
+    mgr = _managers.get("ptz_controller")
+    if not mgr:
+        return {"success": False, "message": "PTZDeviceController未初始化"}
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    ctrl, err = mgr._get_controller(target_ip)
+    if err:
+        return {"success": False, "message": err}
+    client = ctrl.client
+    dss_level = body.get("dss_level", "")
+    try:
+        if dss_level == "off":
+            # 关闭时只设 enabled=false，不传 DSSLevel
+            xml_str = '<?xml version="1.0" encoding="UTF-8"?><DSS version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema"><enabled>false</enabled></DSS>'
+        else:
+            xml_str = f'<?xml version="1.0" encoding="UTF-8"?><DSS version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema"><enabled>true</enabled><DSSLevel>{dss_level}</DSSLevel></DSS>'
+        
+        put_resp = await asyncio.to_thread(client.put, "/Image/channels/1/DSS", xml_str)
+        if put_resp.status_code == 200:
+            log_info("image", "dss", {"device": device_id, "level": dss_level})
+            return {"success": True, "message": "慢快门: " + ("关闭" if dss_level == "off" else dss_level)}
+        return {"success": False, "message": f"设置失败: HTTP {put_resp.status_code}"}
+    except Exception as e:
+        return {"success": False, "message": f"设置DSS异常: {e}"}
+
 async def get_osd_ptz(device_id: str) -> dict:
     """获取PTZ OSD显示状态。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3418,9 +3869,9 @@ async def get_osd_ptz(device_id: str) -> dict:
 async def get_osd_info(device_id: str) -> dict:
     """获取Info OSD显示状态。"""
     import xml.etree.ElementTree as ET
-    mgr: PTZManager | None = _managers.get("ptz_manager")
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
     if not mgr:
-        return {"success": False, "message": "PTZManager 未初始化"}
+        return {"success": False, "message": "PTZDeviceController未初始化"}
 
     target_ip = _resolve_device_id_to_ip(mgr, device_id)
     if not target_ip:
@@ -3455,30 +3906,624 @@ async def get_osd_info(device_id: str) -> dict:
 #  系统管理端点
 # ================================================================ #
 
+@api_router.get("/system/token", summary="获取设备Token", tags=["System"])
+async def get_device_token() -> dict:
+    """v7.52: 后端获取设备Token(使用Digest认证)."""
+    import requests
+    from requests.auth import HTTPDigestAuth
+
+    # v7.98: 从活跃设备配置读取,不再硬编码
+    device_result = await get_active_device()
+    if not device_result.get("success"):
+        return {"success": False, "message": "无活跃设备,请先连接设备"}
+
+    device = device_result["device"]
+    camera_ip = device.get("ip", "")
+    username = device.get("username", "admin")
+    password = device.get("password", "")
+
+    if not camera_ip:
+        return {"success": False, "message": "活跃设备无IP地址"}
+
+    try:
+        resp = requests.get(
+            f'http://{camera_ip}:80/ISAPI/Security/token?format=json',
+            auth=HTTPDigestAuth(username, password),
+            timeout=10
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            token = data.get('Token', {}).get('value', '')
+            return {"success": True, "token": token}
+        else:
+            return {"success": False, "message": f"Token获取失败: {resp.status_code}"}
+    except Exception as e:
+        return {"success": False, "message": f"Token获取异常: {e}"}
+
 @api_router.post("/system/restart", summary="重启 AstroHub", tags=["System"])
 async def restart_astrohub() -> dict:
-    """重启 AstroHub 服务。"""
+    """v7.114: 干净重启 - 独立脚本等端口释放后启动新进程,sys.exit 触发 graceful shutdown."""
     import subprocess
     import os
-    import platform
-    
+    import sys
+
     cwd = os.getcwd()
-    
-    # v6.43: 简化重启逻辑
-    if platform.system() == "Windows":
-        # Windows: 延迟10秒启动新进程，等待期间前端刷新
-        ps_script = f'''
-Start-Sleep -Seconds 10
-Set-Location "{cwd}"
-Start-Process python -ArgumentList "src/main/main.py" -WindowStyle Hidden
-'''
-        subprocess.Popen(["powershell", "-ExecutionPolicy", "Bypass", "-Command", ps_script], cwd=cwd)
+    python_exe = sys.executable
+
+    helper = os.path.join(cwd, "src", "main", "restart_helper.py")
+    subprocess.Popen(
+        [python_exe, helper, "127.0.0.1", "10280", python_exe, cwd],
+        cwd=cwd,
+        creationflags=subprocess.CREATE_NO_WINDOW if hasattr(subprocess, "CREATE_NO_WINDOW") else 0,
+    )
+
+    sys.exit(0)
+
+
+# ================================================================ #
+#  v8.10: Vision 端点 - 框选分析 + 星点叠加
+# ================================================================ #
+
+import asyncio
+import base64
+import os
+import cv2
+import numpy as np
+from pydantic import BaseModel as PydanticBase
+
+
+class RegionAnalyzeRequest(PydanticBase):
+    """框选区域分析请求。"""
+    image_base64: str = ""  # 裁剪区域的 base64 图像
+    image_path: str = ""    # 或：截图文件路径 + 裁剪坐标
+    x: float = 0
+    y: float = 0
+    w: float = 0
+    h: float = 0
+    action: str = "both"  # whitebalance / focus / both
+
+
+class StackStartRequest(PydanticBase):
+    """叠加开始请求。"""
+    total_exposure: float
+    frame_exposure_ms: int = 100
+
+
+_stack_engine = None
+_stack_task = None
+
+
+def _decode_image(b64: str) -> np.ndarray | None:
+    if ',' in b64:
+        b64 = b64.split(',', 1)[1]
+    data = base64.b64decode(b64)
+    arr = np.frombuffer(data, np.uint8)
+    return cv2.imdecode(arr, cv2.IMREAD_COLOR)
+
+
+def _get_client_for_device(mgr, device_id: str):
+    """从 device_id (MAC或IP) 获取 ISAPIClient。"""
+    target_ip = _resolve_device_id_to_ip(mgr, device_id)
+    if not target_ip:
+        return None, f"无法解析设备: {device_id}"
+    ctrl, err = mgr._get_controller(target_ip)
+    if err:
+        return None, err
+    client = mgr._clients.get(target_ip)
+    if not client:
+        return None, f"ISAPI client not found for {target_ip}"
+    return client, ""
+
+
+def _get_active_client(mgr):
+    """获取当前活跃设备的 ISAPIClient。"""
+    connected = mgr.get_connected_device()
+    if not connected:
+        return None, "无活跃设备"
+    target_ip = connected.get("ip", "")
+    if not target_ip:
+        return None, "活跃设备无IP"
+    return _get_client_for_device(mgr, target_ip)
+
+
+# ── v8.11: ISAPI 截图 → 后端裁剪 → 迭代搜索 ──────────────
+
+_TEMP_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "temp")
+
+
+def _temp_dir(category: str, device_ip: str) -> str:
+    """获取临时目录并确保存在。"""
+    d = os.path.join(_TEMP_ROOT, category, device_ip.replace(".", "_"))
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
+def _cleanup_temp(category: str, device_ip: str):
+    """清理指定设备指定类别的临时文件。"""
+    import shutil
+    d = os.path.join(_TEMP_ROOT, category, device_ip.replace(".", "_"))
+    if os.path.exists(d):
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def _capture_and_crop(client, mgr, device_ip: str, category: str,
+                      x: float, y: float, w: float, h: float,
+                      skip_delay: bool = False) -> tuple:
+    """ISAPI 截图 → 按比例裁剪 → 返回 (bgr, 截图路径, 裁剪信息dict)。
+
+    统一入口，白平衡和对焦共用。
+    v8.64: skip_delay=True 时跳过 calc_stable_delay（调用方已等待）。
+    """
+    import time as _time
+    if not skip_delay:
+        from src.controlpanel.region_base import calc_stable_delay
+        delay = calc_stable_delay(client)
+        _time.sleep(delay)
+    jpg = client.capture_picture()
+    if not jpg:
+        return None, "", {"error": "ISAPI截图失败"}
+
+    # 保存全图
+    ts = int(_time.time() * 1000)
+    temp_dir = _temp_dir(category, device_ip)
+    full_path = os.path.join(temp_dir, f"full_{ts}.jpg")
+    with open(full_path, "wb") as f:
+        f.write(jpg)
+
+    bgr = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+    if bgr is None:
+        return None, full_path, {"error": "图像解码失败"}
+
+    full_h, full_w = bgr.shape[:2]
+
+    # 裁剪
+    if w > 0 and h > 0:
+        x1 = max(0, int(x * full_w))
+        y1 = max(0, int(y * full_h))
+        x2 = min(full_w, int((x + w) * full_w))
+        y2 = min(full_h, int((y + h) * full_h))
+        if x2 <= x1 or y2 <= y1:
+            return bgr, full_path, {"error": "裁剪区域无效"}
+        cropped = bgr[y1:y2, x1:x2]
+        crop_path = os.path.join(temp_dir, f"crop_{ts}.jpg")
+        cv2.imwrite(crop_path, cropped)
     else:
-        # Linux/macOS
-        subprocess.Popen(f'sleep 10 && cd "{cwd}" && python src/main/main.py &', shell=True, cwd=cwd)
+        cropped = bgr
+        crop_path = full_path
+        x1, y1, x2, y2 = 0, 0, full_w, full_h
+
+    info = {
+        "full_w": full_w, "full_h": full_h,
+        "crop_x1": x1, "crop_y1": y1, "crop_x2": x2, "crop_y2": y2,
+        "crop_w": x2 - x1, "crop_h": y2 - y1,
+        "crop_path": crop_path,
+        "pixels": (x2 - x1) * (y2 - y1),
+    }
+    return cropped, crop_path, info
+
+
+def _apply_whitebalance(client, red: int, blue: int) -> dict:
+    """写入白平衡到 ISAPI。"""
+    xml_str = f'''<?xml version="1.0" encoding="UTF-8"?>
+<WhiteBalance version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
+<WhiteBalanceStyle>manual</WhiteBalanceStyle>
+<WhiteBalanceRed>{red}</WhiteBalanceRed>
+<WhiteBalanceBlue>{blue}</WhiteBalanceBlue>
+</WhiteBalance>'''
+    resp = client.put("/Image/channels/1/whiteBalance", xml_str)
+    return {"success": resp.status_code == 200, "status": resp.status_code}
+
+
+@api_router.post("/vision/region-analyze", summary="框选区域分析（单次）", tags=["Vision"])
+async def region_analyze(req: RegionAnalyzeRequest) -> dict:
+    """单次框选分析：裁剪 + RGB统计 + 反差。用于预览。"""
+    from src.controlpanel.region_base import _rgb_stats, calc_contrast
+
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return {"success": False, "message": "PTZ控制器未初始化"}
+
+    connected = mgr.get_connected_device()
+    if not connected:
+        return {"success": False, "message": "无活跃设备"}
+
+    device_ip = connected["ip"]
+    client, err = _get_client_for_device(mgr, device_ip)
+    if err:
+        return {"success": False, "message": err}
+
+    bgr, crop_path, info = _capture_and_crop(client, mgr, device_ip, "WB",
+                                              req.x, req.y, req.w, req.h)
+    if bgr is None:
+        return {"success": False, "message": info.get("error", "截图失败")}
+
+    stats = _rgb_stats(bgr)
+    contrast = calc_contrast(bgr)
+    return {"success": True, "crop": info, "rgb": stats, "contrast": round(contrast, 2)}
+
+
+
+# v8.72: 搜索器全局变量和互锁机制
+_wb_searcher = None
+_focus_searcher = None
+_brightness_searcher = None
+
+# 互锁状态
+_search_state = {
+    'active': None,  # 'wb' | 'focus' | 'brightness' | None
+    'lock': asyncio.Lock()
+}
+
+@api_router.get("/vision/search-status", summary="获取当前活跃搜索状态", tags=["Vision"])
+async def search_status() -> dict:
+    """获取当前活跃的搜索器类型，用于前端互锁。"""
+    return {"success": True, "active": _search_state['active']}
+
+
+@api_router.post("/vision/check-baseline", summary="检查基线差异", tags=["Vision"])
+async def check_baseline_api(data: dict) -> dict:
+    """检查当前截图与基线的差异，判断是否需要执行搜索。"""
+    from src.controlpanel.region_base import read_search_baseline, check_baseline
     
-    # 立即退出当前进程
-    os._exit(0)
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return {"success": False, "message": "PTZ控制器未初始化"}
+    
+    connected = mgr.get_connected_device()
+    if not connected:
+        return {"success": False, "message": "无活跃设备"}
+    
+    device_ip = connected["ip"]
+    client, err = _get_client_for_device(mgr, device_ip)
+    if err:
+        return {"success": False, "message": err}
+    
+    mode = data.get("mode")  # 'focus' | 'whitebalance' | 'brightness'
+    x = float(data.get("x", 0))
+    y = float(data.get("y", 0))
+    w = float(data.get("w", 0))
+    h = float(data.get("h", 0))
+    
+    if not mode or w <= 0 or h <= 0:
+        return {"success": False, "message": "参数无效"}
+    
+    # 截图
+    bgr, _, info = _capture_and_crop(client, mgr, device_ip, mode.upper(), x, y, w, h, skip_delay=True)
+    if bgr is None:
+        return {"success": False, "message": info.get("error", "截图失败")}
+    
+    # 读取基线
+    baseline = read_search_baseline(device_ip, mode)
+    if not baseline:
+        return {"success": True, "should_search": True, "message": "无基线，执行搜索"}
+    
+    # 检查差异
+    should_search, diff, message = check_baseline(bgr, mode, baseline)
+    return {"success": True, "should_search": should_search, "diff_percent": round(diff, 1), "message": message}
+
+async def _guarded_search(search_type: str, sse_generator):
+    """互锁包装器：确保同一时刻只有一个搜索器运行。"""
+    import json
+    
+    # v8.73: 使用锁保护 _search_state 的读写
+    async with _search_state['lock']:
+        # 检查是否有其他搜索器在运行
+        if _search_state['active'] is not None:
+            # 发送等待事件
+            yield f"data: {json.dumps({'type': 'queued', 'waiting_for': _search_state['active']})}\n\n"
+            # 等待当前搜索器完成
+            while _search_state['active'] is not None:
+                await asyncio.sleep(0.5)
+            # 等待5秒
+            await asyncio.sleep(5)
+        
+        # 设置为当前搜索器
+        _search_state['active'] = search_type
+    
+    try:
+        async for event in sse_generator():
+            yield event
+    finally:
+        async with _search_state['lock']:
+            _search_state['active'] = None
 
 
+@api_router.post("/vision/whitebalance-search", summary="白平衡迭代搜索 (SSE)", tags=["Vision"])
+async def whitebalance_search(data: dict):
+    """白平衡迭代搜索 - SSE流式。路由层只验证输入和调用白平衡模块。"""
+    import json
+    from fastapi.responses import StreamingResponse
+    from src.controlpanel.whitebalance import WhiteBalanceSearcher
 
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': 'PTZ控制器未初始化'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    connected = mgr.get_connected_device()
+    if not connected:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': '无活跃设备'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    device_ip = connected["ip"]
+    client, err = _get_client_for_device(mgr, device_ip)
+    if err:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': err})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    x = float(data.get("x", 0))
+    y = float(data.get("y", 0))
+    w = float(data.get("w", 0))
+    h = float(data.get("h", 0))
+
+    if w <= 0 or h <= 0:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': '框选区域无效'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    searcher = WhiteBalanceSearcher(
+        mgr=mgr, device_ip=device_ip, client=client,
+        x=x, y=y, w=w, h=h,
+        capture_func=_capture_and_crop,
+        cleanup_func=_cleanup_temp,
+        mac_clean=connected.get("mac", "").replace(":", "").replace("-", "").lower()
+    )
+    
+    # v8.41: 保存搜索器到全局变量
+    global _wb_searcher
+    _wb_searcher = searcher
+    
+    return StreamingResponse(
+        _guarded_search('wb', searcher.run),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
+    )
+
+
+@api_router.post("/vision/whitebalance-stop", summary="停止白平衡搜索", tags=["Vision"])
+async def whitebalance_stop():
+    """停止当前白平衡搜索并写入最佳值到设备"""
+    global _wb_searcher
+    if not _wb_searcher:
+        return {"success": False, "message": "无活跃的白平衡搜索"}
+    
+    _wb_searcher._interrupt()
+    _wb_searcher = None
+    
+    return {"success": True, "message": "白平衡搜索已停止"}
+
+
+@api_router.post("/vision/focus-search", summary="反差对焦搜索", tags=["Vision"])
+async def focus_search(data: dict):
+    """反差对焦搜索 - SSE流式。路由层只验证输入和调用对焦模块。"""
+    import json
+    from fastapi.responses import StreamingResponse
+    from src.controlpanel.autofocus import FocusSearcher
+
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': 'PTZ控制器未初始化'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    connected = mgr.get_connected_device()
+    if not connected:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': '无活跃设备'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    device_ip = connected["ip"]
+    client, err = _get_client_for_device(mgr, device_ip)
+    if err:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': err})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    x = float(data.get("x", 0))
+    y = float(data.get("y", 0))
+    w = float(data.get("w", 0))
+    h = float(data.get("h", 0))
+
+    if w <= 0 or h <= 0:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': '框选区域无效'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    searcher = FocusSearcher(
+        mgr=mgr, device_ip=device_ip, client=client,
+        x=x, y=y, w=w, h=h,
+        capture_func=_capture_and_crop,
+        cleanup_func=_cleanup_temp,
+        mac_clean=connected.get("mac", "").replace(":", "").replace("-", "").lower()
+    )
+    
+    # v8.41: 保存搜索器到全局变量
+    global _focus_searcher
+    _focus_searcher = searcher
+    
+    return StreamingResponse(
+        _guarded_search('focus', searcher.run),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
+    )
+
+
+@api_router.post("/vision/focus-stop", summary="停止对焦搜索", tags=["Vision"])
+async def focus_stop():
+    """停止当前对焦搜索"""
+    global _focus_searcher
+    if not _focus_searcher:
+        return {"success": False, "message": "无活跃的对焦搜索"}
+    
+    _focus_searcher._interrupt()
+    _focus_searcher = None
+    
+    return {"success": True, "message": "对焦搜索已停止"}
+
+
+@api_router.post("/vision/brightness-search", summary="局部亮度迭代搜索 (SSE)", tags=["Vision"])
+async def brightness_search(data: dict):
+    """局部亮度迭代搜索 - SSE流式。"""
+    import json
+    from fastapi.responses import StreamingResponse
+    from src.controlpanel.brightness import BrightnessSearcher
+
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': 'PTZ控制器未初始化'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    connected = mgr.get_connected_device()
+    if not connected:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': '无活跃设备'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    device_ip = connected["ip"]
+    client, err = _get_client_for_device(mgr, device_ip)
+    if err:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': err})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    x = float(data.get("x", 0))
+    y = float(data.get("y", 0))
+    w = float(data.get("w", 0))
+    h = float(data.get("h", 0))
+
+    if w <= 0 or h <= 0:
+        return StreamingResponse(
+            iter([f"data: {json.dumps({'type': 'error', 'message': '框选区域无效'})}\n\n"]),
+            media_type="text/event-stream"
+        )
+
+    target = float(data.get("target", 50))
+    shutter_idx = int(data.get("shutter_idx", 0))
+    iris_idx = int(data.get("iris_idx", 0))
+    gain = int(data.get("gain", 0))
+    shutter_values = data.get("shutter_values", [])
+    iris_values = data.get("iris_values", [])
+    gain_min = int(data.get("gain_min", 0))
+    gain_max = int(data.get("gain_max", 100))
+
+    searcher = BrightnessSearcher(
+        mgr=mgr, device_ip=device_ip, client=client,
+        x=x, y=y, w=w, h=h,
+        capture_func=_capture_and_crop,
+        cleanup_func=_cleanup_temp,
+        mac_clean=connected.get("mac", "").replace(":", "").replace("-", "").lower(),
+        target=target, shutter_idx=shutter_idx, iris_idx=iris_idx,
+        gain=gain, shutter_values=shutter_values, iris_values=iris_values,
+        gain_min=gain_min, gain_max=gain_max
+    )
+    
+    global _brightness_searcher
+    _brightness_searcher = searcher
+    
+    return StreamingResponse(
+        _guarded_search('brightness', searcher.run),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
+    )
+
+
+@api_router.post("/vision/brightness-stop", summary="停止局部亮度搜索", tags=["Vision"])
+async def brightness_stop():
+    """停止当前局部亮度搜索"""
+    global _brightness_searcher
+    if not _brightness_searcher:
+        return {"success": False, "message": "无活跃的亮度搜索"}
+    
+    _brightness_searcher._interrupt()
+    _brightness_searcher = None
+    
+    return {"success": True, "message": "局部亮度搜索已停止"}
+
+
+@api_router.post("/vision/stack-start", summary="启动星点叠加", tags=["Vision"])
+async def stack_start(req: StackStartRequest) -> dict:
+    """启动星点叠加会话。"""
+    global _stack_engine, _stack_task
+    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+    if not mgr:
+        return {"success": False, "message": "PTZ控制器未初始化"}
+
+    client, err = _get_active_client(mgr)
+    if err:
+        return {"success": False, "message": err}
+
+    total_frames = int(req.total_exposure * 1000 / req.frame_exposure_ms)
+    if total_frames < 2:
+        return {"success": False, "message": f"总帧数太少: {total_frames}"}
+
+    from src.vision.stack_engine import StackEngine
+    _stack_engine = StackEngine(client)
+    _stack_engine.start(total_frames)
+
+    connected = mgr.get_connected_device()
+    target_ip = connected["ip"]
+    _stack_task = asyncio.create_task(
+        _run_stack_collection(mgr, target_ip, req.frame_exposure_ms, total_frames))
+
+    return {"success": True, "total_frames": total_frames,
+            "frame_exposure_ms": req.frame_exposure_ms, "total_exposure_s": req.total_exposure}
+
+
+async def _run_stack_collection(mgr, target_ip: str, exposure_ms: int, total_frames: int):
+    global _stack_engine
+    client, err = _get_client_for_device(mgr, target_ip)
+    if err or not _stack_engine:
+        return
+
+    for i in range(total_frames):
+        if not _stack_engine._running or _stack_engine._cancelled:
+            break
+        try:
+            jpg = client.capture_picture()
+            if not jpg:
+                continue
+            arr = np.frombuffer(jpg, np.uint8)
+            bgr = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+            if bgr is None:
+                continue
+            _stack_engine.add_frame(bgr)
+        except Exception:
+            continue
+        await asyncio.sleep(exposure_ms / 1000.0)
+
+
+@api_router.post("/vision/stack-stop", summary="停止星点叠加", tags=["Vision"])
+async def stack_stop() -> dict:
+    global _stack_engine, _stack_task
+    if _stack_engine:
+        result = _stack_engine.finish()
+        _stack_engine = None
+        _stack_task = None
+        return result
+    return {"success": False, "message": "无活跃叠加会话"}
+
+
+@api_router.post("/vision/stack-cancel", summary="取消星点叠加", tags=["Vision"])
+async def stack_cancel() -> dict:
+    global _stack_engine, _stack_task
+    if _stack_engine:
+        _stack_engine.cancel()
+        _stack_engine = None
+        _stack_task = None
+        return {"success": True, "message": "已取消"}
+    return {"success": False, "message": "无活跃叠加会话"}

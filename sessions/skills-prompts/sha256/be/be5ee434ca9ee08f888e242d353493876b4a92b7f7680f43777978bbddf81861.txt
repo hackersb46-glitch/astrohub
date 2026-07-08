@@ -1,0 +1,203 @@
+
+
+The following skills provide specialized instructions for specific tasks.
+Use the read tool to load a skill's file when the task matches its description.
+When a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.
+
+<available_skills>
+  <skill>
+    <name>baidu-search</name>
+    <description>Search the web using Baidu AI Search Engine (BDSE). Use for live information, documentation, or research topics.</description>
+    <location>~/.openclaw\skills\baidu-search\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>blogwatcher</name>
+    <description>Monitor blogs and RSS/Atom feeds for updates using the blogwatcher CLI.</description>
+    <location>~/.openclaw\skills\blogwatcher\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>blucli</name>
+    <description>BluOS CLI (blu) for discovery, playback, grouping, and volume.</description>
+    <location>~/.openclaw\skills\blucli\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>clawhub</name>
+    <description>Use the ClawHub CLI to search, install, update, and publish agent skills from clawhub.com. Use when you need to fetch new skills on the fly, sync installed skills to latest or a specific version, or publish new/updated skill folders with the npm-installed clawhub CLI.</description>
+    <location>~/.openclaw\skills\clawhub\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>code-review</name>
+    <description>Systematic code review patterns covering security, performance, maintainability, correctness, and testing — with severity levels, structured feedback guidance, review process, and anti-patterns to avoid. Use when reviewing PRs, establishing review standards, or improving review quality.</description>
+    <location>~/.openclaw\agents\dev-factory\skills\code-review\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>coding-agent</name>
+    <description>Delegate coding tasks to Codex, Claude Code, or Pi agents via background process. Use when: (1) building/creating new features or apps, (2) reviewing PRs (spawn in temp dir), (3) refactoring large codebases, (4) iterative coding that needs file exploration. NOT for: simple one-liner fixes (just edit), reading code (use read tool), thread-bound ACP harness requests in chat (for example spawn/run Codex or Claude Code in a Discord thread; use sessions_spawn with runtime:&quot;acp&quot;), or any work in ~/clawd workspace (never spawn agents here). Claude Code: use --print --permission-mode bypassPermissions (no PTY). Codex/Pi/OpenCode: pty:true required.</description>
+    <location>~/.openclaw\skills\coding-agent\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>eightctl</name>
+    <description>Control Eight Sleep pods (status, temperature, alarms, schedules).</description>
+    <location>~/.openclaw\skills\eightctl\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>free-google-search-with-browser</name>
+    <description>Search Google using scrapling and return structured results (title, link, snippet). Invoke when user asks to search Google or find information online. Your device should be able to lanuch broswer with UI.</description>
+    <location>~/.openclaw\skills\free-google-search-with-browser\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>gh-issues</name>
+    <description>Fetch GitHub issues, spawn sub-agents to implement fixes and open PRs, then monitor and address PR review comments. Usage: /gh-issues [owner/repo] [--label bug] [--limit 5] [--milestone v1.0] [--assignee @me] [--fork user/repo] [--watch] [--interval 5] [--reviews-only] [--cron] [--dry-run] [--model glm-5] [--notify-channel -1002381931352]</description>
+    <location>~/.openclaw\skills\gh-issues\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>github</name>
+    <description>GitHub operations via `gh` CLI: issues, PRs, CI runs, code review, API queries. Use when: (1) checking PR status or CI, (2) creating/commenting on issues, (3) listing/filtering PRs or issues, (4) viewing run logs. NOT for: complex web UI interactions requiring manual browser flows (use browser tooling when available), bulk operations across many repos (script with gh api), or when gh auth is not configured.</description>
+    <location>~/.openclaw\skills\github\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>healthcheck</name>
+    <description>Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).</description>
+    <location>~/.openclaw\skills\healthcheck\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>mcporter</name>
+    <description>Use the mcporter CLI to list, configure, auth, and call MCP servers/tools directly (HTTP or stdio), including ad-hoc servers, config edits, and CLI/type generation.</description>
+    <location>~/.openclaw\skills\mcporter\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>nano-pdf</name>
+    <description>Edit PDFs with natural-language instructions using the nano-pdf CLI.</description>
+    <location>~/.openclaw\skills\nano-pdf\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>node-connect</name>
+    <description>Diagnose OpenClaw node connection and pairing failures for Android, iOS, and macOS companion apps. Use when QR/setup code/manual connect fails, local Wi-Fi works but VPS/tailnet does not, or errors mention pairing required, unauthorized, bootstrap token invalid or expired, gateway.bind, gateway.remote.url, Tailscale, or plugins.entries.device-pair.config.publicUrl.</description>
+    <location>~/.openclaw\skills\node-connect\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>notebooklm</name>
+    <description>Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses.</description>
+    <location>~/.openclaw\skills\notebook-lmskill-1-0-0\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>ollama-local</name>
+    <description>Manage and use local Ollama models. Use for model management (list/pull/remove), chat/completions, embeddings, and tool-use with local LLMs. Covers OpenClaw sub-agent integration and model selection guidance.</description>
+    <location>~/.openclaw\skills\ollama-local\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>openai-whisper</name>
+    <description>Local speech-to-text with the Whisper CLI (no API key).</description>
+    <location>~/.openclaw\skills\openai-whisper\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>opencode</name>
+    <description>Spawn OpenCode as an ACP (Agent Client Protocol) subagent for complex coding tasks. Use when building games, web apps, multi-file projects, or when the user says &quot;use opencode&quot;, &quot;spawn opencode&quot;, &quot;code with opencode&quot;, or &quot;build with opencode&quot;. Triggers on any coding task that would benefit from a dedicated coding agent.</description>
+    <location>~/.openclaw\skills\opencode-games\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>opencode-acp-control</name>
+    <description>Control OpenCode directly via the Agent Client Protocol (ACP). Start sessions, send prompts, resume conversations, and manage OpenCode updates.</description>
+    <location>~/.openclaw\skills\opencode-acp-control\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>opencode-cli</name>
+    <description>OpenCode CLI integration skill. Designed for AI agents like OpenClaw to execute coding tasks via OpenCode CLI. Core features: (1) Plan→Build workflow (2) Session management (3) MCP integration (4) Background task monitoring. Use this skill when you need: multi-step coding, Plan→Build workflow, MCP integration, or background task monitoring. NOT for: simple one-line edits (use edit tool directly), quick file reads (use read tool directly).</description>
+    <location>~/.openclaw\skills\opencode-cli\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>opencode-controller</name>
+    <description>Control and operate Opencode via slash commands. Use this skill to manage sessions, select models, switch agents (plan/build), and coordinate coding through Opencode.</description>
+    <location>~/.openclaw\skills\opencode-controller\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>opencode-omo</name>
+    <description>Turn coding requests into completed work. Plan with Prometheus, execute with Atlas, and iterate with Sisyphus in OpenCode.</description>
+    <location>~/.openclaw\skills\opencode-omo\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>oracle</name>
+    <description>Best practices for using the oracle CLI (prompt + file bundling, engines, sessions, and file attachment patterns).</description>
+    <location>~/.openclaw\skills\oracle\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>planning-with-files</name>
+    <description>Implements Manus-style file-based planning to organize and track progress on complex tasks. Creates task_plan.md, findings.md, and progress.md. Use when asked to plan out, break down, or organize a multi-step project, research task, or any work requiring 5+ tool calls. Supports automatic session recovery after /clear.</description>
+    <location>~/.openclaw\skills\planning-with-files\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>Proactivity (Proactive Agent)</name>
+    <description>Anticipates needs, keeps work moving, and improves through use so the agent gets more proactive over time.</description>
+    <location>~/.openclaw\agents\dev-factory\skills\proactivity\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>project-documentation</name>
+    <description>Complete workflow for project documentation including ADRs, PRDs, personas, and docs organization. Use when setting up documentation for a new project or improving existing docs. Triggers on project documentation, ADR, PRD, personas, docs structure, documentation setup.</description>
+    <location>~/.openclaw\agents\dev-factory\skills\project-documentation\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>project-orchestrator</name>
+    <description>AI agent orchestrator with Neo4j knowledge graph, Meilisearch search, and Tree-sitter parsing. Use for coordinating multiple coding agents on complex projects with shared context and plans.</description>
+    <location>~/.openclaw\agents\dev-factory\skills\project-orchestrator\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>self-improvement</name>
+    <description>Captures learnings, errors, and corrections to enable continuous improvement. Use when: (1) A command or operation fails unexpectedly, (2) User corrects Claude (&apos;No, that&apos;s wrong...&apos;, &apos;Actually...&apos;), (3) User requests a capability that doesn&apos;t exist, (4) An external API or tool fails, (5) Claude realizes its knowledge is outdated or incorrect, (6) A better approach is discovered for a recurring task. Also review learnings before major tasks.</description>
+    <location>~/.openclaw\agents\dev-factory\skills\self-improving-agent\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>Self-Improving + Proactive Agent</name>
+    <description>Self-reflection + Self-criticism + Self-learning + Self-organizing memory. Agent evaluates its own work, catches mistakes, and improves permanently. Use when (1) a command, tool, API, or operation fails; (2) the user corrects you or rejects your work; (3) you realize your knowledge is outdated or incorrect; (4) you discover a better approach; (5) the user explicitly installs or references the skill for the current task.</description>
+    <location>~/.openclaw\agents\dev-factory\skills\self-improving\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>session-logs</name>
+    <description>Search and analyze your own session logs (older/parent conversations) using jq.</description>
+    <location>~/.openclaw\skills\session-logs\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>skill-creator</name>
+    <description>Create, edit, improve, or audit AgentSkills. Use when creating a new skill from scratch or when asked to improve, review, audit, tidy up, or clean up an existing skill or SKILL.md file. Also use when editing or restructuring a skill directory (moving files to references/ or scripts/, removing stale content, validating against the AgentSkills spec). Triggers on phrases like &quot;create a skill&quot;, &quot;author a skill&quot;, &quot;tidy up a skill&quot;, &quot;improve this skill&quot;, &quot;review the skill&quot;, &quot;clean up the skill&quot;, &quot;audit the skill&quot;.</description>
+    <location>~/.openclaw\skills\skill-creator\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>summarize</name>
+    <description>Summarize or extract text/transcripts from URLs, podcasts, and local files (great fallback for “transcribe this YouTube/video”).</description>
+    <location>~/.openclaw\skills\summarize\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>superpower-with-files</name>
+    <description>Unified AI workflow with persistent memory, TDD execution, and 15 productivity skills. Use when starting any coding project or when you need planning, execution, debugging, or code review workflows.</description>
+    <location>~/.openclaw\skills\superpower-with-files\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>taskflow</name>
+    <description>Coordinate multi-step detached tasks as one durable TaskFlow job with owner context, state, waits, and child tasks.</description>
+    <location>~/AppData\Roaming\npm\node_modules\openclaw\skills\taskflow\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>taskflow-inbox-triage</name>
+    <description>Example TaskFlow pattern for inbox triage, intent routing, waiting on replies, and later summaries.</description>
+    <location>~/AppData\Roaming\npm\node_modules\openclaw\skills\taskflow-inbox-triage\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>unified-search</name>
+    <description>统一搜索 + 识图入口。整合 minimax-websearch、web-anti-crawl-search、multi-search-engine-simple，以及 MiniMax 视觉识别。所有 agent 统一使用本 skill 作为联网搜索和图片分析的标准入口。</description>
+    <location>~/.openclaw\skills\unified-search\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>video-frames</name>
+    <description>Extract frames or short clips from videos using ffmpeg.</description>
+    <location>~/.openclaw\skills\video-frames\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>weather</name>
+    <description>Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed.</description>
+    <location>~/.openclaw\skills\weather\SKILL.md</location>
+  </skill>
+  <skill>
+    <name>xurl</name>
+    <description>A CLI tool for making authenticated requests to the X (Twitter) API. Use this skill when you need to post tweets, reply, quote, search, read posts, manage followers, send DMs, upload media, or interact with any X API v2 endpoint.</description>
+    <location>~/.openclaw\skills\xurl\SKILL.md</location>
+  </skill>
+</available_skills>
