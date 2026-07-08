@@ -340,7 +340,7 @@ class BrightnessSearcher(SearcherBase):
                 
                 # v8.73: 存储基线
                 from src.controlpanel.region_base import write_search_baseline
-                write_search_baseline(self.device_ip, 'brightness', {
+                write_search_baseline(self._mac_clean, 'brightness', {
                     'brightness': cmd['brightness'],
                     'shutter': cmd['shutter'],
                     'iris': cmd['iris'],

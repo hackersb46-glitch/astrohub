@@ -1,7 +1,7 @@
 {
   "agent:dev-factory:telegram:direct:8447197723": {
     "sessionId": "1d543fa8-e90d-4ad9-af81-f17e2c213870",
-    "updatedAt": 1783509919065,
+    "updatedAt": 1783513194279,
     "systemSent": true,
     "abortedLastRun": false,
     "thinkingLevel": "high",
@@ -593,10 +593,10 @@
       "version": 0
     },
     "status": "running",
-    "startedAt": 1783509919041,
+    "startedAt": 1783513194258,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1783509672200,
+      "generatedAt": 1783513117358,
       "sessionId": "1d543fa8-e90d-4ad9-af81-f17e2c213870",
       "sessionKey": "agent:dev-factory:telegram:direct:8447197723",
       "provider": "hp",
@@ -1485,13 +1485,13 @@
     "fallbackNoticeReason": "selected model unavailable",
     "modelProvider": "HP",
     "model": "qwen-3.7-max",
-    "cacheRead": 214357,
-    "cacheWrite": 562,
+    "cacheRead": 0,
+    "cacheWrite": 0,
     "contextTokens": 1000000,
-    "inputTokens": 12,
-    "outputTokens": 1052,
+    "inputTokens": 134888,
+    "outputTokens": 518,
     "estimatedCostUsd": 0,
-    "totalTokens": 214925,
+    "totalTokens": 134888,
     "memoryFlushAt": 1783509916266,
     "memoryFlushCompactionCount": 0
   },

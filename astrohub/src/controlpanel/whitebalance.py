@@ -312,7 +312,7 @@ class WhiteBalanceSearcher(SearcherBase):
                 
                 # v8.73: 存储基线
                 from src.controlpanel.region_base import write_search_baseline
-                write_search_baseline(self.device_ip, 'whitebalance', {
+                write_search_baseline(self._mac_clean, 'whitebalance', {
                     'red': cmd['red_gain'],
                     'blue': cmd['blue_gain'],
                     'delta': round(cmd.get('best_delta', 0), 4)

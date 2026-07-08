@@ -740,7 +740,7 @@ class FocusSearcher(SearcherBase):
                 yield f"data: {json.dumps({'type': 'done', 'final_contrast': round(final_contrast, 2), 'best_contrast': round(best, 2), 'total_steps': step_count, 'verified': verified})}\n\n"
                 # v8.73: 存储基线
                 from src.controlpanel.region_base import write_search_baseline
-                write_search_baseline(self.device_ip, 'focus', {
+                write_search_baseline(self._mac_clean, 'focus', {
                     'contrast': round(final_contrast, 2),
                     'best_contrast': round(best, 2)
                 })

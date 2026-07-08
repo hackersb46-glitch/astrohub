@@ -733,3 +733,49 @@
 [2026-07-08 17:13:41.017] [INFO   ] [operation_logger] [web] ptz: 对焦 #32: fine focus_near 反差=76.92 (0.1s) 精逼近(步8/10,best3=105.4,best2=105.4)
 [2026-07-08 17:13:42.936] [INFO   ] [operation_logger] [web] ptz: 对焦 #33: done stop 反差=109.7 (0s) 对焦成功(best3=109.7,best2=105.4,best1=105.6)
 [2026-07-08 17:13:43.108] [INFO   ] [operation_logger] [web] ptz: ── 对焦完成 (33步) ──
+[2026-07-08 17:40:18.570] [INFO   ] [operation_logger] [web] ptz: 4k 32X DC: ISAPI已连接
+[2026-07-08 17:40:19.225] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 49, "blue": 56}
+[2026-07-08 17:40:19.640] [INFO   ] [operation_logger] [image] exposure: {"device": "192.168.5.72", "mode": "manual"}
+[2026-07-08 17:40:19.707] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 17:40:19.709] [INFO   ] [operation_logger] [web] ptz: 曝光: 局部
+[2026-07-08 17:40:35.795] [INFO   ] [operation_logger] [web] ptz: 正在获取预置点列表...
+[2026-07-08 17:40:35.824] [INFO   ] [operation_logger] [web] ptz: 已加载 1 个预置点
+[2026-07-08 17:40:41.870] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-08 17:40:42.476] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1365~2355, Y=556~1571, 共1004850像素
+[2026-07-08 17:40:42.477] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: step=1 R=49 B=55 → R=107.9 G=107.9 B=115.3 (Δ=0.0841)
+[2026-07-08 17:40:44.784] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: step=1 R=49 B=54 → R=108.5 G=108.5 B=111.8 (Δ=0.0453)
+[2026-07-08 17:40:46.877] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: step=1 R=48 B=54 → R=109.2 G=109.2 B=107.9 (Δ=0.027)
+[2026-07-08 17:40:49.235] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: step=1 R=48 B=54 → R=109.6 G=109.6 B=108 (Δ=0.0189)
+[2026-07-08 17:40:51.275] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: step=1 R=48 B=54 → R=109.6 G=109.6 B=108.5 (Δ=0.0107)
+[2026-07-08 17:40:53.355] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: step=1 R=48 B=54 → R=109.7 G=109.7 B=108.6 (Δ=0.0106)
+[2026-07-08 17:40:55.754] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: step=1 R=48 B=54 → R=109.8 G=109.8 B=108.6 (Δ=0.0121)
+[2026-07-08 17:40:57.858] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: step=1 R=48 B=54 → R=109.8 G=109.8 B=108.7 (Δ=0.0119)
+[2026-07-08 17:41:00.171] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: done R=48 B=54 → R=109.8 G=109.8 B=108.6 (Δ=0.0106)
+[2026-07-08 17:41:02.580] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=48 B=54 (9步) ──
+[2026-07-08 17:41:02.586] [INFO   ] [operation_logger] [web] ptz: 清理完成
+[2026-07-08 17:42:11.545] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 48, "blue": 54}
+[2026-07-08 17:42:11.554] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 17:42:12.951] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "auto", "red": 48, "blue": 54}
+[2026-07-08 17:42:13.151] [INFO   ] [operation_logger] [web] ptz: 白平衡: 自动
+[2026-07-08 17:42:14.774] [INFO   ] [operation_logger] [image] whitebalance: {"device": "192.168.5.72", "mode": "manual", "red": 48, "blue": 54}
+[2026-07-08 17:42:14.927] [INFO   ] [operation_logger] [web] ptz: 白平衡: 手动
+[2026-07-08 17:42:17.005] [INFO   ] [operation_logger] [web] ptz: ── 白平衡迭代开始 ──
+[2026-07-08 17:42:17.735] [INFO   ] [operation_logger] [web] ptz: 白平衡开始, X=1237~2949, Y=469~1880, 共2415632像素
+[2026-07-08 17:42:17.738] [DEBUG  ] [operation_logger] [web] ptz: 调整 #1: step=1 R=48 B=53 → R=107 G=107 B=115.5 (Δ=0.1521)
+[2026-07-08 17:42:19.855] [DEBUG  ] [operation_logger] [web] ptz: 调整 #2: step=1 R=48 B=52 → R=107.8 G=107.8 B=111.2 (Δ=0.1063)
+[2026-07-08 17:42:21.994] [DEBUG  ] [operation_logger] [web] ptz: 调整 #3: step=1 R=49 B=52 → R=108.1 G=108.1 B=106.5 (Δ=0.0897)
+[2026-07-08 17:42:24.086] [DEBUG  ] [operation_logger] [web] ptz: 调整 #4: step=1 R=50 B=52 → R=107.6 G=107.6 B=106.7 (Δ=0.0605)
+[2026-07-08 17:42:26.201] [DEBUG  ] [operation_logger] [web] ptz: 调整 #5: step=1 R=51 B=52 → R=106.9 G=106.9 B=107.2 (Δ=0.0229)
+[2026-07-08 17:42:28.329] [DEBUG  ] [operation_logger] [web] ptz: 调整 #6: step=1 R=50 B=52 → R=105.9 G=105.9 B=107.6 (Δ=0.0326)
+[2026-07-08 17:42:30.444] [DEBUG  ] [operation_logger] [web] ptz: 调整 #7: step=1 R=51 B=52 → R=106.8 G=106.8 B=107.1 (Δ=0.0227)
+[2026-07-08 17:42:32.574] [DEBUG  ] [operation_logger] [web] ptz: 调整 #8: step=1 R=50 B=52 → R=105.7 G=105.7 B=107.4 (Δ=0.0325)
+[2026-07-08 17:42:34.675] [DEBUG  ] [operation_logger] [web] ptz: 调整 #9: step=1 R=51 B=52 → R=106.5 G=106.5 B=106.8 (Δ=0.022)
+[2026-07-08 17:42:36.853] [DEBUG  ] [operation_logger] [web] ptz: 调整 #10: step=1 R=50 B=52 → R=105.4 G=105.4 B=107 (Δ=0.0327)
+[2026-07-08 17:42:38.959] [DEBUG  ] [operation_logger] [web] ptz: 调整 #11: step=1 R=51 B=52 → R=106.2 G=106.2 B=106.2 (Δ=0.0206)
+[2026-07-08 17:42:41.356] [DEBUG  ] [operation_logger] [web] ptz: 调整 #12: step=1 R=50 B=52 → R=105 G=105 B=106.6 (Δ=0.034)
+[2026-07-08 17:42:43.522] [DEBUG  ] [operation_logger] [web] ptz: 调整 #13: step=1 R=51 B=52 → R=105.6 G=105.6 B=105.6 (Δ=0.02)
+[2026-07-08 17:42:45.957] [DEBUG  ] [operation_logger] [web] ptz: 调整 #14: step=1 R=50 B=52 → R=104.5 G=104.5 B=106.1 (Δ=0.0339)
+[2026-07-08 17:42:48.066] [DEBUG  ] [operation_logger] [web] ptz: 调整 #15: step=1 R=51 B=52 → R=105.4 G=105.4 B=105.5 (Δ=0.0205)
+[2026-07-08 17:42:50.293] [DEBUG  ] [operation_logger] [web] ptz: 调整 #16: done R=50 B=52 → R=104.3 G=104.3 B=105.7 (Δ=0.02)
+[2026-07-08 17:42:52.793] [INFO   ] [operation_logger] [web] ptz: ── 白平衡完成: R=50 B=52 (16步) ──
+[2026-07-08 17:42:52.803] [INFO   ] [operation_logger] [web] ptz: 清理完成

@@ -173,11 +173,11 @@ BASELINE_THRESHOLDS = {
 }
 
 
-def read_search_baseline(device_ip: str, mode: str) -> dict | None:
+def read_search_baseline(mac_clean: str, mode: str) -> dict | None:
     """读取设备+模式的基线数据。
     
     Args:
-        device_ip: 设备IP
+        mac_clean: 设备MAC地址（清洗后，12位小写）
         mode: 'focus' | 'whitebalance' | 'brightness'
     
     Returns:
@@ -188,16 +188,16 @@ def read_search_baseline(device_ip: str, mode: str) -> dict | None:
     try:
         with open(_BASELINE_FILE, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        return data.get(device_ip, {}).get(mode)
+        return data.get(mac_clean, {}).get(mode)
     except Exception:
         return None
 
 
-def write_search_baseline(device_ip: str, mode: str, baseline: dict):
+def write_search_baseline(mac_clean: str, mode: str, baseline: dict):
     """写入设备+模式的基线数据。
     
     Args:
-        device_ip: 设备IP
+        mac_clean: 设备MAC地址（清洗后，12位小写）
         mode: 'focus' | 'whitebalance' | 'brightness'
         baseline: 基线数据 dict
     """
@@ -209,11 +209,11 @@ def write_search_baseline(device_ip: str, mode: str, baseline: dict):
         except Exception:
             data = {}
     
-    if device_ip not in data:
-        data[device_ip] = {}
+    if mac_clean not in data:
+        data[mac_clean] = {}
     
     baseline['timestamp'] = datetime.now().isoformat()
-    data[device_ip][mode] = baseline
+    data[mac_clean][mode] = baseline
     
     _BASELINE_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(_BASELINE_FILE, 'w', encoding='utf-8') as f:
