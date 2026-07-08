@@ -4174,6 +4174,7 @@ async def check_baseline_api(data: dict) -> dict:
         return {"success": False, "message": "无活跃设备"}
     
     device_ip = connected["ip"]
+    mac_clean = connected.get("mac", "").replace(":", "").replace("-", "").lower()
     client, err = _get_client_for_device(mgr, device_ip)
     if err:
         return {"success": False, "message": err}
@@ -4192,8 +4193,8 @@ async def check_baseline_api(data: dict) -> dict:
     if bgr is None:
         return {"success": False, "message": info.get("error", "截图失败")}
     
-    # 读取基线
-    baseline = read_search_baseline(device_ip, mode)
+    # 读取基线（使用MAC作为设备标识）
+    baseline = read_search_baseline(mac_clean, mode)
     if not baseline:
         return {"success": True, "should_search": True, "message": "无基线，执行搜索"}
     
