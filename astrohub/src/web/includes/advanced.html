@@ -1,26 +1,114 @@
-<!-- 高级功能页面 - v8.78 左中右布局 -->
+<!-- 高级功能页面 - v8.82 左中右布局 + 垂直标签 -->
 <div class="page" id="page-advanced">
     <div class="adv-layout">
-        <!-- 左侧:功能区域 (25%) -->
+        <!-- 左侧:功能区域 (320px固定, 与主控台一致) -->
         <div class="adv-left">
-            <!-- 折叠区域1: 主控台运动控制 -->
-            <div class="collapsible-section" id="advMotorControlSection">
-                <div class="collapsible-header" onclick="toggleAdvSection('advMotorControlSection')">
-                    <span>🔧 主控台运动控制</span>
-                    <span class="toggle-icon">▼</span>
+            <!-- 上块: 运动控制 (直接复制自主控台, 数据读取复用) -->
+            <div class="collapsible-section" id="advPtzControlSection">
+                <div class="collapsible-header" onclick="toggleSection('advPtzControlSection')">
+                    <h3 style="font-size:15px;color:#58a6ff;margin:0">🎯 运动控制</h3>
+                    <span class="collapse-icon">▼</span>
                 </div>
-                <div class="collapsible-body">
+                <div class="collapsible-content">
+                    <!-- 指向控制 + 信息展示 -->
+                    <div style="display:flex;gap:8px;align-items:stretch">
+                        <!-- 左侧:方向控制 + 速度 -->
+                        <div style="flex:0 0 auto;display:flex;flex-direction:column;justify-content:space-between">
+                            <div class="ptz-controls">
+                                <button class="ptz-btn" onmousedown="ptzMove('up-left')" ontouchstart="ptzMove('up-left')">↖</button>
+                                <button class="ptz-btn" onmousedown="ptzMove('up')" ontouchstart="ptzMove('up')">↑</button>
+                                <button class="ptz-btn" onmousedown="ptzMove('up-right')" ontouchstart="ptzMove('up-right')">↗</button>
+                                <button class="ptz-btn" onmousedown="ptzMove('left')" ontouchstart="ptzMove('left')">←</button>
+                                <button class="ptz-btn" onclick="ptzHome()" title="归位">🏠</button>
+                                <button class="ptz-btn" onmousedown="ptzMove('right')" ontouchstart="ptzMove('right')">→</button>
+                                <button class="ptz-btn" onmousedown="ptzMove('down-left')" ontouchstart="ptzMove('down-left')">↙</button>
+                                <button class="ptz-btn" onmousedown="ptzMove('down')" ontouchstart="ptzMove('down')">↓</button>
+                                <button class="ptz-btn" onmousedown="ptzMove('down-right')" ontouchstart="ptzMove('down-right')">↘</button>
+                            </div>
+                            <div class="ptz-speed" style="width:170px;font-size:11px;margin-top:8px">
+                                <label style="font-size:11px">速度:</label>
+                                <input type="range" min="1" max="7" value="4" style="width:90px" onchange="saveSnapshot('ptz_speed', parseInt(this.value)); var s=document.getElementById('ptzSpeed'); if(s){s.value=this.value;} var sv=document.getElementById('ptzSpeedVal'); if(sv){sv.textContent=this.value;} this.nextElementSibling.textContent=this.value">
+                                <span style="font-size:11px">4</span>
+                            </div>
+                            <div style="width:154px;display:flex;gap:4px;margin-left:auto;margin-right:auto;margin-top:4px">
+                                <button class="ptz-btn" style="flex:1;width:auto;height:24px;padding:1px;font-size:11px;line-height:1.2" onmousedown="ptzZoom('out')" ontouchstart="ptzZoom('out')" onmouseup="ptzStop()" onmouseleave="ptzStop()" title="变焦-">变焦-</button>
+                                <button class="ptz-btn" style="flex:1;width:auto;height:24px;padding:1px;font-size:11px;line-height:1.2" onmousedown="ptzZoom('in')" ontouchstart="ptzZoom('in')" onmouseup="ptzStop()" onmouseleave="ptzStop()" title="变焦+">变焦+</button>
+                            </div>
+                        </div>
+                        <!-- 右侧:光圈快门 + P/T/Z -->
+                        <div style="flex:0 0 110px;display:flex;flex-direction:column;gap:0">
+                            <div class="info-block" style="flex:1">
+                                <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">光圈</span><span class="info-value" id="advPtzIris">--</span></div>
+                                <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">快门</span><span class="info-value" id="advPtzShutter">--</span></div>
+                                <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">R</span><span class="info-value" id="advPtzWbR">--</span></div>
+                                <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">B</span><span class="info-value" id="advPtzWbB">--</span></div>
+                                <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">空域</span><span class="info-value" id="advPtzDnrSpatial">--</span></div>
+                                <div class="info-row" style="padding:1px 4px;font-size:12px"><span class="info-label">时域</span><span class="info-value" id="advPtzDnrTemporal">--</span></div>
+                            </div>
+                            <div style="border-top:2px solid #30363d;margin-top:2px;padding-top:2px"></div>
+                            <div class="info-block" style="flex:1">
+                                <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">Pan</span><span class="info-value" id="advPtzPan">--</span></div>
+                                <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">Tilt</span><span class="info-value" id="advPtzTilt">--</span></div>
+                                <div class="info-row" style="padding:1px 4px;font-size:12px"><span class="info-label">Zoom</span><span class="info-value" id="advPtzZoom">--</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 码流 -->
+                    <div class="section-subtitle">码流</div>
+                    <div class="quadruple-switch" id="advStreamSwitch" style="display:flex;width:100%;margin-bottom:8px">
+                        <button class="qs-btn active" data-seg="1" onclick="setStreamSegment(1)">主</button>
+                        <button class="qs-btn" data-seg="2" onclick="setStreamSegment(2)">子</button>
+                        <button class="qs-btn" data-seg="3" onclick="setStreamSegment(3)">三</button>
+                        <button class="qs-btn" data-seg="0" onclick="setStreamSegment(0)">⏹</button>
+                    </div>
+                    <!-- 信息显示 + 慢快门 -->
+                    <div style="display:flex;gap:12px;margin-bottom:8px">
+                        <div style="flex:1">
+                            <div class="section-subtitle" style="margin-bottom:4px">信息显示</div>
+                            <div style="display:flex;gap:12px;justify-content:center">
+                                <div style="display:flex;align-items:center;gap:6px">
+                                    <span style="color:#8b949e;font-size:11px">OSD</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="advInfoOsdSwitch" onchange="toggleInfoOsdSwitch(this.checked); var m=document.getElementById('infoOsdSwitch'); if(m) m.checked=this.checked;">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:6px">
+                                    <span style="color:#8b949e;font-size:11px">PTZ</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="advPtzOsdSwitch" onchange="togglePtzOsdSwitch(this.checked); var m=document.getElementById('ptzOsdSwitch'); if(m) m.checked=this.checked;">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="flex:1">
+                            <div class="section-subtitle" style="margin-bottom:4px">慢快门</div>
+                            <select id="advSlowShutterSelect" style="width:100%;padding:4px 8px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:11px" onchange="setSlowShutter(this.value)">
+                                <option value="0">关闭</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下块: 书签区域 (不可折叠) -->
+            <div class="adv-tab-bar">
+                <button class="adv-tab active" data-tab="function" onclick="switchAdvTab('function')">功能测试</button>
+                <button class="adv-tab" data-tab="geo" onclick="switchAdvTab('geo')">位置和时间</button>
+                <button class="adv-tab" data-tab="star3" onclick="switchAdvTab('star3')">三星校准</button>
+            </div>
+            <div class="adv-tab-content">
+                <!-- 标签1: 功能测试 -->
+                <div class="tab-pane active" id="pane-function">
                     <div class="adv-menu">
                         <button class="adv-menu-item active" data-test="function" onclick="selectAdvTest('function')">
-                            <span class="menu-icon">🔍</span>
                             <span>功能测试</span>
                         </button>
                         <button class="adv-menu-item" data-test="limit" onclick="selectAdvTest('limit')">
-                            <span class="menu-icon">📐</span>
                             <span>限位测试</span>
                         </button>
                         <button class="adv-menu-item" data-test="speed" onclick="selectAdvTest('speed')">
-                            <span class="menu-icon">⚡</span>
                             <span>速度测试</span>
                             <span class="speed-profile-btns" style="margin-left:8px;font-size:11px">
                                 <label style="margin-right:4px;cursor:pointer"><input type="radio" name="speedProfile" value="lite" checked style="margin-right:1px">lite</label>
@@ -30,66 +118,119 @@
                         </button>
                     </div>
                     <div class="adv-actions">
-                        <button class="btn btn-primary btn-block" id="btnAdvRun" onclick="runAdvTest()">▶ 开始测试</button>
-                        <button class="btn btn-secondary btn-block" id="btnAdvStop" onclick="stopAdvTest()" disabled>⏹ 停止</button>
+                        <button class="btn btn-primary btn-block" id="btnAdvRun" onclick="runAdvTest()">开始测试</button>
+                        <button class="btn btn-secondary btn-block" id="btnAdvStop" onclick="stopAdvTest()" disabled>停止</button>
                     </div>
                 </div>
-            </div>
+                </div>
 
-            <!-- 折叠区域2: 天文校准 -->
-            <div class="collapsible-section" id="advAstroCalSection">
-                <div class="collapsible-header" onclick="toggleAdvSection('advAstroCalSection')">
-                    <span>🌟 天文校准</span>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="collapsible-body">
-                    <div id="advAstroCalContent" style="padding:8px 0">
-                        <button class="btn btn-primary btn-block" onclick="startAstroCalibration()">▶ 开始天文校准</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 折叠区域3: NTP时间同步 -->
-            <div class="collapsible-section" id="advNtpSection">
-                <div class="collapsible-header" onclick="toggleAdvSection('advNtpSection')">
-                    <span>🕐 NTP时间同步</span>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="collapsible-body">
+                <!-- 标签2: 时间与地理位置 -->
+                <div class="tab-pane" id="pane-geo">
                     <div style="margin-bottom:8px">
                         <label style="font-size:11px;color:#8b949e;display:block;margin-bottom:4px">NTP服务器</label>
                         <select id="ntpServerSelect" style="width:100%;padding:6px 8px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px">
-                            <option value="ntp.aliyun.com" selected>阿里云NTP</option>
-                            <option value="ntp.tencent.com">腾讯云NTP</option>
-                            <option value="ntp.ntsc.ac.cn">国家授时中心</option>
-                            <option value="ntp.ustc.edu.cn">中国科技大学</option>
-                            <option value="ntp.pku.edu.cn">北京大学</option>
-                            <option value="ntp.tsinghua.edu.cn">清华大学</option>
+                            <option value="ntp.aliyun.com" selected>ntp.aliyun.com</option>
+                            <option value="ntp.tencent.com">ntp.tencent.com</option>
+                            <option value="ntp.ntsc.ac.cn">ntp.ntsc.ac.cn</option>
+                            <option value="ntp.ustc.edu.cn">ntp.ustc.edu.cn</option>
+                            <option value="ntp.pku.edu.cn">ntp.pku.edu.cn</option>
+                            <option value="ntp.tsinghua.edu.cn">ntp.tsinghua.edu.cn</option>
                         </select>
                     </div>
                     <button class="btn btn-primary btn-block" id="btnNtpSync" onclick="syncNtp()">🔄 同步</button>
-                    <div id="ntpOutput" style="margin-top:8px;font-size:12px;font-family:Consolas,monospace">
+                    <div style="margin-top:12px;margin-bottom:8px">
+                        <label style="font-size:11px;color:#8b949e;display:block;margin-bottom:4px">地理坐标（支持度分秒或小数）</label>
+                        <div style="display:flex;gap:4px;margin-bottom:4px">
+                            <input type="text" id="geoLatInput" placeholder="纬度 如 29°27'00" 或 29.45" style="flex:1;min-width:0;padding:6px 8px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px">
+                            <div class="dual-switch" id="latNsSwitch" style="display:flex;flex-shrink:0">
+                                <button class="ds-btn active" data-val="N" onclick="setDualSwitch('latNsSwitch','N')">北</button>
+                                <button class="ds-btn" data-val="S" onclick="setDualSwitch('latNsSwitch','S')">南</button>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:4px;margin-bottom:4px">
+                            <input type="text" id="geoLonInput" placeholder="经度 如 100°19'48" 或 100.33" style="flex:1;min-width:0;padding:6px 8px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:13px">
+                            <div class="dual-switch" id="lonEwSwitch" style="display:flex;flex-shrink:0">
+                                <button class="ds-btn active" data-val="E" onclick="setDualSwitch('lonEwSwitch','E')">东</button>
+                                <button class="ds-btn" data-val="W" onclick="setDualSwitch('lonEwSwitch','W')">西</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="saveGeoLocation()">✓ 确定</button>
+                    </div>
+                </div>
+
+                <!-- 标签3: 三星校准 -->
+                <div class="tab-pane" id="pane-star3">
+                    <div id="adv3StarContent" style="padding:8px 0">
+                        <!-- 第1行: 北极星 (固定) -->
+                        <div class="star-align-row" id="starRow0" style="margin-bottom:6px;padding:8px;border:1px solid #21262d;border-radius:6px;background:#0d1117">
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <div>
+                                    <span style="font-size:13px;color:#e0e6f0"><span id="starName0">小熊座-勾陈一（Polaris）</span></span>
+                                    <div style="font-size:11px;color:#8b949e;margin-top:2px" id="starInfo0">Az≈0° Alt≈纬度</div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:4px">
+                                    <button class="btn btn-secondary btn-sm star-btn" onclick="pointToStar(0)" disabled>指向</button>
+                                    <button class="btn btn-primary btn-sm star-btn" onclick="applyStarPoint(0)" disabled>应用</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 第2行 -->
+                        <div class="star-align-row" id="starRow1" style="margin-bottom:6px;padding:8px;border:1px solid #21262d;border-radius:6px;background:#0d1117">
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <div style="flex:1;min-width:0">
+                                    <select id="starSelect1" class="star-select" style="width:100%;padding:4px 8px;background:#161b22;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:12px" onchange="onStarSelect(1)">
+                                        <option value="">选择星体...</option>
+                                    </select>
+                                    <div style="font-size:11px;color:#8b949e;margin-top:2px" id="starInfo1"></div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:4px;margin-left:8px">
+                                    <button class="btn btn-secondary btn-sm star-btn" onclick="pointToStar(1)" disabled>指向</button>
+                                    <button class="btn btn-primary btn-sm star-btn" onclick="applyStarPoint(1)" disabled>应用</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 第3行 -->
+                        <div class="star-align-row" id="starRow2" style="margin-bottom:6px;padding:8px;border:1px solid #21262d;border-radius:6px;background:#0d1117">
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <div style="flex:1;min-width:0">
+                                    <select id="starSelect2" class="star-select" style="width:100%;padding:4px 8px;background:#161b22;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:12px" onchange="onStarSelect(2)">
+                                        <option value="">选择星体...</option>
+                                    </select>
+                                    <div style="font-size:11px;color:#8b949e;margin-top:2px" id="starInfo2"></div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:4px;margin-left:8px">
+                                    <button class="btn btn-secondary btn-sm star-btn" onclick="pointToStar(2)" disabled>指向</button>
+                                    <button class="btn btn-primary btn-sm star-btn" onclick="applyStarPoint(2)" disabled>应用</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 第4行 -->
+                        <div class="star-align-row" id="starRow3" style="margin-bottom:6px;padding:8px;border:1px solid #21262d;border-radius:6px;background:#0d1117">
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <div style="flex:1;min-width:0">
+                                    <select id="starSelect3" class="star-select" style="width:100%;padding:4px 8px;background:#161b22;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:12px" onchange="onStarSelect(3)">
+                                        <option value="">选择星体...</option>
+                                    </select>
+                                    <div style="font-size:11px;color:#8b949e;margin-top:2px" id="starInfo3"></div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:4px;margin-left:8px">
+                                    <button class="btn btn-secondary btn-sm star-btn" onclick="pointToStar(3)" disabled>指向</button>
+                                    <button class="btn btn-primary btn-sm star-btn" onclick="applyStarPoint(3)" disabled>应用</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 操作按钮 -->
+                        <div style="display:flex;gap:6px;margin-top:8px">
+                            <button class="btn btn-primary" style="flex:1;font-size:12px" id="btnStarAlignStart" onclick="startStarAlign()">开始</button>
+                            <button class="btn btn-warning" style="flex:1;font-size:12px" id="btnStarAlignReset" onclick="resetStarAlign()" disabled>重来</button>
+                            <button class="btn btn-secondary" style="flex:1;font-size:12px" id="btnStarAlignSave" onclick="saveStarAlign()" disabled>保存</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 折叠区域4: 三星校准 -->
-            <div class="collapsible-section" id="adv3StarSection">
-                <div class="collapsible-header" onclick="toggleAdvSection('adv3StarSection')">
-                    <span>⭐ 三星校准</span>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="collapsible-body" style="display:none">
-                    <div style="padding:8px 0;color:#6e7681;text-align:center;font-size:12px">
-                        功能开发中
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 中间:实时画面 (55%) -->
+        <!-- 中间:实时画面 (flex:1, 与主控台一致) -->
         <div class="adv-center">
-            <div class="adv-section-title">实时画面</div>
             <div class="adv-video-box" id="advVideoBox">
                 <div id="advVideoPlaceholder">
                     <div style="color:#6e7681;text-align:center;padding:40px">
@@ -97,12 +238,28 @@
                         <div id="advVideoStatus">连接设备后显示实时画面</div>
                     </div>
                 </div>
+                <!-- v8.92: 视图辅助遮罩层（高级功能独立实例） -->
+                <canvas id="advViewAssistOverlay" class="view-assist-canvas"></canvas>
+            </div>
+            <!-- v8.92: 视图辅助控制栏（高级功能） -->
+            <div class="view-assist-bar" id="advViewAssistBar">
+                <div class="va-bar-left">
+                    <button class="va-btn va-btn-scheme" id="advVaSchemeBtn" onclick="toggleViewAssistScheme('adv')" title="切换配色">🌓</button>
+                    <input type="range" class="va-opacity-slider" id="advViewAssistOpacity" min="0" max="100" value="50" oninput="updateViewAssistOverlay('adv')" style="width:150px;height:15px">
+                </div>
+                <div class="va-bar-right">
+                    <button class="va-btn" id="advVaBtnGL" onclick="toggleViewAssistMask('adv','GL')">辅助线</button>
+                    <button class="va-btn" id="advVaBtnRT" onclick="toggleViewAssistMask('adv','RT')">准心</button>
+                    <button class="va-btn va-btn-auto" id="advVaBtnAF" onclick="toggleViewAssistMask('adv','AF')">AF</button>
+                    <button class="va-btn va-btn-auto" id="advVaBtnWB" onclick="toggleViewAssistMask('adv','WB')">WB</button>
+                    <button class="va-btn va-btn-auto" id="advVaBtnBR" onclick="toggleViewAssistMask('adv','BR')">BR</button>
+                </div>
             </div>
         </div>
 
-        <!-- 右侧:测试输出 (20%) -->
+        <!-- 右侧:操作日志 (25%/max300px, 与主控台一致) -->
         <div class="adv-right">
-            <div class="adv-section-title">测试输出 <span id="advProgress" style="float:right;font-size:12px;color:#58a6ff"></span></div>
+            <div class="adv-section-title">操作日志 <span id="advProgress" style="float:right;font-size:12px;color:#58a6ff"></span></div>
             <div class="adv-output" id="advOutput">
                 <div class="output-line info">系统就绪</div>
             </div>
@@ -114,38 +271,47 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
 
 <style>
-/* 高级功能 v5.31 布局 */
+/* 三星校准按钮样式 */
+.star-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    min-width: 48px;
+    white-space: nowrap;
+}
+
+/* 高级功能 v8.82 布局 - 与主控台完全一致 */
 .adv-layout {
     display: flex;
-    gap: 0;
+    gap: 20px;
+    align-items: flex-start;
     min-height: calc(100vh - 120px);
-    background: #0d1117;
 }
 
+/* 与 .console-left 一致 */
 .adv-left {
-    width: 25%;
-    min-width: 200px;
-    background: #161b22;
-    border-right: 1px solid #21262d;
-    padding: 12px;
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
 }
 
+/* 与 .console-center 一致 */
 .adv-center {
-    width: 55%;
-    padding: 12px;
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
 }
 
+/* 与 .console-right 一致 */
 .adv-right {
-    width: 20%;
-    min-width: 240px;
-    background: #161b22;
-    border-left: 1px solid #21262d;
-    padding: 12px;
+    flex: 0 0 25%;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
 }
@@ -201,27 +367,29 @@
     width: 100%;
 }
 
+/* v8.82: 视频容器与主控台一致 */
 .adv-video-box {
-    background: #161b22;
+    background: #0d1117;
+    border: 1px solid #30363d;
     border-radius: 8px;
-    border: 1px solid #21262d;
+    margin-bottom: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* v7.102: 固定16:9比例,使用max-width确保不超过容器 */
-    aspect-ratio: 16/9;
-    width: 100%;
     max-width: 100%;
 }
 
 .adv-output {
-    flex: 1;
     background: #0d1117;
     border-radius: 6px;
     border: 1px solid #21262d;
     padding: 8px;
     overflow-y: auto;
-    max-height: 300px;
+    height: 270px;
     font-family: 'Consolas', monospace;
     font-size: 12px;
     -ms-overflow-style: none;
@@ -242,12 +410,12 @@
 .output-line.test { color: #58a6ff; }
 
 .adv-result {
-    flex: 1;
     background: #21262d;
     border-radius: 6px;
     border: 1px solid #30363d;
     padding: 12px;
     overflow-y: auto;
+    height: 270px;
     font-size: 12px;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -255,69 +423,257 @@
 
 .adv-result::-webkit-scrollbar { display: none; }
 
-/* v8.78: 折叠区域 */
-.collapsible-section {
-    margin-bottom: 4px;
-    background: #0d1117;
-    border: 1px solid #21262d;
+/* v8.82: 横向书签标签 */
+.adv-tab-bar {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #21262d;
+}
+.adv-tab {
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    color: #8b949e;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+.adv-tab:hover {
+    background: #21262d;
+    color: #e0e6f0;
+}
+.adv-tab.active {
+    background: transparent;
+    color: #3fb950;
+    border-bottom: 3px solid #3fb950;
+    font-weight: 600;
+}
+.adv-tab-content {
+    border-top: 2px solid #30363d;
+    padding-top: 12px;
+}
+.tab-pane {
+    display: none;
+}
+.tab-pane.active {
+    display: block;
+}
+
+/* v8.78: 两段式开关 */
+.dual-switch {
     border-radius: 6px;
     overflow: hidden;
+    border: 1px solid #30363d;
 }
-.collapsible-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    color: #e6edf3;
-    background: #161b22;
-    user-select: none;
-}
-.collapsible-header:hover {
-    background: #1c2128;
-}
-.toggle-icon {
-    font-size: 10px;
+.ds-btn {
+    padding: 6px 10px;
+    border: none;
+    background: #0d1117;
     color: #8b949e;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
-.collapsible-body {
-    padding: 8px 12px;
+.ds-btn:hover {
+    background: #21262d;
+}
+.ds-btn.active {
+    background: #238636;
+    color: #fff;
 }
 
+/* v8.92: 视图辅助遮罩层样式 */
+.view-assist-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+}
+.view-assist-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 25px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 0 6px;
+    margin-top: -1px;
+    gap: 4px;
+}
+.va-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+}
+.va-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+.va-opacity-slider {
+    width: 150px;
+    height: 15px;
+    accent-color: #58a6ff;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.va-opacity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #58a6ff;
+    cursor: pointer;
+}
+.va-btn {
+    background: #333;
+    border: 1px solid #555;
+    color: #999;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1.4;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+.va-btn:hover {
+    border-color: #888;
+    color: #ccc;
+}
+.va-btn.active {
+    color: #fff !important;
+}
+.va-btn-auto {
+    background: #555 !important;
+    border-color: #555 !important;
+    color: #777 !important;
+    cursor: not-allowed;
+}
+.va-btn-scheme {
+    width: 28px;
+    height: 20px;
+    padding: 1px 2px;
+    font-size: 11px;
+    line-height: 1;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.va-btn-scheme:hover {
+    border-color: #58a6ff;
+}
+
+</style>
 
 <script>
-// v8.78: 折叠区域切换
-function toggleAdvSection(sectionId) {
-    var section = document.getElementById(sectionId);
-    if (!section) return;
-    var body = section.querySelector('.collapsible-body');
-    var icon = section.querySelector('.toggle-icon');
-    if (body.style.display === 'none') {
-        body.style.display = '';
-        if (icon) icon.textContent = '▼';
-    } else {
-        body.style.display = 'none';
-        if (icon) icon.textContent = '▶';
+// v8.80: 垂直标签切换
+function switchAdvTab(tabName) {
+    // 切换标签 active 状态
+    document.querySelectorAll('.adv-tab').forEach(function(tab) {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+    });
+    // 切换内容面板
+    document.querySelectorAll('.tab-pane').forEach(function(pane) {
+        pane.classList.toggle('active', pane.id === 'pane-' + tabName);
+    });
+    // 切换到时间标签时加载坐标
+    if (tabName === 'geo') loadGeoLocation();
+    // 切换到三星校准时初始化
+    if (tabName === 'star3') initStarAlign();
+    // 同步主控台的 OSD/PTZ 开关状态到高级功能
+    if (tabName === 'function') {
+        var mInfo = document.getElementById('infoOsdSwitch');
+        var aInfo = document.getElementById('advInfoOsdSwitch');
+        if (mInfo && aInfo) aInfo.checked = mInfo.checked;
+        var mPtz = document.getElementById('ptzOsdSwitch');
+        var aPtz = document.getElementById('advPtzOsdSwitch');
+        if (mPtz && aPtz) aPtz.checked = mPtz.checked;
     }
+}
+
+// v8.78: 两段式开关
+function setDualSwitch(switchId, val) {
+    var sw = document.getElementById(switchId);
+    if (!sw) return;
+    sw.querySelectorAll('.ds-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.val === val);
+    });
+}
+
+function getDualSwitchVal(switchId) {
+    var sw = document.getElementById(switchId);
+    if (!sw) return null;
+    var active = sw.querySelector('.ds-btn.active');
+    return active ? active.dataset.val : null;
+}
+
+// v8.78: 保存地理坐标
+function saveGeoLocation() {
+    var lat = document.getElementById('geoLatInput').value;
+    var lon = document.getElementById('geoLonInput').value;
+    if (!lat || !lon) { addAdvOutput('error', '请输入经纬度'); return; }
+    var ns = getDualSwitchVal('latNsSwitch') || 'N';
+    var ew = getDualSwitchVal('lonEwSwitch') || 'E';
+    apiPost('/api/v1/geo', { lat: lat, lon: lon, ns: ns, ew: ew }).then(function(r) {
+        if (r && r.success) {
+            addAdvOutput('success', '坐标已保存: ' + r.data.lat + '°, ' + r.data.lon + '°');
+        } else {
+            addAdvOutput('error', r ? r.message : '保存失败');
+        }
+    }).catch(function(e) {
+        addAdvOutput('error', '请求异常: ' + e.message);
+    });
+}
+
+// v8.78: 加载地理坐标
+function loadGeoLocation() {
+    apiGet('/api/v1/geo').then(function(r) {
+        if (r && r.success && r.data && r.data.lat_raw) {
+            document.getElementById('geoLatInput').value = r.data.lat_raw;
+            document.getElementById('geoLonInput').value = r.data.lon_raw;
+            var ns = r.data.ns || 'N';
+            var ew = r.data.ew || 'E';
+            setDualSwitch('latNsSwitch', ns);
+            setDualSwitch('lonEwSwitch', ew);
+        }
+    }).catch(function(e) {});
 }
 
 // v8.78: NTP时间同步
 function syncNtp() {
     var btn = document.getElementById('btnNtpSync');
-    var output = document.getElementById('ntpOutput');
     var server = document.getElementById('ntpServerSelect').value;
     btn.disabled = true;
     btn.textContent = '同步中...';
-    output.innerHTML = '';
 
     function addLine(text, color) {
+        var output = document.getElementById('advOutput');
         var line = document.createElement('div');
-        line.textContent = text;
-        line.style.color = color || '#8b949e';
-        line.style.padding = '2px 0';
+        line.className = 'output-line ' + (color === '#3fb950' ? 'success' : color === '#f85149' ? 'error' : 'info');
+        var time = new Date().toLocaleTimeString('en-US', {hour12: false});
+        line.textContent = '[' + time + '] ' + text;
         output.appendChild(line);
+        output.scrollTop = output.scrollHeight;
     }
 
     fetch('/api/v1/ntp/sync', {
@@ -771,18 +1127,19 @@ function recordAstroCalPoint() {
             return;
         }
 
-        // 获取当前PTZ位置并记录
-        const pan = window.connectedDevice.lastPan || 0;
-        const tilt = window.connectedDevice.lastTilt || 0;
-
-        return fetch('/api/v1/calibrate/record', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                device_ip: astroCalSession,
-                pan: pan,
-                tilt: tilt
-            })
+        // 从后端缓存获取当前PTZ位置并记录
+        return apiGet('/api/v1/ptz/' + astroCalSession + '/position').then(function(pos) {
+            var pan = (pos && pos.success && pos.data) ? (pos.data.pan || 0) : 0;
+            var tilt = (pos && pos.success && pos.data) ? (pos.data.tilt || 0) : 0;
+            return fetch('/api/v1/calibrate/record', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    device_ip: astroCalSession,
+                    pan: pan,
+                    tilt: tilt
+                })
+            });
         });
     })
     .then(r => r && r.json())
@@ -805,19 +1162,19 @@ function captureAndSolve() {
 
     addAdvOutput('info', '拍摄并解析中...');
 
-    const pan = window.connectedDevice?.lastPan || 0;
-    const tilt = window.connectedDevice?.lastTilt || 0;
-
-    fetch('/api/v1/calibrate/capture', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            device_ip: astroCalSession,
-            pan: pan,
-            tilt: tilt
-        })
-    })
-    .then(r => r.json())
+    apiGet('/api/v1/ptz/' + astroCalSession + '/position').then(function(pos) {
+        var pan = (pos && pos.success && pos.data) ? (pos.data.pan || 0) : 0;
+        var tilt = (pos && pos.success && pos.data) ? (pos.data.tilt || 0) : 0;
+        return fetch('/api/v1/calibrate/capture', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                device_ip: astroCalSession,
+                pan: pan,
+                tilt: tilt
+            })
+        });
+    }).then(function(resp) { return resp.json(); })
     .then(data => {
         if (data.success) {
             addAdvOutput('success', '解析成功: RA=' + data.ra.toFixed(2) + 'h, DEC=' + data.dec.toFixed(2) + '°');
@@ -1025,4 +1382,591 @@ function fetchResult(taskId) {
         addAdvOutput('error', '获取结果失败: ' + e.message);
     });
 }
+
+// ================================================================
+// v8.80: 三星校准
+// ================================================================
+var starAlignSession = null;
+var starAlignStars = [];          // 全部星表(含alt/az)
+var starAlignSelected = [null, null, null, null];  // 4行的选中星 {hip, display_name, vmag, alt, az, ra, dec}
+var starAlignSynced = [false, false, false, false]; // 4行的同步状态
+var starAlignPoints = [];         // 已记录的校准点
+
+// 初始化: 加载地理坐标 + 星表
+function initStarAlign() {
+    // 读取NTP区域已保存的经纬度
+    fetch('/api/v1/geo').then(r => r.json()).then(data => {
+        if (data.success && data.data) {
+            var lat = data.data.lat || 29.45;
+            var lon = data.data.lon || 100.33;
+            loadStarAlignCatalog(lat, lon);
+        }
+    }).catch(e => {});
+}
+
+// 加载星表
+function loadStarAlignCatalog(lat, lon) {
+    fetch('/api/v1/staralign/catalog?lat=' + lat + '&lon=' + lon)
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            starAlignStars = data.stars;
+            // 第1行固定北极星
+            var polaris = starAlignStars.find(s => s.hip === 11767) || starAlignStars[0];
+            if (polaris) {
+                starAlignSelected[0] = polaris;
+                document.getElementById('starName0').textContent = polaris.display_name;
+                document.getElementById('starInfo0').textContent =
+                    'Az=' + polaris.az.toFixed(1) + '° Alt=' + polaris.alt.toFixed(1) + '° V=' + polaris.vmag.toFixed(2);
+            }
+            // 填充下拉菜单
+            refreshStarSelects();
+            addAdvOutput('info', '星表已加载: ' + data.count + ' 颗亮星可见');
+        }
+    })
+    .catch(e => addAdvOutput('error', '加载星表失败: ' + e.message));
+}
+
+// 刷新下拉菜单(排除已选,优先推荐)
+function refreshStarSelects() {
+    // 用本地 starAlignStars 填充,固定10颗
+    // 排序规则: Alt>25°, Vmag<4.0, 与已选星间距>90°
+    // 北极星(第1行)不参与间距计算,第2颗也不和北极星算间距
+    for (var row = 1; row <= 3; row++) {
+        var select = document.getElementById('starSelect' + row);
+        if (!select) continue;
+
+        var currentVal = select.value;
+        var excludeHips = [11767]; // 排除北极星
+        for (var i = 1; i <= 3; i++) {
+            if (i !== row && starAlignSelected[i]) {
+                excludeHips.push(starAlignSelected[i].hip);
+            }
+        }
+
+        // 收集已选星的方位角(用于间距计算)
+        // 北极星不参与间距计算; 第2颗也不和北极星算
+        var refAzs = [];
+        if (row >= 3) {  // 第3颗才开始算间距
+            for (var i = 1; i <= 3; i++) {
+                if (i !== row && starAlignSelected[i] && starAlignSelected[i].hip !== 11767) {
+                    refAzs.push(starAlignSelected[i].az);
+                }
+            }
+        }
+
+        // 过滤+排序
+        var candidates = [];
+        starAlignStars.forEach(function(s) {
+            if (excludeHips.indexOf(s.hip) >= 0) return;
+            if (s.alt < 25 || s.vmag > 4.0) return;
+            // 计算与已选星的最小间距
+            var minSep = 360;
+            for (var j = 0; j < refAzs.length; j++) {
+                var sep = Math.abs(s.az - refAzs[j]);
+                if (sep > 180) sep = 360 - sep;
+                if (sep < minSep) minSep = sep;
+            }
+            // row=1或2时refAzs为空,minSep=360,所有星都满足>90°
+            candidates.push({star: s, minSep: minSep});
+        });
+
+        // 按间距降序排(间距大的优先),间距相同时按亮度排
+        candidates.sort(function(a, b) {
+            if (b.minSep !== a.minSep) return b.minSep - a.minSep;
+            return a.star.vmag - b.star.vmag;
+        });
+
+        // 取前10颗
+        var top10 = candidates.slice(0, 10);
+        // 再按亮度排序显示
+        top10.sort(function(a, b) {
+            return a.star.vmag - b.star.vmag;
+        });
+
+        select.innerHTML = '<option value="">选择星体...</option>';
+        top10.forEach(function(c) {
+            var s = c.star;
+            select.innerHTML += '<option value="' + s.hip + '">' + s.display_name +
+                ' (Az=' + s.az.toFixed(0) + '° Alt=' + s.alt.toFixed(0) + '° V=' + s.vmag.toFixed(1) + ')</option>';
+        });
+
+        if (currentVal) select.value = currentVal;
+    }
+}
+
+// 下拉选择星体
+function onStarSelect(row) {
+    var select = document.getElementById('starSelect' + row);
+    var hip = parseInt(select.value);
+    if (!hip) {
+        starAlignSelected[row] = null;
+        document.getElementById('starInfo' + row).textContent = '';
+        return;
+    }
+
+    var star = starAlignStars.find(s => s.hip === hip);
+    if (!star) return;
+
+    starAlignSelected[row] = star;
+    starAlignSynced[row] = false;
+    document.getElementById('starInfo' + row).textContent =
+        'Az=' + star.az.toFixed(1) + '° Alt=' + star.alt.toFixed(1) + '° V=' + star.vmag.toFixed(2);
+
+    addAdvOutput('info', '已选择 ' + star.display_name);
+    refreshStarSelects();
+}
+
+// 同步星点(PTZ居中后点击) — 等待下一次主控台轮询获取位置
+// 应用校准点（读取当前PTZ位置 → 添加到求解器 → 更新模型）
+function applyStarPoint(row) {
+    if (!starAlignSession) {
+        addAdvOutput('error', '请先点击「开始」');
+        return;
+    }
+    var star = starAlignSelected[row];
+    if (!star) {
+        addAdvOutput('warn', '请先选择星体');
+        return;
+    }
+    if (!window.connectedDevice) {
+        addAdvOutput('error', '未连接设备');
+        return;
+    }
+    var deviceIp = window.connectedDevice.ip;
+
+    // 禁用按钮
+    var btns = document.getElementById('starRow' + row).querySelectorAll('.star-btn');
+    btns.forEach(function(b) { b.disabled = true; });
+    addAdvOutput('info', '正在记录 ' + star.display_name + '...');
+
+    fetch('/api/v1/staralign/apply', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            device_ip: deviceIp,
+            star_hip: star.hip
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            starAlignSynced[row] = true;
+            starAlignPoints.push({row: row, hip: star.hip, name: star.display_name});
+            var msg = '已应用 ' + star.display_name;
+            if (data.model_updated) {
+                msg += ' | 模型已更新: ' + data.quality;
+                if (data.params) {
+                    var p = data.params;
+                    msg += ' IA=' + (p.IA || 0).toFixed(2) + '° IE=' + (p.IE || 0).toFixed(2) + '°';
+                }
+            }
+            addAdvOutput('success', msg);
+
+            // 检查是否4点全部完成
+            var syncedCount = starAlignSynced.filter(function(x) { return x; }).length;
+            if (syncedCount >= 4) {
+                document.getElementById('btnStarAlignSave').disabled = false;
+                addAdvOutput('info', '4个校准点已全部完成，可以保存');
+            }
+        } else {
+            addAdvOutput('error', data.message || '应用失败');
+        }
+        btns.forEach(function(b) { b.disabled = false; });
+    })
+    .catch(function(e) {
+        addAdvOutput('error', '请求异常: ' + e.message);
+        btns.forEach(function(b) { b.disabled = false; });
+    });
+}
+
+// 指向恒星（调用后端goto）
+function pointToStar(row) {
+    if (!starAlignSession) {
+        addAdvOutput('error', '请先点击「开始」');
+        return;
+    }
+    var star = starAlignSelected[row];
+    if (!star) {
+        addAdvOutput('warn', '请先选择星体');
+        return;
+    }
+    if (!window.connectedDevice) {
+        addAdvOutput('error', '未连接设备');
+        return;
+    }
+    var deviceIp = window.connectedDevice.ip;
+
+    addAdvOutput('info', '指向 ' + star.display_name + '...');
+
+    fetch('/api/v1/staralign/goto', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            device_ip: deviceIp,
+            star_hip: star.hip
+        })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.success) {
+            addAdvOutput('success', 'PTZ已指向 ' + star.display_name + '，请微调后点击「应用」');
+        } else {
+            addAdvOutput('error', data.message || '指向失败');
+        }
+    })
+    .catch(function(e) {
+        addAdvOutput('error', '请求异常: ' + e.message);
+    });
+}
+
+// 重来：重置校准，从北极星开始
+function resetStarAlign() {
+    starAlignSynced = [false, false, false, false];
+    starAlignPoints = [];
+    starAlignSession = null;
+    addAdvOutput('info', '校准已重置，请重新点击「开始」');
+    // 禁用所有星行按钮
+    document.querySelectorAll('.star-btn').forEach(function(b) { b.disabled = true; });
+    // 重置底部按钮
+    document.getElementById('btnStarAlignStart').disabled = false;
+    document.getElementById('btnStarAlignReset').disabled = true;
+    document.getElementById('btnStarAlignSave').disabled = true;
+}
+
+// 开始校准
+function startStarAlign() {
+    if (!window.connectedDevice) {
+        addAdvOutput('error', '请先连接设备');
+        return;
+    }
+    var deviceIp = window.connectedDevice.ip;
+    var lat = (window.astroCalConfig && window.astroCalConfig.obs_lat) || 29.45;
+    var lon = (window.astroCalConfig && window.astroCalConfig.obs_lon) || 100.33;
+
+    addAdvOutput('info', '正在初始化三星校准...');
+
+    fetch('/api/v1/staralign/start', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({device_ip: deviceIp, obs_lat: lat, obs_lon: lon})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            starAlignSession = deviceIp;
+            starAlignSynced = [false, false, false, false];
+            starAlignPoints = [];
+
+            // 更新北极星信息
+            if (data.polaris) {
+                var p = data.polaris;
+                document.getElementById('starName0').textContent = p.display_name;
+                document.getElementById('starInfo0').textContent =
+                    'Az=' + p.az.toFixed(1) + '° Alt=' + p.alt.toFixed(1) + '° V=' + p.vmag.toFixed(2);
+                starAlignSelected[0] = p;
+            }
+
+            // 重置状态（移除 starStatus 相关代码）
+            // 启用所有星行按钮
+            document.querySelectorAll('.star-btn').forEach(function(b) { b.disabled = false; });
+
+            document.getElementById('btnStarAlignStart').disabled = true;
+            document.getElementById('btnStarAlignReset').disabled = false;
+            document.getElementById('btnStarAlignSave').disabled = true;
+
+            addAdvOutput('success', '校准会话已启动');
+            addAdvOutput('info', '观测站: ' + lat + '°N, ' + lon + '°E');
+            addAdvOutput('info', '请将PTZ对准北极星并居中，然后点击同步');
+        } else {
+            addAdvOutput('error', data.message || '启动失败');
+        }
+    })
+    .catch(e => addAdvOutput('error', '请求异常: ' + e.message));
+}
+
+// 计算校准参数
+function computeStarAlign() {
+    if (!starAlignSession) {
+        addAdvOutput('error', '请先开始校准');
+        return;
+    }
+    addAdvOutput('info', '正在计算校准参数...');
+
+    fetch('/api/v1/staralign/compute', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({device_ip: starAlignSession})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            var p = data.params;
+            var rms = data.rms;
+            addAdvOutput('success', '🎉 校准完成！');
+            addAdvOutput('info', 'IA=' + (p.IA || 0).toFixed(3) + '°  IE=' + (p.IE || 0).toFixed(3) + '°  NPAE=' + (p.NPAE || 0).toFixed(3) + '°');
+            addAdvOutput('info', '底座倾斜=' + (p.tilt_magnitude || 0).toFixed(3) + '° @ ' + (p.tilt_direction || 0).toFixed(1) + '°');
+            addAdvOutput('info', 'RMS: Az=' + (rms.az_rms || 0).toFixed(4) + '°  Alt=' + (rms.alt_rms || 0).toFixed(4) + '°');
+            addAdvOutput('info', '评级: ' + data.quality);
+
+            // 在结果区显示
+            var resultEl = document.getElementById('advResult');
+            resultEl.innerHTML = '<div style="font-size:12px">' +
+                '<div style="font-weight:600;color:#58a6ff;margin-bottom:8px">🌟 三星校准结果</div>' +
+                '<div class="status-row"><span>IA (方位零点)</span><span>' + (p.IA || 0).toFixed(3) + '°</span></div>' +
+                '<div class="status-row"><span>IE (高度零点)</span><span>' + (p.IE || 0).toFixed(3) + '°</span></div>' +
+                '<div class="status-row"><span>NPAE (轴不正交)</span><span>' + (p.NPAE || 0).toFixed(3) + '°</span></div>' +
+                '<div class="status-row"><span>底座倾斜量</span><span>' + (p.tilt_magnitude || 0).toFixed(3) + '°</span></div>' +
+                '<div class="status-row"><span>倾斜方向</span><span>' + (p.tilt_direction || 0).toFixed(1) + '°</span></div>' +
+                '<div class="status-row"><span>RMS (Az)</span><span>' + (rms.az_rms || 0).toFixed(4) + '°</span></div>' +
+                '<div class="status-row"><span>RMS (Alt)</span><span>' + (rms.alt_rms || 0).toFixed(4) + '°</span></div>' +
+                '<div class="status-row"><span>评级</span><span>' + data.quality + '</span></div>' +
+                '</div>';
+
+            document.getElementById('btnStarAlignSave').disabled = false;
+        } else {
+            addAdvOutput('error', data.message || '计算失败');
+        }
+    })
+    .catch(e => addAdvOutput('error', '请求异常: ' + e.message));
+}
+
+// 保存校准
+function saveStarAlign() {
+    if (!starAlignSession) {
+        addAdvOutput('error', '请先完成校准计算');
+        return;
+    }
+    fetch('/api/v1/staralign/save', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({device_ip: starAlignSession, params: {}})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            addAdvOutput('success', '校准参数已保存');
+        } else {
+            addAdvOutput('error', data.message || '保存失败');
+        }
+    })
+    .catch(e => addAdvOutput('error', '请求异常: ' + e.message));
+}
+
+// ==================== v8.92: 视图辅助遮罩层 ====================
+var _viewAssistState = _viewAssistState || {};
+var _viewAssistColorScheme = 'dark'; // 'dark' or 'bright'
+var _viewAssistOpacity = 50; // 统一透明度 0-100
+
+function getVaOpacity(prefix) {
+    var slider = document.getElementById(prefix + 'ViewAssistOpacity');
+    if (slider) _viewAssistOpacity = parseInt(slider.value);
+    return _viewAssistOpacity / 100;
+}
+
+// v8.92: 配色方案
+var _vaColorSchemes = {
+    dark: { GL:'#00FFFF', RT:'#FFD700', AF:'#FF6699', WB:'#FFB347', BR:'#CC99FF' },
+    bright: { GL:'#0055CC', RT:'#CC3300', AF:'#0033AA', WB:'#CC6600', BR:'#7722AA' }
+};
+
+function getVaColor(type) {
+    return _vaColorSchemes[_viewAssistColorScheme][type];
+}
+
+// v8.92: 切换配色
+function toggleViewAssistScheme(prefix) {
+    _viewAssistColorScheme = _viewAssistColorScheme === 'dark' ? 'bright' : 'dark';
+    var types = ['GL','RT','AF','WB','BR'];
+    types.forEach(function(t) {
+        var btn = document.getElementById(prefix + 'VaBtn' + t);
+        if (!btn) return;
+        var c = getVaColor(t);
+        if (_viewAssistState[prefix + t]) {
+            btn.style.background = c;
+            btn.style.borderColor = c;
+        } else if (!btn.classList.contains('va-btn-auto')) {
+            btn.style.background = '#333';
+            btn.style.borderColor = '#555';
+            btn.style.color = '#999';
+        }
+    });
+    updateViewAssistOverlay(prefix);
+}
+
+// v8.92: 切换遮罩
+function toggleViewAssistMask(prefix, type) {
+    var btn = document.getElementById(prefix + 'VaBtn' + type);
+    if (btn && btn.classList.contains('va-btn-auto') && !_viewAssistState[prefix + type]) {
+        var isActive = checkViewAssistAutoActive(type);
+        if (!isActive) return;
+    }
+    _viewAssistState[prefix + type] = !_viewAssistState[prefix + type];
+    if (btn) {
+        btn.classList.toggle('active', _viewAssistState[prefix + type]);
+        if (_viewAssistState[prefix + type]) {
+            var c = getVaColor(type);
+            btn.style.background = c;
+            btn.style.borderColor = c;
+            btn.style.color = '#fff';
+        } else {
+            btn.style.background = '#333';
+            btn.style.borderColor = '#555';
+            btn.style.color = '#999';
+        }
+    }
+    updateViewAssistOverlay(prefix);
+}
+
+// v8.92: 更新遮罩绘制
+function updateViewAssistOverlay(prefix) {
+    getVaOpacity(prefix);
+    var canvas = document.getElementById(prefix + 'ViewAssistOverlay');
+    if (!canvas) return;
+    var wrap = canvas.parentElement;
+    if (!wrap) return;
+    canvas.width = wrap.offsetWidth;
+    canvas.height = wrap.offsetHeight;
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var w = canvas.width, h = canvas.height;
+    drawVaGuideLines(ctx, w, h, prefix);
+    drawVaReticle(ctx, w, h, prefix);
+    drawVaRegion(ctx, w, h, prefix, 'AF');
+    drawVaRegion(ctx, w, h, prefix, 'WB');
+    drawVaRegion(ctx, w, h, prefix, 'BR');
+}
+
+// v8.92: 绘制辅助线
+function drawVaGuideLines(ctx, w, h, prefix) {
+    if (!_viewAssistState[prefix + 'GL']) return;
+    var op = _viewAssistOpacity / 100;
+    var color = getVaColor('GL');
+    var rgb = hexToRgb(color);
+    ctx.strokeStyle = 'rgba(' + rgb + ',' + op * 0.8 + ')';
+    ctx.lineWidth = 2; ctx.shadowColor = 'rgba(' + rgb + ',' + op * 0.3 + ')'; ctx.shadowBlur = 3;
+    var x1 = w/3, x2 = w*2/3, y1 = h/3, y2 = h*2/3;
+    ctx.beginPath();
+    ctx.moveTo(x1,0); ctx.lineTo(x1,h); ctx.moveTo(x2,0); ctx.lineTo(x2,h);
+    ctx.moveTo(0,y1); ctx.lineTo(w,y1); ctx.moveTo(0,y2); ctx.lineTo(w,y2);
+    ctx.stroke(); ctx.shadowBlur = 0;
+}
+
+// v8.92: 绘制准心（合并同心圆+十字线）
+function drawVaReticle(ctx, w, h, prefix) {
+    if (!_viewAssistState[prefix + 'RT']) return;
+    var op = _viewAssistOpacity / 100;
+    var color = getVaColor('RT');
+    var rgb = hexToRgb(color);
+    var cx = w/2, cy = h/2;
+    // 同心圆（以画面高度为基准）
+    var radii = [h*0.25, h*0.15, h*0.05];
+    ctx.strokeStyle = 'rgba(' + rgb + ',' + op*0.9 + ')';
+    ctx.lineWidth = 2; ctx.shadowColor = 'rgba(' + rgb + ',' + op*0.2 + ')'; ctx.shadowBlur = 2;
+    for (var i=0;i<radii.length;i++) { ctx.beginPath(); ctx.arc(cx,cy,radii[i],0,Math.PI*2); ctx.stroke(); }
+    // 十字线（40%）
+    var len = Math.min(w,h)*0.4;
+    ctx.strokeStyle = 'rgba(' + rgb + ',' + op*0.9 + ')';
+    ctx.lineWidth = 2; ctx.shadowColor = 'rgba(' + rgb + ',' + op*0.3 + ')'; ctx.shadowBlur = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx-len,cy); ctx.lineTo(cx+len,cy); ctx.moveTo(cx,cy-len); ctx.lineTo(cx,cy+len);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(' + rgb + ',' + op + ')';
+    ctx.beginPath(); ctx.arc(cx,cy,2,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+}
+
+var _vaRegionColors = _vaRegionColors || {AF:'#FF6699', WB:'#FFB347', BR:'#CC99FF'};
+var _vaRegionKeys = _vaRegionKeys || {AF:'region_focus', WB:'region_whitebalance', BR:'region_brightness'};
+
+function drawVaRegion(ctx, w, h, prefix, type) {
+    if (!_viewAssistState[prefix + type]) return;
+    var op = _viewAssistOpacity / 100;
+    var color = getVaColor(type);
+    var key = _vaRegionKeys[type];
+    var raw = localStorage.getItem(key);
+    if (!raw) return;
+    try {
+        var r = JSON.parse(raw);
+        if (r.x===undefined || r.w===undefined) return;
+        var rx=r.x*w, ry=r.y*h, rw=r.w*w, rh=r.h*h;
+        ctx.strokeStyle = 'rgba(' + hexToRgb(color) + ',' + op*0.8 + ')';
+        ctx.lineWidth = 1.5; ctx.setLineDash([4,3]);
+        ctx.shadowColor = 'rgba(' + hexToRgb(color) + ',' + op*0.3 + ')'; ctx.shadowBlur = 3;
+        ctx.strokeRect(rx,ry,rw,rh); ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(' + hexToRgb(color) + ',' + op*0.8 + ')';
+        ctx.font = 'bold 12px sans-serif'; ctx.textBaseline = 'bottom'; ctx.textAlign = 'left';
+        ctx.fillText(type, rx+2, ry+12);
+        ctx.shadowBlur = 0;
+    } catch(e) {}
+}
+
+function hexToRgb(hex) {
+    var r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return r+','+g+','+b;
+}
+
+// v8.93: 检查自动功能是否激活（基于定时器配置状态和后端搜索状态）
+function checkViewAssistAutoActive(type) {
+    if (type==='AF') return window._focusTimerConfigured === true;
+    if (type==='WB') return window._wbTimerConfigured === true;
+    if (type==='BR') return window._brightnessTimerConfigured === true;
+    return false;
+}
+
+// v8.93: 从后端轮询搜索状态并更新辅助视图按钮
+function pollSearchState() {
+    if (!window.connectedDevice || !window.connectedDevice.ip) return;
+    
+    var dev = window.connectedDevice.ip;
+    apiGet('/api/v1/vision/search-status').then(function(r) {
+        if (r && r.success) {
+            var activeSearch = r.active; // 'focus' | 'wb' | 'brightness' | null
+            
+            // 更新定时器配置标志
+            if (activeSearch === 'focus') window._focusTimerConfigured = true;
+            if (activeSearch === 'wb') window._wbTimerConfigured = true;
+            if (activeSearch === 'brightness') window._brightnessTimerConfigured = true;
+            
+            // 更新两个页面的辅助视图按钮状态
+            if (typeof updateVaAutoState === 'function') {
+                updateVaAutoState('console');
+                updateVaAutoState('adv');
+            }
+        }
+    }).catch(function(e) {
+        // 静默处理
+    });
+}
+
+function initViewAssistOverlay(prefix) {
+    _viewAssistState[prefix+'GL']=false; _viewAssistState[prefix+'RT']=false;
+    _viewAssistState[prefix+'AF']=false; _viewAssistState[prefix+'WB']=false; _viewAssistState[prefix+'BR']=false;
+    ['GL','RT','AF','WB','BR'].forEach(function(t) {
+        var btn = document.getElementById(prefix+'VaBtn'+t);
+        if (btn) btn.classList.remove('active');
+    });
+    updateVaAutoState(prefix); updateViewAssistOverlay(prefix);
+}
+
+function updateVaAutoState(prefix) {
+    ['AF','WB','BR'].forEach(function(t) {
+        var btn = document.getElementById(prefix+'VaBtn'+t);
+        if (!btn) return;
+        var active = checkViewAssistAutoActive(t);
+        if (active) {
+            btn.classList.remove('va-btn-auto'); btn.style.cursor='pointer'; btn.style.pointerEvents=''; btn.style.opacity='';
+            if (_viewAssistState[prefix+t]) btn.classList.add('active');
+        } else {
+            btn.classList.add('va-btn-auto'); btn.style.cursor='not-allowed'; btn.style.pointerEvents='none';
+            _viewAssistState[prefix+t]=false; btn.classList.remove('active');
+            updateViewAssistOverlay(prefix);
+        }
+    });
+}
+
+window.addEventListener('resize', function() {
+    var canvas = document.getElementById('advViewAssistOverlay');
+    if (canvas) updateViewAssistOverlay('adv');
+});
 </script>

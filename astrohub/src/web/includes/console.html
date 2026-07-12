@@ -121,12 +121,28 @@
                     </div>
                     <!-- 中: 实时画面 + 媒体操作 -->
                     <div class="console-center">
-                        <div class="console-video-wrap" style="background:#0d1117;border:1px solid #30363d;border-radius:8px;margin-bottom:12px;overflow:hidden;position:relative;width:100%;">
+                        <div class="console-video-wrap" style="background:#0d1117;border:1px solid #30363d;border-radius:8px;margin-bottom:0;overflow:hidden;position:relative;width:100%;">
                             <!-- v7.98: WASM 播放器占位区域,保留16:9比例 -->
                             <div id="divPlugin" style="width:100%;aspect-ratio:16/9;display:block;margin:0 auto"></div>
                             <!-- v8.10: 框选区域 overlay(默认隐藏) -->
                             <div id="regionOverlay" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;cursor:crosshair;z-index:100">
                                 <div id="regionBox" style="position:absolute;border:2px dashed #3fb950;background:rgba(63,185,80,0.15);display:none;pointer-events:none"></div>
+                            </div>
+                            <!-- v8.92: 视图辅助遮罩层 -->
+                            <canvas id="consoleViewAssistOverlay" class="view-assist-canvas"></canvas>
+                        </div>
+                        <!-- v8.92: 视图辅助控制栏 -->
+                        <div class="view-assist-bar" id="consoleViewAssistBar">
+                            <div class="va-bar-left">
+                                <button class="va-btn va-btn-scheme" id="consoleVaSchemeBtn" onclick="toggleViewAssistScheme('console')" title="切换配色">🌓</button>
+                                <input type="range" class="va-opacity-slider" id="consoleViewAssistOpacity" min="0" max="100" value="50" oninput="updateViewAssistOverlay('console')" style="width:150px;height:15px">
+                            </div>
+                            <div class="va-bar-right">
+                                <button class="va-btn" id="consoleVaBtnGL" onclick="toggleViewAssistMask('console','GL')">辅助线</button>
+                                <button class="va-btn" id="consoleVaBtnRT" onclick="toggleViewAssistMask('console','RT')">准心</button>
+                                <button class="va-btn va-btn-auto" id="consoleVaBtnAF" onclick="toggleViewAssistMask('console','AF')">AF</button>
+                                <button class="va-btn va-btn-auto" id="consoleVaBtnWB" onclick="toggleViewAssistMask('console','WB')">WB</button>
+                                <button class="va-btn va-btn-auto" id="consoleVaBtnBR" onclick="toggleViewAssistMask('console','BR')">BR</button>
                             </div>
                         </div>
                         <!-- 媒体操作 + 跟踪控制 并排 -->
@@ -608,6 +624,102 @@ input:checked + .toggle-slider:before {
     background: #238636;
     color: #fff;
 }
+
+/* v8.92: 视图辅助 overlay */
+.view-assist-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+}
+.view-assist-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 25px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 0 6px;
+    margin-top: -1px;
+    gap: 4px;
+}
+.va-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+}
+.va-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+.va-opacity-slider {
+    width: 150px;
+    height: 15px;
+    accent-color: #58a6ff;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.va-opacity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #58a6ff;
+    cursor: pointer;
+}
+.va-btn {
+    background: #333;
+    border: 1px solid #555;
+    color: #999;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1.4;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+.va-btn:hover {
+    border-color: #888;
+    color: #ccc;
+}
+.va-btn.active {
+    color: #fff !important;
+}
+.va-btn-auto {
+    background: #555 !important;
+    border-color: #555 !important;
+    color: #777 !important;
+    cursor: not-allowed;
+}
+.va-btn-scheme {
+    width: 28px;
+    height: 20px;
+    padding: 1px 2px;
+    font-size: 11px;
+    line-height: 1;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.va-btn-scheme:hover {
+    border-color: #58a6ff;
+}
 </style>
 
 <script>
@@ -649,6 +761,10 @@ var focusTimerSeconds = 0;
 // v8.67: 局部亮度定时器
 var brightnessTimerId = null;
 var brightnessTimerSeconds = 0;
+// v8.93: 定时器配置标志（用户启用后保持true，解决搜索间隙状态丢失）
+var _focusTimerConfigured = false;
+var _wbTimerConfigured = false;
+var _brightnessTimerConfigured = false;
 // v8.91: 控制台快照
 var _snapshotData = {};
 var _snapshotTimer = null;
@@ -822,7 +938,7 @@ function enableImageControls() {
     if (window.startPtzImagePoll) window.startPtzImagePoll();
 }
 
-// 连接设备时加载图像参数(从function.json读取范围,从ISAPI读取当前值)
+// 连接设备时加载图像参数(从function.json读取范围,从后端缓存读取当前值)
 // v6.20: 优先读取缓存,无缓存时禁用控件
 // v6.41: 修复下拉菜单加载中问题
 // 当 function.json 不存在时,仍然加载基础参数(使用默认范围)
@@ -988,10 +1104,14 @@ function loadAllImageParams(deviceIp) {
         if (snap.osd_ptz !== undefined) {
             var ptzOsd = document.getElementById('ptzOsdSwitch');
             if (ptzOsd) ptzOsd.checked = snap.osd_ptz;
+            var advPtzOsd = document.getElementById('advPtzOsdSwitch');
+            if (advPtzOsd) advPtzOsd.checked = snap.osd_ptz;
         }
         if (snap.osd_info !== undefined) {
             var infoOsd = document.getElementById('infoOsdSwitch');
             if (infoOsd) infoOsd.checked = snap.osd_info;
+            var advInfoOsd = document.getElementById('advInfoOsdSwitch');
+            if (advInfoOsd) advInfoOsd.checked = snap.osd_info;
         }
     });
 }
@@ -1552,9 +1672,15 @@ function toggleWbTimer() {
                 executeScheduledSearch('whitebalance');
             }
         }, 1000);
+        _wbTimerConfigured = true;
+        updateVaAutoState('console');
+        updateVaAutoState('adv');
         showToast('success', '白平衡定时已启动: ' + minutes + '分钟');
     } else {
         stopWbTimer();
+        _wbTimerConfigured = false;
+        updateVaAutoState('console');
+        updateVaAutoState('adv');
         showToast('info', '白平衡定时已关闭');
     }
 }
@@ -1588,9 +1714,15 @@ function toggleFocusTimer() {
                 executeScheduledSearch('focus');
             }
         }, 1000);
+        _focusTimerConfigured = true;
+        updateVaAutoState('console');
+        updateVaAutoState('adv');
         showToast('success', '对焦定时已启动: ' + minutes + '分钟');
     } else {
         stopFocusTimer();
+        _focusTimerConfigured = false;
+        updateVaAutoState('console');
+        updateVaAutoState('adv');
         showToast('info', '对焦定时已关闭');
     }
 }
@@ -1652,9 +1784,15 @@ function toggleBrightnessTimer() {
                 executeScheduledSearch('brightness');
             }
         }, 1000);
+        _brightnessTimerConfigured = true;
+        updateVaAutoState('console');
+        updateVaAutoState('adv');
         showToast('success', '亮度定时已启动: ' + minutes + '分钟');
     } else {
         stopBrightnessTimer();
+        _brightnessTimerConfigured = false;
+        updateVaAutoState('console');
+        updateVaAutoState('adv');
         showToast('info', '亮度定时已关闭');
     }
 }
@@ -1952,6 +2090,7 @@ function setNoiseReduce(type, value) {
 // v8.44: 慢快门
 function loadSlowShutter(deviceIp) {
     var sel = document.getElementById('slowShutterSelect');
+    var advSel = document.getElementById('advSlowShutterSelect');
     if (!sel) return;
     
     // v8.45: 从function.json读取DSS支持倍率
@@ -1970,12 +2109,14 @@ function loadSlowShutter(deviceIp) {
     
     sel.disabled = false;
     sel.innerHTML = '';
+    if (advSel) advSel.innerHTML = '';
     
     // 添加"关闭"选项
     var offOpt = document.createElement('option');
     offOpt.value = 'off';
     offOpt.textContent = '关闭';
     sel.appendChild(offOpt);
+    if (advSel) advSel.appendChild(offOpt.cloneNode(true));
     
     // 从opt_values添加倍率选项
     if (dss.opt_values && Array.isArray(dss.opt_values)) {
@@ -1984,13 +2125,16 @@ function loadSlowShutter(deviceIp) {
             opt.value = level;
             opt.textContent = level;
             sel.appendChild(opt);
+            if (advSel) advSel.appendChild(opt.cloneNode(true));
         });
     }
     
     // 获取当前DSS状态并设置选中项
     apiGet('/api/v1/ptz/' + deviceIp + '/image/slow-shutter').then(function(r) {
         if (r && r.success && r.data) {
-            sel.value = r.data.enabled && r.data.dss_level ? r.data.dss_level : 'off';
+            var curVal = r.data.enabled && r.data.dss_level ? r.data.dss_level : 'off';
+            sel.value = curVal;
+            if (advSel) advSel.value = curVal;
         }
     }).catch(function(e) {
         // 加载失败静默处理
@@ -2006,6 +2150,8 @@ function setSlowShutter(val) {
             if (typeof mediaLog === 'function') mediaLog('慢快门设置: ' + r.message, 'success');
             var sel = document.getElementById('slowShutterSelect');
             if (sel) sel.value = val;
+            var advSel = document.getElementById('advSlowShutterSelect');
+            if (advSel) advSel.value = val;
         } else {
             showToast('error', '慢快门设置失败: ' + (r ? r.message : '未知错误'));
             if (typeof mediaLog === 'function') mediaLog('慢快门设置失败: ' + (r ? r.message : ''), 'error');
@@ -2032,6 +2178,15 @@ function setStreamSegment(seg) {
         });
         var activeBtn = switchEl.querySelector('.qs-btn[data-seg="' + seg + '"]');
         if (activeBtn) activeBtn.classList.add('active');
+    }
+    // v8.81: 同步高级功能页面
+    var advSwitchEl = document.getElementById('advStreamSwitch');
+    if (advSwitchEl) {
+        advSwitchEl.querySelectorAll('.qs-btn').forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+        var advActiveBtn = advSwitchEl.querySelector('.qs-btn[data-seg="' + seg + '"]');
+        if (advActiveBtn) advActiveBtn.classList.add('active');
     }
     saveSnapshot('stream_segment', seg);
 }
@@ -2377,6 +2532,9 @@ function togglePtzOsdSwitch(enabled) {
     ptzOsdEnabled = enabled;
     togglePtzOsd(enabled);
     saveSnapshot('osd_ptz', enabled);
+    // v8.82: 同步高级功能页面
+    var adv = document.getElementById('advPtzOsdSwitch');
+    if (adv) adv.checked = enabled;
 }
 
 // v6.02: Info OSD 开关
@@ -2384,6 +2542,9 @@ function toggleInfoOsdSwitch(enabled) {
     infoOsdEnabled = enabled;
     toggleInfoOsd(enabled);
     saveSnapshot('osd_info', enabled);
+    // v8.82: 同步高级功能页面
+    var adv = document.getElementById('advInfoOsdSwitch');
+    if (adv) adv.checked = enabled;
 }
 
 // 切换 PTZ OSD
@@ -2477,6 +2638,13 @@ function startPtzImagePoll() {
                 if (panEl) panEl.textContent = r.data.pan || 0;
                 if (tiltEl) tiltEl.textContent = r.data.tilt || 0;
                 if (zoomEl) zoomEl.textContent = r.data.zoom || 0;
+                // v8.81: 同步高级功能页面
+                var advPan = document.getElementById('advPtzPan');
+                var advTilt = document.getElementById('advPtzTilt');
+                var advZoom = document.getElementById('advPtzZoom');
+                if (advPan) advPan.textContent = r.data.pan || 0;
+                if (advTilt) advTilt.textContent = r.data.tilt || 0;
+                if (advZoom) advZoom.textContent = r.data.zoom || 0;
             }
         }).catch(function(e) {});
 
@@ -2488,6 +2656,11 @@ function startPtzImagePoll() {
                 var bEl = document.getElementById('ptzWbB');
                 if (rEl) rEl.textContent = wb.red_gain || '--';
                 if (bEl) bEl.textContent = wb.blue_gain || '--';
+                // v8.81: 同步高级功能页面
+                var advR = document.getElementById('advPtzWbR');
+                var advB = document.getElementById('advPtzWbB');
+                if (advR) advR.textContent = wb.red_gain || '--';
+                if (advB) advB.textContent = wb.blue_gain || '--';
             }
         }).catch(function(e) {});
 
@@ -2501,6 +2674,11 @@ function startPtzImagePoll() {
                 var temporalVal = (nr.temporal_level !== undefined && nr.temporal_level !== null) ? nr.temporal_level : '--';
                 if (sEl) sEl.textContent = spatialVal;
                 if (tEl) tEl.textContent = temporalVal;
+                // v8.81: 同步高级功能页面
+                var advS = document.getElementById('advPtzDnrSpatial');
+                var advT = document.getElementById('advPtzDnrTemporal');
+                if (advS) advS.textContent = spatialVal;
+                if (advT) advT.textContent = temporalVal;
             }
         }).catch(function(e) {});
 
@@ -2509,14 +2687,17 @@ function startPtzImagePoll() {
             if (r && r.success && r.data) {
                 var ir = r.data;
                 var iEl = document.getElementById('ptzIris');
-                if (iEl) {
-                    var level = ir.current_level;
-                    if (level !== undefined && level !== null) {
-                        iEl.textContent = 'F' + (level / 100).toFixed(1);  // 如: 200 → F2.0
-                    } else {
-                        iEl.textContent = '--';
-                    }
+                var irisText;
+                var level = ir.current_level;
+                if (level !== undefined && level !== null) {
+                    irisText = 'F' + (level / 100).toFixed(1);  // 如: 200 → F2.0
+                } else {
+                    irisText = '--';
                 }
+                if (iEl) iEl.textContent = irisText;
+                // v8.81: 同步高级功能页面
+                var advI = document.getElementById('advPtzIris');
+                if (advI) advI.textContent = irisText;
             }
         }).catch(function(e) {});
 
@@ -2524,10 +2705,17 @@ function startPtzImagePoll() {
         apiGet('/api/v1/ptz/' + dev + '/image/shutter').then(function(r) {
             if (r && r.success && r.data) {
                 var sh = r.data;
+                var shutterVal = sh.current_level || '--';
                 var sEl = document.getElementById('ptzShutter');
-                if (sEl) sEl.textContent = sh.current_level || '--';
+                if (sEl) sEl.textContent = shutterVal;
+                // v8.81: 同步高级功能页面
+                var advS = document.getElementById('advPtzShutter');
+                if (advS) advS.textContent = shutterVal;
             }
         }).catch(function(e) {});
+
+        // 6. v8.93: 轮询搜索状态，更新辅助视图按钮
+        if (typeof pollSearchState === 'function') pollSearchState();
     }, 1000);
 }
 
@@ -2592,4 +2780,285 @@ window.stopAutoFocus = stopAutoFocus;
 window.stopAutoBrightness = stopAutoBrightness;
 // v8.58: consoleSnapshot函数已移至console.html单独定义
 window.consoleSnapshot = consoleSnapshot;
+
+// ==================== v8.92: 视图辅助遮罩层 ====================
+// 状态存储：prefix + type -> true/false
+var _viewAssistState = {};
+var _viewAssistColorScheme = 'dark'; // 'dark' or 'bright'
+var _viewAssistOpacity = 50; // 统一透明度 0-100
+
+// 从统一滑动条读取透明度（先更新值再绘制）
+function getVaOpacity(prefix) {
+    var slider = document.getElementById(prefix + 'ViewAssistOpacity');
+    if (slider) _viewAssistOpacity = parseInt(slider.value);
+    return _viewAssistOpacity / 100;
+}
+
+// v8.92: 配色方案
+var _vaColorSchemes = {
+    dark: { GL:'#00FFFF', RT:'#FFD700', AF:'#FF6699', WB:'#FFB347', BR:'#CC99FF' },
+    bright: { GL:'#0055CC', RT:'#CC3300', AF:'#0033AA', WB:'#CC6600', BR:'#7722AA' }
+};
+
+function getVaColor(type) {
+    return _vaColorSchemes[_viewAssistColorScheme][type];
+}
+
+// v8.92: 切换配色
+function toggleViewAssistScheme(prefix) {
+    _viewAssistColorScheme = _viewAssistColorScheme === 'dark' ? 'bright' : 'dark';
+    // 更新所有按钮颜色
+    var types = ['GL','RT','AF','WB','BR'];
+    types.forEach(function(t) {
+        var btn = document.getElementById(prefix + 'VaBtn' + t);
+        if (!btn) return;
+        var c = getVaColor(t);
+        if (_viewAssistState[prefix + t]) {
+            // 激活态：更新背景+保持黑字
+            btn.style.background = c;
+            btn.style.borderColor = c;
+        } else if (!btn.classList.contains('va-btn-auto')) {
+            // 未激活非禁用：默认灰底
+            btn.style.background = '#333';
+            btn.style.borderColor = '#555';
+            btn.style.color = '#999';
+        }
+    });
+    updateViewAssistOverlay(prefix);
+}
+
+// v8.92: 切换遮罩
+function toggleViewAssistMask(prefix, type) {
+    var btn = document.getElementById(prefix + 'VaBtn' + type);
+    // AF/WB/BR 未激活时不可点击
+    if (btn && btn.classList.contains('va-btn-auto') && !_viewAssistState[prefix + type]) {
+        var isActive = checkViewAssistAutoActive(type);
+        if (!isActive) return;
+    }
+    _viewAssistState[prefix + type] = !_viewAssistState[prefix + type];
+    if (btn) {
+        btn.classList.toggle('active', _viewAssistState[prefix + type]);
+        // 激活时设置纯色背景+反白文字，关闭时恢复默认
+        if (_viewAssistState[prefix + type]) {
+            var c = getVaColor(type);
+            btn.style.background = c;
+            btn.style.borderColor = c;
+            btn.style.color = '#fff';
+        } else {
+            btn.style.background = '#333';
+            btn.style.borderColor = '#555';
+            btn.style.color = '#999';
+        }
+    }
+    updateViewAssistOverlay(prefix);
+}
+
+// v8.92: 更新遮罩绘制
+function updateViewAssistOverlay(prefix) {
+    getVaOpacity(prefix); // 从统一滑动条读取透明度
+    var canvas = document.getElementById(prefix + 'ViewAssistOverlay');
+    if (!canvas) return;
+    var wrap = canvas.parentElement;
+    if (!wrap) return;
+    canvas.width = wrap.offsetWidth;
+    canvas.height = wrap.offsetHeight;
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var w = canvas.width, h = canvas.height;
+
+    drawVaGuideLines(ctx, w, h, prefix);
+    drawVaReticle(ctx, w, h, prefix);
+    drawVaRegion(ctx, w, h, prefix, 'AF');
+    drawVaRegion(ctx, w, h, prefix, 'WB');
+    drawVaRegion(ctx, w, h, prefix, 'BR');
+}
+
+// v8.92: 绘制辅助线（原RT/Guideline）
+function drawVaGuideLines(ctx, w, h, prefix) {
+    if (!_viewAssistState[prefix + 'GL']) return;
+    var op = _viewAssistOpacity / 100;
+    var color = getVaColor('GL');
+    var rgb = hexToRgb(color);
+    ctx.strokeStyle = 'rgba(' + rgb + ',' + op * 0.8 + ')';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = 'rgba(' + rgb + ',' + op * 0.3 + ')';
+    ctx.shadowBlur = 3;
+    // 2横2纵（三等分线）
+    var x1 = w / 3, x2 = w * 2 / 3;
+    var y1 = h / 3, y2 = h * 2 / 3;
+    ctx.beginPath();
+    ctx.moveTo(x1, 0); ctx.lineTo(x1, h);
+    ctx.moveTo(x2, 0); ctx.lineTo(x2, h);
+    ctx.moveTo(0, y1); ctx.lineTo(w, y1);
+    ctx.moveTo(0, y2); ctx.lineTo(w, y2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+}
+
+// v8.92: 绘制准心（合并CT同心圆 + CH十字线）
+function drawVaReticle(ctx, w, h, prefix) {
+    if (!_viewAssistState[prefix + 'RT']) return;
+    var op = _viewAssistOpacity / 100;
+    var color = getVaColor('RT');
+    var rgb = hexToRgb(color);
+    var cx = w / 2, cy = h / 2;
+
+    // 同心圆（以画面高度为基准）
+    var radii = [h * 0.25, h * 0.15, h * 0.05];
+    ctx.strokeStyle = 'rgba(' + rgb + ',' + op * 0.9 + ')';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = 'rgba(' + rgb + ',' + op * 0.2 + ')';
+    ctx.shadowBlur = 2;
+    for (var i = 0; i < radii.length; i++) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, radii[i], 0, Math.PI * 2);
+        ctx.stroke();
+    }
+
+    // 十字线（40%）
+    var len = Math.min(w, h) * 0.4;
+    ctx.strokeStyle = 'rgba(' + rgb + ',' + op * 0.9 + ')';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = 'rgba(' + rgb + ',' + op * 0.3 + ')';
+    ctx.shadowBlur = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx - len, cy); ctx.lineTo(cx + len, cy);
+    ctx.moveTo(cx, cy - len); ctx.lineTo(cx, cy + len);
+    ctx.stroke();
+
+    // 中心点
+    ctx.fillStyle = 'rgba(' + rgb + ',' + op + ')';
+    ctx.beginPath();
+    ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+}
+
+// v8.92: 区域标识框
+var _vaRegionColors = {AF:'#FF6699', WB:'#FFB347', BR:'#CC99FF'};
+var _vaRegionKeys = {AF:'region_focus', WB:'region_whitebalance', BR:'region_brightness'};
+
+function drawVaRegion(ctx, w, h, prefix, type) {
+    if (!_viewAssistState[prefix + type]) return;
+    var op = _viewAssistOpacity / 100;
+    var color = getVaColor(type);
+    var key = _vaRegionKeys[type];
+    var raw = localStorage.getItem(key);
+    if (!raw) return;
+    try {
+        var r = JSON.parse(raw);
+        if (r.x === undefined || r.w === undefined) return;
+        var rx = r.x * w, ry = r.y * h, rw = r.w * w, rh = r.h * h;
+        ctx.strokeStyle = 'rgba(' + hexToRgb(color) + ',' + op * 0.8 + ')';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 3]);
+        ctx.shadowColor = 'rgba(' + hexToRgb(color) + ',' + op * 0.3 + ')';
+        ctx.shadowBlur = 3;
+        ctx.strokeRect(rx, ry, rw, rh);
+        ctx.setLineDash([]);
+        // 标签
+        ctx.fillStyle = 'rgba(' + hexToRgb(color) + ',' + op * 0.8 + ')';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textBaseline = 'bottom';
+        ctx.textAlign = 'left';
+        ctx.fillText(type, rx + 2, ry + 12);
+        ctx.shadowBlur = 0;
+    } catch(e) {}
+}
+
+function hexToRgb(hex) {
+    var r = parseInt(hex.slice(1,3), 16);
+    var g = parseInt(hex.slice(3,5), 16);
+    var b = parseInt(hex.slice(5,7), 16);
+    return r + ',' + g + ',' + b;
+}
+
+// v8.93: 检查自动功能是否激活（基于定时器配置状态和后端搜索状态）
+function checkViewAssistAutoActive(type) {
+    if (type === 'AF') {
+        return window._focusTimerConfigured === true;
+    }
+    if (type === 'WB') {
+        return window._wbTimerConfigured === true;
+    }
+    if (type === 'BR') {
+        return window._brightnessTimerConfigured === true;
+    }
+    return false;
+}
+
+// v8.93: 从后端轮询搜索状态并更新辅助视图按钮
+function pollSearchState() {
+    if (!window.connectedDevice || !window.connectedDevice.ip) return;
+    
+    var dev = window.connectedDevice.ip;
+    apiGet('/api/v1/vision/search-status').then(function(r) {
+        if (r && r.success) {
+            var activeSearch = r.active; // 'focus' | 'wb' | 'brightness' | null
+            
+            // 更新定时器配置标志
+            if (activeSearch === 'focus') window._focusTimerConfigured = true;
+            if (activeSearch === 'wb') window._wbTimerConfigured = true;
+            if (activeSearch === 'brightness') window._brightnessTimerConfigured = true;
+            
+            // 更新两个页面的辅助视图按钮状态
+            updateVaAutoState('console');
+            updateVaAutoState('adv');
+        }
+    }).catch(function(e) {
+        // 静默处理
+    });
+}
+
+// v8.92: 初始化视图辅助（每次加载页面时调用）
+function initViewAssistOverlay(prefix) {
+    // 重置状态
+    _viewAssistState[prefix + 'GL'] = false;
+    _viewAssistState[prefix + 'RT'] = false;
+    _viewAssistState[prefix + 'AF'] = false;
+    _viewAssistState[prefix + 'WB'] = false;
+    _viewAssistState[prefix + 'BR'] = false;
+    // 更新按钮状态
+    var types = ['GL','RT','AF','WB','BR'];
+    types.forEach(function(t) {
+        var btn = document.getElementById(prefix + 'VaBtn' + t);
+        if (btn) btn.classList.remove('active');
+    });
+    // 更新AF/WB/BR自动状态
+    updateVaAutoState(prefix);
+    updateViewAssistOverlay(prefix);
+}
+
+function updateVaAutoState(prefix) {
+    var autoTypes = ['AF','WB','BR'];
+    autoTypes.forEach(function(t) {
+        var btn = document.getElementById(prefix + 'VaBtn' + t);
+        if (!btn) return;
+        var active = checkViewAssistAutoActive(t);
+        if (active) {
+            btn.classList.remove('va-btn-auto');
+            btn.style.cursor = 'pointer';
+            btn.style.pointerEvents = '';
+            btn.style.opacity = '';
+            // 如果原来是亮的，保持亮
+            if (_viewAssistState[prefix + t]) btn.classList.add('active');
+        } else {
+            btn.classList.add('va-btn-auto');
+            btn.style.cursor = 'not-allowed';
+            btn.style.pointerEvents = 'none';
+            _viewAssistState[prefix + t] = false;
+            btn.classList.remove('active');
+            updateViewAssistOverlay(prefix);
+        }
+    });
+}
+
+// v8.92: 窗口大小变化时重绘遮罩
+window.addEventListener('resize', function() {
+    var pages = ['console', 'adv'];
+    pages.forEach(function(p) {
+        var canvas = document.getElementById(p + 'ViewAssistOverlay');
+        if (canvas) updateViewAssistOverlay(p);
+    });
+});
 </script>
