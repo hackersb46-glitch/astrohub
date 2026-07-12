@@ -1765,6 +1765,7 @@ async def save_settings() -> dict:
 import json as _json
 from pathlib import Path as _Path
 _REGISTRY_FILE = _Path(__file__).resolve().parent.parent.parent / "data" / "registry.json"
+_SNAPSHOT_FILE = _Path(__file__).resolve().parent.parent.parent / "data" / "console_snapshot.json"
 
 
 def _read_registry() -> dict:
@@ -1778,6 +1779,88 @@ def _write_registry(data: dict):
     _REGISTRY_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(_REGISTRY_FILE, "w", encoding="utf-8") as f:
         _json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+@api_router.get("/console/snapshot", summary="获取控制台快照", tags=["Console"])
+async def get_console_snapshot() -> dict:
+    """读取控制台快照。"""
+    if _SNAPSHOT_FILE.exists():
+        with open(_SNAPSHOT_FILE, "r", encoding="utf-8") as f:
+            return {"success": True, "data": _json.load(f)}
+    return {"success": True, "data": {}}
+
+
+@api_router.post("/console/snapshot", summary="保存控制台快照", tags=["Console"])
+async def save_console_snapshot(data: dict) -> dict:
+    """保存控制台快照。"""
+    _SNAPSHOT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(_SNAPSHOT_FILE, "w", encoding="utf-8") as f:
+        _json.dump(data, f, indent=2, ensure_ascii=False)
+    return {"success": True}
+
+
+@api_router.post("/ntp/sync", summary="NTP时间同步", tags=["NTP"])
+async def ntp_sync(data: dict):
+    """NTP时间同步 - SSE流式返回进度。"""
+    from fastapi.responses import StreamingResponse
+    import asyncio
+    from src.advanced.ntp_sync import read_ntp_time, sync_device_time, sync_windows_time
+
+    ntp_server = data.get("ntp_server", "ntp.aliyun.com")
+
+    async def _generate():
+        # 1. 读取NTP时间
+        yield f"data: {_json.dumps({'step': 'reading', 'message': '正在读取NTP时间……'})}\n\n"
+        ntp_r = await asyncio.to_thread(read_ntp_time, ntp_server, 5)
+        if not ntp_r.get("success"):
+            yield f"data: {_json.dumps({'step': 'error', 'message': 'NTP读取失败: ' + ntp_r.get('error', '未知错误')})}\n\n"
+            return
+        ntp_ts = ntp_r["ntp_timestamp"]
+        ntp_time_cst = ntp_r["ntp_time_cst"]
+        yield f"data: {_json.dumps({'step': 'ntp_ok', 'message': '当前NTP时间: ' + ntp_time_cst})}\n\n"
+
+        # 2. 获取已连接设备信息
+        mgr: PTZDeviceController | None = _managers.get("ptz_controller")
+        if not mgr:
+            yield f"data: {_json.dumps({'step': 'error', 'message': 'PTZDeviceController未初始化'})}\n\n"
+            return
+        device = mgr.get_connected_device()
+        if not device:
+            yield f"data: {_json.dumps({'step': 'error', 'message': '没有已连接的设备'})}\n\n"
+            return
+        ip = device.get("ip", "")
+        if not ip:
+            yield f"data: {_json.dumps({'step': 'error', 'message': '设备IP为空'})}\n\n"
+            return
+        yield f"data: {_json.dumps({'step': 'device_handshake', 'message': '完成PTZ设备握手……'})}\n\n"
+
+        # 3. 写入设备时间（+3秒补偿，一次性同时写timeMode=manual + localTime）
+        creds = mgr.get_credentials(ip)
+        if not creds:
+            yield f"data: {_json.dumps({'step': 'error', 'message': '无法获取设备凭据'})}\n\n"
+            return
+        dev_r = await asyncio.to_thread(
+            sync_device_time,
+            ip=ip,
+            username=creds["username"],
+            password=creds["password"],
+            port=creds.get("port", 80),
+            ntp_server=ntp_server,
+            ntp_timestamp=ntp_ts,
+        )
+        yield f"data: {_json.dumps({'step': 'device_write', 'message': 'PTZ设备写入……' + ('成功' if dev_r.get('success') else '失败: ' + dev_r.get('message', ''))})}\n\n"
+        if not dev_r.get("success"):
+            return
+
+        # 4. 写入本机时间
+        yield f"data: {_json.dumps({'step': 'local_write', 'message': '本机写入……'})}\n\n"
+        win_r = await asyncio.to_thread(sync_windows_time, ntp_ts)
+        if win_r.get("success"):
+            yield f"data: {_json.dumps({'step': 'done', 'message': '✓ 同步成功'})}\n\n"
+        else:
+            yield f"data: {_json.dumps({'step': 'error', 'message': '本机写入失败: ' + win_r.get('error', '未知')})}\n\n"
+
+    return StreamingResponse(_generate(), media_type="text/event-stream")
 
 
 @api_router.get("/console/state", summary="获取控制台状态", tags=["Console"])

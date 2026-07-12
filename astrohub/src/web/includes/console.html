@@ -32,7 +32,7 @@
                                         </div>
                                         <div class="ptz-speed" style="width:170px;font-size:11px;margin-top:8px">
                                             <label style="font-size:11px">速度:</label>
-                                            <input type="range" id="ptzSpeed" min="1" max="7" value="4" style="width:90px">
+                                            <input type="range" id="ptzSpeed" min="1" max="7" value="4" style="width:90px" onchange="saveSnapshot('ptz_speed', parseInt(this.value))">
                                             <span id="ptzSpeedVal" style="font-size:11px">4</span>
                                         </div>
                                         <div style="width:154px;display:flex;gap:4px;margin-left:auto;margin-right:auto;margin-top:4px">
@@ -649,6 +649,32 @@ var focusTimerSeconds = 0;
 // v8.67: 局部亮度定时器
 var brightnessTimerId = null;
 var brightnessTimerSeconds = 0;
+// v8.91: 控制台快照
+var _snapshotData = {};
+var _snapshotTimer = null;
+
+function saveSnapshot(field, value) {
+    _snapshotData[field] = value;
+    // 防抖：合并快速连续变更
+    if (_snapshotTimer) clearTimeout(_snapshotTimer);
+    _snapshotTimer = setTimeout(function() {
+        apiPost('/api/v1/console/snapshot', _snapshotData).catch(function(e) {});
+        _snapshotTimer = null;
+    }, 300);
+}
+
+function loadSnapshot(callback) {
+    apiGet('/api/v1/console/snapshot').then(function(r) {
+        if (r && r.success && r.data) {
+            _snapshotData = r.data;
+            if (callback) callback(_snapshotData);
+        } else if (callback) {
+            callback({});
+        }
+    }).catch(function(e) {
+        if (callback) callback({});
+    });
+}
 
 // v6.20 + v7.0: 禁用所有控制区域(PTZ + 媒体 + 跟踪 + 画面)
 function disableImageControls(reason) {
@@ -933,6 +959,41 @@ function loadAllImageParams(deviceIp) {
     loadGain(deviceIp);
     // v8.69: 恢复上次控制台状态
     loadConsoleState();
+    // v8.91: 加载控制台快照
+    loadSnapshot(function(snap) {
+        // 快照中的值在设备参数加载完成后 apply
+        // 这里只恢复 UI 控件值，不重新调 API（设备值已由上面各 load 函数获取）
+        // 快照主要用于模式切换时的目标值恢复
+        if (snap.brightness !== undefined) {
+            var bri = document.getElementById('consoleBrightness');
+            var briVal = document.getElementById('brightnessVal');
+            if (bri) bri.value = snap.brightness;
+            if (briVal) briVal.textContent = snap.brightness;
+        }
+        if (snap.gain_level !== undefined) {
+            var gain = document.getElementById('gainLevel');
+            var gainVal = document.getElementById('gainVal');
+            if (gain) gain.value = snap.gain_level;
+            if (gainVal) gainVal.textContent = snap.gain_level;
+        }
+        if (snap.ptz_speed !== undefined) {
+            var speed = document.getElementById('ptzSpeed');
+            var speedVal = document.getElementById('ptzSpeedVal');
+            if (speed) speed.value = snap.ptz_speed;
+            if (speedVal) speedVal.textContent = snap.ptz_speed;
+        }
+        if (snap.stream_segment !== undefined) {
+            setStreamSegment(snap.stream_segment);
+        }
+        if (snap.osd_ptz !== undefined) {
+            var ptzOsd = document.getElementById('ptzOsdSwitch');
+            if (ptzOsd) ptzOsd.checked = snap.osd_ptz;
+        }
+        if (snap.osd_info !== undefined) {
+            var infoOsd = document.getElementById('infoOsdSwitch');
+            if (infoOsd) infoOsd.checked = snap.osd_info;
+        }
+    });
 }
 
 // v8.69: 从后端加载控制台状态
@@ -1335,6 +1396,7 @@ function setSharpness(value) {
     if (!dev) return;
     apiPost('/api/v1/ptz/' + dev + '/image/sharpness', { level: parseInt(value) })
         .then(function(r) { if (r && r.success && typeof operationLog === 'function') operationLog('锐度: ' + value, 'success'); });
+    saveSnapshot('sharpness', parseInt(value));
 }
 
 // 白平衡模式切换:显示/隐藏对应控件
@@ -1373,6 +1435,7 @@ function onWbModeChange(mode) {
     
     // v8.69: 保存白平衡模式状态
     apiPost('/api/v1/console/state', { wb_mode: mode });
+    saveSnapshot('wb_mode', mode);
 }
 
 // 停止自动白平衡
@@ -1425,6 +1488,7 @@ function onFocusModeChange(mode) {
     
     // v8.69: 保存对焦模式状态
     apiPost('/api/v1/console/state', { focus_mode: mode });
+    saveSnapshot('focus_mode', mode);
 }
 
 // 停止自动对焦
@@ -1629,6 +1693,8 @@ function onConsoleBrightnessChange(value) {
         label.textContent = '亮度 ';
         adjustImage('brightness', value);
     }
+    // v8.91: 实时写入快照
+    saveSnapshot('brightness', value);
 }
 
 function stopAutoBrightness() {
@@ -1859,6 +1925,7 @@ function setWhiteBalanceGain(channel, value) {
                 if (typeof operationLog === 'function') operationLog('白平衡' + label + ': ' + value, 'success');
             }
         });
+    saveSnapshot(channel === 'red' ? 'wb_red' : 'wb_blue', parseInt(value));
 }
 
 // 设置降噪
@@ -1879,6 +1946,7 @@ function setNoiseReduce(type, value) {
                 if (typeof operationLog === 'function') operationLog(label + ': ' + value, 'success');
             }
         });
+    saveSnapshot(type === 'spatial' ? 'dnr_spatial' : 'dnr_temporal', parseInt(value));
 }
 
 // v8.44: 慢快门
@@ -1947,6 +2015,7 @@ function setSlowShutter(val) {
         if (typeof mediaLog === 'function') mediaLog('慢快门请求异常: ' + e.message, 'error');
         loadSlowShutter(dev);
     });
+    saveSnapshot('slow_shutter', val);
 }
 // v8.74: 码流四段式开关
 function setStreamSegment(seg) {
@@ -1964,6 +2033,7 @@ function setStreamSegment(seg) {
         var activeBtn = switchEl.querySelector('.qs-btn[data-seg="' + seg + '"]');
         if (activeBtn) activeBtn.classList.add('active');
     }
+    saveSnapshot('stream_segment', seg);
 }
 // v8.43: 三段式开关 - 更新高亮
 function updateSwitchHighlight(switchId, selectedValue) {
@@ -1999,6 +2069,7 @@ function setDayNightMode(mode) {
             if (typeof operationLog === 'function') operationLog('日夜模式请求异常: ' + e.message, 'error');
             loadFilterStatus(dev);
         });
+    saveSnapshot('day_night_mode', mode);
 }
 
 // v8.56: 加载滤镜状态（IR滤镜三段开关已移除，统一用日夜模式控制）
@@ -2102,6 +2173,20 @@ function setExposureMode(mode) {
     }
     // v5.47: 更新快门光圈禁用状态
     updateShutterIrisState();
+    // 切回非局部模式时，重新从设备读取亮度值
+    if (mode !== 'local') {
+        var dev2 = window.connectedDevice ? window.connectedDevice.ip : null;
+        if (dev2) {
+            apiGet('/api/v1/ptz/' + dev2 + '/image/color').then(function(r) {
+                if (r && r.success && r.data && r.data.brightness !== undefined) {
+                    var bri2 = document.getElementById('consoleBrightness');
+                    var val2 = document.getElementById('brightnessVal');
+                    if (bri2) bri2.value = r.data.brightness;
+                    if (val2) val2.textContent = r.data.brightness;
+                }
+            }).catch(function(e) {});
+        }
+    }
     // v8.67: 更新亮度滑块标签
     var label = document.getElementById('brightnessLabelText');
     if (label) {
@@ -2126,6 +2211,7 @@ function setExposureMode(mode) {
     
     // v8.69: 保存曝光模式状态
     saveConsoleState({ exposure_mode: mode });
+    saveSnapshot('exposure_mode', mode);
 }
 
 // v5.47: 更新快门光圈禁用状态
@@ -2201,6 +2287,7 @@ function setShutterSpeed(value) {
                 if (typeof operationLog === 'function') operationLog('快门: ' + value, 'success');
             }
         });
+    saveSnapshot('shutter_speed', value);
 }
 
 // 设置光圈
@@ -2216,6 +2303,7 @@ function setIris(value) {
                 if (typeof operationLog === 'function') operationLog('光圈: ' + label, 'success');
             }
         });
+    saveSnapshot('iris_level', parseInt(value));
 }
 
 // v7.03: 设置增益
@@ -2227,10 +2315,10 @@ function setGain(value) {
     var intVal = parseInt(value);
 
     if (mode === 'local') {
-        // 局部模式：存储为脚本最大增益
         window.localGainLimit = intVal;
         showToast('success', '局部最大增益: ' + intVal);
         if (typeof operationLog === 'function') operationLog('局部最大增益: ' + intVal, 'success');
+        saveSnapshot('gain_level', intVal);
         return;
     }
 
@@ -2240,11 +2328,11 @@ function setGain(value) {
         showToast('success', '增益: ' + intVal);
         if (typeof operationLog === 'function') operationLog('增益: ' + intVal, 'success');
     } else {
-        // 自动/光圈优先/快门优先：设置最大增益限制
         payload.gain_limit = intVal;
         showToast('success', '最大增益: ' + intVal);
         if (typeof operationLog === 'function') operationLog('最大增益: ' + intVal, 'success');
     }
+    saveSnapshot('gain_level', intVal);
 
     apiPost('/api/v1/ptz/' + dev + '/image/gain', payload)
         .then(function(r) {
@@ -2288,12 +2376,14 @@ function loadGain(deviceIp) {
 function togglePtzOsdSwitch(enabled) {
     ptzOsdEnabled = enabled;
     togglePtzOsd(enabled);
+    saveSnapshot('osd_ptz', enabled);
 }
 
 // v6.02: Info OSD 开关
 function toggleInfoOsdSwitch(enabled) {
     infoOsdEnabled = enabled;
     toggleInfoOsd(enabled);
+    saveSnapshot('osd_info', enabled);
 }
 
 // 切换 PTZ OSD

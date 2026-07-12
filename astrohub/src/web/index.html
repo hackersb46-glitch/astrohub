@@ -221,7 +221,7 @@
         <button class="nav-btn" data-page="devices">设备管理</button>
         <button class="nav-btn" data-page="console">主控台</button>
         <button class="nav-btn" data-page="observation">观测计划</button>
-        <!-- Advanced Features: 校准 功能测试 限位测试 速度测试 推流/存储 -->
+        <!-- Advanced Features: 校准 功能测试 限位测试 速度测试 -->
         <button class="nav-btn" data-page="advanced">高级功能</button>
         <button class="nav-btn" data-page="replay">回放</button>
         <button class="nav-btn" data-page="settings">设置</button>
@@ -2130,6 +2130,10 @@ function showStartupProgress() {
             }).catch(function(e) {
                 showToast('error', '设置异常: ' + e.message);
             });
+            // v8.91: 写入快照
+            if (typeof saveSnapshot === 'function') {
+                saveSnapshot(param === 'brightness' ? 'brightness' : param === 'contrast' ? 'contrast' : param === 'saturation' ? 'saturation' : param, parseInt(value));
+            }
         }
         function adjustImageStep(param, delta) {
             var sliderId = 'console' + param.charAt(0).toUpperCase() + param.slice(1);
