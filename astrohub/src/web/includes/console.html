@@ -58,13 +58,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- 码流控制 -->
+                                <!-- v8.74: 码流四段式开关 -->
                                 <div class="section-subtitle">码流</div>
-                                <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:8px">
-                                    <button class="btn btn-primary btn-sm" id="btnStreamMain" onclick="switchAndPlay(1)" title="主码流">主</button>
-                                    <button class="btn btn-primary btn-sm" id="btnStreamSub" onclick="switchAndPlay(2)" title="子码流">子</button>
-                                    <button class="btn btn-primary btn-sm" id="btnStreamThird" onclick="switchAndPlay(3)" title="第三码流">三</button>
-                                    <button class="btn btn-primary btn-sm" id="btnStreamStop" onclick="doStopPreview()" title="停止预览">⏹</button>
+                                <div class="quadruple-switch" id="streamSwitch" style="display:flex;width:100%;margin-bottom:8px">
+                                    <button class="qs-btn active" data-seg="1" onclick="setStreamSegment(1)">主</button>
+                                    <button class="qs-btn" data-seg="2" onclick="setStreamSegment(2)">子</button>
+                                    <button class="qs-btn" data-seg="3" onclick="setStreamSegment(3)">三</button>
+                                    <button class="qs-btn" data-seg="0" onclick="setStreamSegment(0)">⏹</button>
                                 </div>
                                 <!-- 预置点 -->
                                 <div class="section-subtitle">预置点</div>
@@ -75,30 +75,33 @@
                                     <button class="btn btn-primary btn-sm" onclick="ptzGotoSelectedPreset()">前往</button>
                                     <button class="btn btn-primary btn-sm" onclick="ptzWritePreset()">写入</button>
                                 </div>
-                                <!-- 信息显示开关 -->
-                                <div class="section-subtitle">信息显示</div>
-                                <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px">
-                                    <div style="display:flex;align-items:center;gap:6px">
-                                        <span style="color:#8b949e;font-size:11px">OSD</span>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="infoOsdSwitch" onchange="toggleInfoOsdSwitch(this.checked)">
-                                            <span class="toggle-slider"></span>
-                                        </label>
+                                <!-- v8.74: 信息显示 + 慢快门 合并一行左右分栏 -->
+                                <div style="display:flex;gap:12px;margin-bottom:8px">
+                                    <div style="flex:1">
+                                        <div class="section-subtitle" style="margin-bottom:4px">信息显示</div>
+                                        <div style="display:flex;gap:12px;justify-content:center">
+                                            <div style="display:flex;align-items:center;gap:6px">
+                                                <span style="color:#8b949e;font-size:11px">OSD</span>
+                                                <label class="toggle-switch">
+                                                    <input type="checkbox" id="infoOsdSwitch" onchange="toggleInfoOsdSwitch(this.checked)">
+                                                    <span class="toggle-slider"></span>
+                                                </label>
+                                            </div>
+                                            <div style="display:flex;align-items:center;gap:6px">
+                                                <span style="color:#8b949e;font-size:11px">PTZ</span>
+                                                <label class="toggle-switch">
+                                                    <input type="checkbox" id="ptzOsdSwitch" checked onchange="togglePtzOsdSwitch(this.checked)">
+                                                    <span class="toggle-slider"></span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div style="display:flex;align-items:center;gap:6px">
-                                        <span style="color:#8b949e;font-size:11px">PTZ</span>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="ptzOsdSwitch" checked onchange="togglePtzOsdSwitch(this.checked)">
-                                            <span class="toggle-slider"></span>
-                                        </label>
+                                    <div style="flex:1">
+                                        <div class="section-subtitle" style="margin-bottom:4px">慢快门</div>
+                                        <select id="slowShutterSelect" style="width:100%;padding:4px 8px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:11px" onchange="setSlowShutter(this.value)">
+                                            <option value="0">关闭</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <!-- v8.44: 慢快门 -->
-                                <div class="section-subtitle">慢快门</div>
-                                <div style="display:flex;gap:6px;justify-content:center;align-items:center;margin-bottom:8px">
-                                    <select id="slowShutterSelect" style="padding:4px 8px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:11px;min-width:100px" onchange="setSlowShutter(this.value)">
-                                        <option value="0">关闭</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -574,6 +577,34 @@ input:checked + .toggle-slider:before {
     color: #c9d1d9;
 }
 .ts-btn.active {
+    background: #238636;
+    color: #fff;
+}
+/* v8.74: 四段式开关样式 */
+.quadruple-switch {
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #30363d;
+}
+.qs-btn {
+    flex: 1;
+    border: none;
+    background: #0d1117;
+    color: #8b949e;
+    font-size: 11px;
+    padding: 4px 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-right: 1px solid #30363d;
+}
+.qs-btn:last-child {
+    border-right: none;
+}
+.qs-btn:hover {
+    background: #161b22;
+    color: #c9d1d9;
+}
+.qs-btn.active {
     background: #238636;
     color: #fff;
 }
@@ -1701,11 +1732,28 @@ function executeScheduledSearch(mode) {
                                     operationLog('── ' + label + '完成: R=' + ev.final_red + ' B=' + ev.final_blue + ' (' + ev.total_steps + '步) ──', 'success');
                                 } else if (ev.final_brightness !== undefined) {
                                     operationLog('── ' + label + '完成: 亮度=' + ev.final_brightness + ' 快门=' + ev.shutter + ' 光圈=' + ev.iris + ' 增益=' + ev.gain + ' (' + ev.total_steps + '步) ──', 'success');
+                                    // v8.75: 更新缓存，下次搜索从最后结果开始
+                                    if (!deviceImageParams.shutter) deviceImageParams.shutter = {};
+                                    deviceImageParams.shutter.current_level = ev.shutter;
+                                    if (!deviceImageParams.iris) deviceImageParams.iris = {};
+                                    deviceImageParams.iris.current_level = Math.round(parseFloat(ev.iris.replace('F','')) * 100);
+                                    if (!deviceImageParams.gain) deviceImageParams.gain = {};
+                                    deviceImageParams.gain.current_level = ev.gain;
                                 } else {
                                     operationLog('── ' + label + '完成 (' + ev.total_steps + '步) ──', 'success');
                                 }
                             } else if (ev.type === 'error') {
                                 operationLog(label + '错误: ' + ev.message, 'error');
+                            } else if (ev.type === 'interrupt') {
+                                // v8.75: 停止时更新缓存
+                                if (ev.gain !== undefined) {
+                                    if (!deviceImageParams.shutter) deviceImageParams.shutter = {};
+                                    deviceImageParams.shutter.current_level = ev.shutter;
+                                    if (!deviceImageParams.iris) deviceImageParams.iris = {};
+                                    deviceImageParams.iris.current_level = Math.round(parseFloat(ev.iris.replace('F','')) * 100);
+                                    if (!deviceImageParams.gain) deviceImageParams.gain = {};
+                                    deviceImageParams.gain.current_level = ev.gain;
+                                }
                             }
                         } catch (e) {}
                     }
@@ -1899,6 +1947,23 @@ function setSlowShutter(val) {
         if (typeof mediaLog === 'function') mediaLog('慢快门请求异常: ' + e.message, 'error');
         loadSlowShutter(dev);
     });
+}
+// v8.74: 码流四段式开关
+function setStreamSegment(seg) {
+    if (seg === 0) {
+        doStopPreview();
+    } else {
+        switchAndPlay(seg);
+    }
+    // 更新高亮
+    var switchEl = document.getElementById('streamSwitch');
+    if (switchEl) {
+        switchEl.querySelectorAll('.qs-btn').forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+        var activeBtn = switchEl.querySelector('.qs-btn[data-seg="' + seg + '"]');
+        if (activeBtn) activeBtn.classList.add('active');
+    }
 }
 // v8.43: 三段式开关 - 更新高亮
 function updateSwitchHighlight(switchId, selectedValue) {

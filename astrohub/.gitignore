@@ -44,6 +44,7 @@ logs/
 .coverage
 htmlcov/
 test_results/
+tests/
 
 # Screenshots
 *.png
@@ -53,6 +54,7 @@ test_results/
 # Backup
 backup_*/
 *.bak
+*.bak.*
 
 # Temp
 *.tmp
@@ -60,6 +62,25 @@ backup_*/
 temp*/
 stack/
 
-# Config with sensitive data
-config/ptz_config.json
-config/registry.json
+# Test/temp scripts
+test_*.py
+tmp_*.py
+check_*.py
+_fix_*.py
+screenshot_*.py
+
+# Non-program files
+*.pdf
+*.xlsx
+*.err
+e2e_screenshots/
+memory/
+documents/
+heartbeat.md
+raw_xml_output.txt
+
+# Mediamtx binary
+tools/mediamtx/mediamtx.exe
+
+# OpenClaw agent files
+.openclaw/

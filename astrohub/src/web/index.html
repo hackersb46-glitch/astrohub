@@ -2670,18 +2670,19 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
     // 更新码流按钮状态:播放中=对应码流亮,停止=停止亮
     function updateStreamButtons() {
         var isPlaying = WasmPlayer && WasmPlayer.playing;
-        ['btnStreamMain','btnStreamSub','btnStreamThird','btnStreamStop'].forEach(function(id) {
-            var b = document.getElementById(id);
-            if (b) { b.classList.remove('btn-success'); b.classList.add('btn-primary'); }
+        // v8.74: 使用四段式开关替代旧按钮
+        var streamSwitch = document.getElementById('streamSwitch');
+        if (!streamSwitch) return;
+        streamSwitch.querySelectorAll('.qs-btn').forEach(function(btn) {
+            btn.classList.remove('active');
         });
         if (isPlaying) {
             var st = window._currentStreamType;
-            var activeId = st === 1 ? 'btnStreamMain' : st === 2 ? 'btnStreamSub' : 'btnStreamThird';
-            var activeBtn = document.getElementById(activeId);
-            if (activeBtn) { activeBtn.classList.remove('btn-primary'); activeBtn.classList.add('btn-success'); }
+            var activeBtn = streamSwitch.querySelector('.qs-btn[data-seg="' + st + '"]');
+            if (activeBtn) activeBtn.classList.add('active');
         } else {
-            var stopBtn = document.getElementById('btnStreamStop');
-            if (stopBtn) { stopBtn.classList.remove('btn-primary'); stopBtn.classList.add('btn-success'); }
+            var stopBtn = streamSwitch.querySelector('.qs-btn[data-seg="0"]');
+            if (stopBtn) stopBtn.classList.add('active');
         }
     }
 
@@ -2969,7 +2970,7 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
                 shutter_values: shutterValues,
                 iris_values: irisValues,
                 gain_min: 0,
-                gain_max: (deviceImageParams.gain && deviceImageParams.gain.limit) || 100
+                gain_max: window.localGainLimit || (deviceImageParams.gain && deviceImageParams.gain.limit) || 100
             });
         } else {
             body = JSON.stringify({ x: sx, y: sy, w: sw, h: sh });
@@ -3022,6 +3023,13 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
                                     } else if (ev.final_brightness !== undefined) {
                                         showToast('success', label + '完成 亮度=' + ev.final_brightness + ' 快门=' + ev.shutter + ' 光圈=' + ev.iris + ' 增益=' + ev.gain + ' (' + ev.total_steps + '步)');
                                         operationLog('── ' + label + '完成: 亮度=' + ev.final_brightness + ' 快门=' + ev.shutter + ' 光圈=' + ev.iris + ' 增益=' + ev.gain + ' (' + ev.total_steps + '步) ──', 'success');
+                                        // v8.75: 更新缓存，下次搜索从最后结果开始
+                                        if (!deviceImageParams.shutter) deviceImageParams.shutter = {};
+                                        deviceImageParams.shutter.current_level = ev.shutter;
+                                        if (!deviceImageParams.iris) deviceImageParams.iris = {};
+                                        deviceImageParams.iris.current_level = Math.round(parseFloat(ev.iris.replace('F','')) * 100);
+                                        if (!deviceImageParams.gain) deviceImageParams.gain = {};
+                                        deviceImageParams.gain.current_level = ev.gain;
                                     } else {
                                         var rollMsg = ev.rollback_steps ? ' (回滚' + ev.rollback_steps + '步)' : '';
                                         showToast('success', label + '完成 反差=' + ev.final_contrast + rollMsg);
@@ -3049,6 +3057,14 @@ window.stopPtzPositionPoll = stopPtzPositionPoll;
                                         var wbBlueVal2 = document.getElementById('wbBlueVal');
                                         if (wbRed2) { wbRed2.value = ev.final_red; if (wbRedVal2) wbRedVal2.textContent = ev.final_red; }
                                         if (wbBlue2) { wbBlue2.value = ev.final_blue; if (wbBlueVal2) wbBlueVal2.textContent = ev.final_blue; }
+                                    } else if (ev.gain !== undefined) {
+                                        // v8.75: 亮度停止时更新缓存
+                                        if (!deviceImageParams.shutter) deviceImageParams.shutter = {};
+                                        deviceImageParams.shutter.current_level = ev.shutter;
+                                        if (!deviceImageParams.iris) deviceImageParams.iris = {};
+                                        deviceImageParams.iris.current_level = Math.round(parseFloat(ev.iris.replace('F','')) * 100);
+                                        if (!deviceImageParams.gain) deviceImageParams.gain = {};
+                                        deviceImageParams.gain.current_level = ev.gain;
                                     }
                                     // 恢复停止按钮为灰色
                                     if (stopBtn) { stopBtn.disabled = true; stopBtn.style.opacity = '0.5'; }

@@ -151,7 +151,8 @@ class ContrastAF:
 
     SCAN = "scan"
     APPROACH = "approach"
-    FINE = "fine"   # 0.1s 精逼近
+    OVERSHOOT = "overshoot"  # best2后继续0.2s走2步
+    FINE = "fine"   # 0.1s 反向精逼近
     DONE = "done"
     FAILED = "failed"
 
@@ -182,11 +183,16 @@ class ContrastAF:
         self._fine_dir = 1
         self._fine_max_steps = 10
 
+        # overshoot 阶段
+        self._overshoot_remaining = 0  # best2后继续走2步
+
     def step(self, contrast: float) -> dict:
         if self._state == self.SCAN:
             return self._step_scan(contrast)
         elif self._state == self.APPROACH:
             return self._step_approach(contrast)
+        elif self._state == self.OVERSHOOT:
+            return self._step_overshoot(contrast)
         elif self._state == self.FINE:
             return self._step_fine(contrast)
         elif self._state == self.DONE:
@@ -223,7 +229,7 @@ class ContrastAF:
                 self._decline_after_best += 1
 
         action = "focus_near" if self._direction < 0 else "focus_far"
-        dir_name = '近' if self._direction < 0 else '远'
+        dir_name = '远' if self._direction < 0 else '近'
 
         # 首步
         if pos == 0:
@@ -247,7 +253,7 @@ class ContrastAF:
                     "message": "对焦失败(3次重试耗尽)"
                 }
             action = "focus_near" if self._direction < 0 else "focus_far"
-            dir_name = '近' if self._direction < 0 else '远'
+            dir_name = '远' if self._direction < 0 else '近'
             return {
                 "action": action, "duration": 0.2,
                 "stage": "scan", "contrast": round(contrast, 2),
@@ -264,7 +270,7 @@ class ContrastAF:
                     "message": "对焦失败(3次重试耗尽)"
                 }
             action = "focus_near" if self._direction < 0 else "focus_far"
-            dir_name = '近' if self._direction < 0 else '远'
+            dir_name = '远' if self._direction < 0 else '近'
             return {
                 "action": action, "duration": 0.2,
                 "stage": "scan", "contrast": round(contrast, 2),
@@ -281,7 +287,7 @@ class ContrastAF:
                     "message": "对焦失败(3次重试耗尽)"
                 }
             action = "focus_near" if self._direction < 0 else "focus_far"
-            dir_name = '近' if self._direction < 0 else '远'
+            dir_name = '远' if self._direction < 0 else '近'
             return {
                 "action": action, "duration": 0.2,
                 "stage": "scan", "contrast": round(contrast, 2),
@@ -495,7 +501,10 @@ class ContrastAF:
         }
 
     def _step_approach(self, contrast):
-        """逐步回退到峰值位置（每步0.2s，与扫描步长一致）。"""
+        """逐步回退到峰值位置（每步0.2s，与扫描步长一致）。
+
+        approach 完成后 → 进入 OVERSHOOT（继续同方向0.2s走2步）。
+        """
         # best2 = 扫描峰值，approach 阶段继续跟踪 max
         if contrast > self._best2_value:
             self._best2_value = contrast
@@ -503,19 +512,16 @@ class ContrastAF:
         self._approach_remaining -= 1
 
         if self._approach_remaining <= 0:
-            # 0.2s 回退完成 → 进入 0.1s 精逼近
-            # best2 = max(扫描峰值, approach阶段最大值)
-            self._best3_value = self._best2_value
-            self._fine_step = 0
-            self._fine_dir = self._approach_dir  # 继续同方向
-            self._state = self.FINE
-            action = "focus_near" if self._fine_dir < 0 else "focus_far"
+            # approach 完成 → 进入 OVERSHOOT：继续同方向0.2s走2步
+            self._overshoot_remaining = 2
+            self._state = self.OVERSHOOT
+            action = "focus_near" if self._approach_dir < 0 else "focus_far"
             return {
                 "action": action,
-                "duration": 0.1,
-                "stage": "fine",
+                "duration": 0.2,
+                "stage": "overshoot",
                 "contrast": round(contrast, 2),
-                "message": f"粗逼近完成(best2={self._best2_value:.1f}),开始精逼近(0.1s)"
+                "message": f"粗逼近完成(best2={self._best2_value:.1f}),过冲2步"
             }
 
         # 继续回退
@@ -528,58 +534,74 @@ class ContrastAF:
             "message": f"逼近(剩余{self._approach_remaining}步,峰值={self._best_value:.1f})"
         }
 
+    def _step_overshoot(self, contrast):
+        """过冲阶段：best2后继续同方向0.2s走2步，然后原地反向0.1s精逼近。"""
+        # 过冲阶段继续跟踪 best2
+        if contrast > self._best2_value:
+            self._best2_value = contrast
+
+        self._overshoot_remaining -= 1
+
+        if self._overshoot_remaining <= 0:
+            # 过冲完成 → 反向进入 FINE（0.1s精逼近）
+            self._best3_value = 0.0  # 重置 best3，从 0 开始跟踪
+            self._fine_step = 0
+            self._fine_dir = -self._approach_dir  # 反向
+            self._state = self.FINE
+            action = "focus_near" if self._fine_dir < 0 else "focus_far"
+            return {
+                "action": action,
+                "duration": 0.1,
+                "stage": "fine",
+                "contrast": round(contrast, 2),
+                "message": f"过冲完成(best2={self._best2_value:.1f}),反向精逼近(0.1s)"
+            }
+
+        # 继续过冲
+        action = "focus_near" if self._approach_dir < 0 else "focus_far"
+        return {
+            "action": action,
+            "duration": 0.2,
+            "stage": "overshoot",
+            "contrast": round(contrast, 2),
+            "message": f"过冲(剩余{self._overshoot_remaining}步,best2={self._best2_value:.1f})"
+        }
+
     def _step_fine(self, contrast):
-        """精逼近阶段：0.1s步进微调，最多10步。
-        
-        成功条件：best3 > best2 或 best3 > best1
-        失败（10步未达标）：全流程重置
+        """精逼近阶段：0.1s反向步进微调，无封顶。
+
+        成功条件：best3 >= best2（唯一标准）
+        持续振荡逼近，直到 best3 >= best2 才判定成功。
+        趋势下降时反向，持续跟踪 best3 = max(所有步的 contrast)。
         """
         self._fine_step += 1
 
-        # 追踪 best3
+        # 追踪 best3 = FINE阶段最大反差
         if contrast > self._best3_value:
             self._best3_value = contrast
 
-        # 成功：best3 > best2 或 best3 > best1
-        if self._best3_value > self._best2_value or self._best3_value > self._best1_value:
+        # 成功条件：best3 >= best2（唯一标准）
+        if self._best3_value >= self._best2_value:
             self._state = self.DONE
-            best = max(self._best3_value, self._best2_value, self._best1_value)
             return {
                 "action": "stop", "duration": 0,
                 "stage": "done", "contrast": round(contrast, 2),
-                "message": f"对焦成功(best3={self._best3_value:.1f},best2={self._best2_value:.1f},best1={self._best1_value:.1f})",
-                "best": best
+                "message": f"对焦成功(best3={self._best3_value:.1f}>=best2={self._best2_value:.1f})",
+                "best": self._best3_value
             }
 
         # 趋势下降 → 反向
         if contrast < self._best3_value:
             self._fine_dir = -self._fine_dir
 
-        # 达到最大步数仍未达标 → 全流程重置
-        if self._fine_step >= self._fine_max_steps:
-            if self._do_retry():
-                action = "focus_near" if self._direction < 0 else "focus_far"
-                dir_name = '近' if self._direction < 0 else '远'
-                return {
-                    "action": action, "duration": 0.2,
-                    "stage": "scan", "contrast": round(contrast, 2),
-                    "message": f"精逼近未达标(best3={self._best3_value:.1f}≤best2={self._best2_value:.1f}),全流程重启(尝试{self._attempt+1}/3)"
-                }
-            self._state = self.FAILED
-            return {
-                "action": "stop", "duration": 0,
-                "stage": "error", "contrast": round(contrast, 2),
-                "message": f"对焦失败(3次重试耗尽,best3={self._best3_value:.1f},best2={self._best2_value:.1f})"
-            }
-
-        # 继续精逼近
+        # 继续精逼近（无最大步数限制）
         action = "focus_near" if self._fine_dir < 0 else "focus_far"
         return {
             "action": action,
             "duration": 0.1,
             "stage": "fine",
             "contrast": round(contrast, 2),
-            "message": f"精逼近(步{self._fine_step}/{self._fine_max_steps},best3={self._best3_value:.1f},best2={self._best2_value:.1f})"
+            "message": f"精逼近(步{self._fine_step},best3={self._best3_value:.1f},best2={self._best2_value:.1f})"
         }
 
 
@@ -646,6 +668,7 @@ class ContrastAF:
         self._step_count = 0
         self._optimal_pos = None
         self._approach_remaining = 0
+        self._overshoot_remaining = 0
         self._fine_step = 0
         self._state = self.SCAN
         return True
