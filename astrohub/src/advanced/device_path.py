@@ -145,6 +145,13 @@ def get_data_path_read(model_short: str | None, mac_clean: str, test_type: str) 
     return None
 
 
+def get_calibration_path(mac_clean: str) -> Path:
+    """获取校准数据文件路径：data/devices/{mac_clean}/calibration.json"""
+    device_dir = get_device_dir(mac_clean)
+    device_dir.mkdir(parents=True, exist_ok=True)
+    return device_dir / 'calibration.json'
+
+
 def get_data_path_write(model_short: str | None, mac_clean: str, test_type: str) -> Path:
     """v6.19: 获取写入路径（固定名称文件）。
 

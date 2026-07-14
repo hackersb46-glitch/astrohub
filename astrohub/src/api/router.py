@@ -28,6 +28,16 @@ from fastapi.responses import JSONResponse, Response, StreamingResponse
 # v6.40: 操作日志
 from src.operation_logger import log_api, log_web, log_error, log_info
 
+# v8.80: 三星校准
+from src.advanced.calibration_3stars import StarCatalog, CoordinateConverter, CalibrationSolver
+from src.astro_move.astro_goto import AstroGoto
+from src.astro_move.astro_tracking import TrackingEngine
+from src.astro_move.rd2az import CelestialResolver
+from src.advanced.skyatlas import get_skyatlas
+
+# v8.102: SkyAtlas 天体目标选择
+from src.advanced.skyatlas import SkyAtlas, get_skyatlas
+
 # ================================================================ #
 #  核心模块导入
 # ================================================================ #
@@ -43,6 +53,7 @@ from src.core.task_scheduler import TaskScheduler
 from src.core.health_monitor import HealthMonitor
 from src.main.constants import VERSION, VERSION_NUM
 from src.config_paths import DEVICES_DIR
+from src.core.device_reader import get_device_reader
 
 
 # ================================================================ #
@@ -881,6 +892,19 @@ async def get_operations_log() -> dict:
     return {"success": True, "data": list(reversed(operations_log)), "total": len(operations_log)}
 
 
+@api_router.get("/stats/io", summary="设备IO统计", tags=["System"])
+async def get_io_stats():
+    """获取 DeviceReader IO 计数统计。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
+
+    return {
+        "success": True,
+        "counters": reader.get_counters(),
+    }
+
+
 @health_router.get("/log/operations/file", summary="从文件读取操作日志")
 async def get_operation_log_file(lines: int = 50) -> dict:
     """从日志文件读取最近N条操作日志."""
@@ -1119,18 +1143,38 @@ async def ptz_absolute(device_id: str, req: PTZAbsoluteRequest) -> dict:
 
 @api_router.get("/ptz/{device_id}/position", summary="获取 PTZ 位置", tags=["PTZ"])
 async def get_ptz_position(device_id: str) -> dict:
-    """获取 PTZ 当前位置。"""
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")  # type: ignore[assignment]
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取 PTZ 当前位置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    # BUG-A 修复: 支持 MAC 地址作为 device_id
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    pos = reader.get_position()
+    if not pos:
+        return {"success": False, "message": "未获取到位置数据"}
 
-    # BUG-B 修复: 统一返回 response.data
-    return mgr.ptz_get_position(target_ip)
+    result = {"success": True, "data": pos}
+
+    # 检查是否有校准数据，计算真实 alt/az
+    try:
+        mgr = _managers.get("ptz_controller")
+        if mgr:
+            target_ip = _resolve_device_id_to_ip(mgr, device_id)
+            if target_ip:
+                session = _staralign_sessions.get(target_ip)
+                if session and session.get("solver", None) and session["solver"]._solved:
+                    solver = session["solver"]
+                    pan = pos.get("pan", 0)
+                    tilt = pos.get("tilt", 0)
+                    true_az, true_alt = solver.ptz_to_true(pan / 10, tilt / 10)
+                    result["data"]["az"] = round(true_az, 4)
+                    result["data"]["alt"] = round(true_alt, 4)
+                    result["data"]["calibrated"] = True
+                else:
+                    result["data"]["calibrated"] = False
+    except Exception:
+        result["data"]["calibrated"] = False
+
+    return result
 
 
 # 海康 ISAPI PTZ OSD 显示端点常量
@@ -1337,45 +1381,16 @@ class ImageAdjustRequest(BaseModel):
 
 @api_router.get("/ptz/{device_id}/image/settings", summary="获取画面设置", tags=["Image"])
 async def get_image_settings(device_id: str) -> dict:
-    """获取当前画面参数(亮度/对比度/饱和度)。"""
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取当前画面参数（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    client = mgr._clients.get(target_ip)
-    if not client:
-        return {"success": False, "message": f"ISAPI client not found for {target_ip}"}
-
-    try:
-        resp = client.get("/Image/channels/1")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取画面设置失败: HTTP {resp.status_code}"}
-
-        import xml.etree.ElementTree as ET
-        root = ET.fromstring(resp.xml)
-
-        # 查找 Color 节点
-        result = {"success": True, "data": {}}
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag == "Color":
-                for child in elem:
-                    ctag = child.tag.split("}")[-1] if "}" in child.tag else child.tag
-                    if ctag == "brightnessLevel":
-                        result["data"]["brightness"] = int((child.text or "50").strip())
-                    elif ctag == "contrastLevel":
-                        result["data"]["contrast"] = int((child.text or "50").strip())
-                    elif ctag == "saturationLevel":
-                        result["data"]["saturation"] = int((child.text or "50").strip())
-                break
-
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取画面设置异常: {e}"}
+    return {"success": True, "data": image_data}
 
 
 @api_router.put("/ptz/{device_id}/image/settings", summary="更新画面设置", tags=["Image"])
@@ -1799,6 +1814,60 @@ async def save_console_snapshot(data: dict) -> dict:
     return {"success": True}
 
 
+@api_router.get("/geo", summary="获取地理坐标", tags=["Geo"])
+async def get_geo_location() -> dict:
+    """获取已保存的地理坐标。"""
+    registry = _read_registry()
+    return {"success": True, "data": registry.get("geo_location", {})}
+
+
+@api_router.post("/geo", summary="保存地理坐标", tags=["Geo"])
+async def save_geo_location(data: dict) -> dict:
+    """保存地理坐标到 registry.json。"""
+    import re
+    lat_raw = str(data.get("lat", "")).strip()
+    lon_raw = str(data.get("lon", "")).strip()
+    ns = str(data.get("ns", "N")).strip().upper()
+    ew = str(data.get("ew", "E")).strip().upper()
+    if not lat_raw or not lon_raw:
+        return {"success": False, "message": "经纬度不能为空"}
+
+    def parse_dms(s):
+        """解析度分秒或小数格式，返回十进制度。"""
+        s = s.replace(" ", "").replace("\u3000", "")
+        # 纯小数
+        if re.match(r'^-?\d+\.?\d*$', s):
+            return float(s)
+        # 度分秒: 29°27'00" 或 29°27' 或 29°27.5'
+        m = re.match(r'^(\d+)°(\d+)[\'’](\d+(?:\.\d+)?)["”]?$', s)
+        if m:
+            d, mi, se = int(m.group(1)), int(m.group(2)), float(m.group(3) or 0)
+            return d + mi / 60 + se / 3600
+        # 度分: 29°27.5'
+        m = re.match(r'^(\d+)°(\d+(?:\.\d+)?)[\'’]?$', s)
+        if m:
+            d, mi = int(m.group(1)), float(m.group(2))
+            return d + mi / 60
+        # 度: 29°
+        m = re.match(r'^(\d+)°$', s)
+        if m:
+            return float(m.group(1))
+        raise ValueError(f"无法解析: {s}")
+
+    try:
+        lat = parse_dms(lat_raw)
+        lon = parse_dms(lon_raw)
+        if ns == 'S': lat = -lat
+        if ew == 'W': lon = -lon
+    except ValueError as e:
+        return {"success": False, "message": f"坐标格式错误: {e}"}
+
+    registry = _read_registry()
+    registry["geo_location"] = {"lat": lat, "lon": lon, "lat_raw": lat_raw, "lon_raw": lon_raw, "ns": ns, "ew": ew}
+    _write_registry(registry)
+    return {"success": True, "message": f"坐标已保存: {lat}°, {lon}°", "data": registry["geo_location"]}
+
+
 @api_router.post("/ntp/sync", summary="NTP时间同步", tags=["NTP"])
 async def ntp_sync(data: dict):
     """NTP时间同步 - SSE流式返回进度。"""
@@ -1817,7 +1886,13 @@ async def ntp_sync(data: dict):
             return
         ntp_ts = ntp_r["ntp_timestamp"]
         ntp_time_cst = ntp_r["ntp_time_cst"]
-        yield f"data: {_json.dumps({'step': 'ntp_ok', 'message': '当前NTP时间: ' + ntp_time_cst})}\n\n"
+        # NTP读取完成立刻测量本机误差
+        from datetime import datetime, timezone, timedelta
+        CST = timezone(timedelta(hours=8))
+        now_pc = datetime.now(CST)
+        ntp_dt = datetime.fromtimestamp(ntp_ts, tz=CST)
+        pc_offset_ms = int((now_pc - ntp_dt).total_seconds() * 1000)
+        yield f"data: {_json.dumps({'step': 'ntp_ok', 'message': f'当前NTP时间: {ntp_time_cst} | 校准误差 {pc_offset_ms:+d} ms'})}\n\n"
 
         # 2. 获取已连接设备信息
         mgr: PTZDeviceController | None = _managers.get("ptz_controller")
@@ -1848,17 +1923,20 @@ async def ntp_sync(data: dict):
             ntp_server=ntp_server,
             ntp_timestamp=ntp_ts,
         )
-        yield f"data: {_json.dumps({'step': 'device_write', 'message': 'PTZ设备写入……' + ('成功' if dev_r.get('success') else '失败: ' + dev_r.get('message', ''))})}\n\n"
-        if not dev_r.get("success"):
+        dev_success = dev_r.get("success", False)
+        dev_time = dev_r.get("device_new_time", "unknown")
+        yield f"data: {_json.dumps({'step': 'device_write', 'message': 'PTZ设备写入……' + ('成功' if dev_success else '失败: ' + dev_r.get('message', ''))})}\n\n"
+        if not dev_success:
             return
 
         # 4. 写入本机时间
         yield f"data: {_json.dumps({'step': 'local_write', 'message': '本机写入……'})}\n\n"
         win_r = await asyncio.to_thread(sync_windows_time, ntp_ts)
-        if win_r.get("success"):
-            yield f"data: {_json.dumps({'step': 'done', 'message': '✓ 同步成功'})}\n\n"
-        else:
+        if not win_r.get("success"):
             yield f"data: {_json.dumps({'step': 'error', 'message': '本机写入失败: ' + win_r.get('error', '未知')})}\n\n"
+            return
+
+        yield f"data: {_json.dumps({'step': 'done', 'message': '✓ 同步成功'})}\n\n"
 
     return StreamingResponse(_generate(), media_type="text/event-stream")
 
@@ -2993,59 +3071,17 @@ def _parse_wb_xml(xml_str: str) -> tuple[int, int]:
 
 @api_router.get("/ptz/{device_id}/image/whitebalance", summary="获取白平衡设置", tags=["Image"])
 async def get_whitebalance(device_id: str) -> dict:
-    """获取设备白平衡当前设置。"""
-    import xml.etree.ElementTree as ET
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取设备白平衡当前设置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    try:
-        resp = client.get("/Image/channels/1/whiteBalance")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取白平衡失败: HTTP {resp.status_code}"}
-
-        import xml.etree.ElementTree as ET
-        root = ET.fromstring(resp.xml)
-        mode = "manual"
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag == "WhiteBalanceStyle":
-                mode = (elem.text or "manual").lower()
-        red_gain, blue_gain = _parse_wb_xml(resp.xml)
-        
-        # 从设备配置文件读取白平衡范围
-        wb_min, wb_max = 0, 255
-        import json as _json
-        try:
-            dm: DeviceManager | None = _managers.get("device_manager")  # type: ignore[assignment]
-            if dm:
-                for dev in dm.list_devices():
-                    if dev.ip == target_ip:
-                        cfg_path = dm._devices_dir / f"{dev.mac}.json"
-                        if cfg_path.exists():
-                            with open(cfg_path, "r", encoding="utf-8") as f:
-                                dev_data = _json.load(f)
-                            caps = dev_data.get("capabilities", {})
-                            wb_cap = caps.get("white_balance", {})
-                            wb_min = wb_cap.get("min_val", 0)
-                            wb_max = wb_cap.get("max_val", 255)
-                        break
-        except Exception:
-            pass
-        
-        result = {"success": True, "data": {"mode": mode, "red_gain": red_gain, "blue_gain": blue_gain, "min": wb_min, "max": wb_max, "supported_modes": ["manual", "auto"]}}
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取白平衡异常: {e}"}
+    wb_data = image_data.get("whitebalance", {})
+    return {"success": True, "data": wb_data}
 
 
 @api_router.post("/ptz/{device_id}/image/whitebalance", summary="设置白平衡", tags=["Image"])
@@ -3114,43 +3150,17 @@ async def set_whitebalance(device_id: str, data: dict) -> dict:
 
 @api_router.get("/ptz/{device_id}/image/noisereduce", summary="获取降噪设置", tags=["Image"])
 async def get_noisereduce(device_id: str) -> dict:
-    """获取设备降噪当前设置。"""
-    import xml.etree.ElementTree as ET
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取设备降噪当前设置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    try:
-        resp = client.get("/Image/channels/1/noiseReduce")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取降噪失败: HTTP {resp.status_code}"}
-
-        root = ET.fromstring(resp.xml)
-        result = {"success": True, "data": {}}
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag == "mode":
-                result["data"]["mode"] = (elem.text or "general").strip()
-            elif tag == "generalLevel":
-                result["data"]["spatial_level"] = int((elem.text or "50").strip())
-                result["data"]["temporal_level"] = int((elem.text or "50").strip())
-            elif tag == "FrameNoiseReduceLevel":
-                result["data"]["spatial_level"] = int((elem.text or "50").strip())
-            elif tag == "InterFrameNoiseReduceLevel":
-                result["data"]["temporal_level"] = int((elem.text or "50").strip())
-
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取降噪异常: {e}"}
+    nr_data = image_data.get("noisereduce", {})
+    return {"success": True, "data": nr_data}
 
 
 @api_router.post("/ptz/{device_id}/image/noisereduce", summary="设置降噪", tags=["Image"])
@@ -3291,40 +3301,17 @@ async def reset_image_controls(device_id: str) -> dict:
 
 @api_router.get("/ptz/{device_id}/image/exposure", summary="获取曝光模式", tags=["Image"])
 async def get_exposure(device_id: str) -> dict:
-    """获取设备曝光当前模式 - v7.03: 使用 ExposureType 字段"""
-    import xml.etree.ElementTree as ET
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取设备曝光当前模式（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    try:
-        resp = client.get("/Image/channels/1/exposure")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取曝光模式失败: HTTP {resp.status_code}"}
-
-        root = ET.fromstring(resp.xml)
-        result = {"success": True, "data": {}}
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            # v7.03: 使用 ExposureType
-            if tag in ("ExposureType", "exposureType", "ExposureMode", "exposureMode"):
-                result["data"]["mode"] = elem.text or "auto"
-
-        # 如果没有找到曝光模式,默认 auto
-        if "mode" not in result["data"]:
-            result["data"]["mode"] = "auto"
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取曝光模式异常: {e}"}
+    exp_data = image_data.get("exposure", {})
+    return {"success": True, "data": exp_data}
 
 
 @api_router.post("/ptz/{device_id}/image/exposure", summary="设置曝光模式", tags=["Image"])
@@ -3363,82 +3350,17 @@ async def set_exposure(device_id: str, data: dict) -> dict:
 
 @api_router.get("/ptz/{device_id}/image/shutter", summary="获取快门设置", tags=["Image"])
 async def get_shutter(device_id: str) -> dict:
-    """获取设备快门当前设置。"""
-    import xml.etree.ElementTree as ET
-    import json
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取设备快门当前设置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    try:
-        resp = client.get("/Image/channels/1/Shutter")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取快门失败: HTTP {resp.status_code}"}
-
-        root = ET.fromstring(resp.xml)
-        result = {"success": True, "data": {}}
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag in ("ShutterLevel", "shutterLevel"):
-                result["data"]["current_level"] = elem.text or "1/30000"
-            elif tag in ("minShutterLevelLimit", "MinShutterLevelLimit"):
-                result["data"]["min"] = elem.text or "1/30000"
-            elif tag in ("maxShutterLevelLimit", "MaxShutterLevelLimit"):
-                result["data"]["max"] = elem.text or "1/25"
-
-        # v8.47: 从 function.json 读取真实支持的快门值
-        # device_id可能是MAC或IP，需要两种方式都能匹配
-        supported_levels = []
-        try:
-            # 方式1: device_id就是MAC
-            device_dir = DEVICES_DIR / device_id
-            if device_dir.exists() and device_dir.is_dir():
-                func_file = device_dir / "function.json"
-                if func_file.exists():
-                    func_data = json.loads(func_file.read_text(encoding="utf-8"))
-                    if "functions" in func_data and "shutter" in func_data["functions"]:
-                        supported_levels = func_data["functions"]["shutter"].get("opt_values", [])
-            # 方式2: device_id是IP，需要通过info.json查找对应的MAC
-            if not supported_levels:
-                for device_dir in DEVICES_DIR.iterdir():
-                    if device_dir.is_dir():
-                        info_file = device_dir / "info.json"
-                        if info_file.exists():
-                            try:
-                                info = json.loads(info_file.read_text(encoding="utf-8"))
-                                if info.get("ip") == target_ip:
-                                    func_file = device_dir / "function.json"
-                                    if func_file.exists():
-                                        func_data = json.loads(func_file.read_text(encoding="utf-8"))
-                                        if "functions" in func_data and "shutter" in func_data["functions"]:
-                                            supported_levels = func_data["functions"]["shutter"].get("opt_values", [])
-                                    break
-                            except Exception:
-                                continue
-        except Exception as e:
-            import traceback
-            traceback.print_exc()
-        
-        if not supported_levels:
-            # 回退: 使用设备返回的min/max
-            supported_levels = [
-                result["data"].get("max", "1/25"),
-                result["data"].get("min", "1/30000")
-            ]
-        result["data"]["supported_levels"] = supported_levels
-        result["data"]["mode"] = "manual"
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取快门异常: {e}"}
+    shutter_data = image_data.get("shutter", {})
+    return {"success": True, "data": shutter_data}
 
 
 @api_router.post("/ptz/{device_id}/image/shutter", summary="设置快门", tags=["Image"])
@@ -3492,40 +3414,17 @@ async def set_shutter(device_id: str, data: dict) -> dict:
 
 @api_router.get("/ptz/{device_id}/image/iris", summary="获取光圈设置", tags=["Image"])
 async def get_iris(device_id: str) -> dict:
-    """获取设备光圈当前设置。"""
-    import xml.etree.ElementTree as ET
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取设备光圈当前设置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    try:
-        resp = client.get("/Image/channels/1/Iris")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取光圈失败: HTTP {resp.status_code}"}
-
-        root = ET.fromstring(resp.xml)
-        result = {"success": True, "data": {}}
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag in ("IrisLevel", "irisLevel"):
-                result["data"]["current_level"] = int((elem.text or "160").strip())
-            elif tag in ("minIrisLevelLimit", "MinIrisLevelLimit"):
-                result["data"]["min"] = int((elem.text or "160").strip())
-            elif tag in ("maxIrisLevelLimit", "MaxIrisLevelLimit"):
-                result["data"]["max"] = int((elem.text or "2200").strip())
-
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取光圈异常: {e}"}
+    iris_data = image_data.get("iris", {})
+    return {"success": True, "data": iris_data}
 
 
 @api_router.post("/ptz/{device_id}/image/iris", summary="设置光圈", tags=["Image"])
@@ -3566,38 +3465,17 @@ async def set_iris(device_id: str, data: dict) -> dict:
 # v7.03: 增益 (Gain) API
 @api_router.get("/ptz/{device_id}/image/gain", summary="获取增益设置", tags=["Image"])
 async def get_gain(device_id: str) -> dict:
-    """获取设备增益当前设置。"""
-    import xml.etree.ElementTree as ET
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取设备增益当前设置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    try:
-        resp = client.get("/Image/channels/1/Gain")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取增益失败: HTTP {resp.status_code}"}
-
-        root = ET.fromstring(resp.xml)
-        result = {"success": True, "data": {}}
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag in ("GainLevel", "gainLevel"):
-                result["data"]["current_level"] = int((elem.text or "0").strip())
-            elif tag in ("GainLimit", "gainLimit", "GainLevelLimit", "MaxGainLevelLimit"):
-                result["data"]["limit"] = int((elem.text or "100").strip())
-
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取增益异常: {e}"}
+    gain_data = image_data.get("gain", {})
+    return {"success": True, "data": gain_data}
 
 
 @api_router.post("/ptz/{device_id}/image/gain", summary="设置增益", tags=["Image"])
@@ -3647,38 +3525,17 @@ async def set_gain(device_id: str, data: dict) -> dict:
 
 @api_router.get("/ptz/{device_id}/image/sharpness", summary="获取锐度设置", tags=["Image"])
 async def get_sharpness(device_id: str) -> dict:
-    """获取设备锐度当前设置。"""
-    import xml.etree.ElementTree as ET
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取设备锐度当前设置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    try:
-        resp = client.get("/Image/channels/1/Sharpness")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取锐度失败: HTTP {resp.status_code}"}
-
-        root = ET.fromstring(resp.xml)
-        result = {"success": True, "data": {}}
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag in ("SharpnessLevel", "sharpnessLevel"):
-                result["data"]["current_level"] = int((elem.text or "50").strip())
-                result["data"]["min"] = 0
-                result["data"]["max"] = 100
-
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取锐度异常: {e}"}
+    sharpness_data = image_data.get("sharpness", {})
+    return {"success": True, "data": sharpness_data}
 
 
 @api_router.post("/ptz/{device_id}/image/sharpness", summary="设置锐度", tags=["Image"])
@@ -3717,88 +3574,34 @@ async def set_sharpness(device_id: str, data: dict) -> dict:
 
 @api_router.get("/ptz/{device_id}/image/color", summary="获取颜色设置", tags=["Image"])
 async def get_color(device_id: str) -> dict:
-    """获取设备颜色(亮度/对比度/饱和度)当前设置。"""
-    import xml.etree.ElementTree as ET
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取设备颜色(亮度/对比度/饱和度)当前设置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    try:
-        resp = client.get("/Image/channels/1/Color")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取颜色失败: HTTP {resp.status_code}"}
-
-        root = ET.fromstring(resp.xml)
-        result = {"success": True, "data": {}}
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag == "brightnessLevel":
-                result["data"]["brightness"] = int((elem.text or "50").strip())
-            elif tag == "contrastLevel":
-                result["data"]["contrast"] = int((elem.text or "50").strip())
-            elif tag == "saturationLevel":
-                result["data"]["saturation"] = int((elem.text or "50").strip())
-
-        return result
-    except Exception as e:
-        return {"success": False, "message": f"获取颜色异常: {e}"}
+    color_data = image_data.get("color", {})
+    return {"success": True, "data": color_data}
 
 
 # === 滤镜与日夜模式 (v8.43) ===
 
 @api_router.get("/ptz/{device_id}/image/filter", summary="获取滤镜与日夜模式", tags=["Image"])
 async def get_filter_settings(device_id: str) -> dict:
-    """获取当前 dayNightMode 和 IrcutFilterType 设置。"""
-    import xml.etree.ElementTree as ET
-    mgr: PTZDeviceController | None = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
+    """获取当前 dayNightMode 和 IrcutFilterType（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
 
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
 
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-
-    client = ctrl.client
-    import xml.etree.ElementTree as ET
-    try:
-        # 日夜模式 + IR滤镜 统一从 /Image/channels/1/IrcutFilter 获取
-        ircut_resp = await asyncio.to_thread(client.get, "/Image/channels/1/IrcutFilter")
-        if ircut_resp.status_code != 200:
-            return {"success": False, "message": f"获取滤镜设置失败: HTTP {ircut_resp.status_code}"}
-
-        filter_type = "auto"
-        root = ET.fromstring(ircut_resp.xml)
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag == "IrcutFilterType":
-                filter_type = (elem.text or "auto").strip()
-
-        # dayNightMode: 直接返回 (day/night/auto)
-        # IrcutFilterType: 映射 day→on, night→off, auto→auto
-        ir_cut_map = {"day": "on", "night": "off", "auto": "auto", "schedule": "auto"}
-
-        return {
-            "success": True,
-            "data": {
-                "dayNightMode": filter_type,
-                "IrcutFilterType": ir_cut_map.get(filter_type, filter_type)
-            }
-        }
-    except Exception as e:
-        return {"success": False, "message": f"获取滤镜设置异常: {e}"}
+    filter_data = image_data.get("filter", {})
+    return {"success": True, "data": filter_data}
 
 
 @api_router.post("/ptz/{device_id}/image/filter", summary="设置滤镜与日夜模式", tags=["Image"])
@@ -3855,34 +3658,17 @@ async def set_filter_settings(device_id: str, body: dict) -> dict:
 
 @api_router.get("/ptz/{device_id}/image/slow-shutter", summary="获取慢快门设置", tags=["Image"])
 async def get_slow_shutter(device_id: str) -> dict:
-    mgr = _managers.get("ptz_controller")
-    if not mgr:
-        return {"success": False, "message": "PTZDeviceController未初始化"}
-    target_ip = _resolve_device_id_to_ip(mgr, device_id)
-    if not target_ip:
-        return {"success": False, "message": f"无法解析设备标识: {device_id}"}
-    ctrl, err = mgr._get_controller(target_ip)
-    if err:
-        return {"success": False, "message": err}
-    client = ctrl.client
-    try:
-        # 使用轻量级 DSS 子端点（GET 可用，只需 ~几百字节）
-        resp = await asyncio.to_thread(client.get, "/Image/channels/1/DSS")
-        if resp.status_code != 200:
-            return {"success": False, "message": f"获取DSS失败: HTTP {resp.status_code}"}
-        import xml.etree.ElementTree as ET
-        root = ET.fromstring(resp.xml)
-        enabled = False
-        dss_level = ""
-        for elem in root.iter():
-            tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-            if tag == "enabled":
-                enabled = (elem.text or "").strip().lower() == "true"
-            elif tag == "DSSLevel":
-                dss_level = (elem.text or "").strip()
-        return {"success": True, "data": {"supported": True, "enabled": enabled, "dss_level": dss_level}}
-    except Exception as e:
-        return {"success": False, "message": f"获取DSS异常: {e}"}
+    """获取设备慢快门设置（从 DeviceReader 缓存读取）。"""
+    reader = get_device_reader()
+    if not reader:
+        return {"success": False, "message": "DeviceReader 未初始化"}
+
+    image_data = reader.get_image_settings()
+    if not image_data:
+        return {"success": False, "message": "未获取到图像参数"}
+
+    slow_shutter_data = image_data.get("slow_shutter", {})
+    return {"success": True, "data": slow_shutter_data}
 
 @api_router.post("/ptz/{device_id}/image/slow-shutter", summary="设置慢快门", tags=["Image"])
 async def set_slow_shutter(device_id: str, body: dict) -> dict:
@@ -4611,3 +4397,820 @@ async def stack_cancel() -> dict:
         _stack_task = None
         return {"success": True, "message": "已取消"}
     return {"success": False, "message": "无活跃叠加会话"}
+
+
+# ================================================================ #
+#  v8.80: 三星校准 API 端点                                      #
+# ================================================================ #
+
+import os as _os
+from pathlib import Path as _Path
+
+# 惰性初始化星表
+_star_catalog = None
+_staralign_sessions: dict[str, dict] = {}  # device_ip -> {solver, points, obs_lat, obs_lon}
+
+
+def _load_all_calibrations():
+    """启动时加载所有已保存的校准数据，重建 CalibrationSolver 到 _staralign_sessions。"""
+    import json as _json
+    from src.advanced.device_path import get_devices_dir
+
+    devices_dir = get_devices_dir()
+    if not devices_dir.exists():
+        return
+
+    # 从 ptz_controller 构建 mac_clean -> ip 映射
+    mac_to_ip: dict[str, str] = {}
+    mgr = _managers.get("ptz_controller")
+    if mgr:
+        for dev in mgr.list_stored_devices():
+            dev_mac = dev.get("mac", "").replace(":", "").replace("-", "").lower()
+            dev_ip = dev.get("ip", "")
+            if dev_mac and dev_ip:
+                mac_to_ip[dev_mac] = dev_ip
+
+    for device_dir in devices_dir.iterdir():
+        if not device_dir.is_dir():
+            continue
+        cal_file = device_dir / "calibration.json"
+        if not cal_file.exists():
+            continue
+        try:
+            with open(cal_file, "r", encoding="utf-8") as f:
+                data = _json.load(f)
+
+            params = data.get("params", {})
+            if not params:
+                continue
+
+            # 重建 CalibrationSolver
+            solver = CalibrationSolver()
+            solver._params = [params.get("IA", 0), params.get("IE", 0), params.get("NPAE", 0), params.get("T_N", 0), params.get("T_E", 0)]
+            solver._solved = True
+            rms = data.get("rms", {})
+            solver._az_rms = rms.get("az_rms", 0)
+            solver._alt_rms = rms.get("alt_rms", 0)
+
+            mac_clean = device_dir.name
+            device_ip = mac_to_ip.get(mac_clean, mac_clean)
+
+            _staralign_sessions[device_ip] = {
+                "solver": solver,
+                "points": data.get("points", []),
+                "obs_lat": data.get("obs_lat", 0),
+                "obs_lon": data.get("obs_lon", 0),
+                "calibration_result": data,
+            }
+            log_info(f"[staralign] 已加载校准: {device_ip} (from {mac_clean})")
+        except Exception as e:
+            log_warning(f"[staralign] 加载校准失败 {device_dir.name}: {e}")
+
+
+def _get_star_catalog():
+    """惰性加载星表"""
+    global _star_catalog
+    if _star_catalog is None:
+        csv_path = _Path(__file__).resolve().parent.parent.parent / "data" / "hipparcos_bright.csv"
+        _star_catalog = StarCatalog(str(csv_path))
+        _star_catalog.load()
+    return _star_catalog
+
+
+# v8.80: 请求模型
+class StarAlignStartRequest(BaseModel):
+    device_ip: str
+    obs_lat: float
+    obs_lon: float
+
+class StarAlignSyncRequest(BaseModel):
+    device_ip: str
+    star_hip: int
+    ptz_pan: float = 0.0   # 已废弃，后端从设备读取
+    ptz_tilt: float = 0.0  # 已废弃，后端从设备读取
+
+class StarAlignComputeRequest(BaseModel):
+    device_ip: str
+
+class StarAlignSaveRequest(BaseModel):
+    device_ip: str
+    params: dict
+
+class StarAlignGotoRequest(BaseModel):
+    device_ip: str
+    star_hip: int
+
+
+@api_router.get("/staralign/catalog", summary="获取亮星表", tags=["StarAlign"])
+async def staralign_catalog(lat: float = Query(..., description="观测站纬度"),
+                            lon: float = Query(..., description="观测站经度")):
+    """返回全部亮星列表，含当前时间下的 alt/az"""
+    try:
+        cat = _get_star_catalog()
+        now_utc = datetime.now(timezone.utc)
+        stars = cat.get_visible(lat, lon, now_utc, min_alt=25, max_vmag=4.0)
+        return {
+            "success": True,
+            "count": len(stars),
+            "stars": [{
+                "hip": s["hip"],
+                "display_name": s["display_name"],
+                "vmag": s["vmag"],
+                "ra": s["ra_deg"],
+                "dec": s["dec_deg"],
+                "alt": round(s.get("alt", 0), 2),
+                "az": round(s.get("az", 0), 2),
+            } for s in stars]
+        }
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.get("/staralign/recommend", summary="获取推荐校准星", tags=["StarAlign"])
+async def staralign_recommend(lat: float = Query(...),
+                              lon: float = Query(...),
+                              exclude_hips: str = Query("", description="逗号分隔的已选HIP编号")):
+    """返回3颗推荐星，排除已选"""
+    try:
+        cat = _get_star_catalog()
+        now_utc = datetime.now(timezone.utc)
+        excl = []
+        if exclude_hips:
+            excl = [int(h.strip()) for h in exclude_hips.split(",") if h.strip().isdigit()]
+        stars = cat.get_recommended(lat, lon, now_utc, exclude_hips=excl, count=3)
+        return {
+            "success": True,
+            "recommended": [{
+                "hip": s["hip"],
+                "display_name": s["display_name"],
+                "vmag": s["vmag"],
+                "alt": round(s.get("alt", 0), 2),
+                "az": round(s.get("az", 0), 2),
+                "ra": s["ra_deg"],
+                "dec": s["dec_deg"],
+            } for s in stars]
+        }
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.post("/staralign/start", summary="初始化校准会话", tags=["StarAlign"])
+async def staralign_start(req: StarAlignStartRequest):
+    """初始化校准会话，返回北极星信息"""
+    try:
+        cat = _get_star_catalog()
+        polaris = cat.get_polaris()
+        now_utc = datetime.now(timezone.utc)
+        conv = CoordinateConverter()
+        alt, az = conv.radec_to_altaz(polaris["ra_deg"], polaris["dec_deg"], req.obs_lat, req.obs_lon, now_utc)
+
+        solver = CalibrationSolver()
+        _staralign_sessions[req.device_ip] = {
+            "solver": solver,
+            "points": [],
+            "obs_lat": req.obs_lat,
+            "obs_lon": req.obs_lon,
+        }
+
+        return {
+            "success": True,
+            "polaris": {
+                "hip": polaris["hip"],
+                "display_name": polaris["display_name"],
+                "vmag": polaris["vmag"],
+                "ra": polaris["ra_deg"],
+                "dec": polaris["dec_deg"],
+                "alt": round(alt, 2),
+                "az": round(az, 2),
+            }
+        }
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.post("/staralign/apply", summary="应用校准点", tags=["StarAlign"])
+async def staralign_apply(req: StarAlignSyncRequest):
+    """记录一个校准点并更新模型"""
+    try:
+        session = _staralign_sessions.get(req.device_ip)
+        if not session:
+            return {"success": False, "message": "校准会话不存在，请先 start"}
+
+        cat = _get_star_catalog()
+        star = cat.get_by_hip(req.star_hip)
+        if not star:
+            return {"success": False, "message": f"未找到 HIP {req.star_hip}"}
+
+        # 获取当前 PTZ 位置（度数）
+        mgr = _managers.get("ptz_controller")
+        if not mgr:
+            return {"success": False, "message": "PTZ控制器未初始化"}
+
+        target_ip = _resolve_device_id_to_ip(mgr, req.device_ip)
+        if not target_ip:
+            return {"success": False, "message": f"无法解析设备标识: {req.device_ip}"}
+
+        ctrl, err = mgr._get_controller(target_ip)
+        if err:
+            return {"success": False, "message": err}
+
+        goto = AstroGoto(ctrl)
+        pos = goto.read_position_deg()
+
+        now_utc = datetime.now(timezone.utc)
+        solver = session["solver"]
+        solver.add_point(
+            star_hip=req.star_hip,
+            star_ra=star["ra_deg"],
+            star_dec=star["dec_deg"],
+            ptz_pan=pos["pan"],
+            ptz_tilt=pos["tilt"],
+            obs_lat=session["obs_lat"],
+            obs_lon=session["obs_lon"],
+            obs_time=now_utc,
+        )
+        session["points"].append({
+            "hip": req.star_hip,
+            "display_name": star["display_name"],
+            "ptz_pan": pos["pan"],
+            "ptz_tilt": pos["tilt"],
+        })
+
+        # 自动更新模型
+        solve_result = solver.solve()
+        status = solver.status()
+
+        result = {
+            "success": True,
+            "point_index": status["points_count"],
+            "has_polaris": status["has_polaris"],
+            "is_ready": status["is_ready"],
+            "model_updated": solve_result is not None,
+            "message": f"已应用 {star['display_name']}",
+        }
+
+        # 如果模型已更新，附带参数
+        if solve_result is not None:
+            result["params"] = solver.get_params()
+            result["rms"] = solver.get_rms()
+            result["quality"] = solver.get_quality()
+
+        return result
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.post("/staralign/goto", summary="指向恒星", tags=["StarAlign"])
+async def staralign_goto(req: StarAlignGotoRequest):
+    """PTZ 指向目标恒星"""
+    try:
+        session = _staralign_sessions.get(req.device_ip)
+        if not session:
+            return {"success": False, "message": "校准会话不存在，请先 start"}
+
+        # 获取 PTZ 控制器
+        mgr = _managers.get("ptz_controller")
+        if not mgr:
+            return {"success": False, "message": "PTZ控制器未初始化"}
+
+        target_ip = _resolve_device_id_to_ip(mgr, req.device_ip)
+        if not target_ip:
+            return {"success": False, "message": f"无法解析设备标识: {req.device_ip}"}
+
+        ctrl, err = mgr._get_controller(target_ip)
+        if err:
+            return {"success": False, "message": err}
+
+        solver = session.get("solver")
+        goto = AstroGoto(ctrl, solver)
+        success, message = goto.goto_star(
+            star_hip=req.star_hip,
+            obs_lat=session["obs_lat"],
+            obs_lon=session["obs_lon"],
+        )
+        return {"success": success, "message": message}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+# 向后兼容：旧的 /staralign/sync 路由
+@api_router.post("/staralign/sync", summary="[向后兼容] 记录校准点", tags=["StarAlign"])
+async def staralign_sync(req: StarAlignSyncRequest):
+    """向后兼容的 sync 端点，重定向到 apply"""
+    return await staralign_apply(req)
+
+
+@api_router.post("/staralign/compute", summary="解算校准参数", tags=["StarAlign"])
+async def staralign_compute(req: StarAlignComputeRequest):
+    """解算5参数"""
+    try:
+        session = _staralign_sessions.get(req.device_ip)
+        if not session:
+            return {"success": False, "message": "校准会话不存在"}
+        solver: CalibrationSolver = session["solver"]
+        status = solver.status()
+        if not status["is_ready"]:
+            return {"success": False, "message": f"需要4个校准点（含北极星），当前{status['points_count']}个"}
+
+        params = solver.solve()
+        params = solver.get_params()  # 转为dict
+        rms = solver.get_rms()
+        quality = solver.get_quality()
+
+        return {
+            "success": True,
+            "params": params,
+            "rms": rms,
+            "quality": quality,
+        }
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.post("/staralign/save", summary="保存校准参数", tags=["StarAlign"])
+async def staralign_save(req: StarAlignSaveRequest):
+    """保存校准参数到本地文件"""
+    try:
+        session = _staralign_sessions.get(req.device_ip)
+        if not session:
+            return {"success": False, "message": "校准会话不存在"}
+
+        solver = session["solver"]
+        if not solver._solved:
+            return {"success": False, "message": "模型尚未求解，请先应用校准点"}
+
+        params = solver.get_params()
+        rms = solver.get_rms()
+        quality = solver.get_quality()
+
+        # 构造保存数据
+        save_data = {
+            "version": "1.0",
+            "created": datetime.now().isoformat(),
+            "obs_lat": session["obs_lat"],
+            "obs_lon": session["obs_lon"],
+            "params": params,
+            "rms": rms,
+            "quality": quality,
+            "points": [
+                {
+                    "hip": p["hip"],
+                    "name": p["display_name"],
+                    "ptz_pan": p["ptz_pan"],
+                    "ptz_tilt": p["ptz_tilt"],
+                }
+                for p in session["points"]
+            ],
+        }
+
+        # 写入文件 - 路径与 limit.json, speed.json 同级
+        from src.advanced.device_path import get_device_info
+
+        # 从 _managers 中获取设备信息
+        mgr = _managers.get("ptz_controller")
+        if not mgr:
+            return {"success": False, "message": "PTZ控制器未初始化"}
+
+        target_ip = _resolve_device_id_to_ip(mgr, req.device_ip)
+        if not target_ip:
+            return {"success": False, "message": f"无法解析设备标识: {req.device_ip}"}
+
+        ctrl, err = mgr._get_controller(target_ip)
+        if err:
+            return {"success": False, "message": err}
+
+        device_info = get_device_info(ctrl)
+        mac_clean = device_info["mac_clean"]
+        model_short = device_info["model_short"]
+
+        from src.advanced.device_path import get_calibration_path
+        cal_path = get_calibration_path(mac_clean)
+
+        import json
+        with open(cal_path, 'w', encoding='utf-8') as f:
+            json.dump(save_data, f, indent=2, ensure_ascii=False)
+
+        # 也更新 session
+        session["calibration_result"] = req.params if req.params else save_data
+
+        log_info(f"[staralign] 校准参数已保存: {req.device_ip}")
+        return {
+            "success": True,
+            "message": f"校准参数已保存到 {cal_path}",
+            "path": str(cal_path),
+        }
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@api_router.get("/staralign/status", summary="查询校准状态", tags=["StarAlign"])
+async def staralign_status(device_ip: str = Query(..., description="设备IP")):
+    """返回当前校准会话状态"""
+    try:
+        session = _staralign_sessions.get(device_ip)
+        if not session:
+            return {"success": False, "message": "无校准会话"}
+        solver: CalibrationSolver = session["solver"]
+        status = solver.status()
+        return {
+            "success": True,
+            **status,
+            "points": session["points"],
+        }
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 天体跟踪 API (v8.100)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# 全局跟踪引擎实例
+_tracking_engine = None
+
+
+class TrackingStartRequest(BaseModel):
+    """启动跟踪请求"""
+    device_ip: str
+    mac: str
+    obs_lat: float
+    obs_lon: float
+    target_type: str = "star"
+    target_id: str = ""
+    custom_ra: float = 0.0
+    custom_dec: float = 0.0
+    custom_dra: float = 0.0
+    custom_ddec: float = 0.0
+
+
+class TrackingRateRequest(BaseModel):
+    """切换跟踪速率模式请求"""
+    rate: str  # sidereal | lunar | solar | custom
+    custom_dra_arcsec: float = 0.0   # 仅 rate=custom 时使用
+    custom_ddec_arcsec: float = 0.0  # 仅 rate=custom 时使用
+
+
+class TrackingIdentifyRequest(BaseModel):
+    """目标识别请求"""
+    name: str
+
+
+class TrackingCustomRateRequest(BaseModel):
+    """自定义速率请求（彗星等变速天体，外部导入 RA/Dec 自行）"""
+    dra_arcsec_per_s: float   # RA 方向自行 "/s
+    ddec_arcsec_per_s: float  # Dec 方向自行 "/s
+    epoch: str = "J2000"      # 历元
+
+
+@api_router.post("/tracking/start", summary="启动天体跟踪", tags=["Tracking"])
+async def tracking_start(req: TrackingStartRequest) -> dict:
+    """启动跟踪引擎（1秒循环跟踪指定天体）"""
+    global _tracking_engine
+
+    try:
+        if _tracking_engine is not None and _tracking_engine.is_running():
+            _tracking_engine.stop()
+
+        target_spec = {
+            "type": req.target_type,
+            "id": req.target_id,
+        }
+        if req.target_type == "custom":
+            target_spec.update({
+                "custom_ra": req.custom_ra,
+                "custom_dec": req.custom_dec,
+                "custom_dra": req.custom_dra,
+                "custom_ddec": req.custom_ddec,
+            })
+
+        mgr = _managers.get("ptz_controller")
+        if not mgr:
+            return {"success": False, "message": "PTZDeviceController未初始化"}
+
+        ctrl, err = mgr._get_controller(req.device_ip)
+        if err:
+            return {"success": False, "message": f"获取 PTZ 控制器失败: {err}"}
+
+        _tracking_engine = TrackingEngine(
+            ptz=ctrl,
+            mac=req.mac,
+            obs_lat=req.obs_lat,
+            obs_lon=req.obs_lon,
+            target_spec=target_spec,
+        )
+        _tracking_engine.start()
+
+        log_info("tracking", "start", {"target": req.target_id, "type": req.target_type})
+        return {
+            "success": True,
+            "message": f"跟踪已启动: {req.target_id}",
+            "status": _tracking_engine.get_status(),
+        }
+
+    except Exception as e:
+        return {"success": False, "message": f"启动跟踪失败: {e}"}
+
+
+@api_router.post("/tracking/stop", summary="停止天体跟踪", tags=["Tracking"])
+async def tracking_stop() -> dict:
+    """停止跟踪引擎"""
+    global _tracking_engine
+
+    try:
+        if _tracking_engine is None:
+            return {"success": False, "message": "无运行中的跟踪任务"}
+
+        _tracking_engine.stop()
+        _tracking_engine = None
+
+        log_info("tracking", "stop", {})
+        return {"success": True, "message": "跟踪已停止"}
+
+    except Exception as e:
+        return {"success": False, "message": f"停止跟踪失败: {e}"}
+
+
+@api_router.post("/tracking/rate", summary="切换跟踪速率", tags=["Tracking"])
+async def tracking_rate(req: TrackingRateRequest) -> dict:
+    """切换跟踪速率模式（sidereal/lunar/solar/custom），不中断跟踪"""
+    global _tracking_engine
+
+    try:
+        if _tracking_engine is None:
+            return {"success": False, "message": "无运行中的跟踪任务"}
+
+        if req.rate not in ("sidereal", "lunar", "solar", "custom"):
+            return {"success": False, "message": f"无效速率: {req.rate}"}
+
+        custom_params = None
+        if req.rate == "custom":
+            custom_params = {
+                "dra_arcsec_per_s": req.custom_dra_arcsec,
+                "ddec_arcsec_per_s": req.custom_ddec_arcsec,
+            }
+
+        _tracking_engine.set_rate(req.rate, custom_params)
+        log_info("tracking", "rate", {"rate": req.rate})
+        return {
+            "success": True,
+            "message": f"速率已切换: {req.rate}",
+            "current_rate": req.rate,
+        }
+
+    except Exception as e:
+        return {"success": False, "message": f"设置速率失败: {e}"}
+
+
+@api_router.get("/tracking/status", summary="获取跟踪状态", tags=["Tracking"])
+async def tracking_status() -> dict:
+    """获取当前跟踪引擎状态"""
+    global _tracking_engine
+
+    try:
+        if _tracking_engine is None:
+            return {"success": True, "running": False, "message": "无跟踪任务"}
+
+        status = _tracking_engine.get_status()
+        return {
+            "success": True,
+            "running": status["running"],
+            "data": status,
+        }
+
+    except Exception as e:
+        return {"success": False, "message": f"获取状态失败: {e}"}
+
+
+@api_router.post("/tracking/identify-target", summary="识别目标", tags=["Tracking"])
+async def tracking_identify(req: TrackingIdentifyRequest) -> dict:
+    """根据用户输入的名称识别目标类型和返回信息"""
+    try:
+        resolver = CelestialResolver()
+        result = resolver.identify_target(req.name)
+        return {"success": True, "data": result}
+
+    except Exception as e:
+        return {"success": False, "message": f"目标识别失败: {e}"}
+
+
+@api_router.post("/tracking/custom-rate", summary="设置彗星自行速率", tags=["Tracking"])
+async def tracking_custom_rate(req: TrackingCustomRateRequest) -> dict:
+    """设置彗星等变速天体的 RA/Dec 自行速率，并切换到 custom 模式"""
+    global _tracking_engine
+
+    try:
+        if _tracking_engine is None:
+            return {"success": False, "message": "无运行中的跟踪任务"}
+
+        custom_params = {
+            "dra_arcsec_per_s": req.dra_arcsec_per_s,
+            "ddec_arcsec_per_s": req.ddec_arcsec_per_s,
+            "epoch": req.epoch,
+        }
+        _tracking_engine.set_rate("custom", custom_params)
+
+        log_info("tracking", "custom_rate", {
+            "dra": req.dra_arcsec_per_s,
+            "ddec": req.ddec_arcsec_per_s,
+            "epoch": req.epoch,
+        })
+        return {
+            "success": True,
+            "message": f"自定义速率已设置: dRA={req.dra_arcsec_per_s}\"/s, dDec={req.ddec_arcsec_per_s}\"/s",
+            "current_rate": "custom",
+        }
+
+    except Exception as e:
+        return {"success": False, "message": f"设置自定义速率失败: {e}"}
+
+
+# ================================================================ #
+#  v8.102: SkyAtlas 天体目标选择 API
+# ================================================================ #
+
+
+@api_router.get("/skyatlas/solar", summary="获取太阳系天体实时坐标", tags=["SkyAtlas"])
+async def skyatlas_solar() -> dict:
+    """返回太阳、月球、五大行星的实时 RA/Dec 坐标"""
+    try:
+        sa = get_skyatlas()
+        bodies = sa.get_solar_system_bodies()
+        return {"success": True, "data": bodies}
+    except Exception as e:
+        return {"success": False, "message": f"获取失败: {e}"}
+
+
+@api_router.get("/skyatlas/messier", summary="获取梅西耶天体列表", tags=["SkyAtlas"])
+async def skyatlas_messier() -> dict:
+    """返回110个梅西耶天体列表（用于下拉菜单）"""
+    try:
+        sa = get_skyatlas()
+        targets = sa.get_messier_targets()
+        return {"success": True, "data": targets}
+    except Exception as e:
+        return {"success": False, "message": f"获取失败: {e}"}
+
+
+@api_router.get("/skyatlas/search", summary="模糊搜索天体", tags=["SkyAtlas"])
+async def skyatlas_search(q: str = Query(..., description="搜索关键词，如 m42、猎户、星云")) -> dict:
+    """模糊搜索天体，返回匹配列表"""
+    try:
+        sa = get_skyatlas()
+        results = sa.search_target(q)
+        return {"success": True, "query": q, "count": len(results), "data": results}
+    except Exception as e:
+        return {"success": False, "message": f"搜索失败: {e}"}
+
+
+@api_router.get("/skyatlas/stellarium", summary="获取Stellarium当前选中目标", tags=["SkyAtlas"])
+async def skyatlas_stellarium() -> dict:
+    """从 Stellarium 远程获取当前选中目标（容错处理）"""
+    try:
+        sa = get_skyatlas()
+        target = sa.get_stellarium_target()
+        if target:
+            return {"success": True, "data": target}
+        return {"success": False, "message": "无法连接 Stellarium 或未选中目标"}
+    except Exception as e:
+        return {"success": False, "message": f"获取失败: {e}"}
+
+
+# ── v8.102: SkyAtlas Goto + 坐标转换 ──
+
+class SkyAtlasGotoRequest(BaseModel):
+    """SkyAtlas 指向请求"""
+    ra: float
+    dec: float
+    target_name: str = ""
+    track_mode: str = "sidereal"
+
+
+class SkyAtlasCoordConvertRequest(BaseModel):
+    """SkyAtlas 坐标转换请求"""
+    ra: float | None = None
+    dec: float | None = None
+    az: float | None = None
+    alt: float | None = None
+
+
+@api_router.post("/skyatlas/goto", summary="SkyAtlas 指向天体", tags=["SkyAtlas"])
+async def skyatlas_goto(req: SkyAtlasGotoRequest) -> dict:
+    """将 PTZ 指向指定 RA/Dec 坐标的天体。
+
+    流程: RA/Dec → Alt/Az → PTZ 角度 → 绝对移动
+    """
+    try:
+        # 1. 获取当前连接设备
+        mgr = _managers.get("ptz_controller")
+        if not mgr:
+            return {"success": False, "message": "PTZDeviceController未初始化"}
+
+        connected = mgr.get_connected_device()
+        if not connected:
+            return {"success": False, "message": "无已连接设备"}
+
+        target_ip = connected.get("ip", "")
+        if not target_ip:
+            return {"success": False, "message": "活跃设备无IP"}
+
+        ctrl, err = mgr._get_controller(target_ip)
+        if err:
+            return {"success": False, "message": f"获取控制器失败: {err}"}
+
+        # 2. 获取地理坐标
+        registry = _read_registry()
+        geo = registry.get("geo_location", {})
+        obs_lat = geo.get("lat", 0)
+        obs_lon = geo.get("lon", 0)
+        if not obs_lat and not obs_lon:
+            return {"success": False, "message": "未设置地理坐标，请先在设置页配置"}
+
+        # 3. RA/Dec → Alt/Az
+        now_utc = datetime.now(timezone.utc)
+        conv = CoordinateConverter()
+        alt, az = conv.radec_to_altaz(req.ra, req.dec, obs_lat, obs_lon, now_utc)
+
+        # 检查目标是否在地平线以上
+        if alt <= 0:
+            return {
+                "success": False,
+                "message": f"目标天体当前在地平线以下（高度角={alt:.1f}°），无法指向",
+                "alt": round(alt, 2),
+                "az": round(az, 2)
+            }
+
+        # 4. Alt/Az → PTZ 角度（ISAPI 单位：度×10）
+        # 尝试加载校准参数
+        solver = None
+        session = _staralign_sessions.get(target_ip)
+        if session and session.get("solver") and session["solver"]._solved:
+            solver = session["solver"]
+
+        # 如果有校准参数，使用校准模型；否则直接映射
+        if solver and solver._solved:
+            ptz_pan, ptz_tilt = solver.altaz_to_ptz(alt, az)
+        else:
+            # 无校准：直接映射（Az→Pan, Alt→Tilt），转换为 ISAPI 单位
+            ptz_pan = az * 10
+            ptz_tilt = alt * 10
+
+        # 执行 PTZ 绝对移动
+        result = ctrl.absolute_move(int(ptz_pan), int(ptz_tilt), speed=57)
+
+        log_info("skyatlas", "goto", {
+            "target": req.target_name, "ra": req.ra, "dec": req.dec,
+            "alt": round(alt, 2), "az": round(az, 2),
+            "ptz_pan": round(ptz_pan, 2), "ptz_tilt": round(ptz_tilt, 2),
+        })
+
+        return {
+            "success": True,
+            "az": round(az, 2),
+            "alt": round(alt, 2),
+            "ptz_pan": round(ptz_pan, 2),
+            "ptz_tilt": round(ptz_tilt, 2),
+            "message": f"已指向 {req.target_name or '目标'} (Az={az:.1f}° Alt={alt:.1f}°)",
+        }
+
+    except Exception as e:
+        return {"success": False, "message": f"指向失败: {e}"}
+
+
+@api_router.post("/skyatlas/coord-convert", summary="SkyAtlas 坐标转换", tags=["SkyAtlas"])
+async def skyatlas_coord_convert(req: SkyAtlasCoordConvertRequest) -> dict:
+    """RA/Dec ↔ Alt/Az 双向坐标转换。
+
+    提供 RA/Dec → 返回 Alt/Az；提供 Az/Alt → 返回 RA/Dec。
+    """
+    try:
+        # 获取地理坐标
+        registry = _read_registry()
+        geo = registry.get("geo_location", {})
+        obs_lat = geo.get("lat", 0)
+        obs_lon = geo.get("lon", 0)
+        if not obs_lat and not obs_lon:
+            return {"success": False, "message": "未设置地理坐标"}
+
+        now_utc = datetime.now(timezone.utc)
+        conv = CoordinateConverter()
+
+        if req.ra is not None and req.dec is not None:
+            # RA/Dec → Alt/Az
+            alt, az = conv.radec_to_altaz(req.ra, req.dec, obs_lat, obs_lon, now_utc)
+            return {
+                "success": True,
+                "ra": req.ra, "dec": req.dec,
+                "az": round(az, 2), "alt": round(alt, 2),
+            }
+        elif req.az is not None and req.alt is not None:
+            # Az/Alt → RA/Dec
+            ra, dec = conv.altaz_to_radec(req.alt, req.az, obs_lat, obs_lon, now_utc)
+            return {
+                "success": True,
+                "ra": round(ra, 4), "dec": round(dec, 4),
+                "az": req.az, "alt": req.alt,
+            }
+        else:
+            return {"success": False, "message": "请提供 RA/Dec 或 Az/Alt 坐标"}
+
+    except Exception as e:
+        return {"success": False, "message": f"坐标转换失败: {e}"}

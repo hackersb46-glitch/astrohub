@@ -629,8 +629,20 @@ function showStartupProgress() {
                     if (btn.getAttribute('data-page') === 'advanced') {
                         moveVideoToAdvanced();
                         initAdvSidebar();
+                        // v8.82: 初始化高级功能页面开关状态
+                        if (typeof switchAdvTab === 'function') {
+                            switchAdvTab('function');
+                        }
+                        // v8.91: 高级功能构图辅助初始化
+                        if (typeof initCompositionOverlay === 'function') {
+                            initCompositionOverlay('adv');
+                        }
                     } else if (btn.getAttribute('data-page') === 'console') {
                         moveVideoToConsole();
+                        // v8.91: 主控台构图辅助初始化
+                        if (typeof initCompositionOverlay === 'function') {
+                            initCompositionOverlay('console');
+                        }
                     }
                     if (btn.getAttribute('data-page')) refreshAdvancedDeviceSelectors();
                     // 设置页面加载路径
@@ -1808,32 +1820,96 @@ function showStartupProgress() {
         function setTracking(mode) {
             var dev = window.connectedDevice.ip;
             if (!dev) { showToast('warning', '请先在上方选择已连接设备'); return; }
-            // 重置按钮状态
-            ['btnTrackSidereal','btnTrackLunar','btnTrackSolar','btnTrackOff'].forEach(function(id) {
-                var b = document.getElementById(id);
-                if(b) { b.className = 'btn btn-secondary'; b.style.opacity = '1'; }
-            });
-            apiPost('/api/v1/ascom/telescope/tracking?mode=' + mode, null).then(function(result) {
-                var trackLabels = {trackSidereal:'恒星跟踪',trackLunar:'月球跟踪',trackSolar:'太阳跟踪',trackOff:'关闭跟踪'};
-                if (typeof operationLog === 'function') operationLog('跟踪: ' + (trackLabels[mode] || mode), 'success');
-                if (result && result.success) {
-                    showToast('success', result.message || '跟踪模式已设置');
-                    // 高亮当前按钮
-                    var btnMap = {trackSidereal:'btnTrackSidereal',trackLunar:'btnTrackLunar',trackSolar:'btnTrackSolar',trackOff:'btnTrackOff'};
-                    var activeBtn = document.getElementById(btnMap[mode]);
+
+            // 关闭跟踪不需要检查校准
+            if (mode === 'trackOff') {
+                apiPost('/api/v1/tracking/stop', null).then(function(result) {
+                    if (result && result.success) {
+                        showToast('success', result.message || '跟踪已停止');
+                    }
+                    // 重置按钮状态
+                    ['btnTrackSidereal','btnTrackLunar','btnTrackSolar','btnTrackOff'].forEach(function(id) {
+                        var b = document.getElementById(id);
+                        if(b) { b.className = 'btn btn-secondary'; b.style.opacity = '1'; }
+                    });
+                    var activeBtn = document.getElementById('btnTrackOff');
                     if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
-                } else {
-                    // 对于非ASCOM望远镜,给UI反馈
-                    showToast('info', '跟踪模式: ' + mode + ' (设备响应: ' + (result ? result.message : '无') + ')');
-                    var btnMap = {trackSidereal:'btnTrackSidereal',trackLunar:'btnTrackLunar',trackSolar:'btnTrackSolar',trackOff:'btnTrackOff'};
-                    var activeBtn = document.getElementById(btnMap[mode]);
+                }).catch(function() {
+                    // 如果新 API 不可用，尝试旧 API
+                    apiPost('/api/v1/ascom/telescope/tracking?mode=' + mode, null).catch(function() {});
+                    ['btnTrackSidereal','btnTrackLunar','btnTrackSolar','btnTrackOff'].forEach(function(id) {
+                        var b = document.getElementById(id);
+                        if(b) { b.className = 'btn btn-secondary'; b.style.opacity = '1'; }
+                    });
+                    var activeBtn = document.getElementById('btnTrackOff');
                     if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
+                });
+                return;
+            }
+
+            // 检查三星校准状态
+            apiGet('/api/v1/staralign/status?device_ip=' + dev).then(function(status) {
+                if (!status || !status.success || !status.is_ready) {
+                    showTrackingOverlay();
+                    showToast('warning', '请先运行三星校准');
+                    return;
                 }
+                removeTrackingOverlay();
+
+                // 重置按钮状态
+                ['btnTrackSidereal','btnTrackLunar','btnTrackSolar','btnTrackOff'].forEach(function(id) {
+                    var b = document.getElementById(id);
+                    if(b) { b.className = 'btn btn-secondary'; b.style.opacity = '1'; }
+                });
+
+                // 获取设备 MAC 和观测站坐标
+                var mac = window.connectedDevice.mac || '';
+                var obsLat = window.astroCameraLat || 29.45;
+                var obsLon = window.astroCameraLon || 100.33;
+
+                // 映射跟踪模式到目标类型
+                var targetMap = {
+                    trackSidereal: { type: 'star', id: 'polaris' },
+                    trackLunar: { type: 'moon', id: 'moon' },
+                    trackSolar: { type: 'sun', id: 'sun' }
+                };
+                var target = targetMap[mode] || { type: 'star', id: 'polaris' };
+
+                // 启动跟踪
+                apiPost('/api/v1/tracking/start', {
+                    device_ip: dev,
+                    mac: mac,
+                    obs_lat: obsLat,
+                    obs_lon: obsLon,
+                    target_type: target.type,
+                    target_id: target.id,
+                }).then(function(result) {
+                    var trackLabels = {trackSidereal:'恒星跟踪',trackLunar:'月球跟踪',trackSolar:'太阳跟踪'};
+                    if (typeof operationLog === 'function') operationLog('跟踪: ' + (trackLabels[mode] || mode), 'success');
+                    if (result && result.success) {
+                        showToast('success', result.message || '跟踪已启动');
+                        var btnMap = {trackSidereal:'btnTrackSidereal',trackLunar:'btnTrackLunar',trackSolar:'btnTrackSolar'};
+                        var activeBtn = document.getElementById(btnMap[mode]);
+                        if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
+                    } else {
+                        showToast('error', result ? result.message : '跟踪启动失败');
+                    }
+                }).catch(function(e) {
+                    // 新 API 不可用，尝试旧 API
+                    apiPost('/api/v1/ascom/telescope/tracking?mode=' + mode, null).then(function(result) {
+                        var trackLabels = {trackSidereal:'恒星跟踪',trackLunar:'月球跟踪',trackSolar:'太阳跟踪'};
+                        if (typeof operationLog === 'function') operationLog('跟踪: ' + (trackLabels[mode] || mode), 'success');
+                        showToast('info', '跟踪模式: ' + mode + ' (旧API)');
+                        var btnMap = {trackSidereal:'btnTrackSidereal',trackLunar:'btnTrackLunar',trackSolar:'btnTrackSolar'};
+                        var activeBtn = document.getElementById(btnMap[mode]);
+                        if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
+                    }).catch(function() {
+                        showToast('error', '跟踪启动失败: ' + e.message);
+                    });
+                });
             }).catch(function(e) {
-                showToast('info', '跟踪模式: ' + mode + ' (API未响应)');
-                var btnMap = {trackSidereal:'btnTrackSidereal',trackLunar:'btnTrackLunar',trackSolar:'btnTrackSolar',trackOff:'btnTrackOff'};
-                var activeBtn = document.getElementById(btnMap[mode]);
-                if (activeBtn) { activeBtn.className = 'btn btn-primary'; }
+                showTrackingOverlay();
+                showToast('warning', '无法获取校准状态');
             });
         }
         // 截图函数已移至 console.html (v8.58)
@@ -2284,6 +2360,10 @@ function showStartupProgress() {
                     btn.style.opacity = '1';
                 }
             });
+            // v8.101: 检查三星校准状态，决定是否显示跟踪覆盖层
+            if (typeof checkTrackingAvailability === 'function' && window.connectedDevice && window.connectedDevice.ip) {
+                checkTrackingAvailability(window.connectedDevice.ip);
+            }
         };
 
         // ================================================================

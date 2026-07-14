@@ -1410,7 +1410,7 @@ function loadStarAlignCatalog(lat, lon) {
     .then(r => r.json())
     .then(data => {
         if (data.success) {
-            starAlignStars = data.stars;
+            starAlignStars = (data.stars || []).filter(s => s.hip && s.hip > 0); // 过滤掉无效HIP
             // 第1行固定北极星
             var polaris = starAlignStars.find(s => s.hip === 11767) || starAlignStars[0];
             if (polaris) {
@@ -1445,9 +1445,9 @@ function refreshStarSelects() {
         }
 
         // 收集已选星的方位角(用于间距计算)
-        // 北极星不参与间距计算; 第2颗也不和北极星算
+        // 北极星不参与间距计算
         var refAzs = [];
-        if (row >= 3) {  // 第3颗才开始算间距
+        if (row >= 2) {  // Row 2 和 Row 3 都要算间距
             for (var i = 1; i <= 3; i++) {
                 if (i !== row && starAlignSelected[i] && starAlignSelected[i].hip !== 11767) {
                     refAzs.push(starAlignSelected[i].az);
@@ -1458,8 +1458,9 @@ function refreshStarSelects() {
         // 过滤+排序
         var candidates = [];
         starAlignStars.forEach(function(s) {
+            if (s.hip === 0) return; // 过滤掉无效HIP
             if (excludeHips.indexOf(s.hip) >= 0) return;
-            if (s.alt < 25 || s.vmag > 4.0) return;
+            if (s.alt < 20 || s.vmag > 4.0) return;
             // 计算与已选星的最小间距
             var minSep = 360;
             for (var j = 0; j < refAzs.length; j++) {
@@ -1498,12 +1499,13 @@ function refreshStarSelects() {
 // 下拉选择星体
 function onStarSelect(row) {
     var select = document.getElementById('starSelect' + row);
-    var hip = parseInt(select.value);
-    if (!hip) {
+    var hipStr = select.value;
+    if (!hipStr) {
         starAlignSelected[row] = null;
         document.getElementById('starInfo' + row).textContent = '';
         return;
     }
+    var hip = parseInt(hipStr);
 
     var star = starAlignStars.find(s => s.hip === hip);
     if (!star) return;

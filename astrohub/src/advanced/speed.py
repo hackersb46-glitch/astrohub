@@ -414,7 +414,7 @@ def post_process_csv(raw_csv_path: str, mac: str, limit_data: dict | None = None
             "axis": axis,
             "direction": direction,
             "speed_level": speed_level,
-            "speed_val": round(avg_speed, 2),
+            "speed_val": round(avg_speed * 0.1, 2),  # ISAPI units/秒 → °/秒 (3600 units = 360°)
             "hit_limit": hit_limit_flag,
             "zoom": zoom,
             "repeats": len(speeds),

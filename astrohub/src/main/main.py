@@ -70,6 +70,20 @@ async def lifespan(app: FastAPI):
     )
     log.info("Managers registered")
     
+    # v8.83: 初始化统一设备参数读取层
+    from src.core.device_reader import init_device_reader
+    device_reader = init_device_reader(ptz_mgr)
+    log.info("DeviceReader initialized")
+    
+    # 启动后台轮询（首次轮询时会自动加载 Image 参数 + function.json）
+    device_reader.start()
+    log.info("DeviceReader: PTZ position polling started")
+
+    # v8.100: 加载已保存的校准数据
+    from src.api.router import _load_all_calibrations
+    _load_all_calibrations()
+    log.info("Calibration data loaded")
+    
     # v6.01: 启动时执行一次 SADP 发现，合并网关信息到 ptz_config
     try:
         log.info("Discovery devices with SADP...")

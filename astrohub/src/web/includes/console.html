@@ -55,6 +55,8 @@
                                             <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">Pan</span><span class="info-value" id="ptzPan">--</span></div>
                                             <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">Tilt</span><span class="info-value" id="ptzTilt">--</span></div>
                                             <div class="info-row" style="padding:1px 4px;font-size:12px"><span class="info-label">Zoom</span><span class="info-value" id="ptzZoom">--</span></div>
+                                            <div class="info-row" style="border-bottom:1px solid #30363d;padding:1px 4px;font-size:12px"><span class="info-label">Az</span><span class="info-value" id="ptzAz">--</span></div>
+                                            <div class="info-row" style="padding:1px 4px;font-size:12px"><span class="info-label">Alt</span><span class="info-value" id="ptzAlt">--</span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -201,6 +203,44 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- 星图 -->
+                            <div style="flex:1">
+                                <div class="collapsible-section" id="skyAtlasSection">
+                                    <div class="collapsible-header" onclick="toggleSection('skyAtlasSection')">
+                                        <h3 style="font-size:15px;color:#a371f7;margin:0">🌌 星图</h3>
+                                        <span class="collapse-icon">▼</span>
+                                    </div>
+                                    <div class="collapsible-content">
+                                        <!-- 天体输入框 -->
+                                        <div style="display:flex;gap:8px;margin-bottom:8px">
+                                            <label style="font-size:12px;color:#8b949e;white-space:nowrap">天体:</label>
+                                            <input type="text" id="skyAtlasTargetInput"
+                                                   style="flex:1;padding:4px 8px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e0e6f0;font-size:12px"
+                                                   placeholder="输入 m42 / 猎户 / 太阳 / moon" autocomplete="off"
+                                                   oninput="skyAtlasSearch(this.value)">
+                                            <button class="btn btn-primary btn-sm" id="btnSkyAtlasGoto" onclick="skyAtlasGoto()">🎯 指向</button>
+                                        </div>
+                                        <!-- 候选列表 (动态显示) -->
+                                        <div id="skyAtlasCandidates" style="display:none;position:relative;z-index:100"></div>
+                                        <!-- 坐标框 -->
+                                        <div style="display:flex;gap:8px;margin-bottom:8px">
+                                            <label style="font-size:12px;color:#8b949e;white-space:nowrap">坐标:</label>
+                                            <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+                                                <input type="text" id="skyAtlasRaDec" readonly
+                                                       style="padding:4px 8px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#8b949e;font-size:11px"
+                                                       placeholder="RA/Dec">
+                                                <input type="text" id="skyAtlasAltAz" readonly
+                                                       style="padding:4px 8px;background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#8b949e;font-size:11px"
+                                                       placeholder="Az/Alt">
+                                            </div>
+                                            <div style="display:flex;flex-direction:column;gap:4px">
+                                                <button class="btn btn-secondary btn-sm" id="btnSkyAtlasManual" onclick="toggleSkyAtlasManual()">📝 手动</button>
+                                                <button class="btn btn-secondary btn-sm" id="btnSkyAtlasImport" onclick="skyAtlasImportFromStellarium()">📥 导入</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- 右: 操作日志 + 画面控制 -->
@@ -296,6 +336,7 @@
                                     <!-- 局部白平衡控制(仅局部模式显示) -->
                                     <div id="wbLocalControls" style="display:none;margin-bottom:4px">
                                         <div style="display:flex;align-items:center;gap:4px;width:100%">
+                                            <label style="font-size:11px;color:#8b949e">白平衡 <span id="wbTimerDisplay" style="font-size:11px;color:#8b949e"></span></label>
                                             <button id="btnWbRegionSelect" class="btn btn-secondary btn-sm" onclick="toggleRegionMode('whitebalance')" style="flex-shrink:0;padding:4px 8px">框选</button>
                                             <input type="text" id="wbTimerInput" value="" placeholder="定时" style="flex:1;min-width:0;padding:4px 6px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:10px" oninput="updateWbTimerInput(this)">
                                             <span style="color:#8b949e;font-size:10px;white-space:nowrap">min</span>
@@ -305,7 +346,6 @@
                                             </label>
                                             <button id="btnWbLocalStop" class="btn btn-danger btn-sm" onclick="stopAutoWhiteBalance()" disabled style="opacity:0.5;flex-shrink:0;padding:4px 8px">停止</button>
                                         </div>
-                                        <div id="wbTimerDisplay" style="color:#f85149;font-size:11px;text-align:center;margin-top:2px"></div>
                                     </div>
                                     <!-- 对焦 -->
                                     <div class="form-group" style="margin-bottom:4px">
@@ -327,6 +367,7 @@
                                     <!-- 局部对焦控制(仅局部模式显示) -->
                                     <div id="focusLocalControls" style="display:none;margin-bottom:4px">
                                         <div style="display:flex;align-items:center;gap:4px;width:100%">
+                                            <label style="font-size:11px;color:#8b949e">对焦 <span id="focusTimerDisplay" style="font-size:11px;color:#8b949e"></span></label>
                                             <button id="btnFocusRegionSelect" class="btn btn-secondary btn-sm" onclick="toggleRegionMode('focus')" style="flex-shrink:0;padding:4px 8px">框选</button>
                                             <input type="text" id="focusTimerInput" value="" placeholder="定时" style="flex:1;min-width:0;padding:4px 6px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:10px" oninput="updateFocusTimerInput(this)">
                                             <span style="color:#8b949e;font-size:10px;white-space:nowrap">min</span>
@@ -336,7 +377,6 @@
                                             </label>
                                             <button id="btnFocusLocalStop" class="btn btn-danger btn-sm" onclick="stopAutoFocus()" disabled style="opacity:0.5;flex-shrink:0;padding:4px 8px">停止</button>
                                         </div>
-                                        <div id="focusTimerDisplay" style="color:#f85149;font-size:11px;text-align:center;margin-top:2px"></div>
                                     </div>
                                     <!-- v8.69: 曝光模式 + 增益 整合一行 -->
                                     <div style="display:flex;gap:6px;margin-bottom:4px;align-items:center">
@@ -369,6 +409,7 @@
                                     <!-- v8.67: 局部亮度控制(仅局部模式显示) -->
                                     <div id="brightnessLocalControls" style="display:none;margin-bottom:4px">
                                         <div style="display:flex;align-items:center;gap:4px;width:100%">
+                                            <label style="font-size:11px;color:#8b949e">亮度 <span id="brightnessTimerDisplay" style="font-size:11px;color:#8b949e"></span></label>
                                             <button id="btnBrightRegionSelect" class="btn btn-secondary btn-sm" onclick="toggleRegionMode('brightness')" style="flex-shrink:0;padding:4px 8px">框选</button>
                                             <input type="text" id="brightnessTimerInput" value="" placeholder="定时" style="flex:1;min-width:0;padding:4px 6px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e0e6f0;font-size:10px" oninput="updateBrightnessTimerInput(this)">
                                             <span style="color:#8b949e;font-size:10px;white-space:nowrap">min</span>
@@ -378,7 +419,6 @@
                                             </label>
                                             <button id="btnBrightnessLocalStop" class="btn btn-danger btn-sm" onclick="stopAutoBrightness()" disabled style="opacity:0.5;flex-shrink:0;padding:4px 8px">停止</button>
                                         </div>
-                                        <div id="brightnessTimerDisplay" style="color:#f85149;font-size:11px;text-align:center;margin-top:2px"></div>
                                     </div>
 
                                 </div>
@@ -1191,6 +1231,60 @@ function goToFunctionTest() {
     }, 500);
 }
 
+// v8.101: 显示三星校准覆盖层
+function showTrackingOverlay() {
+    var section = document.getElementById('trackControlSection');
+    if (!section) return;
+
+    // 移除旧覆盖层
+    var oldOverlay = document.getElementById('tracking-required-overlay');
+    if (oldOverlay) oldOverlay.remove();
+
+    // 创建新覆盖层
+    var overlay = document.createElement('div');
+    overlay.id = 'tracking-required-overlay';
+    overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(13,17,23,0.9);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px;';
+    overlay.innerHTML = '<div style="color:#f0883e;font-size:14px;text-align:center">请先运行三星校准</div><div style="color:#8b949e;font-size:12px;text-align:center">跟踪功能需要三星校准模型</div><button class="btn btn-primary btn-sm" onclick="goToStarAlign()" style="margin-top:8px">前往三星校准</button>';
+
+    section.style.position = 'relative';
+    section.appendChild(overlay);
+}
+
+// v8.101: 移除三星校准覆盖层
+function removeTrackingOverlay() {
+    var overlay = document.getElementById('tracking-required-overlay');
+    if (overlay) overlay.remove();
+}
+
+// v8.101: 跳转到三星校准页面
+function goToStarAlign() {
+    // 移除覆盖层
+    removeTrackingOverlay();
+    // 跳转到高级功能页面
+    document.querySelector('[data-page="advanced"]').click();
+    // 选择三星校准
+    setTimeout(function() {
+        document.querySelector('[data-test="staralign"]').click();
+    }, 500);
+}
+
+// v8.101: 检查跟踪可用性（设备连接后调用）
+function checkTrackingAvailability(deviceIp) {
+    if (!deviceIp) {
+        showTrackingOverlay();
+        return;
+    }
+    apiGet('/api/v1/staralign/status?device_ip=' + deviceIp).then(function(status) {
+        if (status && status.success && status.is_ready) {
+            removeTrackingOverlay();
+        } else {
+            showTrackingOverlay();
+        }
+    }).catch(function() {
+        showTrackingOverlay();
+    });
+}
+
 // 加载 OSD 状态
 function loadOsdStatus(deviceIp) {
     // PTZ OSD
@@ -1739,6 +1833,15 @@ function stopFocusTimer() {
     focusTimerSeconds = 0;
     var display = document.getElementById('focusTimerDisplay');
     if (display) display.textContent = '';
+}
+
+function updateWbTimerDisplay() {
+    var display = document.getElementById('wbTimerDisplay');
+    if (!display) return;
+    if (wbTimerSeconds <= 0) { display.textContent = ''; return; }
+    var m = Math.floor(wbTimerSeconds / 60);
+    var s = wbTimerSeconds % 60;
+    display.textContent = '(' + m + ':' + (s < 10 ? '0' : '') + s + ')';
 }
 
 function updateFocusTimerDisplay() {
@@ -2638,6 +2741,16 @@ function startPtzImagePoll() {
                 if (panEl) panEl.textContent = r.data.pan || 0;
                 if (tiltEl) tiltEl.textContent = r.data.tilt || 0;
                 if (zoomEl) zoomEl.textContent = r.data.zoom || 0;
+                // v8.100: Alt/Az 校准显示
+                var azEl = document.getElementById('ptzAz');
+                var altEl = document.getElementById('ptzAlt');
+                if (r.data.calibrated && r.data.az !== undefined) {
+                    if (azEl) azEl.textContent = r.data.az.toFixed(2) + '°';
+                    if (altEl) altEl.textContent = r.data.alt.toFixed(2) + '°';
+                } else {
+                    if (azEl) azEl.textContent = '--';
+                    if (altEl) altEl.textContent = '--';
+                }
                 // v8.81: 同步高级功能页面
                 var advPan = document.getElementById('advPtzPan');
                 var advTilt = document.getElementById('advPtzTilt');
@@ -2772,6 +2885,11 @@ window.loadSlowShutter = loadSlowShutter;
 window.goToFunctionTest = goToFunctionTest;
 window.showFunctionOverlay = showFunctionOverlay;
 window.removeFunctionOverlay = removeFunctionOverlay;
+// v8.101: 三星校准覆盖层相关函数
+window.showTrackingOverlay = showTrackingOverlay;
+window.removeTrackingOverlay = removeTrackingOverlay;
+window.goToStarAlign = goToStarAlign;
+window.checkTrackingAvailability = checkTrackingAvailability;
 // v8.38: 白平衡/对焦模式切换 + 停止函数
 window.onWbModeChange = onWbModeChange;
 window.onFocusModeChange = onFocusModeChange;
@@ -3061,4 +3179,193 @@ window.addEventListener('resize', function() {
         if (canvas) updateViewAssistOverlay(p);
     });
 });
+
+// ═══════════════════════════════════════════════════════════════
+// v8.102: SkyAtlas 星图功能
+// ═══════════════════════════════════════════════════════════════
+
+var _skyAtlasSelected = null;  // {name, ra, dec}
+var _skyAtlasManualMode = false;
+var _skyAtlasSearchTimer = null;
+
+function skyAtlasSearch(query) {
+    if (_skyAtlasSearchTimer) clearTimeout(_skyAtlasSearchTimer);
+    if (!query || query.trim().length < 1) {
+        var el = document.getElementById('skyAtlasCandidates');
+        el.style.display = 'none';
+        el.innerHTML = '';
+        return;
+    }
+    _skyAtlasSearchTimer = setTimeout(function() {
+        apiGet('/api/v1/skyatlas/search?q=' + encodeURIComponent(query.trim())).then(function(r) {
+            if (!r || !r.success || !r.data || r.data.length === 0) {
+                var el = document.getElementById('skyAtlasCandidates');
+                el.style.display = 'none';
+                el.innerHTML = '';
+                return;
+            }
+            var el = document.getElementById('skyAtlasCandidates');
+            var html = '<div style="background:#161b22;border:1px solid #30363d;border-radius:6px;max-height:180px;overflow-y:auto;margin-bottom:8px">';
+            r.data.forEach(function(item) {
+                var name = item.display_name || item.name || item.catalog_id || '';
+                var ra = item.ra_deg || item.ra || 0;
+                var dec = item.dec_deg || item.dec || 0;
+                var type = item.type || '';
+                var vmag = item.vmag ? ' mag=' + item.vmag.toFixed(1) : '';
+                html += '<div style="padding:4px 8px;cursor:pointer;font-size:11px;color:#c9d1d9;border-bottom:1px solid #21262d" ' +
+                    'onmouseover="this.style.background=\'#1f2937\'" onmouseout="this.style.background=\'transparent\'" ' +
+                    'onclick="skyAtlasSelectCandidate(\'' + name.replace(/'/g, "\\'") + '\',' + ra + ',' + dec + ')">' +
+                    name + (type ? ' <span style="color:#8b949e">(' + type + ')</span>' : '') + vmag +
+                    ' <span style="color:#6e7681">RA=' + ra.toFixed(2) + '° Dec=' + dec.toFixed(2) + '°</span></div>';
+            });
+            html += '</div>';
+            el.innerHTML = html;
+            el.style.display = 'block';
+        }).catch(function(e) {
+            console.warn('[SkyAtlas] search error:', e);
+        });
+    }, 300);
+}
+
+function skyAtlasSelectCandidate(name, ra, dec) {
+    _skyAtlasSelected = {name: name, ra: ra, dec: dec};
+    document.getElementById('skyAtlasTargetInput').value = name;
+    document.getElementById('skyAtlasCandidates').style.display = 'none';
+    // 坐标转换
+    skyAtlasCoordConvert(ra, dec);
+}
+
+function skyAtlasGoto() {
+    if (!_skyAtlasSelected) {
+        var input = document.getElementById('skyAtlasTargetInput').value.trim();
+        if (!input) return;
+        // 尝试搜索
+        apiGet('/api/v1/skyatlas/search?q=' + encodeURIComponent(input)).then(function(r) {
+            if (r && r.success && r.data && r.data.length > 0) {
+                var item = r.data[0];
+                var name = item.display_name || item.name || item.catalog_id || input;
+                var ra = item.ra_deg || item.ra || 0;
+                var dec = item.dec_deg || item.dec || 0;
+                _skyAtlasSelected = {name: name, ra: ra, dec: dec};
+                document.getElementById('skyAtlasTargetInput').value = name;
+                skyAtlasCoordConvert(ra, dec);
+                _doSkyAtlasGoto();
+            }
+        });
+        return;
+    }
+    _doSkyAtlasGoto();
+}
+
+function _doSkyAtlasGoto() {
+    if (!_skyAtlasSelected) return;
+    var btn = document.getElementById('btnSkyAtlasGoto');
+    btn.disabled = true;
+    btn.textContent = '⏳ 指向中...';
+    apiPost('/api/v1/skyatlas/goto', {
+        ra: _skyAtlasSelected.ra,
+        dec: _skyAtlasSelected.dec,
+        target_name: _skyAtlasSelected.name,
+        track_mode: 'sidereal'
+    }).then(function(r) {
+        if (r && r.success) {
+            operationLog('指向 ' + _skyAtlasSelected.name + ' Az=' + r.az + '° Alt=' + r.alt + '°');
+        } else {
+            operationLog('指向失败: ' + (r ? r.message : '未知错误'));
+        }
+    }).catch(function(e) {
+        operationLog('指向异常: ' + e);
+    }).finally(function() {
+        btn.disabled = false;
+        btn.textContent = '🎯 指向';
+    });
+}
+
+function toggleSkyAtlasManual() {
+    _skyAtlasManualMode = !_skyAtlasManualMode;
+    var raDecInput = document.getElementById('skyAtlasRaDec');
+    var altAzInput = document.getElementById('skyAtlasAltAz');
+    var targetInput = document.getElementById('skyAtlasTargetInput');
+    var btn = document.getElementById('btnSkyAtlasManual');
+
+    if (_skyAtlasManualMode) {
+        raDecInput.readOnly = false;
+        raDecInput.style.color = '#e0e6f0';
+        altAzInput.readOnly = false;
+        altAzInput.style.color = '#e0e6f0';
+        targetInput.disabled = true;
+        targetInput.style.opacity = '0.5';
+        btn.textContent = '🔒 锁定';
+        btn.classList.remove('btn-secondary');
+        btn.classList.add('btn-warning');
+    } else {
+        raDecInput.readOnly = true;
+        raDecInput.style.color = '#8b949e';
+        altAzInput.readOnly = true;
+        altAzInput.style.color = '#8b949e';
+        targetInput.disabled = false;
+        targetInput.style.opacity = '1';
+        btn.textContent = '📝 手动';
+        btn.classList.remove('btn-warning');
+        btn.classList.add('btn-secondary');
+    }
+}
+
+function skyAtlasImportFromStellarium() {
+    var btn = document.getElementById('btnSkyAtlasImport');
+    btn.disabled = true;
+    btn.textContent = '⏳ 导入中...';
+    apiGet('/api/v1/skyatlas/stellarium').then(function(r) {
+        if (r && r.success && r.data) {
+            var d = r.data;
+            var name = d.display_name || d.name || d.catalog_id || 'Stellarium目标';
+            var ra = d.ra_deg || d.ra || 0;
+            var dec = d.dec_deg || d.dec || 0;
+            _skyAtlasSelected = {name: name, ra: ra, dec: dec};
+            document.getElementById('skyAtlasTargetInput').value = name;
+            skyAtlasCoordConvert(ra, dec);
+            operationLog('导入: ' + name);
+        } else {
+            operationLog('导入失败: ' + (r ? r.message : '无法连接Stellarium'));
+        }
+    }).catch(function(e) {
+        operationLog('导入异常: ' + e);
+    }).finally(function() {
+        btn.disabled = false;
+        btn.textContent = '📥 导入';
+    });
+}
+
+function skyAtlasCoordConvert(ra, dec) {
+    apiPost('/api/v1/skyatlas/coord-convert', {ra: ra, dec: dec}).then(function(r) {
+        if (r && r.success) {
+            // 格式化 RA/Dec (RA: 时分秒, Dec: 度分秒)
+            var raH = r.ra / 15;
+            var raH_int = Math.floor(raH);
+            var raM = (raH - raH_int) * 60;
+            var raM_int = Math.floor(raM);
+            var raS = ((raM - raM_int) * 60).toFixed(1);
+            var decSign = r.dec >= 0 ? '+' : '-';
+            var decAbs = Math.abs(r.dec);
+            var decD = Math.floor(decAbs);
+            var decM = (decAbs - decD) * 60;
+            var decM_int = Math.floor(decM);
+            var decS = ((decM - decM_int) * 60).toFixed(1);
+            document.getElementById('skyAtlasRaDec').value =
+                raH_int + 'h ' + raM_int + 'm ' + raS + 's  ' + decSign + decD + '° ' + decM_int + "' " + decS + '"';
+            document.getElementById('skyAtlasAltAz').value =
+                'Az ' + r.az.toFixed(2) + '°  Alt ' + r.alt.toFixed(2) + '°';
+        }
+    }).catch(function(e) {
+        console.warn('[SkyAtlas] coord-convert error:', e);
+    });
+}
+
+// 暴露到 window
+window.skyAtlasSearch = skyAtlasSearch;
+window.skyAtlasSelectCandidate = skyAtlasSelectCandidate;
+window.skyAtlasGoto = skyAtlasGoto;
+window.toggleSkyAtlasManual = toggleSkyAtlasManual;
+window.skyAtlasImportFromStellarium = skyAtlasImportFromStellarium;
+window.skyAtlasCoordConvert = skyAtlasCoordConvert;
 </script>

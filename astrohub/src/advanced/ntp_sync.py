@@ -98,7 +98,7 @@ def sync_device_time(
         # 注意：不能同时设 NTP 模式 + localTime，设备会立即触发 NTP 客户端
         #       轮询覆盖回原始 NTP 时间，3s 补偿白给
         # ---------------------------------------------------------------
-        dt_cst = datetime.fromtimestamp(ts + 3, tz=CST)
+        dt_cst = datetime.fromtimestamp(ts + 3.2, tz=CST)
         local_time_str = dt_cst.strftime("%Y-%m-%dT%H:%M:%S") + "+08:00"
         xml = (
             '<?xml version="1.0" encoding="UTF-8"?>'
